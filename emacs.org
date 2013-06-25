@@ -216,38 +216,36 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 * Define global keys
 
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-h :") 'find-function)
-(global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
-(global-set-key (kbd "<home>") 'beginning-of-buffer)
-(global-set-key (kbd "<end>") 'end-of-buffer)
-(global-set-key (kbd "<insert>") (lambda() (interactive) (insert-char ?<)))
-(global-set-key (kbd "<deletechar>") (lambda() (interactive) (insert-char ?>)))
-(global-set-key (quote [f1]) 'gnus)
-(global-set-key (quote [f5]) 'edebug-defun)
-(global-set-key (quote [f6]) 'w3m)
-(global-set-key (quote [f7]) 'auto-fill-mode)
-(global-set-key (quote [f8]) 'occur)
-(global-set-key [(shift f8)] 'multi-occur)
-(global-set-key (quote [f10]) 'calc)
-(global-set-key (quote [f11]) 'eshell)
-(global-set-key (quote [f12]) 'calendar)
-(global-set-key (kbd "C-&") (lambda (arg) (interactive "P") (if arg (switch-to-buffer "#twitter_bzg2") (switch-to-buffer "&bitlbee"))))
-(global-set-key (kbd "M-+") 'text-scale-increase)
-(global-set-key (kbd "M--") 'text-scale-decrease)
-(global-set-key (kbd "M-0") 'text-scale-adjust)
-(global-set-key (kbd "C-M-]") (lambda () (interactive) (org-cycle t)))
-(global-set-key (kbd "M-]")
-		(lambda () (interactive) (ignore-errors (end-of-defun) (beginning-of-defun)) (org-cycle)))
-(global-set-key (kbd "C-x r L") 'register-list)
-
-(define-key global-map "\C-cl" 'org-store-link)
-(define-key global-map "\C-cL" 'org-occur-link-in-agenda-files)
-(define-key global-map "\C-ca" 'org-agenda)
-(define-key global-map "\C-cc" 'org-capture)
-
-(define-key global-map "\M-n" 'next-word-at-point)
-(define-key global-map "\M-n" 'current-word-search)
-(define-key global-map "\M-p" 'previous-word-at-point)
+  (global-set-key (kbd "C-h :") 'find-function)
+  (global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
+  (global-set-key (kbd "<home>") 'beginning-of-buffer)
+  (global-set-key (kbd "<end>") 'end-of-buffer)
+  (global-set-key (kbd "<insert>") (lambda() (interactive) (insert-char ?<)))
+  (global-set-key (kbd "<deletechar>") (lambda() (interactive) (insert-char ?>)))
+  (global-set-key (quote [f1]) 'gnus)
+  (global-set-key (quote [f5]) 'edebug-defun)
+  (global-set-key (quote [f6]) 'w3m)
+  (global-set-key (quote [f7]) 'auto-fill-mode)
+  (global-set-key (quote [f8]) 'occur)
+  (global-set-key [(shift f8)] 'multi-occur)
+  (global-set-key (quote [f10]) 'calc)
+  (global-set-key (quote [f11]) 'eshell)
+  (global-set-key (quote [f12]) 'calendar)
+  (global-set-key (kbd "C-&")
+                  (lambda (arg) (interactive "P")
+                    (if arg (switch-to-buffer "#twitter_bzg2") (switch-to-buffer "&bitlbee"))))
+  (global-set-key (kbd "M-+") 'text-scale-increase)
+  (global-set-key (kbd "M--") 'text-scale-decrease)
+  (global-set-key (kbd "M-0") 'text-scale-adjust)
+  (global-set-key (kbd "C-M-]") (lambda () (interactive) (org-cycle t)))
+  (global-set-key (kbd "M-]")
+                  (lambda () (interactive)
+                    (ignore-errors (end-of-defun) (beginning-of-defun)) (org-cycle)))
+  (global-set-key (kbd "C-x r L") 'register-list)
+  
+  (define-key global-map "\M-n" 'next-word-at-point)
+  (define-key global-map "\M-n" 'current-word-search)
+  (define-key global-map "\M-p" 'previous-word-at-point)
 #+END_SRC
 
 * Dired
@@ -320,6 +318,15 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 #+END_SRC
 
 * Org
+
+** Org keys
+
+#+BEGIN_SRC emacs-lisp
+  (define-key global-map "\C-cl" 'org-store-link)
+  (define-key global-map "\C-cL" 'org-occur-link-in-agenda-files)
+  (define-key global-map "\C-ca" 'org-agenda)
+  (define-key global-map "\C-cc" 'org-capture)
+#+END_SRC
 
 ** Org initialization and hooks
 
