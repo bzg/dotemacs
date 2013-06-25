@@ -6,8 +6,8 @@
 #+OPTIONS:     skip:nil toc:nil
 #+INFOJS_OPT:  view:overview toc:nil ltoc:nil mouse:#cccccc buttons:0 path:http://orgmode.org/org-info.js
 #+HTML_HEAD:   <link rel="publisher" href="https://plus.google.com/103809710979116858042" />
-# #+PROPERTY:    tangle ~/elisp/config/emacs.el
-#+PROPERTY:    tangle ~/public_html/org/homepage/u/emacs.el
+#+PROPERTY:    tangle ~/elisp/config/emacs.el
+# #+PROPERTY:    tangle ~/public_html/org/homepage/u/emacs.el
 
 This is my =.emacs.el= file, as a HTMLized =emacs.org= file.
 
@@ -20,8 +20,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 #+BEGIN_SRC emacs-lisp
   ;; I don't use package a lot but don't want to configure the list of
   ;; archives each time I do use it.
-  
-  (require 'package) 
+
+  (require 'package)
   (setq package-archives
         '(("org" . "http://orgmode.org/elpa/")
           ("marmalade". "http://marmalade-repo.org/packages/")
@@ -29,19 +29,19 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
           ;; ("SC" . "http://joseito.republika.pl/sunrise-commander/")
           ;; ("ELPA" . "http://tromey.com/elpa/")
           ))
-    
+
   (package-initialize)
 #+END_SRC
 
 * General defaults
 
 #+BEGIN_SRC emacs-lisp
-  (setq default-major-mode (quote org-mode) t)
-  
+  (setq default-major-mode 'org-mode)
+
   (setq debug-on-error t)
   (setq byte-compile-debug t)
   (setq elp-sort-by-function 'elp-sort-by-average-time)
-  
+
   (setq auto-save-default nil)
   (setq make-backup-files nil)
   (setq kill-whole-line t)
@@ -53,13 +53,13 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (setq enable-local-variables t)
   (setq enable-local-eval t)
   (setq kill-read-only-ok t)
-  
+
   (fset 'yes-or-no-p 'y-or-n-p)
-  
+
   ;; I find this useful to have a local (i)search ring:
   (make-variable-buffer-local 'search-ring)
   (make-variable-buffer-local 'isearch-string)
-  
+
   (setenv "EDITOR" "emacsclient")
   (setenv "CVS_RSH" "ssh")
   (setq completion-use-tooltip nil)
@@ -72,7 +72,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ;; I love parentheses in *every* mode
 (show-paren-mode 1)
 (display-time-mode 1)
-(auto-compression-mode t nil (jka-compr))
+(auto-compression-mode t)
 
 ;; Don't clutter the emacs screen
 (tool-bar-mode -1)
@@ -84,20 +84,20 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'exec-path "~/bin/")
-  
+
   (let ((default-directory "~/elisp/"))
     (normal-top-level-add-subdirs-to-load-path))
-  
+
   (let ((default-directory "~/install/git/gnus/"))
     (normal-top-level-add-subdirs-to-load-path))
-  
+
   (add-to-list 'load-path "~/install/cvs/emacs-w3m/")
   (add-to-list 'load-path "~/install/git/helm/")
   (add-to-list 'load-path "~/install/git/geiser/elisp/")
   (add-to-list 'load-path "~/install/git/nrepl.el/")
   (add-to-list 'load-path "~/install/git/magit/" t)
   (add-to-list 'load-path "~/install/src/bbdb/lisp/")
-  
+
   (add-to-list 'load-path "~/install/git/org-mode/lisp/")
   (add-to-list 'load-path "~/install/git/org-mode/contrib/lisp/")
 #+END_SRC
@@ -113,6 +113,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ;; https://github.com/knu/elscreen
 (require 'elscreen)
 (setq elscreen-display-tab nil)
+(setq elscreen-tab-display-control nil)
 
 (require 'session)
 (require 'ibuffer)
@@ -145,20 +146,20 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 * Appearance
 
 #+BEGIN_SRC emacs-lisp
-(setq custom-file "~/elisp/config/emacs-custom.el")
-(load custom-file)
+  (setq custom-file "~/elisp/config/emacs-custom.el")
+  (load custom-file)
 
-(setq initial-frame-alist
-      '(;; (left-fringe . 180)
-	;; (right-fringe . 180)
-	(menu-bar-lines . 0)
-	(tool-bar-lines . 0)
-	(vertical-scroll-bars . nil)
-	;; (background-color . "black")
-	;; (foreground-color . "#dddddd")
-	))
+  (setq initial-frame-alist
+        '(;; (left-fringe . 180)
+          ;; (right-fringe . 180)
+          (menu-bar-lines . 0)
+          (tool-bar-lines . 0)
+          (vertical-scroll-bars . nil)
+          ;; (background-color . "black")
+          ;; (foreground-color . "#dddddd")
+          ))
 
-(set-frame-parameter nil 'fullscreen 'fullboth)
+  (set-frame-parameter nil 'fullscreen 'fullboth)
 #+END_SRC
 
 ** Theme
@@ -196,7 +197,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (setq display-time-mail-string "#")
   (setq focus-follows-mouse t)
   (setq text-mode-hook '(turn-on-auto-fill text-mode-hook-identify))
-  
+
   ;; (mouse-avoidance-mode 'cat-and-mouse)
 #+END_SRC
 
@@ -227,7 +228,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
               browse-url-generic-program "firefox")
       (setq browse-url-browser-function 'w3m-browse-url))
     (setq browse-url-text-browser "w3m")
-  
+
   (setq browse-url-firefox-new-window-is-tab t)
   (setq browse-url-firefox-program "firefox")
   (setq browse-url-new-window-flag t)
@@ -261,7 +262,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
                   (lambda () (interactive)
                     (ignore-errors (end-of-defun) (beginning-of-defun)) (org-cycle)))
   (global-set-key (kbd "C-x r L") 'register-list)
-  
+
   (define-key global-map "\M-n" 'next-word-at-point)
   (define-key global-map "\M-n" 'current-word-search)
   (define-key global-map "\M-p" 'previous-word-at-point)
@@ -282,7 +283,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq list-directory-verbose-switches "-al")
 (setq dired-listing-switches "-l")
 (setq dired-dwim-target t)
-(setq dired-omit-mode nil t)
+(setq dired-omit-mode nil)
 (setq dired-recursive-copies 'always)
 (setq dired-recursive-deletes 'always)
 
@@ -346,6 +347,31 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 * Org
 
+** Org initialization and hooks
+
+#+BEGIN_SRC emacs-lisp
+  (require 'org)
+  (require 'ox-latex)
+  (require 'ox-koma-letter)
+
+  ;; Hook to update all blocks before saving
+  (add-hook 'org-mode-hook
+            (lambda() (add-hook 'before-save-hook
+                                'org-update-all-dblocks t t)))
+
+  ;; Hook to display dormant article in Gnus
+  (add-hook 'org-follow-link-hook
+            (lambda ()
+              (if (eq major-mode 'gnus-summary-mode)
+                  (gnus-summary-insert-dormant-articles))))
+
+  (add-hook 'org-mode-hook (lambda () (imenu-add-to-menubar "Imenu")))
+
+  (add-hook 'org-follow-link-hook
+            (lambda () (if (eq major-mode 'gnus-summary-mode)
+                           (gnus-summary-insert-dormant-articles))))
+#+END_SRC
+
 ** Org keys
 
 #+BEGIN_SRC emacs-lisp
@@ -353,31 +379,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (define-key global-map "\C-cL" 'org-occur-link-in-agenda-files)
   (define-key global-map "\C-ca" 'org-agenda)
   (define-key global-map "\C-cc" 'org-capture)
-#+END_SRC
-
-** Org initialization and hooks
-
-#+BEGIN_SRC emacs-lisp
-  (require 'org)
-  (require 'ox-latex)
-  (require 'ox-koma-letter)
-  
-  ;; Hook to update all blocks before saving
-  (add-hook 'org-mode-hook
-            (lambda() (add-hook 'before-save-hook
-                                'org-update-all-dblocks t t)))
-  
-  ;; Hook to display dormant article in Gnus
-  (add-hook 'org-follow-link-hook
-            (lambda ()
-              (if (eq major-mode 'gnus-summary-mode)
-                  (gnus-summary-insert-dormant-articles))))
-  
-  (add-hook 'org-mode-hook (lambda () (imenu-add-to-menubar "Imenu")))
-  
-  (add-hook 'org-follow-link-hook
-            (lambda () (if (eq major-mode 'gnus-summary-mode)
-                           (gnus-summary-insert-dormant-articles))))
 #+END_SRC
 
 ** Org babel
@@ -397,14 +398,14 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
      (plantuml . t)
      (R . t)
      (gnuplot . t)))
-  
+
   (org-clock-persistence-insinuate)
-  
+
   (appt-activate t)
-  
+
   (setq display-time-24hr-format t)
   (setq display-time-day-and-date t)
-  
+
   (setq appt-audible nil
         appt-display-interval 10
         appt-message-warning-time 120)
@@ -456,7 +457,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 #+BEGIN_SRC emacs-lisp
   (setq org-agenda-custom-commands
         `(
-  
+
           ;; list of WP tasks for today
           (" " "Aujourd'hui" agenda "List of rendez-vous and tasks for today"
            ((org-agenda-span 1)
@@ -464,7 +465,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
             (org-deadline-warning-days 10)
             (org-agenda-sorting-strategy
              '(todo-state-up time-up priority-up))))
-  
+
           ;; list of WP tasks for today
           ("%" "Rendez-vous" agenda* "Week RDV"
            ((org-agenda-span 'week)
@@ -472,20 +473,20 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
             (org-deadline-warning-days 10)
             (org-agenda-sorting-strategy
              '(todo-state-up time-up priority-up))))
-  
+
           ("n" todo "NEXT|TODO"
            (;; (org-agenda-max-tags -1)
             (org-agenda-sorting-strategy
              '(timestamp-up))
             (org-agenda-max-entries 7)
             )) ;; todo-state-up time-up priority-up))))
-  
+
           ("x" "Scheduled all" agenda "List of scheduled tasks for today"
            ((org-agenda-span 1)
             (org-agenda-entry-types '(:timestamp :scheduled))
             (org-agenda-sorting-strategy
              '(time-up todo-state-up priority-up))))
-  
+
           ;; list of WP tasks for today
           ("X" "Upcoming deadlines" agenda "List of past and upcoming deadlines"
            ((org-agenda-span 1)
@@ -493,24 +494,24 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
             (org-agenda-entry-types '(:deadline))
             (org-agenda-sorting-strategy
              '(time-up todo-state-up priority-up))))
-  
+
           ;; list of Old deadlines
           ("Y" tags-todo "+SCHEDULED<=\"<now>\"")
           ("Z" tags-todo "+DEADLINE<=\"<now>\"")
-  
+
           ;; Everything that has a "Read" tag
           ("r" . "Read")
           ("rr" tags-todo "+Read+TODO={TODO\\|NEXT}" nil)
           ("r," tags-todo "+Read/STRT" nil)
           ("rF" tags "+Read+@Offline" nil)
-  
+
           ;; Everything that has a "Write" tag
           ("w" . "write")
           ("ww" tags-todo "+Write/NEXT|TODO|STRT" nil)
           ("w," tags-todo "+Write/STRT" nil)
           ("wt" tags-tree "+Write/STRT" nil)
           ("w;" tags-todo "+Write+@Offline" nil)
-  
+
           ;; Everything that has a "Write" tag
           ("c" . "Code")
           ("cc" tags-todo "+Code/NEXT|TODO|STRT" nil)
@@ -524,47 +525,47 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (setq org-capture-templates
         ;; for org/rdv.org
         '(
-  
+
           ;; for org/rdv.org
           ("r" "Bzg RDV" entry (file+headline "~/org/rdv.org" "RDV")
            "* %a :RDV:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?" :prepend t)
-  
+
           ;; Basement et garden
           ("b" "Basement" entry (file+headline "~/org/bzg.org" "Basement")
            "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-  
+
           ;; Basement et garden
           ("C" "Coursera" entry (file+headline "~/org/bzg.org" "Coursera")
            "* NEXT %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-  
+
           ("g" "Garden" entry (file+headline "~/org/garden.org" "Garden")
            "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-  
+
           ;; Boite (lml) et cours
           ("b" "Boîte" entry (file+headline "~/org/bzg.org" "Boîte")
            "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-  
+
           ("c" "Cours" entry (file+headline "~/org/bzg.org" "Cours")
            "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-  
+
           ("O" "OLPC" entry (file+headline "~/org/libre.org" "OLPC")
            "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-  
+
           ("e" "Emacs" entry (file+headline "~/org/libre.org" "Emacs")
            "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend nil)
-  
+
           ("w" "Wikipedia" entry (file+headline "~/org/libre.org" "Wikipedia")
            "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-  
+
           ("i" "ITIC" entry (file+headline "~/org/libre.org" "itic")
            "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-  
+
           ("k" "Krowdfounding" entry (file+headline "~/org/bzg.org" "Kickhub")
            "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-  
+
           ("s" "Spark" entry (file+headline "~/org/bzg.org" "Spark")
            "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-  
+
           ;; Informations
           ("I" "Information")
           ("Ir" "Information read" entry (file+headline "~/org/garden.org" "Infos")
@@ -576,7 +577,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
           ("IC" "Information read (keep clocking)" entry (file+headline "~/org/garden.org" "Infos")
            "* TODO %?%a :Read:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i"
            :prepend t :clock-in t :immediate-finish t :clock-keep t :jump-to-captured t)
-          
+
           ("o" "Org")
           ("of" "Org FR" entry (file+headline "~/org/org.org" "Current ideas")
            "* TODO %?%a :Code:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
@@ -615,8 +616,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (setq org-export-taskjuggler-target-version 3.0)
   (setq org-export-latex-listings 'minted)
   (setq org-export-allow-BIND-local t)
-  (setq org-publish-list-skipped-files nil))
-  
+  (setq org-publish-list-skipped-files nil)
+
   (add-to-list 'org-latex-classes
                '("my-letter"
                  "\\documentclass\{scrlttr2\}
@@ -624,7 +625,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
           \[NO-DEFAULT-PACKAGES]
           \[NO-PACKAGES]
           \[EXTRA]"))
-  
+
   (setq org-fast-tag-selection-single-key 'expert)
   (setq org-fontify-done-headline t)
   (setq org-fontify-emphasized-text t)
@@ -657,9 +658,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
           (:endgroup . nil)
           (:startgroup . nil) ("@Online" . ?O) ("@Offline" . ?F)
           (:endgroup . nil)
-          ("Print" . ?P) ("Code" . ?c) ("Patch" . ?p) ("Bug" . ?b) ("Twit" . ?i) ("Tel" . ?T) ("Buy" . ?B) ("Doc" . ?d) ("Mail" . ?@))))
-  (setq org-tags-column -74))
-  (setq org-tags-match-list-sublevels t))
+          ("Print" . ?P) ("Code" . ?c) ("Patch" . ?p) ("Bug" . ?b) ("Twit" . ?i) ("Tel" . ?T) ("Buy" . ?B) ("Doc" . ?d) ("Mail" . ?@)))
+  (setq org-tags-column -74)
+  (setq org-tags-match-list-sublevels t)
   (setq org-todo-keywords '((type "NEXT" "TODO" "STRT" "WAIT" "|" "DONE" "DELEGATED" "CANCELED")))
   (setq org-use-property-inheritance t)
   (setq org-clock-persist t)
@@ -697,7 +698,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (setq org-todo-keyword-faces '(("STRT" . "lightgoldenrod1")
                                  ("NEXT" . "Cyan3")
                                  ("WAIT" . "lightgoldenrod3")))
-  
+
   (setq org-plantuml-jar-path "~/bin/plantuml.jar")
   (setq org-link-abbrev-alist
         '(("bugzilla" . "http://10.1.2.9/bugzilla/show_bug.cgi?id=")
@@ -705,7 +706,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
           ("gmap"     . "http://maps.google.com/maps?q=%s")
           ("omap"     . "http://nominatim.openstreetmap.org/search?q=%s&polygon=1")
           ("ads"      . "http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?author=%s&db_key=AST")))
-  
+
   (setq org-attach-directory "~/org/data/")
   (setq org-link-display-descriptive nil)
   (setq org-loop-over-headlines-in-active-region t)
@@ -718,7 +719,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (setq org-blank-before-new-entry '((heading . auto) (plain-list-item . auto)))
   (setq org-contacts-files '("~/org/contacts.org"))
   (setq org-crypt-key "Bastien Guerry")
-  (set org-enforce-todo-dependencies t)
+  (setq org-enforce-todo-dependencies t)
   (setq org-mobile-directory "~/Dropbox/org/")
   (setq org-mobile-files '("~/Dropbox/org/" "~/org/from-mobile.org"))
   (setq org-fontify-whole-heading-line t)
@@ -869,7 +870,7 @@ urchinTracker();
   (setq org-global-properties
         '(("Effort_ALL" . "0 0:10 0:20 0:30 0:40 0:50 1:00 1:30 2:00 2:30 3:00 4:00 5:00 6:00 7:00 8:00")
           ("Progress_ALL" . "10% 20% 30% 40% 50% 60% 70% 80% 90%")
-          ("Status_ALL" . "Work Leisure GTD WOT"))
+          ("Status_ALL" . "Work Leisure GTD WOT")))
 
   (setq org-confirm-elisp-link-function nil)
   (setq org-confirm-shell-link-function nil)
@@ -879,7 +880,7 @@ urchinTracker();
   (setq org-default-notes-file "~/org/notes.org")
   (setq org-directory "~/org/")
   (setq org-ellipsis nil)
-  (setq org-email-link-description-format "%c: %.50s"))
+  (setq org-email-link-description-format "%c: %.50s")
 #+END_SRC
 
 * Gnus
@@ -909,23 +910,23 @@ urchinTracker();
 
 #+BEGIN_SRC emacs-lisp
   (require 'boxquote)
-  
+
   (setq send-mail-function 'sendmail-send-it)
   (setq message-send-mail-function 'message-send-mail-with-sendmail)
-  
+
   (setq use-dialog-box nil)
   (setq user-full-name "Bastien Guerry")
   (setq user-mail-address "bzg@altern.org")
-  
+
   (setq mail-header-separator "----")
   (setq mail-source-delete-incoming nil)
   (setq mail-specify-envelope-from t)
   (setq mail-use-rfc822 nil)
-  
+
   (setq message-cite-function (quote message-cite-original-without-signature))
   (setq message-default-charset (quote utf-8))
   (setq message-generate-headers-first t)
-  
+
   ;; Attachments
   (setq mm-content-transfer-encoding-defaults
         (quote
@@ -939,10 +940,11 @@ urchinTracker();
   (setq mm-default-directory "~/attachments/")
   (setq mm-url-program (quote w3m))
   (setq mm-url-use-external nil)
-  
+
   (setq nnmail-extra-headers
-        '(X-Diary-Time-Zone X-Diary-Dow X-Diary-Year X-Diary-Month X-Diary-Dom X-Diary-Hour X-Diary-Minute To Newsgroups Cc)))
-  
+        '(X-Diary-Time-Zone X-Diary-Dow X-Diary-Year
+          X-Diary-Month X-Diary-Dom X-Diary-Hour X-Diary-Minute To Newsgroups Cc))
+
   ;; Sources and methods
   (setq mail-sources '((file :path "/var/mail/guerry")
                        (maildir :path "~/Maildir/" :subdirs ("cur" "new")))
@@ -955,7 +957,7 @@ urchinTracker();
           (nnimap "imap.cnam.fr")
           (nnimap "obm-front.u-paris10.fr")
           ))
-  
+
   (setq gnus-check-new-newsgroups nil)
   (setq gnus-read-active-file 'some)
   (setq gnus-agent t)
@@ -1426,9 +1428,9 @@ the copy in the last group."
 
 #+BEGIN_SRC emacs-lisp
   (global-set-key (quote [f12]) 'calendar)
-  
+
   (setq diary-file "~/.diary")
-  
+
   (setq french-holiday
         '((holiday-fixed 1 1 "Jour de l'an")
           (holiday-fixed 5 8 "Victoire 45")
@@ -1464,17 +1466,17 @@ the copy in the last group."
               ;; -> Dernier dimanche de mai sinon
               (car (car (holiday-float 5 0 -1 nil))))
            "Fête des mères")))
-  
+
   (setq calendar-date-style 'european
         calendar-holidays (append french-holiday)
         calendar-mark-holidays-flag t
         calendar-week-start-day 1
         calendar-mark-diary-entries-flag nil)
-  
+
   (setq TeX-master 'dwim)
   (setq doc-view-scale-internally nil)
 #+END_SRC
-  
+
 * Various functions
 
 #+BEGIN_SRC emacs-lisp
@@ -1592,7 +1594,7 @@ the copy in the last group."
     (let ((s (save-match-data (org-hh:mm:ss-string-to-seconds (match-string 1)))))
       (replace-match (save-match-data (org-format-seconds "%.2h:%.2m:%.2s," (+ s n))) t t))))
 #+END_SRC
-	 
+
 * Start the server
 
 #+BEGIN_SRC emacs-lisp
@@ -1660,11 +1662,10 @@ the copy in the last group."
 (setq magit-commit-all-when-nothing-staged 'ask)
 #+END_SRC
 
-  
+
 
 ** doc-view-mode
 
 #+BEGIN_SRC emacs-lisp
 (setq doc-view-continuous t)
 #+END_SRC
-
