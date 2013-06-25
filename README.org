@@ -1,6 +1,0 @@
-#+TITLE: bzg .emacs.el file
-#+AUTHOR: Bastien Guerry
-
-This is my .emacs.el file.
-
-

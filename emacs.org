@@ -1,21 +1,21 @@
 #+TITLE: bzg .emacs.el file
 #+EMAIL:    bzg AT altern DOT org
-#+STARTUP:  odd hidestars unfold
+#+STARTUP:  odd hidestars fold
 #+LANGUAGE:    fr
 #+LINK:        guerry http://lumiere.ens.fr/~guerry/%s
 #+OPTIONS:     skip:nil toc:nil
 #+INFOJS_OPT:  view:overview toc:nil ltoc:nil mouse:#cccccc buttons:0 path:http://orgmode.org/org-info.js
 #+HTML_HEAD:   <link rel="publisher" href="https://plus.google.com/103809710979116858042" />
-#+PROPERTY:    tangle emacs.el
+# #+PROPERTY:    tangle ~/elisp/config/emacs.el
+#+PROPERTY:    tangle ~/public_html/org/homepage/u/emacs.el
 
-#+begin_html
-<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
-</script>
-<script type="text/javascript">
-_uacct = "UA-2658857-1";
-urchinTracker();
-</script>
-#+end_html
+This is my =.emacs.el= file, as an =emacs.org= file.
+
+- Browse it online [[http://lumiere.ens.fr/~guerry/emacs.html][here]].
+- Browse the =.el= file [[http://lumiere.ens.fr/~guerry/u/emacs.el][here]].
+- Clone the =.org= and file from [[https://github.com/bzg/dotemacs][github]].
+
+Comments are welcome: =bzg AT gnu DOT org=
 
 * Package initialization
 
@@ -674,13 +674,18 @@ urchinTracker();
 	 :publishing-function (org-html-publish-to-html)
 	 :auto-sitemap nil
 	 :recursive t
-	 :makeindex t
+	 :makeindex nil
 	 :preserve-breaks nil
 	 :sitemap-sort-files chronologically
 	 :section-numbers nil
 	 :with-toc nil
 	 :html-head-extra "<link rel=\"stylesheet\" href=\"http://lumiere.ens.fr/~guerry/u/org.css\" type=\"text/css\" />"
-	 :html-preamble nil
+	 :html-preamble "<script src=\"http://www.google-analytics.com/urchin.js\" type=\"text/javascript\">
+</script>
+<script type=\"text/javascript\">
+_uacct = \"UA-2658857-1\";
+urchinTracker();
+</script>"
 	 :htmlized-source t
 	 :html-postamble nil)
 
@@ -698,7 +703,12 @@ urchinTracker();
 	 :section-numbers nil
 	 :with-toc nil
 	 :html-head-extra "<link rel=\"stylesheet\" href=\"http://lumiere.ens.fr/~guerry/u/org.css\" type=\"text/css\" />"
-	 :html-preamble nil
+	 :html-preamble "<script src=\"http://www.google-analytics.com/urchin.js\" type=\"text/javascript\">
+</script>
+<script type=\"text/javascript\">
+_uacct = \"UA-2658857-1\";
+urchinTracker();
+</script>"
 	 :htmlized-source t
 	 :html-postamble nil)
 	("homepagerss"
@@ -1333,7 +1343,7 @@ the copy in the last group."
 (setq TeX-master 'dwim)
 (setq doc-view-scale-internally nil)
 #+END_SRC
-
+  
 * Various functions
 
 #+BEGIN_SRC emacs-lisp
@@ -1451,7 +1461,7 @@ the copy in the last group."
     (let ((s (save-match-data (org-hh:mm:ss-string-to-seconds (match-string 1)))))
       (replace-match (save-match-data (org-format-seconds "%.2h:%.2m:%.2s," (+ s n))) t t))))
 #+END_SRC
-
+	 
 * Customize modes
 ** Emacs lisp
 
@@ -1509,13 +1519,5 @@ the copy in the last group."
 (setq magit-commit-all-when-nothing-staged 'ask)
 #+END_SRC
 
-* Local variables
-
-#+BEGIN_SRC emacs-lisp
-;; Local variables:
-;; eval: (orgstruct-mode 1)
-;; orgstruct-heading-prefix-regexp: "^;;; +"
-;; End:
-#+END_SRC
-
+  
 
