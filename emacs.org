@@ -158,7 +158,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	;; (foreground-color . "#dddddd")
 	))
 
-(setq fill-column 75)
 (set-frame-parameter nil 'fullscreen 'fullboth)
 #+END_SRC
 
@@ -182,18 +181,23 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ** Startup
 
 #+BEGIN_SRC emacs-lisp
-(setq-default line-spacing 0.2)
-(setq fill-column 70)
-(setq line-move-visual nil)
-(setq show-trailing-whitespace t)
-(setq initial-scratch-message "")
-(setq initial-major-mode 'text-mode)
-(setq inhibit-startup-message t)
-(setq inhibit-startup-echo-area-message t)
-(setq visible-bell nil)
-(setq display-time-mail-string "#")
-(setq focus-follows-mouse t)
-;; (mouse-avoidance-mode 'cat-and-mouse)
+  (setq-default line-spacing 0.2)
+  (setq fill-column 75)
+  (setq line-move-visual nil)
+  (setq show-trailing-whitespace t)
+  (setq initial-scratch-message "")
+  (setq initial-major-mode 'org-mode)
+  (setq inhibit-startup-message t)
+  (setq inhibit-startup-echo-area-message t)
+  (setq visible-bell t)
+  (setq spell-command "aspell")
+  (setq speedbar-use-images nil)
+  (setq tab-always-indent 'always)
+  (setq display-time-mail-string "#")
+  (setq focus-follows-mouse t)
+  (setq text-mode-hook '(turn-on-auto-fill text-mode-hook-identify))
+  
+  ;; (mouse-avoidance-mode 'cat-and-mouse)
 #+END_SRC
 
 ** Printing
@@ -629,6 +633,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (setq org-footnote-define-inline nil)
   (setq org-hide-emphasis-markers nil)
   (setq org-icalendar-include-todo 'all)
+  (setq org-list-indent-offset 0)
   (setq org-link-frame-setup '((gnus . gnus) (file . find-file-other-window)))
   (setq org-link-mailto-program '(browse-url-mail "mailto:%a?subject=%s"))
   (setq org-log-note-headings '((done . "CLOSING NOTE %t") (state . "State %-12s %t") (clock-out . "")))
@@ -676,7 +681,10 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (setq org-clock-idle-time 15)
   (setq org-id-uuid-program "uuidgen")
   (setq org-modules '(org-bbdb org-bibtex org-docview org-gnus org-id org-protocol org-info org-jsinfo org-irc org-w3m org-taskjuggler org-learn))
-  (setq org-use-speed-commands t)
+  (setq org-use-speed-commands
+        (lambda nil
+          (and (looking-at org-outline-regexp-bol)
+               (not (org-in-src-block-p t)))))
   (setq org-src-tab-acts-natively t)
   (setq org-hide-block-startup t)
   (setq org-highlight-latex-and-related '(latex))
@@ -714,6 +722,11 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (setq org-mobile-directory "~/Dropbox/org/")
   (setq org-mobile-files '("~/Dropbox/org/" "~/org/from-mobile.org"))
   (setq org-fontify-whole-heading-line t)
+  (setq org-file-apps
+    '((auto-mode . emacs)
+      ("\\.mm\\'" . default)
+      ("\\.x?html?\\'" . default)
+      ("\\.pdf\\'" . "mupdf %s")))
 #+END_SRC
 
 ** Org publish project alist
@@ -886,6 +899,10 @@ urchinTracker();
 (require 'spam)
 
 (setq spam-use-spamassassin t)
+(setq spam-spamassassin-path "/usr/bin/spamassassin")
+(setq spam-use-spamassassin-headers t)
+(setq smiley-style 'medium)
+
 #+END_SRC
 
 ** Set sendmail function and Gnus methods
@@ -895,6 +912,10 @@ urchinTracker();
   
   (setq send-mail-function 'sendmail-send-it)
   (setq message-send-mail-function 'message-send-mail-with-sendmail)
+  
+  (setq use-dialog-box nil)
+  (setq user-full-name "Bastien Guerry")
+  (setq user-mail-address "bzg@altern.org")
   
   (setq mail-header-separator "----")
   (setq mail-source-delete-incoming nil)
@@ -907,14 +928,14 @@ urchinTracker();
   
   ;; Attachments
   (setq mm-content-transfer-encoding-defaults
-     (quote
-      (("text/x-patch" 8bit)
-       ("text/.*" 8bit)
-       ("message/rfc822" 8bit)
-       ("application/emacs-lisp" 8bit)
-       ("application/x-emacs-lisp" 8bit)
-       ("application/x-patch" 8bit)
-       (".*" base64))))
+        (quote
+         (("text/x-patch" 8bit)
+          ("text/.*" 8bit)
+          ("message/rfc822" 8bit)
+          ("application/emacs-lisp" 8bit)
+          ("application/x-emacs-lisp" 8bit)
+          ("application/x-patch" 8bit)
+          (".*" base64))))
   (setq mm-default-directory "~/attachments/")
   (setq mm-url-program (quote w3m))
   (setq mm-url-use-external nil)
@@ -939,7 +960,7 @@ urchinTracker();
   (setq gnus-read-active-file 'some)
   (setq gnus-agent t)
   (setq gnus-agent-consider-all-articles t)
-  (setq gnus-agent-enable-expiration 'disable)
+    (setq gnus-agent-enable-expiration 'disable)
 #+END_SRC
 
 ** Set basics
@@ -1242,7 +1263,7 @@ the copy in the last group."
 ;;    ((null thread) 0)
 ;;    ((listp thread) (length thread))))
 
-(setq message-fill-column 70)
+(setq message-fill-column 75)
 (setq message-use-mail-followup-to nil)
 #+END_SRC
 
@@ -1355,6 +1376,24 @@ the copy in the last group."
 (load "~/elisp/config/erc_.el")
 #+END_SRC
 
+* w3m
+
+#+BEGIN_SRC emacs-lisp
+(setq w3m-accept-languages '("fr;" "q=1.0" "en;"))
+(setq w3m-antenna-sites '(("http://eucd.info" "EUCD.INFO" time)))
+(setq w3m-broken-proxy-cache t)
+(setq w3m-confirm-leaving-secure-page nil)
+(setq w3m-cookie-accept-bad-cookies t)
+(setq w3m-cookie-accept-domains t)
+(setq w3m-cookie-file "/home/guerry/.w3m/cookie")
+(setq w3m-fill-column 75)
+(setq w3m-form-textarea-edit-mode 'org-mode)
+(setq w3m-icon-directory nil)
+(setq w3m-key-binding 'info)
+(setq w3m-use-cookies t)
+(setq w3m-use-tab t)
+(setq w3m-use-toolbar nil)
+#+END_SRC
 * Buffer length goal
 
 #+BEGIN_SRC emacs-lisp
