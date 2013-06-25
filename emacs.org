@@ -1,6 +1,6 @@
-#+TITLE: bzg .emacs.el file
-#+EMAIL:    bzg AT altern DOT org
-#+STARTUP:  odd hidestars fold
+#+TITLE:       bzg .emacs.el file
+#+EMAIL:       bzg AT altern DOT org
+#+STARTUP:     odd hidestars fold
 #+LANGUAGE:    fr
 #+LINK:        guerry http://lumiere.ens.fr/~guerry/%s
 #+OPTIONS:     skip:nil toc:nil
@@ -158,8 +158,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
           ;; (background-color . "black")
           ;; (foreground-color . "#dddddd")
           ))
-
-  (set-frame-parameter nil 'fullscreen 'fullboth)
 #+END_SRC
 
 ** Theme
@@ -1667,5 +1665,6 @@ the copy in the last group."
 ** doc-view-mode
 
 #+BEGIN_SRC emacs-lisp
-(setq doc-view-continuous t)
+  (setq doc-view-continuous t)
+  (set-frame-parameter nil 'fullscreen 'fullboth)
 #+END_SRC
