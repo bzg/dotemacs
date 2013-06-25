@@ -9,128 +9,116 @@
 # #+PROPERTY:    tangle ~/elisp/config/emacs.el
 #+PROPERTY:    tangle ~/public_html/org/homepage/u/emacs.el
 
-This is my =.emacs.el= file, as an =emacs.org= file.
+This is my =.emacs.el= file, as a HTMLized =emacs.org= file.
 
-- Browse it online [[http://lumiere.ens.fr/~guerry/emacs.html][here]].
-- Browse the =.el= file [[http://lumiere.ens.fr/~guerry/u/emacs.el][here]].
-- Clone the =.org= and file from [[https://github.com/bzg/dotemacs][github]].
+You can browse the =.el= file [[http://lumiere.ens.fr/~guerry/u/emacs.el][here]] or clone the =.org= file from [[https://github.com/bzg/dotemacs][github]].
 
-Comments are welcome: =bzg AT gnu DOT org=
+Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 * Package initialization
 
 #+BEGIN_SRC emacs-lisp
-(require 'package)
-(setq package-archives
-      '(("org" . "http://orgmode.org/elpa/")
-	("marmalade" . "http://marmalade-repo.org/packages/")
-	("gnu"  . "http://elpa.gnu.org/packages/")
-	;; ("SC"   . "http://joseito.republika.pl/sunrise-commander/")
-	;; ("ELPA" . "http://tromey.com/elpa/")
-	))
-
-(package-initialize)
+  ;; I don't use package a lot but don't want to configure the list of
+  ;; archives each time I do use it.
+  
+  (require 'package) 
+  (setq package-archives
+        '(("org" . "http://orgmode.org/elpa/")
+          ("marmalade". "http://marmalade-repo.org/packages/")
+          ("gnu" . "http://elpa.gnu.org/packages/")
+          ;; ("SC" . "http://joseito.republika.pl/sunrise-commander/")
+          ;; ("ELPA" . "http://tromey.com/elpa/")
+          ))
+    
+  (package-initialize)
 #+END_SRC
 
 * General defaults
 
 #+BEGIN_SRC emacs-lisp
-;; (prefer-coding-system 'utf-8)
-;; (set-default-coding-systems 'utf-8)
-;; (set-charset-priority 'unicode)
-;; (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
-
-(setq debug-on-error t)
-(setq redisplay-dont-pause t)
-(setq default-indicate-empty-lines nil)
-(setq make-backup-files nil)
-(setq kill-whole-line t)
-(setq kill-ring-max 100)
-(setq sentence-end-double-space t)
-(setq require-final-newline t)
-(setq next-screen-context-lines 0)
-(setq bidi-display-reordering nil)
-(setq repeat-message-function 'ignore)
-(setq enable-local-variables t)
-(setq enable-local-eval t)
-(make-variable-buffer-local 'search-ring)
-(make-variable-buffer-local 'isearch-string)
-(setenv "EDITOR" "emacsclient")
-(setenv "CVS_RSH" "ssh")
-(setq byte-compile-debug t)
-(set-frame-parameter nil 'fullscreen 'fullboth)
-
-(fset 'yes-or-no-p 'y-or-n-p)
+  (setq debug-on-error t)
+  (setq byte-compile-debug t)
+  
+  (setq make-backup-files nil)
+  (setq kill-whole-line t)
+  (setq kill-ring-max 120)
+  (setq sentence-end-double-space t)
+  (setq require-final-newline t)
+  (setq next-screen-context-lines 0)
+  (setq bidi-display-reordering nil)
+  (setq enable-local-variables t)
+  (setq enable-local-eval t)
+  
+  (fset 'yes-or-no-p 'y-or-n-p)
+  
+  ;; I find this useful to have a local (i)search ring:
+  (make-variable-buffer-local 'search-ring)
+  (make-variable-buffer-local 'isearch-string)
+  
+  (setenv "EDITOR" "emacsclient")
+  (setenv "CVS_RSH" "ssh")
 #+END_SRC
 
 * Enable/Disable some minor modes
 
 #+BEGIN_SRC emacs-lisp
+;; I love parentheses in *every* mode
 (show-paren-mode 1)
-(tool-bar-mode -1)
 (display-time-mode 1)
+
+;; Don't clutter the emacs screen
+(tool-bar-mode -1)
 (blink-cursor-mode -1)
-(transient-mark-mode 1)
-(which-function-mode -1)
 (menu-bar-mode -1)
 #+END_SRC
 
-* Set exec/load paths
+* Set my exec/load paths
 
 #+BEGIN_SRC emacs-lisp
-;; (add-to-list 'load-path "/usr/share/emacs/site-lisp/")
-;; (add-to-list 'load-path "/usr/share/emacs/site-lisp/org/")
-
-(add-to-list 'exec-path "~/bin/")
-
-(let ((default-directory "~/elisp/"))
-  (normal-top-level-add-subdirs-to-load-path))
-
-(let ((default-directory "~/install/git/gnus/"))
-  (normal-top-level-add-subdirs-to-load-path))
-
-(add-to-list 'load-path "~/install/cvs/emacs-w3m/")
-(add-to-list 'load-path "~/install/git/helm/")
-(add-to-list 'load-path "~/install/git/geiser/elisp/")
-(add-to-list 'load-path "~/install/git/nrepl.el/")
-(add-to-list 'load-path "~/install/git/magit/" t)
-(add-to-list 'load-path "~/install/src/bbdb/lisp/")
-
-(add-to-list 'load-path "~/install/git/org-mode/lisp/")
-(add-to-list 'load-path "~/install/git/org-mode/contrib/lisp/")
+  (add-to-list 'exec-path "~/bin/")
+  
+  (let ((default-directory "~/elisp/"))
+    (normal-top-level-add-subdirs-to-load-path))
+  
+  (let ((default-directory "~/install/git/gnus/"))
+    (normal-top-level-add-subdirs-to-load-path))
+  
+  (add-to-list 'load-path "~/install/cvs/emacs-w3m/")
+  (add-to-list 'load-path "~/install/git/helm/")
+  (add-to-list 'load-path "~/install/git/geiser/elisp/")
+  (add-to-list 'load-path "~/install/git/nrepl.el/")
+  (add-to-list 'load-path "~/install/git/magit/" t)
+  (add-to-list 'load-path "~/install/src/bbdb/lisp/")
+  
+  (add-to-list 'load-path "~/install/git/org-mode/lisp/")
+  (add-to-list 'load-path "~/install/git/org-mode/contrib/lisp/")
 #+END_SRC
 
 * Requires
 
 #+BEGIN_SRC emacs-lisp
-(require 'org)
-(require 'boxquote)
-(require 'elscreen)
-(require 'bookmark-extensions)
-(require 'magit)
-(require 'session)
-(require 'dired)
-(require 'dired-x)
-(require 'wdired)
-(require 'info)
+
+;; M-x package-install RET register-list RET
 (require 'register-list)
-(require 'erc)
-(require 'erc-services)
-(require 'ox-latex)
-(require 'ox-koma-letter)
-(require 'nrepl)
-(require 'paredit)
+
+;; I'm using an old elscreen but there is more recent activity:
+;; https://github.com/knu/elscreen
+(require 'elscreen)
+
+(require 'session)
 (require 'ibuffer)
+(require 'nrepl)
 #+END_SRC
 
 * Info initialization
 
 #+BEGIN_SRC emacs-lisp
+(require 'info)
 (info-initialize)
 (add-to-list 'Info-directory-list "~/install/git/org-mode/doc/")
 #+END_SRC
 
-* Activate functions
+* Enable some functions
 
 #+BEGIN_SRC emacs-lisp
 (put 'erase-buffer 'disabled nil)
@@ -158,6 +146,8 @@ Comments are welcome: =bzg AT gnu DOT org=
 	;; (background-color . "black")
 	;; (foreground-color . "#dddddd")
 	))
+
+(set-frame-parameter nil 'fullscreen 'fullboth)
 #+END_SRC
 
 ** Theme
@@ -170,7 +160,10 @@ Comments are welcome: =bzg AT gnu DOT org=
 ** Fonts
 
 #+BEGIN_SRC emacs-lisp
+;; This is my favorite default font:
 (set-frame-font "Monospace 11")
+
+;; I use this sometimes for reading long blog posts:
 ;; (set-frame-font "Inconsolata 13")
 #+END_SRC
 
@@ -210,19 +203,64 @@ Comments are welcome: =bzg AT gnu DOT org=
 * Browser
 
 #+BEGIN_SRC emacs-lisp
-(if window-system
-    (setq browse-url-browser-function 'browse-url-generic
-	  ;; (setq browse-url-browser-function 'w3m-browse-url
-	  ;;	  browse-url-generic-program "conkeror")
-	  ;; browse-url-generic-program "chromium")
-  	  browse-url-generic-program "firefox")
-  (setq browse-url-browser-function 'w3m-browse-url))
-(setq browse-url-text-browser "w3m")
+  (if window-system
+      (setq browse-url-browser-function 'browse-url-generic
+            ;; (setq browse-url-browser-function 'w3m-browse-url
+            ;;      browse-url-generic-program "conkeror")
+            ;; browse-url-generic-program "chromium")
+            browse-url-generic-program "firefox")
+    (setq browse-url-browser-function 'w3m-browse-url))
+  (setq browse-url-text-browser "w3m")
 #+END_SRC
 
-* dired-guess-shell-alist-user
+* Define global keys
 
 #+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-h :") 'find-function)
+(global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
+(global-set-key (kbd "<home>") 'beginning-of-buffer)
+(global-set-key (kbd "<end>") 'end-of-buffer)
+(global-set-key (kbd "<insert>") (lambda() (interactive) (insert-char ?<)))
+(global-set-key (kbd "<deletechar>") (lambda() (interactive) (insert-char ?>)))
+(global-set-key (quote [f1]) 'gnus)
+(global-set-key (quote [f5]) 'edebug-defun)
+(global-set-key (quote [f6]) 'w3m)
+(global-set-key (quote [f7]) 'auto-fill-mode)
+(global-set-key (quote [f8]) 'occur)
+(global-set-key [(shift f8)] 'multi-occur)
+(global-set-key (quote [f10]) 'calc)
+(global-set-key (quote [f11]) 'eshell)
+(global-set-key (quote [f12]) 'calendar)
+(global-set-key (kbd "C-&") (lambda (arg) (interactive "P") (if arg (switch-to-buffer "#twitter_bzg2") (switch-to-buffer "&bitlbee"))))
+(global-set-key (kbd "M-+") 'text-scale-increase)
+(global-set-key (kbd "M--") 'text-scale-decrease)
+(global-set-key (kbd "M-0") 'text-scale-adjust)
+(global-set-key (kbd "C-M-]") (lambda () (interactive) (org-cycle t)))
+(global-set-key (kbd "M-]")
+		(lambda () (interactive) (ignore-errors (end-of-defun) (beginning-of-defun)) (org-cycle)))
+(global-set-key (kbd "C-x r L") 'register-list)
+
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-cL" 'org-occur-link-in-agenda-files)
+(define-key global-map "\C-ca" 'org-agenda)
+(define-key global-map "\C-cc" 'org-capture)
+
+(define-key global-map "\M-n" 'next-word-at-point)
+(define-key global-map "\M-n" 'current-word-search)
+(define-key global-map "\M-p" 'previous-word-at-point)
+#+END_SRC
+
+* Dired
+
+#+BEGIN_SRC emacs-lisp
+(require 'dired)
+(require 'dired-x)
+(require 'wdired)
+
+(define-key dired-mode-map "\C-cb" 'org-ibuffer)
+(define-key dired-mode-map "\C-cg" 'grep-find)
+(define-key dired-mode-map "\C-cd" 'dired-clean-tex)
+
 (setq dired-guess-shell-alist-user
       (list
 ;;       (list "\\.pdf$" "acroread")
@@ -281,69 +319,31 @@ Comments are welcome: =bzg AT gnu DOT org=
 (setq inferior-lisp-program "sbcl")
 #+END_SRC
 
-* Set keys
-
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-h :") 'find-function)
-(global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
-(global-set-key (kbd "<home>") 'beginning-of-buffer)
-(global-set-key (kbd "<end>") 'end-of-buffer)
-(global-set-key (kbd "<insert>") (lambda() (interactive) (insert-char ?<)))
-(global-set-key (kbd "<deletechar>") (lambda() (interactive) (insert-char ?>)))
-(global-set-key (quote [f1]) 'gnus)
-(global-set-key (quote [f5]) 'edebug-defun)
-(global-set-key (quote [f6]) 'w3m)
-(global-set-key (quote [f7]) 'auto-fill-mode)
-(global-set-key (quote [f8]) 'occur)
-(global-set-key [(shift f8)] 'multi-occur)
-(global-set-key (quote [f9]) 'magit-status)
-(global-set-key (quote [f10]) 'calc)
-(global-set-key (quote [f11]) 'eshell)
-(global-set-key (quote [f12]) 'calendar)
-(global-set-key (kbd "C-&") (lambda (arg) (interactive "P") (if arg (switch-to-buffer "#twitter_bzg2") (switch-to-buffer "&bitlbee"))))
-(global-set-key (kbd "M-+") 'text-scale-increase)
-(global-set-key (kbd "M--") 'text-scale-decrease)
-(global-set-key (kbd "M-0") 'text-scale-adjust)
-(global-set-key (kbd "C-M-]") (lambda () (interactive) (org-cycle t)))
-(global-set-key (kbd "M-]")
-		(lambda () (interactive) (ignore-errors (end-of-defun) (beginning-of-defun)) (org-cycle)))
-(global-set-key (kbd "C-x r L") 'register-list)
-
-(define-key dired-mode-map "\C-cb" 'org-ibuffer)
-(define-key dired-mode-map "\C-cg" 'grep-find)
-(define-key dired-mode-map "\C-cd" 'dired-clean-tex)
-
-(define-key global-map "\C-cl" 'org-store-link)
-(define-key global-map "\C-cL" 'org-occur-link-in-agenda-files)
-(define-key global-map "\C-ca" 'org-agenda)
-(define-key global-map "\C-cc" 'org-capture)
-
-(define-key global-map "\M-n" 'next-word-at-point)
-(define-key global-map "\M-n" 'current-word-search)
-(define-key global-map "\M-p" 'previous-word-at-point)
-#+END_SRC
-
 * Org
 
-** Org hooks
+** Org initialization and hooks
 
 #+BEGIN_SRC emacs-lisp
-;; Hook to update all blocks before saving
-(add-hook 'org-mode-hook
-	  (lambda() (add-hook 'before-save-hook
-			      'org-update-all-dblocks t t)))
-
-;; Hook to display dormant article in Gnus
-(add-hook 'org-follow-link-hook
-	  (lambda ()
-	    (if (eq major-mode 'gnus-summary-mode)
-		(gnus-summary-insert-dormant-articles))))
-
-(add-hook 'org-mode-hook (lambda () (imenu-add-to-menubar "Imenu")))
-
-(add-hook 'org-follow-link-hook
-	  (lambda () (if (eq major-mode 'gnus-summary-mode)
-			 (gnus-summary-insert-dormant-articles))))
+  (require 'org)
+  (require 'ox-latex)
+  (require 'ox-koma-letter)
+  
+  ;; Hook to update all blocks before saving
+  (add-hook 'org-mode-hook
+            (lambda() (add-hook 'before-save-hook
+                                'org-update-all-dblocks t t)))
+  
+  ;; Hook to display dormant article in Gnus
+  (add-hook 'org-follow-link-hook
+            (lambda ()
+              (if (eq major-mode 'gnus-summary-mode)
+                  (gnus-summary-insert-dormant-articles))))
+  
+  (add-hook 'org-mode-hook (lambda () (imenu-add-to-menubar "Imenu")))
+  
+  (add-hook 'org-follow-link-hook
+            (lambda () (if (eq major-mode 'gnus-summary-mode)
+                           (gnus-summary-insert-dormant-articles))))
 #+END_SRC
 
 ** Org Variables
@@ -477,23 +477,23 @@ Comments are welcome: =bzg AT gnu DOT org=
 ** Org Babel
 
 #+BEGIN_SRC emacs-lisp
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((emacs-lisp . t)
-   (sh . t)
-   (dot . t)
-   (clojure . t)
-   (org . t)
-   (ditaa . t)
-   (org . t)
-;;   (ledger . t)
-   (scheme . t)
-   (plantuml . t)
-   (R . t)
-   (gnuplot . t)))
-
-(org-clock-persistence-insinuate)
-(appt-activate t)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (sh . t)
+     (dot . t)
+     (clojure . t)
+     (org . t)
+     (ditaa . t)
+     (org . t)
+  ;;   (ledger . t)
+     (scheme . t)
+     (plantuml . t)
+     (R . t)
+     (gnuplot . t)))
+  
+  (org-clock-persistence-insinuate)
+  (appt-activate t)
 #+END_SRC
 
 ** Org capture templates
@@ -570,68 +570,68 @@ Comments are welcome: =bzg AT gnu DOT org=
 ** Org agenda custom commands
 
 #+BEGIN_SRC emacs-lisp
-(setq org-agenda-custom-commands
-      `(
-
-	;; list of WP tasks for today
-        (" " "Aujourd'hui" agenda "List of rendez-vous and tasks for today"
-         ((org-agenda-span 1)
-	  (org-agenda-files '("~/org/rdv.org" "~/org/bzg.org"))
-          (org-deadline-warning-days 10)
-          (org-agenda-sorting-strategy
-	   '(todo-state-up time-up priority-up))))
-
-	;; list of WP tasks for today
-        ("%" "Rendez-vous" agenda* "Week RDV"
-         ((org-agenda-span 'week)
-	  (org-agenda-files '("~/org/rdv.org"))
-          (org-deadline-warning-days 10)
-          (org-agenda-sorting-strategy
-	   '(todo-state-up time-up priority-up))))
-
-	("n" todo "NEXT|TODO"
-	 (;; (org-agenda-max-tags -1)
-	  (org-agenda-sorting-strategy
-	   '(timestamp-up))
-	  (org-agenda-max-entries 7)
-	  )) ;; todo-state-up time-up priority-up))))
-
-        ("x" "Scheduled all" agenda "List of scheduled tasks for today"
-         ((org-agenda-span 1)
-	  (org-agenda-entry-types '(:timestamp :scheduled))
-          (org-agenda-sorting-strategy
-	   '(time-up todo-state-up priority-up))))
-
-	;; list of WP tasks for today
-        ("X" "Upcoming deadlines" agenda "List of past and upcoming deadlines"
-         ((org-agenda-span 1)
-          (org-deadline-warning-days 15)
-	  (org-agenda-entry-types '(:deadline))
-          (org-agenda-sorting-strategy
-	   '(time-up todo-state-up priority-up))))
-
-	;; list of Old deadlines
-        ("Y" tags-todo "+SCHEDULED<=\"<now>\"")
-        ("Z" tags-todo "+DEADLINE<=\"<now>\"")
-
-        ;; Everything that has a "Read" tag
-        ("r" . "Read")
-	("rr" tags-todo "+Read+TODO={TODO\\|NEXT}" nil)
-	("r," tags-todo "+Read/STRT" nil)
-	("rF" tags "+Read+@Offline" nil)
-
-        ;; Everything that has a "Write" tag
-        ("w" . "write")
-	("ww" tags-todo "+Write/NEXT|TODO|STRT" nil)
-	("w," tags-todo "+Write/STRT" nil)
-	("wt" tags-tree "+Write/STRT" nil)
-	("w;" tags-todo "+Write+@Offline" nil)
-
-        ;; Everything that has a "Write" tag
-        ("c" . "Code")
-	("cc" tags-todo "+Code/NEXT|TODO|STRT" nil)
-	("c," tags-todo "+Code/STRT" nil)
-	))
+  (setq org-agenda-custom-commands
+        `(
+  
+          ;; list of WP tasks for today
+          (" " "Aujourd'hui" agenda "List of rendez-vous and tasks for today"
+           ((org-agenda-span 1)
+            (org-agenda-files '("~/org/rdv.org" "~/org/bzg.org"))
+            (org-deadline-warning-days 10)
+            (org-agenda-sorting-strategy
+             '(todo-state-up time-up priority-up))))
+  
+          ;; list of WP tasks for today
+          ("%" "Rendez-vous" agenda* "Week RDV"
+           ((org-agenda-span 'week)
+            (org-agenda-files '("~/org/rdv.org"))
+            (org-deadline-warning-days 10)
+            (org-agenda-sorting-strategy
+             '(todo-state-up time-up priority-up))))
+  
+          ("n" todo "NEXT|TODO"
+           (;; (org-agenda-max-tags -1)
+            (org-agenda-sorting-strategy
+             '(timestamp-up))
+            (org-agenda-max-entries 7)
+            )) ;; todo-state-up time-up priority-up))))
+  
+          ("x" "Scheduled all" agenda "List of scheduled tasks for today"
+           ((org-agenda-span 1)
+            (org-agenda-entry-types '(:timestamp :scheduled))
+            (org-agenda-sorting-strategy
+             '(time-up todo-state-up priority-up))))
+  
+          ;; list of WP tasks for today
+          ("X" "Upcoming deadlines" agenda "List of past and upcoming deadlines"
+           ((org-agenda-span 1)
+            (org-deadline-warning-days 15)
+            (org-agenda-entry-types '(:deadline))
+            (org-agenda-sorting-strategy
+             '(time-up todo-state-up priority-up))))
+  
+          ;; list of Old deadlines
+          ("Y" tags-todo "+SCHEDULED<=\"<now>\"")
+          ("Z" tags-todo "+DEADLINE<=\"<now>\"")
+  
+          ;; Everything that has a "Read" tag
+          ("r" . "Read")
+          ("rr" tags-todo "+Read+TODO={TODO\\|NEXT}" nil)
+          ("r," tags-todo "+Read/STRT" nil)
+          ("rF" tags "+Read+@Offline" nil)
+  
+          ;; Everything that has a "Write" tag
+          ("w" . "write")
+          ("ww" tags-todo "+Write/NEXT|TODO|STRT" nil)
+          ("w," tags-todo "+Write/STRT" nil)
+          ("wt" tags-tree "+Write/STRT" nil)
+          ("w;" tags-todo "+Write+@Offline" nil)
+  
+          ;; Everything that has a "Write" tag
+          ("c" . "Code")
+          ("cc" tags-todo "+Code/NEXT|TODO|STRT" nil)
+          ("c," tags-todo "+Code/STRT" nil)
+          ))
 #+END_SRC
 
 ** Org publish project alist
@@ -787,6 +787,8 @@ urchinTracker();
 ** Set sendmail function and Gnus methods
 
 #+BEGIN_SRC emacs-lisp
+(require 'boxquote)
+
 (setq send-mail-function 'sendmail-send-it)
 (setq message-send-mail-function 'message-send-mail-with-sendmail)
 
@@ -1119,6 +1121,9 @@ the copy in the last group."
 ** ERC variables
 
 #+BEGIN_SRC emacs-lisp
+(require 'erc)
+(require 'erc-services)
+
 (setq erc-modules '(autoaway autojoin irccontrols log netsplit noncommands notify pcomplete completion ring services stamp track truncate)
       erc-keywords nil
       erc-prompt-for-nickserv-password nil
@@ -1515,6 +1520,10 @@ the copy in the last group."
 ** Magit
 
 #+BEGIN_SRC emacs-lisp
+(require 'magit)
+
+(global-set-key (quote [f9]) 'magit-status)
+
 (setq magit-save-some-buffers 'dontask)
 (setq magit-commit-all-when-nothing-staged 'ask)
 #+END_SRC
