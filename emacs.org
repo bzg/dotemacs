@@ -36,9 +36,13 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 * General defaults
 
 #+BEGIN_SRC emacs-lisp
+  (setq default-major-mode (quote org-mode) t)
+  
   (setq debug-on-error t)
   (setq byte-compile-debug t)
+  (setq elp-sort-by-function 'elp-sort-by-average-time)
   
+  (setq auto-save-default nil)
   (setq make-backup-files nil)
   (setq kill-whole-line t)
   (setq kill-ring-max 120)
@@ -48,6 +52,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (setq bidi-display-reordering nil)
   (setq enable-local-variables t)
   (setq enable-local-eval t)
+  (setq kill-read-only-ok t)
   
   (fset 'yes-or-no-p 'y-or-n-p)
   
@@ -57,6 +62,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   
   (setenv "EDITOR" "emacsclient")
   (setenv "CVS_RSH" "ssh")
+  (setq completion-use-tooltip nil)
+  (setq battery-mode-line-format " [%b%p%%,%d°C]")
 #+END_SRC
 
 * Enable/Disable some minor modes
@@ -65,6 +72,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ;; I love parentheses in *every* mode
 (show-paren-mode 1)
 (display-time-mode 1)
+(auto-compression-mode t nil (jka-compr))
 
 ;; Don't clutter the emacs screen
 (tool-bar-mode -1)
@@ -104,6 +112,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ;; I'm using an old elscreen but there is more recent activity:
 ;; https://github.com/knu/elscreen
 (require 'elscreen)
+(setq elscreen-display-tab nil)
 
 (require 'session)
 (require 'ibuffer)
@@ -115,6 +124,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 #+BEGIN_SRC emacs-lisp
 (require 'info)
 (info-initialize)
+
+(setq Info-refill-paragraphs t)
 (add-to-list 'Info-directory-list "~/install/git/org-mode/doc/")
 #+END_SRC
 
@@ -147,6 +158,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	;; (foreground-color . "#dddddd")
 	))
 
+(setq fill-column 75)
 (set-frame-parameter nil 'fullscreen 'fullboth)
 #+END_SRC
 
@@ -203,14 +215,18 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 * Browser
 
 #+BEGIN_SRC emacs-lisp
-  (if window-system
-      (setq browse-url-browser-function 'browse-url-generic
-            ;; (setq browse-url-browser-function 'w3m-browse-url
-            ;;      browse-url-generic-program "conkeror")
-            ;; browse-url-generic-program "chromium")
-            browse-url-generic-program "firefox")
-    (setq browse-url-browser-function 'w3m-browse-url))
-  (setq browse-url-text-browser "w3m")
+    (if window-system
+        (setq browse-url-browser-function 'browse-url-generic
+              ;; (setq browse-url-browser-function 'w3m-browse-url
+              ;;      browse-url-generic-program "conkeror")
+              ;; browse-url-generic-program "chromium")
+              browse-url-generic-program "firefox")
+      (setq browse-url-browser-function 'w3m-browse-url))
+    (setq browse-url-text-browser "w3m")
+  
+  (setq browse-url-firefox-new-window-is-tab t)
+  (setq browse-url-firefox-program "firefox")
+  (setq browse-url-new-window-flag t)
 #+END_SRC
 
 * Define global keys
@@ -230,7 +246,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (global-set-key [(shift f8)] 'multi-occur)
   (global-set-key (quote [f10]) 'calc)
   (global-set-key (quote [f11]) 'eshell)
-  (global-set-key (quote [f12]) 'calendar)
   (global-set-key (kbd "C-&")
                   (lambda (arg) (interactive "P")
                     (if arg (switch-to-buffer "#twitter_bzg2") (switch-to-buffer "&bitlbee"))))
@@ -258,6 +273,14 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (define-key dired-mode-map "\C-cb" 'org-ibuffer)
 (define-key dired-mode-map "\C-cg" 'grep-find)
 (define-key dired-mode-map "\C-cd" 'dired-clean-tex)
+
+(setq directory-free-space-args "-Pkh")
+(setq list-directory-verbose-switches "-al")
+(setq dired-listing-switches "-l")
+(setq dired-dwim-target t)
+(setq dired-omit-mode nil t)
+(setq dired-recursive-copies 'always)
+(setq dired-recursive-deletes 'always)
 
 (setq dired-guess-shell-alist-user
       (list
@@ -353,135 +376,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
                            (gnus-summary-insert-dormant-articles))))
 #+END_SRC
 
-** Org Variables
-
-#+BEGIN_SRC emacs-lisp
-(setq org-global-properties
-      '(("Effort_ALL" . "0 0:10 0:20 0:30 0:40 0:50 1:00 1:30 2:00 2:30 3:00 4:00 5:00 6:00 7:00 8:00")
-	("Progress_ALL" . "10% 20% 30% 40% 50% 60% 70% 80% 90%")
-	("Status_ALL" . "Work Leisure GTD WOT"))
-      org-agenda-file-regexp "\\.org\\'"
-      org-agenda-files '("~/org/rdv.org" "~/org/bzg.org" "~/org/kickhub.org" "~/org/clojure.org")
-      org-agenda-include-diary nil
-      org-agenda-remove-tags t
-      org-agenda-restore-windows-after-quit t
-      org-agenda-skip-deadline-if-done t
-      org-agenda-skip-scheduled-if-done t
-      org-agenda-skip-timestamp-if-done t
-      org-agenda-sorting-strategy '((agenda time-up) (todo time-up) (tags time-up) (search time-up))
-      org-agenda-start-on-weekday 1
-      org-confirm-elisp-link-function nil
-      org-confirm-shell-link-function nil
-      org-context-in-file-links t
-      org-cycle-include-plain-lists nil
-      org-deadline-warning-days 7
-      org-default-notes-file "~/org/notes.org"
-      org-directory "~/org/"
-      org-ellipsis nil
-      org-email-link-description-format "%c: %.50s"
-      org-export-default-language "fr"
-      org-export-highlight-first-table-line t
-      org-export-html-extension "html"
-      org-html-head ""
-      org-html-head-include-default-style nil
-      org-export-html-with-timestamp nil
-      org-export-skip-text-before-1st-heading nil
-      org-export-with-LaTeX-fragments t
-      org-export-with-archived-trees nil
-      org-export-with-drawers '("HIDE")
-      org-export-with-section-numbers nil
-      org-export-with-sub-superscripts '{}
-      org-export-with-tags 'not-in-toc
-      org-export-with-timestamps t
-      org-fast-tag-selection-single-key 'expert
-      org-fontify-done-headline t
-      org-fontify-emphasized-text t
-      org-footnote-auto-label 'confirm
-      org-footnote-auto-adjust t
-      org-footnote-define-inline nil
-      org-hide-emphasis-markers nil
-      org-icalendar-include-todo 'all
-      org-link-frame-setup '((gnus . gnus) (file . find-file-other-window))
-      org-link-mailto-program '(browse-url-mail "mailto:%a?subject=%s")
-      org-log-note-headings '((done . "CLOSING NOTE %t") (state . "State %-12s %t") (clock-out . ""))
-      org-priority-start-cycle-with-default nil
-      org-refile-targets '((org-agenda-files . (:maxlevel . 3))
-			   (("~/org/garden.org") . (:maxlevel . 3))
-			   (("~/org/libre.org") . (:maxlevel . 3)))
-      org-refile-use-outline-path t
-      org-refile-use-cache t
-      org-return-follows-link t
-      org-reverse-note-order t
-      org-scheduled-past-days 100
-      org-show-following-heading '((default nil) (occur-tree t))
-      org-show-hierarchy-above '((default nil) (tags-tree . t))
-      org-special-ctrl-a/e 'reversed
-      org-special-ctrl-k t
-      org-stuck-projects '("+LEVEL=1" ("NEXT" "TODO" "DONE"))
-      org-tag-alist '((:startgroup . nil) ("Write" . ?w) ("Trad" . ?t) ("Read" . ?r) ("RDV" . ?R) ("View" . ?v) ("Listen" . ?l) (:endgroup . nil) (:startgroup . nil) ("@Online" . ?O) ("@Offline" . ?F) (:endgroup . nil) ("Print" . ?P) ("Code" . ?c) ("Patch" . ?p) ("Bug" . ?b) ("Twit" . ?i) ("Tel" . ?T) ("Buy" . ?B) ("Doc" . ?d) ("Mail" . ?@))
-      org-tags-column -74
-      org-tags-match-list-sublevels t
-      org-todo-keywords '((type "NEXT" "TODO" "STRT" "WAIT" "|" "DONE" "DELEGATED" "CANCELED"))
-      org-use-property-inheritance t
-      org-clock-persist t
-      org-clock-history-length 35
-      org-clock-in-resume t
-      org-clock-out-remove-zero-time-clocks t
-      org-clock-sound t
-      org-insert-heading-respect-content t
-      org-id-method 'uuidgen
-      org-combined-agenda-icalendar-file "~/org/bzg.ics"
-      org-icalendar-combined-name "Bastien Guerry ORG"
-      org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo)
-      org-icalendar-use-deadline '(todo-due event-if-todo event-if-not-todo)
-      org-icalendar-timezone "Europe/Paris"
-      org-icalendar-store-UID t
-      org-agenda-skip-deadline-prewarning-if-scheduled t
-      org-agenda-tags-todo-honor-ignore-options t
-      org-timer-default-timer 20
-      org-confirm-babel-evaluate nil
-      org-agenda-diary-file "/home/guerry/org/rdv.org"
-      org-archive-default-command 'org-archive-to-archive-sibling
-      org-clock-idle-time 15
-      org-id-uuid-program "uuidgen"
-;;      org-modules '(org-bbdb org-bibtex org-docview org-gnus org-id org-protocol org-info org-jsinfo org-habit org-irc org-w3m org-taskjuggler org-learn)
-      org-modules '(org-bbdb org-bibtex org-docview org-gnus org-id org-protocol org-info org-jsinfo org-irc org-w3m org-taskjuggler org-learn)
-      org-use-speed-commands t
-      org-src-tab-acts-natively t
-      org-hide-block-startup t
-      org-export-with-priority t
-      org-highlight-latex-and-related '(latex)
-      org-log-into-drawer "LOGBOOK"
-      org-goto-auto-isearch nil
-      org-agenda-use-tag-inheritance nil
-      org-agenda-show-inherited-tags nil
-      org-beamer-outline-frame-title "Survol"
-      org-image-actual-width 600
-      org-export-dispatch-use-expert-ui nil
-      org-refile-allow-creating-parent-nodes t
-      org-src-fontify-natively t
-      org-todo-keyword-faces '(("STRT" . "lightgoldenrod1")
-			       ("NEXT" . "Cyan3")
-			       ("WAIT" . "lightgoldenrod3")))
-
-(setq org-export-backends '(latex odt icalendar html ascii rss koma-letter))
-(setq org-mobile-directory "~/Dropbox/org/")
-(setq org-mobile-files '("~/Dropbox/org/" "~/org/from-mobile.org"))
-(setq org-publish-list-skipped-files nil)
-(setq org-fontify-whole-heading-line t)
-(setq org-export-with-toc nil)
-(setq org-agenda-dim-blocked-tasks nil)
-(setq org-agenda-text-search-extra-files '("~/org/clojure.org"))
-(add-to-list 'org-latex-classes
-             '("my-letter"
-               "\\documentclass\{scrlttr2\}
-\\usepackage[english,frenchb]{babel}
-\[NO-DEFAULT-PACKAGES]
-\[NO-PACKAGES]
-\[EXTRA]"))
-#+END_SRC
-
-** Org Babel
+** Org babel
 
 #+BEGIN_SRC emacs-lisp
   (org-babel-do-load-languages
@@ -500,7 +395,123 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
      (gnuplot . t)))
   
   (org-clock-persistence-insinuate)
+  
   (appt-activate t)
+  
+  (setq display-time-24hr-format t)
+  (setq display-time-day-and-date t)
+  
+  (setq appt-audible nil
+        appt-display-interval 10
+        appt-message-warning-time 120)
+
+    (setq org-babel-default-header-args
+          '((:session . "none")
+            (:results . "replace")
+            (:exports . "code")
+            (:cache . "no")
+            (:noweb . "yes")
+            (:hlines . "no")
+            (:tangle . "no")
+            (:padnewline . "yes")))
+#+END_SRC
+
+** Org agenda
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-bulk-mark-char "*")
+  (setq org-agenda-diary-file "/home/guerry/org/rdv.org")
+  (setq org-agenda-dim-blocked-tasks nil)
+  (setq org-agenda-entry-text-maxlines 10)
+  (setq org-agenda-file-regexp "\\.org\\'")
+  (setq org-agenda-files '("~/org/org.org" "~/org/rdv.org" "~/org/bzg.org" "~/org/kickhub.org" "~/org/clojure.org"))
+  (setq org-agenda-files '("~/org/rdv.org" "~/org/bzg.org" "~/org/kickhub.org" "~/org/clojure.org"))
+  (setq org-agenda-include-diary nil)
+  (setq org-agenda-prefix-format '((agenda . " %i %-12:c%?-14t%s") (timeline . "  % s") (todo . " %i %-14:c") (tags . " %i %-14:c") (search . " %i %-14:c")))
+  (setq org-agenda-remove-tags t)
+  (setq org-agenda-restore-windows-after-quit t)
+  (setq org-agenda-show-inherited-tags nil)
+  (setq org-agenda-skip-deadline-if-done t)
+  (setq org-agenda-skip-deadline-prewarning-if-scheduled t)
+  (setq org-agenda-skip-scheduled-if-done t)
+  (setq org-agenda-skip-timestamp-if-done t)
+  (setq org-agenda-sorting-strategy '((agenda time-up) (todo time-up) (tags time-up) (search time-up)))
+  (setq org-agenda-start-on-weekday 1)
+  (setq org-agenda-sticky nil)
+  (setq org-agenda-tags-todo-honor-ignore-options t)
+  (setq org-agenda-text-search-extra-files '("~/org/clojure.org"))
+  (setq org-agenda-use-tag-inheritance nil)
+  (setq org-agenda-window-frame-fractions '(0.0 . 0.5))
+  (setq org-agenda-deadline-faces
+        '((1.0001 . org-warning)              ; due yesterday or before
+          (0.0    . org-upcoming-deadline)))  ; due today or later
+#+END_SRC
+
+** Org agenda custom commands
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-custom-commands
+        `(
+  
+          ;; list of WP tasks for today
+          (" " "Aujourd'hui" agenda "List of rendez-vous and tasks for today"
+           ((org-agenda-span 1)
+            (org-agenda-files '("~/org/rdv.org" "~/org/bzg.org"))
+            (org-deadline-warning-days 10)
+            (org-agenda-sorting-strategy
+             '(todo-state-up time-up priority-up))))
+  
+          ;; list of WP tasks for today
+          ("%" "Rendez-vous" agenda* "Week RDV"
+           ((org-agenda-span 'week)
+            (org-agenda-files '("~/org/rdv.org"))
+            (org-deadline-warning-days 10)
+            (org-agenda-sorting-strategy
+             '(todo-state-up time-up priority-up))))
+  
+          ("n" todo "NEXT|TODO"
+           (;; (org-agenda-max-tags -1)
+            (org-agenda-sorting-strategy
+             '(timestamp-up))
+            (org-agenda-max-entries 7)
+            )) ;; todo-state-up time-up priority-up))))
+  
+          ("x" "Scheduled all" agenda "List of scheduled tasks for today"
+           ((org-agenda-span 1)
+            (org-agenda-entry-types '(:timestamp :scheduled))
+            (org-agenda-sorting-strategy
+             '(time-up todo-state-up priority-up))))
+  
+          ;; list of WP tasks for today
+          ("X" "Upcoming deadlines" agenda "List of past and upcoming deadlines"
+           ((org-agenda-span 1)
+            (org-deadline-warning-days 15)
+            (org-agenda-entry-types '(:deadline))
+            (org-agenda-sorting-strategy
+             '(time-up todo-state-up priority-up))))
+  
+          ;; list of Old deadlines
+          ("Y" tags-todo "+SCHEDULED<=\"<now>\"")
+          ("Z" tags-todo "+DEADLINE<=\"<now>\"")
+  
+          ;; Everything that has a "Read" tag
+          ("r" . "Read")
+          ("rr" tags-todo "+Read+TODO={TODO\\|NEXT}" nil)
+          ("r," tags-todo "+Read/STRT" nil)
+          ("rF" tags "+Read+@Offline" nil)
+  
+          ;; Everything that has a "Write" tag
+          ("w" . "write")
+          ("ww" tags-todo "+Write/NEXT|TODO|STRT" nil)
+          ("w," tags-todo "+Write/STRT" nil)
+          ("wt" tags-tree "+Write/STRT" nil)
+          ("w;" tags-todo "+Write+@Offline" nil)
+  
+          ;; Everything that has a "Write" tag
+          ("c" . "Code")
+          ("cc" tags-todo "+Code/NEXT|TODO|STRT" nil)
+          ("c," tags-todo "+Code/STRT" nil)
+          ))
 #+END_SRC
 
 ** Org capture templates
@@ -574,71 +585,135 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
           ))
 #+END_SRC
 
-** Org agenda custom commands
+** Org export
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-agenda-custom-commands
-        `(
+  (setq org-export-default-language "fr")
+  (setq org-export-backends '(latex odt icalendar html ascii rss koma-letter))
+  (setq org-export-highlight-first-table-line t)
+  (setq org-export-html-extension "html")
+  (setq org-export-html-with-timestamp nil)
+  (setq org-export-skip-text-before-1st-heading nil)
+  (setq org-export-with-LaTeX-fragments t)
+  (setq org-export-with-archived-trees nil)
+  (setq org-export-with-drawers '("HIDE"))
+  (setq org-export-with-section-numbers nil)
+  (setq org-export-with-sub-superscripts '{})
+  (setq org-export-with-tags 'not-in-toc)
+  (setq org-export-with-timestamps t)
+  (setq org-html-head "")
+  (setq org-html-head-include-default-style nil)
+  (setq org-export-with-toc nil)
+  (setq org-export-with-priority t)
+  (setq org-export-dispatch-use-expert-ui nil)
+  (setq org-export-babel-evaluate t)
+  (setq org-export-taskjuggler-default-project-duration 2000)
+  (setq org-export-taskjuggler-target-version 3.0)
+  (setq org-export-latex-listings 'minted)
+  (setq org-export-allow-BIND-local t)
+  (setq org-publish-list-skipped-files nil))
   
-          ;; list of WP tasks for today
-          (" " "Aujourd'hui" agenda "List of rendez-vous and tasks for today"
-           ((org-agenda-span 1)
-            (org-agenda-files '("~/org/rdv.org" "~/org/bzg.org"))
-            (org-deadline-warning-days 10)
-            (org-agenda-sorting-strategy
-             '(todo-state-up time-up priority-up))))
+  (add-to-list 'org-latex-classes
+               '("my-letter"
+                 "\\documentclass\{scrlttr2\}
+          \\usepackage[english,frenchb]{babel}
+          \[NO-DEFAULT-PACKAGES]
+          \[NO-PACKAGES]
+          \[EXTRA]"))
   
-          ;; list of WP tasks for today
-          ("%" "Rendez-vous" agenda* "Week RDV"
-           ((org-agenda-span 'week)
-            (org-agenda-files '("~/org/rdv.org"))
-            (org-deadline-warning-days 10)
-            (org-agenda-sorting-strategy
-             '(todo-state-up time-up priority-up))))
+  (setq org-fast-tag-selection-single-key 'expert)
+  (setq org-fontify-done-headline t)
+  (setq org-fontify-emphasized-text t)
+  (setq org-footnote-auto-label 'confirm)
+  (setq org-footnote-auto-adjust t)
+  (setq org-footnote-define-inline nil)
+  (setq org-hide-emphasis-markers nil)
+  (setq org-icalendar-include-todo 'all)
+  (setq org-link-frame-setup '((gnus . gnus) (file . find-file-other-window)))
+  (setq org-link-mailto-program '(browse-url-mail "mailto:%a?subject=%s"))
+  (setq org-log-note-headings '((done . "CLOSING NOTE %t") (state . "State %-12s %t") (clock-out . "")))
+  (setq org-priority-start-cycle-with-default nil)
+  (setq org-refile-targets '((org-agenda-files . (:maxlevel . 3))
+                                     (("~/org/garden.org") . (:maxlevel . 3))
+                                     (("~/org/libre.org") . (:maxlevel . 3))))
+  (setq org-refile-use-outline-path t)
+  (setq org-refile-use-cache t)
+  (setq org-return-follows-link t)
+  (setq org-reverse-note-order t)
+  (setq org-scheduled-past-days 100)
+  (setq org-show-following-heading '((default nil) (occur-tree t)))
+  (setq org-show-hierarchy-above '((default nil) (tags-tree . t)))
+  (setq org-special-ctrl-a/e 'reversed)
+  (setq org-special-ctrl-k t)
+  (setq org-stuck-projects '("+LEVEL=1" ("NEXT" "TODO" "DONE")))
+  (setq org-tag-alist
+        '((:startgroup . nil)
+          ("Write" . ?w) ("Trad" . ?t) ("Read" . ?r) ("RDV" . ?R) ("View" . ?v) ("Listen" . ?l)
+          (:endgroup . nil)
+          (:startgroup . nil) ("@Online" . ?O) ("@Offline" . ?F)
+          (:endgroup . nil)
+          ("Print" . ?P) ("Code" . ?c) ("Patch" . ?p) ("Bug" . ?b) ("Twit" . ?i) ("Tel" . ?T) ("Buy" . ?B) ("Doc" . ?d) ("Mail" . ?@))))
+  (setq org-tags-column -74))
+  (setq org-tags-match-list-sublevels t))
+  (setq org-todo-keywords '((type "NEXT" "TODO" "STRT" "WAIT" "|" "DONE" "DELEGATED" "CANCELED")))
+  (setq org-use-property-inheritance t)
+  (setq org-clock-persist t)
+  (setq org-clock-history-length 35)
+  (setq org-clock-in-resume t)
+  (setq org-clock-out-remove-zero-time-clocks t)
+  (setq org-clock-sound t)
+  (setq org-insert-heading-respect-content t)
+  (setq org-id-method 'uuidgen)
+  (setq org-combined-agenda-icalendar-file "~/org/bzg.ics")
+  (setq org-icalendar-combined-name "Bastien Guerry ORG")
+  (setq org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo))
+  (setq org-icalendar-use-deadline '(todo-due event-if-todo event-if-not-todo))
+  (setq org-icalendar-timezone "Europe/Paris")
+  (setq org-icalendar-store-UID t)
+  (setq org-timer-default-timer 20)
+  (setq org-confirm-babel-evaluate nil)
+  (setq org-archive-default-command 'org-archive-to-archive-sibling)
+  (setq org-clock-idle-time 15)
+  (setq org-id-uuid-program "uuidgen")
+  (setq org-modules '(org-bbdb org-bibtex org-docview org-gnus org-id org-protocol org-info org-jsinfo org-irc org-w3m org-taskjuggler org-learn))
+  (setq org-use-speed-commands t)
+  (setq org-src-tab-acts-natively t)
+  (setq org-hide-block-startup t)
+  (setq org-highlight-latex-and-related '(latex))
+  (setq org-log-into-drawer "LOGBOOK")
+  (setq org-goto-auto-isearch nil)
+  (setq org-beamer-outline-frame-title "Survol")
+  (setq org-image-actual-width 600)
+  (setq org-refile-allow-creating-parent-nodes t)
+  (setq org-src-fontify-natively t)
+  (setq org-todo-keyword-faces '(("STRT" . "lightgoldenrod1")
+                                 ("NEXT" . "Cyan3")
+                                 ("WAIT" . "lightgoldenrod3")))
   
-          ("n" todo "NEXT|TODO"
-           (;; (org-agenda-max-tags -1)
-            (org-agenda-sorting-strategy
-             '(timestamp-up))
-            (org-agenda-max-entries 7)
-            )) ;; todo-state-up time-up priority-up))))
+  (setq org-plantuml-jar-path "~/bin/plantuml.jar")
+  (setq org-link-abbrev-alist
+        '(("bugzilla" . "http://10.1.2.9/bugzilla/show_bug.cgi?id=")
+          ("google"   . "http://www.google.com/search?q=%s")
+          ("gmap"     . "http://maps.google.com/maps?q=%s")
+          ("omap"     . "http://nominatim.openstreetmap.org/search?q=%s&polygon=1")
+          ("ads"      . "http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?author=%s&db_key=AST")))
   
-          ("x" "Scheduled all" agenda "List of scheduled tasks for today"
-           ((org-agenda-span 1)
-            (org-agenda-entry-types '(:timestamp :scheduled))
-            (org-agenda-sorting-strategy
-             '(time-up todo-state-up priority-up))))
-  
-          ;; list of WP tasks for today
-          ("X" "Upcoming deadlines" agenda "List of past and upcoming deadlines"
-           ((org-agenda-span 1)
-            (org-deadline-warning-days 15)
-            (org-agenda-entry-types '(:deadline))
-            (org-agenda-sorting-strategy
-             '(time-up todo-state-up priority-up))))
-  
-          ;; list of Old deadlines
-          ("Y" tags-todo "+SCHEDULED<=\"<now>\"")
-          ("Z" tags-todo "+DEADLINE<=\"<now>\"")
-  
-          ;; Everything that has a "Read" tag
-          ("r" . "Read")
-          ("rr" tags-todo "+Read+TODO={TODO\\|NEXT}" nil)
-          ("r," tags-todo "+Read/STRT" nil)
-          ("rF" tags "+Read+@Offline" nil)
-  
-          ;; Everything that has a "Write" tag
-          ("w" . "write")
-          ("ww" tags-todo "+Write/NEXT|TODO|STRT" nil)
-          ("w," tags-todo "+Write/STRT" nil)
-          ("wt" tags-tree "+Write/STRT" nil)
-          ("w;" tags-todo "+Write+@Offline" nil)
-  
-          ;; Everything that has a "Write" tag
-          ("c" . "Code")
-          ("cc" tags-todo "+Code/NEXT|TODO|STRT" nil)
-          ("c," tags-todo "+Code/STRT" nil)
-          ))
+  (setq org-attach-directory "~/org/data/")
+  (setq org-link-display-descriptive nil)
+  (setq org-loop-over-headlines-in-active-region t)
+  (setq org-create-formula-image-program 'dvipng) ;; imagemagick
+  (setq org-allow-promoting-top-level-subtree t)
+  (setq org-description-max-indent 5)
+  (setq org-gnus-prefer-web-links nil)
+  (setq org-html-head-include-default-style nil)
+  (setq org-html-head-include-scripts nil)
+  (setq org-blank-before-new-entry '((heading . auto) (plain-list-item . auto)))
+  (setq org-contacts-files '("~/org/contacts.org"))
+  (setq org-crypt-key "Bastien Guerry")
+  (set org-enforce-todo-dependencies t)
+  (setq org-mobile-directory "~/Dropbox/org/")
+  (setq org-mobile-files '("~/Dropbox/org/" "~/org/from-mobile.org"))
+  (setq org-fontify-whole-heading-line t)
 #+END_SRC
 
 ** Org publish project alist
@@ -774,6 +849,26 @@ urchinTracker();
 	))
 #+END_SRC
 
+** Org other variables
+
+#+BEGIN_SRC emacs-lisp
+  ;; Generic / unsorted
+  (setq org-global-properties
+        '(("Effort_ALL" . "0 0:10 0:20 0:30 0:40 0:50 1:00 1:30 2:00 2:30 3:00 4:00 5:00 6:00 7:00 8:00")
+          ("Progress_ALL" . "10% 20% 30% 40% 50% 60% 70% 80% 90%")
+          ("Status_ALL" . "Work Leisure GTD WOT"))
+
+  (setq org-confirm-elisp-link-function nil)
+  (setq org-confirm-shell-link-function nil)
+  (setq org-context-in-file-links t)
+  (setq org-cycle-include-plain-lists nil)
+  (setq org-deadline-warning-days 7)
+  (setq org-default-notes-file "~/org/notes.org")
+  (setq org-directory "~/org/")
+  (setq org-ellipsis nil)
+  (setq org-email-link-description-format "%c: %.50s"))
+#+END_SRC
+
 * Gnus
 
 ** Gnus general
@@ -785,6 +880,8 @@ urchinTracker();
 (require 'starttls)
 (require 'epg)
 (require 'epa)
+(setq epa-popup-info-window nil)
+
 (require 'smtpmail)
 (require 'spam)
 
@@ -794,29 +891,55 @@ urchinTracker();
 ** Set sendmail function and Gnus methods
 
 #+BEGIN_SRC emacs-lisp
-(require 'boxquote)
-
-(setq send-mail-function 'sendmail-send-it)
-(setq message-send-mail-function 'message-send-mail-with-sendmail)
-
-;; Sources and methods
-(setq mail-sources '((file :path "/var/mail/guerry")
-		     (maildir :path "~/Maildir/" :subdirs ("cur" "new")))
-      mail-source-delete-incoming nil
-      gnus-select-method '(nnmaildir "Bastien" (directory "~/Maildir/"))
-      gnus-secondary-select-methods
-      '((nnml "")
-	;; (nntp "news" (nntp-address "news.gmane.org"))
-	;; (nntp "news" (nntp-address "news.gwene.org"))
-	(nnimap "imap.cnam.fr")
-	(nnimap "obm-front.u-paris10.fr")
-	))
-
-(setq gnus-check-new-newsgroups nil)
-(setq gnus-read-active-file 'some)
-(setq gnus-agent t)
-(setq gnus-agent-consider-all-articles t)
-(setq gnus-agent-enable-expiration 'disable)
+  (require 'boxquote)
+  
+  (setq send-mail-function 'sendmail-send-it)
+  (setq message-send-mail-function 'message-send-mail-with-sendmail)
+  
+  (setq mail-header-separator "----")
+  (setq mail-source-delete-incoming nil)
+  (setq mail-specify-envelope-from t)
+  (setq mail-use-rfc822 nil)
+  
+  (setq message-cite-function (quote message-cite-original-without-signature))
+  (setq message-default-charset (quote utf-8))
+  (setq message-generate-headers-first t)
+  
+  ;; Attachments
+  (setq mm-content-transfer-encoding-defaults
+     (quote
+      (("text/x-patch" 8bit)
+       ("text/.*" 8bit)
+       ("message/rfc822" 8bit)
+       ("application/emacs-lisp" 8bit)
+       ("application/x-emacs-lisp" 8bit)
+       ("application/x-patch" 8bit)
+       (".*" base64))))
+  (setq mm-default-directory "~/attachments/")
+  (setq mm-url-program (quote w3m))
+  (setq mm-url-use-external nil)
+  
+  (setq nnmail-extra-headers
+        '(X-Diary-Time-Zone X-Diary-Dow X-Diary-Year X-Diary-Month X-Diary-Dom X-Diary-Hour X-Diary-Minute To Newsgroups Cc)))
+  
+  ;; Sources and methods
+  (setq mail-sources '((file :path "/var/mail/guerry")
+                       (maildir :path "~/Maildir/" :subdirs ("cur" "new")))
+        mail-source-delete-incoming nil
+        gnus-select-method '(nnmaildir "Bastien" (directory "~/Maildir/"))
+        gnus-secondary-select-methods
+        '((nnml "")
+          ;; (nntp "news" (nntp-address "news.gmane.org"))
+          ;; (nntp "news" (nntp-address "news.gwene.org"))
+          (nnimap "imap.cnam.fr")
+          (nnimap "obm-front.u-paris10.fr")
+          ))
+  
+  (setq gnus-check-new-newsgroups nil)
+  (setq gnus-read-active-file 'some)
+  (setq gnus-agent t)
+  (setq gnus-agent-consider-all-articles t)
+  (setq gnus-agent-enable-expiration 'disable)
 #+END_SRC
 
 ** Set basics
@@ -1162,7 +1285,7 @@ the copy in the last group."
 				  ("&bitlbee" . utf-8)))
 #+END_SRC
 
-** ERC Connect to bitlbee
+** ERC connect to bitlbee
 
 #+BEGIN_SRC emacs-lisp
 (defun bzg-erc-connect-bitlbee ()
@@ -1180,11 +1303,7 @@ the copy in the last group."
 	      :port 6667
 	      :nick "lml"
 	      :full-name "Le_ Musée_ Libre_"))
-#+END_SRC
 
-** ERC Connect to bitlbee
-
-#+BEGIN_SRC emacs-lisp
 (defun bzg-erc-connect-freenode ()
   "Connect to Freenode server with ERC."
   (interactive)
@@ -1194,7 +1313,7 @@ the copy in the last group."
 	      :full-name "Bastien"))
 #+END_SRC
 
-** ERC Hooks
+** ERC hooks
 
 #+BEGIN_SRC emacs-lisp
 (add-hook 'erc-mode-hook
@@ -1213,7 +1332,7 @@ the copy in the last group."
 	     (erc-services-mode 1)))
 #+END_SRC
 
-** ERC Bot
+** ERC bot (disabled)
 
 #+BEGIN_SRC emacs-lisp
 ;; (add-hook 'erc-server-PRIVMSG-functions 'erc-bot-remote t)
@@ -1230,54 +1349,10 @@ the copy in the last group."
 ;; 	(minibuffer-message (format "%s: %s" nick msg))))))
 #+END_SRC
 
-** ERC Passwords
+** ERC passwords
 
 #+BEGIN_SRC emacs-lisp
 (load "~/elisp/config/erc_.el")
-#+END_SRC
-
-* Start the server
-
-#+BEGIN_SRC emacs-lisp
-(setq org-plantuml-jar-path "~/bin/plantuml.jar")
-(setq org-export-babel-evaluate t)
-(setq org-lparse-use-flashy-warning nil)
-(setq org-babel-default-header-args
-      '((:session . "none")
-	(:results . "replace")
-	(:exports . "code")
-	(:cache . "no")
-	(:noweb . "yes")
-	(:hlines . "no")
-	(:tangle . "no")
-	(:padnewline . "yes")))
-
-(setq org-link-abbrev-alist
-      '(("bugzilla" . "http://10.1.2.9/bugzilla/show_bug.cgi?id=")
-	("google"   . "http://www.google.com/search?q=%s")
-	("gmap"     . "http://maps.google.com/maps?q=%s")
-	("omap"     . "http://nominatim.openstreetmap.org/search?q=%s&polygon=1")
-	("ads"      . "http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?author=%s&db_key=AST")))
-
-(setq org-export-taskjuggler-default-project-duration 2000)
-(setq org-export-taskjuggler-target-version 3.0)
-(setq org-attach-directory "~/org/data/")
-(setq org-export-latex-listings 'minted)
-(setq org-link-display-descriptive nil)
-(setq org-loop-over-headlines-in-active-region t)
-
-(setq org-gnus-prefer-web-links nil)
-(setq org-html-head-include-default-style nil)
-(setq org-html-head-include-scripts nil)
-(setq org-export-allow-BIND-local t)
-(setq org-agenda-window-frame-fractions '(0.0 . 0.5))
-(setq org-create-formula-image-program 'dvipng) ;; imagemagick
-(setq org-allow-promoting-top-level-subtree t)
-(setq org-agenda-deadline-faces
-      '((1.0001 . org-warning)              ; due yesterday or before
-	(0.0    . org-upcoming-deadline)))  ; due today or later
-(setq org-description-max-indent 5)
-(setq org-agenda-sticky nil)
 #+END_SRC
 
 * Buffer length goal
@@ -1308,52 +1383,57 @@ the copy in the last group."
   (force-mode-line-update))
 #+END_SRC
 
-* Calendar
+* Calendar and diary
 
 #+BEGIN_SRC emacs-lisp
-(setq french-holiday
-      '((holiday-fixed 1 1 "Jour de l'an")
-        (holiday-fixed 5 8 "Victoire 45")
-        (holiday-fixed 7 14 "Fête nationale")
-        (holiday-fixed 8 15 "Assomption")
-        (holiday-fixed 11 1 "Toussaint")
-        (holiday-fixed 11 11 "Armistice 18")
-        (holiday-easter-etc 1 "Lundi de Pâques")
-        (holiday-easter-etc 39 "Ascension")
-        (holiday-easter-etc 50 "Lundi de Pentecôte")
-	(holiday-fixed 1 6 "Épiphanie")
-	(holiday-fixed 2 2 "Chandeleur")
-	(holiday-fixed 2 14 "Saint Valentin")
-	(holiday-fixed 5 1 "Fête du travail")
-	(holiday-fixed 5 8 "Commémoration de la capitulation de l'Allemagne en 1945")
-	(holiday-fixed 6 21 "Fête de la musique")
-	(holiday-fixed 11 2 "Commémoration des fidèles défunts")
-	(holiday-fixed 12 25 "Noël")
-	;; fêtes à date variable
-	(holiday-easter-etc 0 "Pâques")
-	(holiday-easter-etc 49 "Pentecôte")
-	(holiday-easter-etc -47 "Mardi gras")
-	(holiday-float 6 0 3 "Fête des pères") ;; troisième dimanche de juin
-	;; Fête des mères
-	(holiday-sexp
-	 '(if (equal
-	       ;; Pentecôte
-	       (holiday-easter-etc 49)
-	       ;; Dernier dimanche de mai
-	       (holiday-float 5 0 -1 nil))
-	      ;; -> Premier dimanche de juin si coïncidence
-	      (car (car (holiday-float 6 0 1 nil)))
-	    ;; -> Dernier dimanche de mai sinon
-	    (car (car (holiday-float 5 0 -1 nil))))
-	 "Fête des mères")))
-
-(setq calendar-date-style 'european
-      calendar-holidays (append french-holiday)
-      calendar-mark-holidays-flag t)
-(setq calendar-mark-diary-entries-flag nil)
-
-(setq TeX-master 'dwim)
-(setq doc-view-scale-internally nil)
+  (global-set-key (quote [f12]) 'calendar)
+  
+  (setq diary-file "~/.diary")
+  
+  (setq french-holiday
+        '((holiday-fixed 1 1 "Jour de l'an")
+          (holiday-fixed 5 8 "Victoire 45")
+          (holiday-fixed 7 14 "Fête nationale")
+          (holiday-fixed 8 15 "Assomption")
+          (holiday-fixed 11 1 "Toussaint")
+          (holiday-fixed 11 11 "Armistice 18")
+          (holiday-easter-etc 1 "Lundi de Pâques")
+          (holiday-easter-etc 39 "Ascension")
+          (holiday-easter-etc 50 "Lundi de Pentecôte")
+          (holiday-fixed 1 6 "Épiphanie")
+          (holiday-fixed 2 2 "Chandeleur")
+          (holiday-fixed 2 14 "Saint Valentin")
+          (holiday-fixed 5 1 "Fête du travail")
+          (holiday-fixed 5 8 "Commémoration de la capitulation de l'Allemagne en 1945")
+          (holiday-fixed 6 21 "Fête de la musique")
+          (holiday-fixed 11 2 "Commémoration des fidèles défunts")
+          (holiday-fixed 12 25 "Noël")
+          ;; fêtes à date variable
+          (holiday-easter-etc 0 "Pâques")
+          (holiday-easter-etc 49 "Pentecôte")
+          (holiday-easter-etc -47 "Mardi gras")
+          (holiday-float 6 0 3 "Fête des pères") ;; troisième dimanche de juin
+          ;; Fête des mères
+          (holiday-sexp
+           '(if (equal
+                 ;; Pentecôte
+                 (holiday-easter-etc 49)
+                 ;; Dernier dimanche de mai
+                 (holiday-float 5 0 -1 nil))
+                ;; -> Premier dimanche de juin si coïncidence
+                (car (car (holiday-float 6 0 1 nil)))
+              ;; -> Dernier dimanche de mai sinon
+              (car (car (holiday-float 5 0 -1 nil))))
+           "Fête des mères")))
+  
+  (setq calendar-date-style 'european
+        calendar-holidays (append french-holiday)
+        calendar-mark-holidays-flag t
+        calendar-week-start-day 1
+        calendar-mark-diary-entries-flag nil)
+  
+  (setq TeX-master 'dwim)
+  (setq doc-view-scale-internally nil)
 #+END_SRC
   
 * Various functions
@@ -1474,6 +1554,12 @@ the copy in the last group."
       (replace-match (save-match-data (org-format-seconds "%.2h:%.2m:%.2s," (+ s n))) t t))))
 #+END_SRC
 	 
+* Start the server
+
+#+BEGIN_SRC emacs-lisp
+(server-start)
+#+END_SRC
+
 * Customize modes
 ** Emacs lisp
 
@@ -1536,4 +1622,10 @@ the copy in the last group."
 #+END_SRC
 
   
+
+** doc-view-mode
+
+#+BEGIN_SRC emacs-lisp
+(setq doc-view-continuous t)
+#+END_SRC
 
