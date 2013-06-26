@@ -181,7 +181,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 #+BEGIN_SRC emacs-lisp
   (setq-default line-spacing 0.2)
-  (setq fill-column 75)
+  (setq fill-column 70)
   (setq line-move-visual nil)
   (setq show-trailing-whitespace t)
   (setq initial-scratch-message "")
@@ -1263,7 +1263,7 @@ the copy in the last group."
 ;;    ((null thread) 0)
 ;;    ((listp thread) (length thread))))
 
-(setq message-fill-column 75)
+(setq message-fill-column 70)
 (setq message-use-mail-followup-to nil)
 #+END_SRC
 
@@ -1386,7 +1386,7 @@ the copy in the last group."
 (setq w3m-cookie-accept-bad-cookies t)
 (setq w3m-cookie-accept-domains t)
 (setq w3m-cookie-file "/home/guerry/.w3m/cookie")
-(setq w3m-fill-column 75)
+(setq w3m-fill-column 70)
 (setq w3m-form-textarea-edit-mode 'org-mode)
 (setq w3m-icon-directory nil)
 (setq w3m-key-binding 'info)
