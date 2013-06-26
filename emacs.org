@@ -6,8 +6,8 @@
 #+OPTIONS:     skip:nil toc:nil
 #+INFOJS_OPT:  view:overview toc:nil ltoc:nil mouse:#cccccc buttons:0 path:http://orgmode.org/org-info.js
 #+HTML_HEAD:   <link rel="publisher" href="https://plus.google.com/103809710979116858042" />
-#+PROPERTY:    tangle ~/elisp/config/emacs.el
-# #+PROPERTY:    tangle ~/public_html/org/homepage/u/emacs.el
+# #+PROPERTY:    tangle ~/elisp/config/emacs.el
+#+PROPERTY:    tangle ~/public_html/org/homepage/u/emacs.el
 
 This is my =.emacs.el= file, as a HTMLized =emacs.org= file.
 
@@ -174,7 +174,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (set-frame-font "Monospace 11")
 
 ;; I use this sometimes for reading long blog posts:
-;; (set-frame-font "Inconsolata 13")
+;; (set-frame-font "Inconsolata 14")
 #+END_SRC
 
 ** Startup
@@ -765,7 +765,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	 :html-extension "html"
 	 :base-extension "org"
 	 :publishing-directory "/home/guerry/public_html/org/homepage/"
-	 :publishing-function (org-html-publish-to-html)
+	 :publishing-function (org-html-publish-to-html org-org-publish-to-org)
 	 :auto-sitemap nil
 	 :recursive t
 	 :makeindex nil
@@ -788,7 +788,7 @@ urchinTracker();
 	 :html-extension "html"
 	 :base-extension "org"
 	 :publishing-directory "/home/guerry/public_html/org/homepage/"
-	 :publishing-function (org-html-publish-to-html)
+	 :publishing-function (org-html-publish-to-html org-org-publish-to-org)
 	 :auto-sitemap nil
 	 :recursive t
 	 :makeindex t
@@ -834,9 +834,9 @@ urchinTracker();
 	 :sitemap-sort-files chronologically
 	 :section-numbers nil
 	 :with-toc nil
-	 :html-head-extra "<link rel=\"stylesheet\" href=\"http://lumiere.ens.fr/~guerry/u/org.css\" type=\"text/css\" />"
+	 :html-head-extra "<link rel=\"stylesheet\" href=\"http://lumiere.ens.fr/~guerry/u/dll.css\" type=\"text/css\" />"
 	 :html-preamble nil
-	 :htmlized-source t
+	 :htmlized-source nil
 	 :html-postamble nil)
 	("dllrss"
 	 :base-directory "~/install/git/dunlivrelautre/"
