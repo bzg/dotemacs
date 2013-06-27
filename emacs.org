@@ -349,6 +349,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 #+BEGIN_SRC emacs-lisp
   (require 'org)
+  (require 'ox-rss)
   (require 'ox-latex)
   (require 'ox-koma-letter)
 
@@ -733,39 +734,12 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 #+BEGIN_SRC emacs-lisp
   (setq org-publish-project-alist
         `(
-          ("cours"
-           :base-directory "~/install/git/CoursCreationSiteWeb/"
-           :base-extension "org"
-           :publishing-directory "~/public_html/org/homepage/cours-creation-site-web/"
-           :publishing-function org-html-publish-to-html
-           :auto-sitemap nil
-           :makeindex t
-           :section-numbers nil
-           :with-toc nil
-           :html-head "<link rel=\"stylesheet\" href=\"http://lumiere.ens.fr/~guerry/u/org.css\" type=\"text/css\" />"
-           :html-preamble nil
-           :html-postamble
-           "<div id=\"disqus_thread\"></div>
-  <script type=\"text/javascript\">
-      var disqus_shortname = 'coursdecrationdesitewebscriptparis7';
-      (function() {
-          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-      })();
-  </script>")
-          ("cours-images"
-           :base-directory "~/install/git/CoursCreationSiteWeb/images/"
-           :base-extension "png\\|jpg\\|gif"
-           :publishing-directory "~/public_html/org/homepage/cours-creation-site-web/images/"
-           :publishing-function org-publish-attachment)
-  
           ("dotemacs"
            :base-directory "~/install/git/dotemacs/"
            :html-extension "html"
            :base-extension "org"
            :publishing-directory "/home/guerry/public_html/org/homepage/"
-           :publishing-function (org-html-publish-to-html org-org-publish-to-org)
+           :publishing-function (org-html-publish-to-html)
            :auto-sitemap nil
            :recursive t
            :makeindex nil
@@ -780,15 +754,15 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   _uacct = \"UA-2658857-1\";
   urchinTracker();
   </script>"
-           :htmlized-source t
+           :htmlized-source nil
            :html-postamble nil)
-  
+
           ("homepage"
            :base-directory "~/install/git/homepage/"
            :html-extension "html"
            :base-extension "org"
            :publishing-directory "/home/guerry/public_html/org/homepage/"
-           :publishing-function (org-html-publish-to-html org-org-publish-to-org)
+           :publishing-function (org-html-publish-to-html)
            :auto-sitemap nil
            :recursive t
            :makeindex t
@@ -803,7 +777,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   _uacct = \"UA-2658857-1\";
   urchinTracker();
   </script>"
-           :htmlized-source t
+           :htmlized-source nil
            :html-postamble nil)
           ("homepagerss"
            :base-directory "~/install/git/homepage/"
@@ -821,7 +795,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
            :base-extension "png\\|jpg\\|gif\\|atom"
            :publishing-directory "/home/guerry/public_html/org/homepage/u/"
            :publishing-function org-publish-attachment)
-  
+
           ("dll"
            :base-directory "~/install/git/dunlivrelautre/"
            :html-extension "html"
@@ -850,11 +824,11 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 </script>
 
 <a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png\" /></a><br />
-  
+
 <a href=\"https://twitter.com/share\" class=\"twitter-share-button\"
 data-count=\"none\" data-via=\"bzg2\" data-lang=\"fr\">Tweeter</a><script
 type=\"text/javascript\" src=\"//platform.twitter.com/widgets.js\"></script>")
-  
+
           ("dllrss"
            :base-directory "~/install/git/dunlivrelautre/"
            :base-extension "org"
@@ -871,7 +845,7 @@ type=\"text/javascript\" src=\"//platform.twitter.com/widgets.js\"></script>")
            :base-extension "png\\|jpg\\|gif\\|atom"
            :publishing-directory "/home/guerry/public_html/org/dunlivrelautre/u/"
            :publishing-function org-publish-attachment)
-  
+
           ;; Meta projects
           ("hp" :components ("homepage" "homepage-attachments" "homepagerss" "homepage_articles"))
           ("dll" :components ("dll" "dll-attachments" "dllrss"))
