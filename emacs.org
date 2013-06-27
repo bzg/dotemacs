@@ -830,6 +830,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
            :publishing-function (org-html-publish-to-html)
            :auto-sitemap nil
            :recursive t
+           :with-tasks nil
            :makeindex t
            :preserve-breaks nil
            :sitemap-sort-files chronologically
