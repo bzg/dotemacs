@@ -6,7 +6,7 @@
 #+OPTIONS:     skip:nil toc:nil
 #+INFOJS_OPT:  view:overview toc:nil ltoc:nil mouse:#cccccc buttons:0 path:http://orgmode.org/org-info.js
 #+HTML_HEAD:   <link rel="publisher" href="https://plus.google.com/103809710979116858042" />
-#+PROPERTY:    tangle ~/elisp/config/emacs.el
+#+PROPERTY:    tangle /home/guerry/elisp/config/emacs.el
 # #+PROPERTY:    tangle ~/public_html/org/homepage/u/emacs.el
 
 This is my =.emacs.el= file, as a HTMLized =emacs.org= file.
@@ -146,7 +146,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 * Appearance
 
 #+BEGIN_SRC emacs-lisp
-  (setq custom-file "~/elisp/config/emacs-custom.el")
+  (setq custom-file "/home/guerry/elisp/config/emacs-custom.el")
   (load custom-file)
 
   (setq initial-frame-alist
@@ -900,23 +900,23 @@ type=\"text/javascript\" src=\"//platform.twitter.com/widgets.js\"></script>")
 
 #+BEGIN_SRC emacs-lisp
   (require 'boxquote)
-
+  
   (setq send-mail-function 'sendmail-send-it)
   (setq message-send-mail-function 'message-send-mail-with-sendmail)
-
+  
   (setq use-dialog-box nil)
   (setq user-full-name "Bastien Guerry")
   (setq user-mail-address "bzg@altern.org")
-
+  
   (setq mail-header-separator "----")
   (setq mail-source-delete-incoming nil)
   (setq mail-specify-envelope-from t)
   (setq mail-use-rfc822 nil)
-
+  
   (setq message-cite-function (quote message-cite-original-without-signature))
   (setq message-default-charset (quote utf-8))
   (setq message-generate-headers-first t)
-
+  
   ;; Attachments
   (setq mm-content-transfer-encoding-defaults
         (quote
@@ -930,11 +930,11 @@ type=\"text/javascript\" src=\"//platform.twitter.com/widgets.js\"></script>")
   (setq mm-default-directory "~/attachments/")
   (setq mm-url-program (quote w3m))
   (setq mm-url-use-external nil)
-
+  
   (setq nnmail-extra-headers
         '(X-Diary-Time-Zone X-Diary-Dow X-Diary-Year
           X-Diary-Month X-Diary-Dom X-Diary-Hour X-Diary-Minute To Newsgroups Cc))
-
+  
   ;; Sources and methods
   (setq mail-sources '((file :path "/var/mail/guerry")
                        (maildir :path "~/Maildir/" :subdirs ("cur" "new")))
@@ -942,12 +942,13 @@ type=\"text/javascript\" src=\"//platform.twitter.com/widgets.js\"></script>")
         gnus-select-method '(nnmaildir "Bastien" (directory "~/Maildir/"))
         gnus-secondary-select-methods
         '((nnml "")
-          ;; (nntp "news" (nntp-address "news.gmane.org"))
+          ;; (nntp "bzg.ath.cx")
+          ;; (nntp-address "news.gmane.org")
           ;; (nntp "news" (nntp-address "news.gwene.org"))
           (nnimap "imap.cnam.fr")
           (nnimap "obm-front.u-paris10.fr")
           ))
-
+  
   (setq gnus-check-new-newsgroups nil)
   (setq gnus-read-active-file 'some)
   (setq gnus-agent t)
@@ -1092,7 +1093,7 @@ type=\"text/javascript\" src=\"//platform.twitter.com/widgets.js\"></script>")
 	(naany . "From\\|To\\|Cc\\|Sender\\|Resent-From\\|Resent-To\\|Delivered-To\\|X-Apparently-To\\|Resent-Cc")))
 
 ;; Load nnmail-split-fancy (private)
-(load "~/elisp/config/gnus_.el")
+(load "/home/guerry/elisp/config/gnus_.el")
 
 ;; Simplify the subject lines
 (setq gnus-simplify-subject-functions
@@ -1365,7 +1366,7 @@ the copy in the last group."
 ** ERC passwords
 
 #+BEGIN_SRC emacs-lisp
-(load "~/elisp/config/erc_.el")
+(load "/home/guerry/elisp/config/erc_.el")
 #+END_SRC
 
 * w3m
