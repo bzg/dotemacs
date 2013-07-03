@@ -962,305 +962,306 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ** Set basics
 
 #+BEGIN_SRC emacs-lisp
-(setq read-mail-command 'gnus
-      message-mail-user-agent 'gnus-user-agent
-      message-kill-buffer-on-exit t
-      user-mail-address "bzg@altern.org"
-      mail-envelope-from "bzg@altern.org"
-      mail-user-agent 'gnus-user-agent
-      mail-specify-envelope-from nil
-      gnus-directory "~/News/"
-      gnus-novice-user nil
-      gnus-inhibit-startup-message t
-      gnus-play-startup-jingle nil
-      gnus-interactive-exit nil
-      gnus-no-groups-message "No news, good news."
-      gnus-show-all-headers nil
-      gnus-use-correct-string-widths nil
-      gnus-use-cross-reference nil
-      gnus-asynchronous t
-      gnus-interactive-catchup nil
-      gnus-inhibit-user-auto-expire t
-      gnus-gcc-mark-as-read t
-      gnus-verbose 6
-      gnus-backup-startup-file t
-      gnus-use-tree t
-      gnus-use-header-prefetch t
-      gnus-large-newsgroup 10000
-      nnmail-expiry-wait 'never
-      nnimap-expiry-wait 'never
-      nnmail-crosspost nil
-      nnmail-expiry-target "nnml:expired"
-      nnmail-split-methods 'nnmail-split-fancy
-      nnmail-treat-duplicates 'delete
-      nnml-marks nil
-      gnus-nov-is-evil nil
-      nnml-marks-is-evil t
-      nntp-marks-is-evil t)
-
-(setq gnus-ignored-from-addresses
-      (regexp-opt '("Bastien.Guerry@ens.fr"
-		    "bastien.guerry@free.fr"
-		    "bastien.guerry@cnam.fr"
-		    "bastien.guerry@wikimedia.fr"
-		    "bastien@olpc-france.org"
-		    "bastienguerry@gmail.com"
-		    "bastienguerry@googlemail.com"
-		    "bastien1@free.fr"
-		    "bzg@altern.org"
-		    "bzg@gnu.org"
-		    "bzg@laptop.org"
-		    "bastien.guerry@u-paris10.fr"
-		    "bastienguerry@hotmail.com"
-		    "bastienguerry@yahoo.fr"
-		    "b.guerry@philosophy.bbk.ac.uk"
-		    "castle@philosophy.bbk.ac.uk"
-		    "guerry@lumiere.ens.fr")))
-
-(setq message-dont-reply-to-names gnus-ignored-from-addresses)
-
-;; Start the topic view
-(add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
-
-;; Levels and subscription
-(setq gnus-subscribe-newsgroup-method 'gnus-subscribe-interactively
-      gnus-group-default-list-level 3
-      gnus-level-default-subscribed 3
-      gnus-level-default-unsubscribed 7
-      gnus-level-subscribed 6
-      gnus-level-unsubscribed 7
-      gnus-activate-level 5)
-
-;; Archives
-(setq gnus-message-archive-group
-      '((if (message-news-p)
-	    (concat "nnfolder+archive:" (format-time-string "%Y-%m")
-		    "-divers-news")
-	  (concat "nnfolder+archive:" (format-time-string "%Y-%m")
-		  "-divers-mail"))))
-
-;; Delete mail backups older than 3 days
-(setq mail-source-delete-incoming 3)
-
-;; Select the first mail when entering a group
-(setq gnus-auto-select-first t)
-
-;; Group sorting
-(setq gnus-group-sort-function
-      '(gnus-group-sort-by-unread
-	gnus-group-sort-by-alphabet
-	gnus-group-sort-by-score
-	gnus-group-sort-by-level))
-
-;; Thread sorting
-(setq gnus-thread-sort-functions
-      '(gnus-thread-sort-by-number))
-
-;; Display the thread by default
-(setq gnus-thread-hide-subtree nil)
-
-;; Headers we wanna see:
-(setq gnus-visible-headers
-      "^From:\\|^Subject:\\|^X-Mailer:\\|^X-Newsreader:\\|^Date:\\|^To:\\|^Cc:\\|^User-agent:\\|^Newsgroups:\\|^Comments:")
-
-;;; [En|de]coding
-(setq mm-body-charset-encoding-alist
-      '((utf-8 . 8bit)
-        (iso-8859-1 . 8bit)
-        (iso-8859-15 . 8bit)))
-
-(setq mm-coding-system-priorities
-      '(iso-8859-1 iso-8859-9 iso-8859-15 utf-8
-		   iso-2022-jp iso-2022-jp-2 shift_jis))
-
-;; bbdb
-(setq gnus-use-generic-from t
-      gnus-use-bbdb t
-      bbdb/gnus-split-crosspost-default nil
-      bbdb/gnus-split-default-group nil
-      bbdb/gnus-split-myaddr-regexp gnus-ignored-from-addresses
-      bbdb-user-mail-names gnus-ignored-from-addresses
-      bbdb/gnus-split-nomatch-function nil
-      bbdb/gnus-summary-known-poster-mark "+"
-      bbdb/gnus-summary-mark-known-posters t)
-
-(defalias 'bbdb-y-or-n-p '(lambda (prompt) t))
-
-;;; Trier les mails
-(setq nnmail-split-abbrev-alist
-      '((any . "From\\|To\\|Cc\\|Sender\\|Apparently-To\\|Delivered-To\\|X-Apparently-To\\|Resent-From\\|Resent-To\\|Resent-Cc")
-	(mail . "Mailer-Daemon\\|Postmaster\\|Uucp")
-	(to . "To\\|Cc\\|Apparently-To\\|Resent-To\\|Resent-Cc\\|Delivered-To\\|X-Apparently-To")
-	(from . "From\\|Sender\\|Resent-From")
-	(nato . "To\\|Cc\\|Resent-To\\|Resent-Cc\\|Delivered-To\\|X-Apparently-To")
-	(naany . "From\\|To\\|Cc\\|Sender\\|Resent-From\\|Resent-To\\|Delivered-To\\|X-Apparently-To\\|Resent-Cc")))
-
-;; Load nnmail-split-fancy (private)
-(load "/home/guerry/elisp/config/gnus_.el")
-
-;; Simplify the subject lines
-(setq gnus-simplify-subject-functions
-      '(gnus-simplify-subject-re
-	gnus-simplify-whitespace))
-
-;; Display faces
-(setq gnus-treat-display-face 'head)
-
-;; Thread by Xref, not by subject
-(setq gnus-thread-ignore-subject t)
-(setq gnus-summary-thread-gathering-function
-      'gnus-gather-threads-by-references)
-
-;; Dispkay a button for MIME parts
-(setq gnus-buttonized-mime-types '("multipart/alternative"))
-
-;; Use w3m to display HTML mails
-(setq mm-text-html-renderer 'gnus-w3m
-      mm-inline-text-html-with-images t
-      mm-inline-large-images nil
-      mm-attachment-file-modes 420)
-
-;; Avoid spaces when saving attachments
-(setq mm-file-name-rewrite-functions
-      '(mm-file-name-trim-whitespace
-	mm-file-name-collapse-whitespace
-	mm-file-name-replace-whitespace))
-
-(setq gnus-user-date-format-alist
-      '(((gnus-seconds-today) . "     %k:%M")
-	((+ 86400 (gnus-seconds-today)) . "hier %k:%M")
-	((+ 604800 (gnus-seconds-today)) . "%a  %k:%M")
-	((gnus-seconds-month) . "%a  %d")
-	((gnus-seconds-year) . "%b %d")
-	(t . "%b %d '%y")))
-
-;; Add a time-stamp to a group when it is selected
-(add-hook 'gnus-select-group-hook 'gnus-group-set-timestamp)
-
-;; Format group line
-(setq gnus-group-line-format
-      ;;      "%M\%S\%p\%P\%5T>%5y: %(%-40,40g%) %ud\n")
-      ;;      "%M\%S\%p\%P\%y: %(%-40,40g%) %T/%i\n")
-      ;;      "%M\%S\%p\%P %(%-30,30G%) %-3y %-3T %-3I\n")
-      "%M\%S\%p\%P %(%-40,40G%)\n")
-
-(setq gnus-topic-indent-level 3)
-
-(defun bzg-gnus-toggle-group-line-format ()
-  (interactive)
-  (if (equal gnus-group-line-format
-	     "%M\%S\%p\%P %(%-40,40G%) %-3y %-3T %-3I\n")
+  (setq read-mail-command 'gnus
+        message-mail-user-agent 'gnus-user-agent
+        message-kill-buffer-on-exit t
+        user-mail-address "bzg@altern.org"
+        mail-envelope-from "bzg@altern.org"
+        mail-user-agent 'gnus-user-agent
+        mail-specify-envelope-from nil
+        gnus-directory "~/News/"
+        gnus-novice-user nil
+        gnus-inhibit-startup-message t
+        gnus-play-startup-jingle nil
+        gnus-interactive-exit nil
+        gnus-no-groups-message "No news, good news."
+        gnus-show-all-headers nil
+        gnus-use-correct-string-widths nil
+        gnus-use-cross-reference nil
+        gnus-asynchronous t
+        gnus-interactive-catchup nil
+        gnus-inhibit-user-auto-expire t
+        gnus-gcc-mark-as-read t
+        gnus-verbose 6
+        gnus-backup-startup-file t
+        gnus-use-tree t
+        gnus-use-header-prefetch t
+        gnus-large-newsgroup 10000
+        nnmail-expiry-wait 'never
+        nnimap-expiry-wait 'never
+        nnmail-crosspost nil
+        nnmail-expiry-target "nnml:expired"
+        nnmail-split-methods 'nnmail-split-fancy
+        nnmail-treat-duplicates 'delete
+        nnml-marks nil
+        gnus-nov-is-evil nil
+        nnml-marks-is-evil t
+        nntp-marks-is-evil t)
+  
+  (setq gnus-ignored-from-addresses
+        (regexp-opt '("Bastien.Guerry@ens.fr"
+                      "bastien.guerry@free.fr"
+                      "bastien.guerry@cnam.fr"
+                      "bastien.guerry@wikimedia.fr"
+                      "bastien@olpc-france.org"
+                      "bastienguerry@gmail.com"
+                      "bastienguerry@googlemail.com"
+                      "bastien1@free.fr"
+                      "bzg@altern.org"
+                      "bzg@gnu.org"
+                      "bzg@laptop.org"
+                      "bastien.guerry@u-paris10.fr"
+                      "bastienguerry@hotmail.com"
+                      "bastienguerry@yahoo.fr"
+                      "b.guerry@philosophy.bbk.ac.uk"
+                      "castle@philosophy.bbk.ac.uk"
+                      "guerry@lumiere.ens.fr")))
+  
+  (setq message-dont-reply-to-names gnus-ignored-from-addresses)
+  
+  ;; Start the topic view
+  (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
+  
+  ;; Levels and subscription
+  (setq gnus-subscribe-newsgroup-method 'gnus-subscribe-interactively
+        gnus-group-default-list-level 3
+        gnus-level-default-subscribed 3
+        gnus-level-default-unsubscribed 7
+        gnus-level-subscribed 6
+        gnus-level-unsubscribed 7
+        gnus-activate-level 5)
+  
+  ;; Archives
+  (setq gnus-message-archive-group
+        '((if (message-news-p)
+              (concat "nnfolder+archive:" (format-time-string "%Y-%m")
+                      "-divers-news")
+            (concat "nnfolder+archive:" (format-time-string "%Y-%m")
+                    "-divers-mail"))))
+  
+  ;; Delete mail backups older than 3 days
+  (setq mail-source-delete-incoming 3)
+  
+  ;; Select the first mail when entering a group
+  (setq gnus-auto-select-first t)
+  
+  ;; Group sorting
+  (setq gnus-group-sort-function
+        '(gnus-group-sort-by-unread
+          gnus-group-sort-by-alphabet
+          gnus-group-sort-by-score
+          gnus-group-sort-by-level))
+  
+  ;; Thread sorting
+  (setq gnus-thread-sort-functions
+        '(gnus-thread-sort-by-number))
+  
+  ;; Display the thread by default
+  (setq gnus-thread-hide-subtree nil)
+  
+  ;; Headers we wanna see:
+  (setq gnus-visible-headers
+        "^From:\\|^Subject:\\|^X-Mailer:\\|^X-Newsreader:\\|^Date:\\|^To:\\|^Cc:\\|^User-agent:\\|^Newsgroups:\\|^Comments:")
+  
+  ;;; [En|de]coding
+  (setq mm-body-charset-encoding-alist
+        '((utf-8 . 8bit)
+          (iso-8859-1 . 8bit)
+          (iso-8859-15 . 8bit)))
+  
+  (setq mm-coding-system-priorities
+        '(iso-8859-1 iso-8859-9 iso-8859-15 utf-8
+                     iso-2022-jp iso-2022-jp-2 shift_jis))
+  
+  ;; bbdb
+  (setq gnus-use-generic-from t
+        gnus-use-bbdb t
+        bbdb/gnus-split-crosspost-default nil
+        bbdb/gnus-split-default-group nil
+        bbdb/gnus-split-myaddr-regexp gnus-ignored-from-addresses
+        bbdb-user-mail-names gnus-ignored-from-addresses
+        bbdb/gnus-split-nomatch-function nil
+        bbdb/gnus-summary-known-poster-mark "+"
+        bbdb/gnus-summary-mark-known-posters t)
+  
+  (defalias 'bbdb-y-or-n-p '(lambda (prompt) t))
+  
+  ;;; Trier les mails
+  (setq nnmail-split-abbrev-alist
+        '((any . "From\\|To\\|Cc\\|Sender\\|Apparently-To\\|Delivered-To\\|X-Apparently-To\\|Resent-From\\|Resent-To\\|Resent-Cc")
+          (mail . "Mailer-Daemon\\|Postmaster\\|Uucp")
+          (to . "To\\|Cc\\|Apparently-To\\|Resent-To\\|Resent-Cc\\|Delivered-To\\|X-Apparently-To")
+          (from . "From\\|Sender\\|Resent-From")
+          (nato . "To\\|Cc\\|Resent-To\\|Resent-Cc\\|Delivered-To\\|X-Apparently-To")
+          (naany . "From\\|To\\|Cc\\|Sender\\|Resent-From\\|Resent-To\\|Delivered-To\\|X-Apparently-To\\|Resent-Cc")))
+  
+  ;; Load nnmail-split-fancy (private)
+  (load "/home/guerry/elisp/config/gnus_.el")
+  
+  ;; Simplify the subject lines
+  (setq gnus-simplify-subject-functions
+        '(gnus-simplify-subject-re
+          gnus-simplify-whitespace))
+  
+  ;; Display faces
+  (setq gnus-treat-display-face 'head)
+  
+  ;; Thread by Xref, not by subject
+  (setq gnus-thread-ignore-subject t)
+  (setq gnus-summary-thread-gathering-function
+        'gnus-gather-threads-by-references)
+  
+  ;; Dispkay a button for MIME parts
+  (setq gnus-buttonized-mime-types '("multipart/alternative"))
+  
+  ;; Use w3m to display HTML mails
+  (setq mm-text-html-renderer 'gnus-w3m
+        mm-inline-text-html-with-images t
+        mm-inline-large-images nil
+        mm-attachment-file-modes 420)
+  
+  ;; Avoid spaces when saving attachments
+  (setq mm-file-name-rewrite-functions
+        '(mm-file-name-trim-whitespace
+          mm-file-name-collapse-whitespace
+          mm-file-name-replace-whitespace))
+  
+  (setq gnus-user-date-format-alist
+        '(((gnus-seconds-today) . "     %k:%M")
+          ((+ 86400 (gnus-seconds-today)) . "hier %k:%M")
+          ((+ 604800 (gnus-seconds-today)) . "%a  %k:%M")
+          ((gnus-seconds-month) . "%a  %d")
+          ((gnus-seconds-year) . "%b %d")
+          (t . "%b %d '%y")))
+  
+  ;; Add a time-stamp to a group when it is selected
+  (add-hook 'gnus-select-group-hook 'gnus-group-set-timestamp)
+  
+  ;; Format group line
+  (setq gnus-group-line-format
+        ;;      "%M\%S\%p\%P\%5T>%5y: %(%-40,40g%) %ud\n")
+        ;;      "%M\%S\%p\%P\%y: %(%-40,40g%) %T/%i\n")
+        ;;      "%M\%S\%p\%P %(%-30,30G%) %-3y %-3T %-3I\n")
+        "%M\%S\%p\%P %(%-40,40G%)\n")
+  
+  (setq gnus-topic-indent-level 3)
+  
+  (defun bzg-gnus-toggle-group-line-format ()
+    (interactive)
+    (if (equal gnus-group-line-format
+               "%M\%S\%p\%P %(%-40,40G%) %-3y %-3T %-3I\n")
+        (setq gnus-group-line-format
+               "%M\%S\%p\%P %(%-40,40G%)\n")
       (setq gnus-group-line-format
-	     "%M\%S\%p\%P %(%-40,40G%)\n")
-    (setq gnus-group-line-format
-	  "%M\%S\%p\%P %(%-40,40G%) %-3y %-3T %-3I\n")))
-
-(defun bzg-gnus-add-gmane ()
-  (add-to-list 'gnus-secondary-select-methods '(nntp "news" (nntp-address "news.gmane.org"))))
-
-(define-key gnus-group-mode-map "x"
-  (lambda () (interactive) (bzg-gnus-toggle-group-line-format) (gnus)))
-
-(define-key gnus-group-mode-map "X"
-  (lambda () (interactive) (bzg-gnus-add-gmane) (gnus)))
-
-(define-key gnus-summary-mode-map "$" 'gnus-summary-mark-as-spam)
-
-;; Scoring
-(setq gnus-use-adaptive-scoring 'line
-      ;; gnus-score-expiry-days 14
-      gnus-default-adaptive-score-alist
-      '((gnus-dormant-mark (from 20) (subject 100))
-	(gnus-ticked-mark (subject 30))
-	(gnus-read-mark (subject 30))
-	(gnus-del-mark (subject -150))
-	(gnus-catchup-mark (subject -150))
-	(gnus-killed-mark (subject -1000))
-	(gnus-expirable-mark (from -1000) (subject -1000)))
-      gnus-score-decay-constant 1    ;default = 3
-      gnus-score-decay-scale 0.03    ;default = 0.05
-      gnus-decay-scores t)           ;(gnus-decay-score 1000)
-
-(setq gnus-face-0 '((t (:foreground "grey60"))))
-(setq gnus-face-1 '((t (:foreground "grey30"))))
-(setq gnus-face-2 '((t (:foreground "grey90"))))
-
-;; Prompt for the right group
-(setq gnus-group-jump-to-group-prompt
-      '((0 . "nnml:mail.")
-	(1 . "nnfolder+archive:2013-")
-	(2 . "nnfolder+archive:2012-")
-	(3 . "nntp+news:gmane.")))
-
-(setq gnus-summary-line-format
-      (concat "%*%0{%U%R%z%}"
-	      "%0{ %}(%2t)"
- 	      "%2{ %}%-23,23n"
-	      "%1{ %}%1{%B%}%2{%-102,102s%}%-140="
-	      "\n"))
-
-(require 'ecomplete)
-(setq message-mail-alias-type 'ecomplete)
-
-(add-hook 'message-mode-hook 'turn-on-orgstruct++)
-(add-hook 'message-mode-hook 'turn-on-orgtbl)
-
-(require 'gnus-gravatar)
-
-;; Hack to store Org links upon sending Gnus messages
-
-(defun bzg-message-send-and-org-gnus-store-link (&optional arg)
-  "Send message with `message-send-and-exit' and store org link to message copy.
-If multiple groups appear in the Gcc header, the link refers to
-the copy in the last group."
-  (interactive "P")
-    (save-excursion
-      (save-restriction
-	(message-narrow-to-headers)
-	(let ((gcc (car (last
-			 (message-unquote-tokens
-			  (message-tokenize-header
-			   (mail-fetch-field "gcc" nil t) " ,")))))
-	      (buf (current-buffer))
-	      (message-kill-buffer-on-exit nil)
-	      id to from subject desc link newsgroup xarchive)
-        (message-send-and-exit arg)
-        (or
-         ;; gcc group found ...
-         (and gcc
-              (save-current-buffer
-                (progn (set-buffer buf)
-                       (setq id (org-remove-angle-brackets
-                                 (mail-fetch-field "Message-ID")))
-                       (setq to (mail-fetch-field "To"))
-                       (setq from (mail-fetch-field "From"))
-                       (setq subject (mail-fetch-field "Subject"))))
-              (org-store-link-props :type "gnus" :from from :subject subject
-                                    :message-id id :group gcc :to to)
-              (setq desc (org-email-link-description))
-              (setq link (org-gnus-article-link
-                          gcc newsgroup id xarchive))
-              (setq org-stored-links
-                    (cons (list link desc) org-stored-links)))
-         ;; no gcc group found ...
-         (message "Can not create Org link: No Gcc header found."))))))
-
-(define-key message-mode-map [(control c) (control meta c)]
-  'bzg-message-send-and-org-gnus-store-link)
-
-;; (defun gnus-thread-sort-by-length (h1 h2)
-;;   "Sort threads by the sum of all articles in the thread."
-;;   (> (gnus-thread-length h1)
-;;      (gnus-thread-length h2)))
-
-;; (defun gnus-thread-length (thread)
-;;   "Find the total number of articles in THREAD."
-;;   (cond
-;;    ((null thread) 0)
-;;    ((listp thread) (length thread))))
-
-(setq message-fill-column 70)
-(setq message-use-mail-followup-to nil)
+            "%M\%S\%p\%P %(%-40,40G%) %-3y %-3T %-3I\n")))
+  
+  (defun bzg-gnus-add-gmane ()
+    (add-to-list 'gnus-secondary-select-methods
+                 '(nntp "news" (nntp-address "news.gmane.org"))))
+  
+  (define-key gnus-group-mode-map "x"
+    (lambda () (interactive) (bzg-gnus-toggle-group-line-format) (gnus)))
+  
+  (define-key gnus-group-mode-map "X"
+    (lambda () (interactive) (bzg-gnus-add-gmane) (gnus)))
+  
+  (define-key gnus-summary-mode-map "$" 'gnus-summary-mark-as-spam)
+  
+  ;; Scoring
+  (setq gnus-use-adaptive-scoring 'line
+        ;; gnus-score-expiry-days 14
+        gnus-default-adaptive-score-alist
+        '((gnus-dormant-mark (from 20) (subject 100))
+          (gnus-ticked-mark (subject 30))
+          (gnus-read-mark (subject 30))
+          (gnus-del-mark (subject -150))
+          (gnus-catchup-mark (subject -150))
+          (gnus-killed-mark (subject -1000))
+          (gnus-expirable-mark (from -1000) (subject -1000)))
+        gnus-score-decay-constant 1    ;default = 3
+        gnus-score-decay-scale 0.03    ;default = 0.05
+        gnus-decay-scores t)           ;(gnus-decay-score 1000)
+  
+  (setq gnus-face-0 '((t (:foreground "grey60"))))
+  (setq gnus-face-1 '((t (:foreground "grey30"))))
+  (setq gnus-face-2 '((t (:foreground "grey90"))))
+  
+  ;; Prompt for the right group
+  (setq gnus-group-jump-to-group-prompt
+        '((0 . "nnml:mail.")
+          (1 . "nnfolder+archive:2013-")
+          (2 . "nnfolder+archive:2012-")
+          (3 . "nntp+news:gmane.")))
+  
+  (setq gnus-summary-line-format
+        (concat "%*%0{%U%R%z%}"
+                "%0{ %}(%2t)"
+                "%2{ %}%-23,23n"
+                "%1{ %}%1{%B%}%2{%-102,102s%}%-140="
+                "\n"))
+  
+  (require 'ecomplete)
+  (setq message-mail-alias-type 'ecomplete)
+  
+  (add-hook 'message-mode-hook 'turn-on-orgstruct++)
+  (add-hook 'message-mode-hook 'turn-on-orgtbl)
+  
+  (require 'gnus-gravatar)
+  
+  ;; Hack to store Org links upon sending Gnus messages
+  
+  (defun bzg-message-send-and-org-gnus-store-link (&optional arg)
+    "Send message with `message-send-and-exit' and store org link to message copy.
+  If multiple groups appear in the Gcc header, the link refers to
+  the copy in the last group."
+    (interactive "P")
+      (save-excursion
+        (save-restriction
+          (message-narrow-to-headers)
+          (let ((gcc (car (last
+                           (message-unquote-tokens
+                            (message-tokenize-header
+                             (mail-fetch-field "gcc" nil t) " ,")))))
+                (buf (current-buffer))
+                (message-kill-buffer-on-exit nil)
+                id to from subject desc link newsgroup xarchive)
+          (message-send-and-exit arg)
+          (or
+           ;; gcc group found ...
+           (and gcc
+                (save-current-buffer
+                  (progn (set-buffer buf)
+                         (setq id (org-remove-angle-brackets
+                                   (mail-fetch-field "Message-ID")))
+                         (setq to (mail-fetch-field "To"))
+                         (setq from (mail-fetch-field "From"))
+                         (setq subject (mail-fetch-field "Subject"))))
+                (org-store-link-props :type "gnus" :from from :subject subject
+                                      :message-id id :group gcc :to to)
+                (setq desc (org-email-link-description))
+                (setq link (org-gnus-article-link
+                            gcc newsgroup id xarchive))
+                (setq org-stored-links
+                      (cons (list link desc) org-stored-links)))
+           ;; no gcc group found ...
+           (message "Can not create Org link: No Gcc header found."))))))
+  
+  (define-key message-mode-map [(control c) (control meta c)]
+    'bzg-message-send-and-org-gnus-store-link)
+  
+  ;; (defun gnus-thread-sort-by-length (h1 h2)
+  ;;   "Sort threads by the sum of all articles in the thread."
+  ;;   (> (gnus-thread-length h1)
+  ;;      (gnus-thread-length h2)))
+  
+  ;; (defun gnus-thread-length (thread)
+  ;;   "Find the total number of articles in THREAD."
+  ;;   (cond
+  ;;    ((null thread) 0)
+  ;;    ((listp thread) (length thread))))
+  
+  (setq message-fill-column 70)
+  (setq message-use-mail-followup-to nil)
 #+END_SRC
 
 * ERC
