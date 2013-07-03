@@ -6,8 +6,8 @@
 #+OPTIONS:     skip:nil toc:nil
 #+INFOJS_OPT:  view:overview toc:nil ltoc:nil mouse:#cccccc buttons:0 path:http://orgmode.org/org-info.js
 #+HTML_HEAD:   <link rel="publisher" href="https://plus.google.com/103809710979116858042" />
-#+PROPERTY:    tangle /home/guerry/elisp/config/emacs.el
-# #+PROPERTY:    tangle ~/public_html/org/homepage/u/emacs.el
+# #+PROPERTY:    tangle /home/guerry/elisp/config/emacs.el
+#+PROPERTY:    tangle ~/public_html/org/homepage/u/emacs.el
 
 This is my =.emacs.el= file, as a HTMLized =emacs.org= file.
 
@@ -768,6 +768,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
              :makeindex t
              :preserve-breaks nil
              :sitemap-sort-files chronologically
+             :with-tasks nil
              :section-numbers nil
              :with-toc nil
              :html-head-extra "<link rel=\"stylesheet\" href=\"http://lumiere.ens.fr/~guerry/u/org.css\" type=\"text/css\" />"
