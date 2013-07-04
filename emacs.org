@@ -218,15 +218,15 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 * Browser
 
 #+BEGIN_SRC emacs-lisp
-    (if window-system
-        (setq browse-url-browser-function 'browse-url-generic
-              ;; (setq browse-url-browser-function 'w3m-browse-url
-              ;;      browse-url-generic-program "conkeror")
-              ;; browse-url-generic-program "chromium")
-              browse-url-generic-program "firefox")
-      (setq browse-url-browser-function 'w3m-browse-url))
-    (setq browse-url-text-browser "w3m")
-
+  (if window-system
+      (setq browse-url-browser-function 'browse-url-generic
+            ;; (setq browse-url-browser-function 'w3m-browse-url
+            ;;      browse-url-generic-program "conkeror")
+            ;; browse-url-generic-program "chromium")
+            browse-url-generic-program "firefox")
+    (setq browse-url-browser-function 'w3m-browse-url))
+  (setq browse-url-text-browser "w3m")
+  
   (setq browse-url-firefox-new-window-is-tab t)
   (setq browse-url-firefox-program "firefox")
   (setq browse-url-new-window-flag t)
@@ -428,8 +428,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (setq org-agenda-dim-blocked-tasks nil)
   (setq org-agenda-entry-text-maxlines 10)
   (setq org-agenda-file-regexp "\\.org\\'")
-  (setq org-agenda-files '("~/org/org.org" "~/org/rdv.org" "~/org/bzg.org" "~/org/kickhub.org" "~/org/clojure.org"))
-  (setq org-agenda-files '("~/org/rdv.org" "~/org/bzg.org" "~/org/kickhub.org" "~/org/clojure.org"))
+  (setq org-agenda-files '("~/org/rdv.org" "~/org/bzg.org"))
   (setq org-agenda-include-diary nil)
   (setq org-agenda-prefix-format '((agenda . " %i %-12:c%?-14t%s") (timeline . "  % s") (todo . " %i %-14:c") (tags . " %i %-14:c") (search . " %i %-14:c")))
   (setq org-agenda-remove-tags t)
@@ -562,7 +561,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
           ("k" "Krowdfounding" entry (file+headline "~/org/bzg.org" "Kickhub")
            "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
 
-          ("s" "Spark" entry (file+headline "~/org/bzg.org" "Spark")
+          ("s" "ShareLex" entry (file+headline "~/org/libre.org" "ShareLex")
            "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
 
           ;; Informations
@@ -773,11 +772,39 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
              :with-toc nil
              :html-head-extra "<link rel=\"stylesheet\" href=\"http://lumiere.ens.fr/~guerry/u/org.css\" type=\"text/css\" />"
              :html-preamble "<script src=\"http://www.google-analytics.com/urchin.js\" type=\"text/javascript\">
-    </script>
-    <script type=\"text/javascript\">
-    _uacct = \"UA-2658857-1\";
-    urchinTracker();
-    </script>"
+</script>
+<script type=\"text/javascript\">
+_uacct = \"UA-2658857-1\";
+urchinTracker();
+</script>
+
+<div class=\"topbutton\">
+
+<a href=\"http://lumiere.ens.fr/~guerry/\" class=\"homelink\">Home</a></br/>
+
+<a rel=\"license\" href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.en_US\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"http://i.creativecommons.org/l/by-sa/3.0/88x31.png\" /></a>.
+<br/>
+<a href=\"https://twitter.com/share\" class=\"twitter-share-button\" data-count=\"none\" data-via=\"bzg2\" data-lang=\"fr\">Tweeter</a><script type=\"text/javascript\" src=\"//platform.twitter.com/widgets.js\"></script>
+<br/>
+
+<!-- Placez cette balise dans la section <head> ou juste avant la balise de fermeture </body> -->
+<script type=\"text/javascript\" src=\"https://apis.google.com/js/plusone.js\">
+{lang: 'fr'}
+</script>
+
+<!-- Placez cette balise à l'endroit où vous souhaitez que le bouton +1 s'affiche -->
+<g:plusone count=\"false\"></g:plusone>
+</div>
+
+<div id=\"fb-root\"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = \"//connect.facebook.net/fr_FR/all.js#xfbml=1\";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+"
              :htmlized-source nil
              :html-postamble nil)
             ("homepagerss"
@@ -874,6 +901,19 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (setq org-directory "~/org/")
   (setq org-ellipsis nil)
   (setq org-email-link-description-format "%c: %.50s")
+#+END_SRC
+
+** Org dynamic blocks
+
+#+BEGIN_SRC emacs-lisp
+  (defun org-dblock-write:fb_like (params)
+    (let ((url (concat "http://lumiere.ens.fr/~guerry/"
+                       (file-name-sans-extension (file-name-nondirectory
+                                                  (buffer-file-name)))
+                       ".html")))
+      (insert (format
+               "#+HTML: <div class=\"fb-like\" data-href=\"%s\" data-send=\"true\" data-width=\"450\" data-show-faces=\"false\"></div>"
+               url))))
 #+END_SRC
 
 * Gnus
