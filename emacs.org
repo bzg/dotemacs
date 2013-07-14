@@ -2,12 +2,14 @@
 #+EMAIL:       bzg AT altern DOT org
 #+STARTUP:     odd hidestars fold
 #+LANGUAGE:    fr
-#+LINK:        guerry http://lumiere.ens.fr/~guerry/%s
+#+LINK:        guerry http://bzg.fr/%s
 #+OPTIONS:     skip:nil toc:nil
 #+INFOJS_OPT:  view:overview toc:nil ltoc:nil mouse:#cccccc buttons:0 path:http://orgmode.org/org-info.js
 #+HTML_HEAD:   <link rel="publisher" href="https://plus.google.com/103809710979116858042" />
-# #+PROPERTY:    tangle /home/guerry/elisp/config/emacs.el
-#+PROPERTY:    tangle ~/public_html/org/homepage/u/emacs.el
+#+PROPERTY:    tangle /home/guerry/elisp/config/emacs.el
+# #+PROPERTY:    tangle ~/public_html/org/homepage/u/emacs.el
+
+* General information
 
 This is my =.emacs.el= file, as a HTMLized =emacs.org= file.
 
@@ -36,7 +38,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 * General defaults
 
 #+BEGIN_SRC emacs-lisp
-  (setq default-major-mode 'org-mode)
+  ;; (setq default-major-mode 'org-mode)
 
   (setq debug-on-error t)
   (setq byte-compile-debug t)
@@ -95,9 +97,10 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (add-to-list 'load-path "~/install/git/helm/")
   (add-to-list 'load-path "~/install/git/geiser/elisp/")
   (add-to-list 'load-path "~/install/git/nrepl.el/")
-  (add-to-list 'load-path "~/install/git/magit/" t)
+  (add-to-list 'load-path "~/install/git/magit/")
   (add-to-list 'load-path "~/install/src/bbdb/lisp/")
 
+  (add-to-list 'load-path "~/install/git/org-trello/")
   (add-to-list 'load-path "~/install/git/org-mode/lisp/")
   (add-to-list 'load-path "~/install/git/org-mode/contrib/lisp/")
 #+END_SRC
@@ -351,6 +354,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (require 'org)
   (require 'ox-rss)
   (require 'ox-latex)
+  (require 'ox-odt)
   (require 'ox-koma-letter)
 
   ;; Hook to update all blocks before saving
@@ -523,60 +527,68 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (setq org-capture-templates
         ;; for org/rdv.org
         '(
-
+  
+          ;; Mise, put it on top of my main .org file
+          (" " "Bzg RDV" entry (file "~/org/bzg.org")
+           "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?" :prepend t
+           :immediate-finish t)
+    
           ;; for org/rdv.org
           ("r" "Bzg RDV" entry (file+headline "~/org/rdv.org" "RDV")
            "* %a :RDV:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?" :prepend t)
-
+    
           ;; Basement et garden
           ("b" "Basement" entry (file+headline "~/org/bzg.org" "Basement")
            "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-
+    
           ;; Basement et garden
           ("C" "Coursera" entry (file+headline "~/org/bzg.org" "Coursera")
            "* NEXT %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-
+    
           ("g" "Garden" entry (file+headline "~/org/garden.org" "Garden")
            "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-
+    
           ;; Boite (lml) et cours
           ("b" "Boîte" entry (file+headline "~/org/bzg.org" "Boîte")
            "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-
+    
           ("c" "Cours" entry (file+headline "~/org/bzg.org" "Cours")
            "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-
+    
           ("O" "OLPC" entry (file+headline "~/org/libre.org" "OLPC")
            "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-
+    
           ("e" "Emacs" entry (file+headline "~/org/libre.org" "Emacs")
            "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend nil)
-
+    
           ("w" "Wikipedia" entry (file+headline "~/org/libre.org" "Wikipedia")
            "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-
+    
           ("i" "ITIC" entry (file+headline "~/org/libre.org" "itic")
            "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-
+    
           ("k" "Krowdfounding" entry (file+headline "~/org/bzg.org" "Kickhub")
            "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-
+    
           ("s" "ShareLex" entry (file+headline "~/org/libre.org" "ShareLex")
            "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-
+    
           ;; Informations
           ("I" "Information")
           ("Ir" "Information read" entry (file+headline "~/org/garden.org" "Infos")
            "* TODO %?%a :Read:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
           ("IR" "Information read (!)" entry (file+headline "~/org/garden.org" "Infos")
-           "* TODO %?%a :Read:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t :immediate-finish t)
+           "* TODO %?%a :Read:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i"
+           :prepend t :immediate-finish t)
           ("Ic" "Information read (clocking)" entry (file+headline "~/org/garden.org" "Infos")
            "* TODO %?%a :Read:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t :clock-in t)
           ("IC" "Information read (keep clocking)" entry (file+headline "~/org/garden.org" "Infos")
            "* TODO %?%a :Read:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i"
            :prepend t :clock-in t :immediate-finish t :clock-keep t :jump-to-captured t)
-
+    
           ("o" "Org")
+          ("ot" "Org Test" entry (file+headline "~/org/org.org" "To test")
+           "* TODO %?%a :Code:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
           ("of" "Org FR" entry (file+headline "~/org/org.org" "Current ideas")
            "* TODO %?%a :Code:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
           ("ob" "Org Bug" entry (file+headline "~/org/org.org" "Mailing list")
@@ -591,296 +603,314 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ** Org export
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-export-default-language "fr")
-  (setq org-export-backends '(latex odt icalendar html ascii rss koma-letter))
-  (setq org-export-highlight-first-table-line t)
-  (setq org-export-html-extension "html")
-  (setq org-export-html-with-timestamp nil)
-  (setq org-export-skip-text-before-1st-heading nil)
-  (setq org-export-with-LaTeX-fragments t)
-  (setq org-export-with-archived-trees nil)
-  (setq org-export-with-drawers '("HIDE"))
-  (setq org-export-with-section-numbers nil)
-  (setq org-export-with-sub-superscripts '{})
-  (setq org-export-with-tags 'not-in-toc)
-  (setq org-export-with-timestamps t)
-  (setq org-html-head "")
-  (setq org-html-head-include-default-style nil)
-  (setq org-export-with-toc nil)
-  (setq org-export-with-priority t)
-  (setq org-export-dispatch-use-expert-ui nil)
-  (setq org-export-babel-evaluate t)
-  (setq org-export-taskjuggler-default-project-duration 2000)
-  (setq org-export-taskjuggler-target-version 3.0)
-  (setq org-export-latex-listings 'minted)
-  (setq org-export-allow-BIND-local t)
-  (setq org-publish-list-skipped-files nil)
-
-  (add-to-list 'org-latex-classes
-               '("my-letter"
-                 "\\documentclass\{scrlttr2\}
-          \\usepackage[english,frenchb]{babel}
-          \[NO-DEFAULT-PACKAGES]
-          \[NO-PACKAGES]
-          \[EXTRA]"))
-
-  (setq org-fast-tag-selection-single-key 'expert)
-  (setq org-fontify-done-headline t)
-  (setq org-fontify-emphasized-text t)
-  (setq org-footnote-auto-label 'confirm)
-  (setq org-footnote-auto-adjust t)
-  (setq org-footnote-define-inline nil)
-  (setq org-hide-emphasis-markers nil)
-  (setq org-icalendar-include-todo 'all)
-  (setq org-list-indent-offset 0)
-  (setq org-link-frame-setup '((gnus . gnus) (file . find-file-other-window)))
-  (setq org-link-mailto-program '(browse-url-mail "mailto:%a?subject=%s"))
-  (setq org-log-note-headings '((done . "CLOSING NOTE %t") (state . "State %-12s %t") (clock-out . "")))
-  (setq org-priority-start-cycle-with-default nil)
-  (setq org-refile-targets '((org-agenda-files . (:maxlevel . 3))
-                                     (("~/org/garden.org") . (:maxlevel . 3))
-                                     (("~/org/libre.org") . (:maxlevel . 3))))
-  (setq org-refile-use-outline-path t)
-  (setq org-refile-use-cache t)
-  (setq org-return-follows-link t)
-  (setq org-reverse-note-order t)
-  (setq org-scheduled-past-days 100)
-  (setq org-show-following-heading '((default nil) (occur-tree t)))
-  (setq org-show-hierarchy-above '((default nil) (tags-tree . t)))
-  (setq org-special-ctrl-a/e 'reversed)
-  (setq org-special-ctrl-k t)
-  (setq org-stuck-projects '("+LEVEL=1" ("NEXT" "TODO" "DONE")))
-  (setq org-tag-alist
-        '((:startgroup . nil)
-          ("Write" . ?w) ("Trad" . ?t) ("Read" . ?r) ("RDV" . ?R) ("View" . ?v) ("Listen" . ?l)
-          (:endgroup . nil)
-          (:startgroup . nil) ("@Online" . ?O) ("@Offline" . ?F)
-          (:endgroup . nil)
-          ("Print" . ?P) ("Code" . ?c) ("Patch" . ?p) ("Bug" . ?b) ("Twit" . ?i) ("Tel" . ?T) ("Buy" . ?B) ("Doc" . ?d) ("Mail" . ?@)))
-  (setq org-tags-column -74)
-  (setq org-tags-match-list-sublevels t)
-  (setq org-todo-keywords '((type "NEXT" "TODO" "STRT" "WAIT" "|" "DONE" "DELEGATED" "CANCELED")))
-  (setq org-use-property-inheritance t)
-  (setq org-clock-persist t)
-  (setq org-clock-history-length 35)
-  (setq org-clock-in-resume t)
-  (setq org-clock-out-remove-zero-time-clocks t)
-  (setq org-clock-sound t)
-  (setq org-insert-heading-respect-content t)
-  (setq org-id-method 'uuidgen)
-  (setq org-combined-agenda-icalendar-file "~/org/bzg.ics")
-  (setq org-icalendar-combined-name "Bastien Guerry ORG")
-  (setq org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo))
-  (setq org-icalendar-use-deadline '(todo-due event-if-todo event-if-not-todo))
-  (setq org-icalendar-timezone "Europe/Paris")
-  (setq org-icalendar-store-UID t)
-  (setq org-timer-default-timer 20)
-  (setq org-confirm-babel-evaluate nil)
-  (setq org-archive-default-command 'org-archive-to-archive-sibling)
-  (setq org-clock-idle-time 15)
-  (setq org-id-uuid-program "uuidgen")
-  (setq org-modules '(org-bbdb org-bibtex org-docview org-gnus org-id org-protocol org-info org-jsinfo org-irc org-w3m org-taskjuggler org-learn))
-  (setq org-use-speed-commands
-        (lambda nil
-          (and (looking-at org-outline-regexp-bol)
-               (not (org-in-src-block-p t)))))
-  (setq org-src-tab-acts-natively t)
-  (setq org-hide-block-startup t)
-  (setq org-highlight-latex-and-related '(latex))
-  (setq org-log-into-drawer "LOGBOOK")
-  (setq org-goto-auto-isearch nil)
-  (setq org-beamer-outline-frame-title "Survol")
-  (setq org-image-actual-width 600)
-  (setq org-refile-allow-creating-parent-nodes t)
-  (setq org-src-fontify-natively t)
-  (setq org-todo-keyword-faces '(("STRT" . "lightgoldenrod1")
-                                 ("NEXT" . "Cyan3")
-                                 ("WAIT" . "lightgoldenrod3")))
-
-  (setq org-plantuml-jar-path "~/bin/plantuml.jar")
-  (setq org-link-abbrev-alist
-        '(("bugzilla" . "http://10.1.2.9/bugzilla/show_bug.cgi?id=")
-          ("google"   . "http://www.google.com/search?q=%s")
-          ("gmap"     . "http://maps.google.com/maps?q=%s")
-          ("omap"     . "http://nominatim.openstreetmap.org/search?q=%s&polygon=1")
-          ("ads"      . "http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?author=%s&db_key=AST")))
-
-  (setq org-attach-directory "~/org/data/")
-  (setq org-link-display-descriptive nil)
-  (setq org-loop-over-headlines-in-active-region t)
-  (setq org-create-formula-image-program 'dvipng) ;; imagemagick
-  (setq org-allow-promoting-top-level-subtree t)
-  (setq org-description-max-indent 5)
-  (setq org-gnus-prefer-web-links nil)
-  (setq org-html-head-include-default-style nil)
-  (setq org-html-head-include-scripts nil)
-  (setq org-blank-before-new-entry '((heading . auto) (plain-list-item . auto)))
-  (setq org-contacts-files '("~/org/contacts.org"))
-  (setq org-crypt-key "Bastien Guerry")
-  (setq org-enforce-todo-dependencies t)
-  (setq org-mobile-directory "~/Dropbox/org/")
-  (setq org-mobile-files '("~/Dropbox/org/" "~/org/from-mobile.org"))
-  (setq org-fontify-whole-heading-line t)
-  (setq org-file-apps
-    '((auto-mode . emacs)
-      ("\\.mm\\'" . default)
-      ("\\.x?html?\\'" . default)
-      ("\\.pdf\\'" . "mupdf %s")))
+    (setq org-export-default-language "fr")
+    (setq org-export-backends '(latex odt icalendar html ascii rss koma-letter))
+    (setq org-export-highlight-first-table-line t)
+    (setq org-export-html-extension "html")
+    (setq org-export-html-with-timestamp nil)
+    (setq org-export-skip-text-before-1st-heading nil)
+    (setq org-export-with-LaTeX-fragments t)
+    (setq org-export-with-archived-trees nil)
+    (setq org-export-with-drawers '("HIDE"))
+    (setq org-export-with-section-numbers nil)
+    (setq org-export-with-sub-superscripts '{})
+    (setq org-export-with-tags 'not-in-toc)
+    (setq org-export-with-timestamps t)
+    (setq org-html-head "")
+    (setq org-html-head-include-default-style nil)
+    (setq org-export-with-toc nil)
+    (setq org-export-with-priority t)
+    (setq org-export-dispatch-use-expert-ui nil)
+    (setq org-export-babel-evaluate t)
+    (setq org-export-taskjuggler-default-project-duration 2000)
+    (setq org-export-taskjuggler-target-version 3.0)
+    (setq org-export-latex-listings 'minted)
+    (setq org-export-allow-BIND-local t)
+    (setq org-publish-list-skipped-files nil)
+  
+    (add-to-list 'org-latex-classes
+                 '("my-letter"
+                   "\\documentclass\{scrlttr2\}
+            \\usepackage[english,frenchb]{babel}
+            \[NO-DEFAULT-PACKAGES]
+            \[NO-PACKAGES]
+            \[EXTRA]"))
+  
+    (setq org-fast-tag-selection-single-key 'expert)
+    (setq org-fontify-done-headline t)
+    (setq org-fontify-emphasized-text t)
+    (setq org-footnote-auto-label 'confirm)
+    (setq org-footnote-auto-adjust t)
+    (setq org-footnote-define-inline nil)
+    (setq org-hide-emphasis-markers nil)
+    (setq org-icalendar-include-todo 'all)
+    (setq org-list-indent-offset 0)
+    (setq org-link-frame-setup '((gnus . gnus) (file . find-file-other-window)))
+    (setq org-link-mailto-program '(browse-url-mail "mailto:%a?subject=%s"))
+    (setq org-log-note-headings
+          '((done . "CLOSING NOTE %t") (state . "State %-12s %t") (clock-out . "")))
+    (setq org-priority-start-cycle-with-default nil)
+    (setq org-refile-targets '((org-agenda-files . (:maxlevel . 3))
+                                       (("~/org/garden.org") . (:maxlevel . 3))
+                                       (("~/org/libre.org") . (:maxlevel . 3))))
+    (setq org-refile-use-outline-path t)
+    (setq org-refile-use-cache t)
+    (setq org-return-follows-link t)
+    (setq org-reverse-note-order t)
+    (setq org-scheduled-past-days 100)
+    (setq org-show-following-heading '((default nil) (occur-tree t)))
+    (setq org-show-hierarchy-above '((default nil) (tags-tree . t)))
+    (setq org-special-ctrl-a/e 'reversed)
+    (setq org-special-ctrl-k t)
+    (setq org-stuck-projects '("+LEVEL=1" ("NEXT" "TODO" "DONE")))
+    (setq org-tag-alist
+          '((:startgroup . nil)
+            ("Write" . ?w) ("Trad" . ?t) ("Read" . ?r) ("RDV" . ?R)
+            ("View" . ?v) ("Listen" . ?l)
+            (:endgroup . nil)
+            (:startgroup . nil) ("@Online" . ?O) ("@Offline" . ?F)
+            (:endgroup . nil)
+            ("Print" . ?P) ("Code" . ?c) ("Patch" . ?p) ("Bug" . ?b)
+            ("Twit" . ?i) ("Tel" . ?T) ("Buy" . ?B) ("Doc" . ?d) ("Mail" . ?@)))
+    (setq org-tags-column -74)
+    (setq org-tags-match-list-sublevels t)
+    (setq org-todo-keywords '((type "NEXT" "TODO" "STRT" "WAIT" "|" "DONE" "DELEGATED" "CANCELED")))
+    (setq org-use-property-inheritance t)
+    (setq org-clock-persist t)
+    (setq org-clock-history-length 35)
+    (setq org-clock-in-resume t)
+    (setq org-clock-out-remove-zero-time-clocks t)
+    (setq org-clock-sound t)
+    (setq org-insert-heading-respect-content t)
+    (setq org-id-method 'uuidgen)
+    (setq org-combined-agenda-icalendar-file "~/org/bzg.ics")
+    (setq org-icalendar-combined-name "Bastien Guerry ORG")
+    (setq org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo))
+    (setq org-icalendar-use-deadline '(todo-due event-if-todo event-if-not-todo))
+    (setq org-icalendar-timezone "Europe/Paris")
+    (setq org-icalendar-store-UID t)
+    (setq org-timer-default-timer 20)
+    (setq org-confirm-babel-evaluate nil)
+    (setq org-archive-default-command 'org-archive-to-archive-sibling)
+    (setq org-clock-idle-time 15)
+    (setq org-id-uuid-program "uuidgen")
+    (setq org-modules '(org-bbdb org-bibtex org-docview org-gnus org-id org-protocol org-info org-jsinfo org-irc org-w3m org-taskjuggler org-learn))
+    (setq org-use-speed-commands
+          (lambda nil
+            (and (looking-at org-outline-regexp-bol)
+                 (not (org-in-src-block-p t)))))
+    (setq org-src-tab-acts-natively t)
+    (setq org-hide-block-startup t)
+    (setq org-highlight-latex-and-related '(latex))
+    (setq org-log-into-drawer "LOGBOOK")
+    (setq org-goto-auto-isearch nil)
+    (setq org-beamer-outline-frame-title "Survol")
+    (setq org-image-actual-width 600)
+    (setq org-refile-allow-creating-parent-nodes t)
+    (setq org-src-fontify-natively t)
+    (setq org-todo-keyword-faces '(("STRT" . "lightgoldenrod1")
+                                   ("NEXT" . "Cyan3")
+                                   ("WAIT" . "lightgoldenrod3")))
+  
+    (setq org-plantuml-jar-path "~/bin/plantuml.jar")
+    (setq org-link-abbrev-alist
+          '(("bugzilla" . "http://10.1.2.9/bugzilla/show_bug.cgi?id=")
+            ("google"   . "http://www.google.com/search?q=%s")
+            ("gmap"     . "http://maps.google.com/maps?q=%s")
+            ("omap"     . "http://nominatim.openstreetmap.org/search?q=%s&polygon=1")
+            ("ads"      . "http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?author=%s&db_key=AST")))
+  
+    (setq org-attach-directory "~/org/data/")
+    (setq org-link-display-descriptive nil)
+    (setq org-loop-over-headlines-in-active-region t)
+    (setq org-create-formula-image-program 'dvipng) ;; imagemagick
+    (setq org-allow-promoting-top-level-subtree t)
+    (setq org-description-max-indent 5)
+    (setq org-gnus-prefer-web-links nil)
+    (setq org-html-head-include-default-style nil)
+    (setq org-html-head-include-scripts nil)
+    (setq org-blank-before-new-entry '((heading . auto) (plain-list-item . auto)))
+    (setq org-contacts-files '("~/org/contacts.org"))
+    (setq org-crypt-key "Bastien Guerry")
+    (setq org-enforce-todo-dependencies t)
+    (setq org-mobile-directory "~/Dropbox/org/")
+    (setq org-mobile-files '("~/Dropbox/org/" "~/org/from-mobile.org"))
+    (setq org-fontify-whole-heading-line t)
+    (setq org-file-apps
+      '((auto-mode . emacs)
+        ("\\.mm\\'" . default)
+        ("\\.x?html?\\'" . default)
+        ("\\.pdf\\'" . "mupdf %s")))
 #+END_SRC
 
 ** Org publish project alist
 
 #+BEGIN_SRC emacs-lisp
-    (setq org-publish-project-alist
-          `(
-            ("dotemacs"
-             :base-directory "~/install/git/dotemacs/"
-             :html-extension "html"
-             :base-extension "org"
-             :publishing-directory "/home/guerry/public_html/org/homepage/"
-             :publishing-function (org-html-publish-to-html)
-             :auto-sitemap nil
-             :recursive t
-             :makeindex nil
-             :preserve-breaks nil
-             :sitemap-sort-files chronologically
-             :section-numbers nil
-             :with-toc nil
-             :html-head-extra "<link rel=\"stylesheet\" href=\"http://lumiere.ens.fr/~guerry/u/org.css\" type=\"text/css\" />"
-             :html-preamble "<script src=\"http://www.google-analytics.com/urchin.js\" type=\"text/javascript\">
+  (setq org-publish-project-alist
+        `(
+          ("dotemacs"
+           :base-directory "~/install/git/dotemacs/"
+           :html-extension "html"
+           :base-extension "org"
+           :publishing-directory "/home/guerry/public_html/org/homepage/"
+           :publishing-function (org-html-publish-to-html)
+           :auto-sitemap nil
+           :recursive t
+           :makeindex nil
+           :preserve-breaks nil
+           :sitemap-sort-files chronologically
+           :section-numbers nil
+           :with-toc nil
+           :html-head-extra
+           "<link rel=\"stylesheet\" href=\"http://bzg.fr/index.css\" type=\"text/css\" />"
+           :html-preamble
+           "<script src=\"http://www.google-analytics.com/urchin.js\" type=\"text/javascript\">
+        </script>
+        <script type=\"text/javascript\">
+        _uacct = \"UA-2658857-1\";
+        urchinTracker();
+        </script>"
+           :htmlized-source nil
+           :html-postamble nil)
+          
+          ("homepage"
+           :base-directory "~/install/git/homepage/"
+           :html-extension "html"
+           :base-extension "org"
+           :publishing-directory "/home/guerry/public_html/org/homepage/"
+           :publishing-function (org-html-publish-to-html)
+           :auto-sitemap nil
+           :recursive t
+           :makeindex t
+           :preserve-breaks nil
+           :sitemap-sort-files chronologically
+           :with-tasks nil
+           :section-numbers nil
+           :with-toc nil
+           :html-head-extra
+           "<link rel=\"stylesheet\" href=\"http://bzg.fr/index.css\" type=\"text/css\" />"
+           :html-preamble
+           "<script src=\"http://www.google-analytics.com/urchin.js\" type=\"text/javascript\">
     </script>
     <script type=\"text/javascript\">
     _uacct = \"UA-2658857-1\";
     urchinTracker();
-    </script>"
-             :htmlized-source nil
-             :html-postamble nil)
-  
-            ("homepage"
-             :base-directory "~/install/git/homepage/"
-             :html-extension "html"
-             :base-extension "org"
-             :publishing-directory "/home/guerry/public_html/org/homepage/"
-             :publishing-function (org-html-publish-to-html)
-             :auto-sitemap nil
-             :recursive t
-             :makeindex t
-             :preserve-breaks nil
-             :sitemap-sort-files chronologically
-             :with-tasks nil
-             :section-numbers nil
-             :with-toc nil
-             :html-head-extra "<link rel=\"stylesheet\" href=\"http://lumiere.ens.fr/~guerry/u/org.css\" type=\"text/css\" />"
-             :html-preamble "<script src=\"http://www.google-analytics.com/urchin.js\" type=\"text/javascript\">
-</script>
-<script type=\"text/javascript\">
-_uacct = \"UA-2658857-1\";
-urchinTracker();
-</script>
-
-<div class=\"topbutton\">
-
-<a href=\"http://lumiere.ens.fr/~guerry/\" class=\"homelink\">Home</a></br/>
-
-<a rel=\"license\" href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.en_US\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"http://i.creativecommons.org/l/by-sa/3.0/88x31.png\" /></a>.
-<br/>
-<a href=\"https://twitter.com/share\" class=\"twitter-share-button\" data-count=\"none\" data-via=\"bzg2\" data-lang=\"fr\">Tweeter</a><script type=\"text/javascript\" src=\"//platform.twitter.com/widgets.js\"></script>
-<br/>
-
-<!-- Placez cette balise dans la section <head> ou juste avant la balise de fermeture </body> -->
-<script type=\"text/javascript\" src=\"https://apis.google.com/js/plusone.js\">
-{lang: 'fr'}
-</script>
-
-<!-- Placez cette balise à l'endroit où vous souhaitez que le bouton +1 s'affiche -->
-<g:plusone count=\"false\"></g:plusone>
-</div>
-
-<div id=\"fb-root\"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id;
-  js.src = \"//connect.facebook.net/fr_FR/all.js#xfbml=1\";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-"
-             :htmlized-source nil
-             :html-postamble nil)
-            ("homepagerss"
-             :base-directory "~/install/git/homepage/"
-             :base-extension "org"
-             :html-link-home "http://lumiere.ens.fr/~guerry/"
-             :publishing-directory "/home/guerry/public_html/org/homepage/"
-             :publishing-function (org-rss-publish-to-rss)
-             :html-link-use-abs-url t
-             :section-numbers nil
-             :exclude ".*"
-             :with-tasks nil
-             :include ("blog.org")
-             :with-toc nil)
-            ("homepage-attachments"
-             :base-directory "~/install/git/homepage"
-             :base-extension "png\\|jpg\\|gif\\|atom"
-             :publishing-directory "/home/guerry/public_html/org/homepage/u/"
-             :publishing-function org-publish-attachment)
-  
-            ("dll"
-             :base-directory "~/install/git/dunlivrelautre/"
-             :html-extension "html"
-             :base-extension "org"
-             :publishing-directory "/home/guerry/public_html/org/dunlivrelautre/"
-             :publishing-function (org-html-publish-to-html)
-             :auto-sitemap nil
-             :recursive t
-             :with-tasks nil
-             :makeindex t
-             :preserve-breaks nil
-             :sitemap-sort-files chronologically
-             :section-numbers nil
-             :with-toc nil
-             :html-head-extra "<link rel=\"stylesheet\" href=\"http://lumiere.ens.fr/~guerry/u/dll.css\" type=\"text/css\" />"
-             :html-postamble nil
-             :htmlized-source nil
-             :html-preamble "<script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  
-    ga('create', 'UA-42064173-1', 'dunlivrelautre.net');
-    ga('send', 'pageview');
+    </script>
+    
+    <div class=\"toprightbutton\">
+    <a href=\"http://bzg.fr/blog.xml\"><img width=\"70px\" src=\"u/rss.jpg\" /></a><br/>
+    </div>
+    
+    <div class=\"topleftbutton\">
+    <a href=\"http://bzg.fr/\" class=\"homelink\">Home</a></br/>
+    
+    <a rel=\"license\" href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.en_US\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"http://i.creativecommons.org/l/by-sa/3.0/88x31.png\" /></a>.<br/>
+    
+    <a href=\"https://twitter.com/share\" class=\"twitter-share-button\" data-count=\"none\" data-via=\"bzg2\" data-lang=\"fr\">Tweeter</a><script type=\"text/javascript\" src=\"//platform.twitter.com/widgets.js\"></script><br/>
+    
+    <script type=\"text/javascript\" src=\"https://apis.google.com/js/plusone.js\">
+    {lang: 'fr'}
+    </script>
+    
+    <g:plusone count=\"false\"></g:plusone>
+    </div>
+    
+    <div id=\"fb-root\"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement(s); js.id = id;
+      js.src = \"//connect.facebook.net/fr_FR/all.js#xfbml=1\";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+    "
+           :htmlized-source nil
+           :html-postamble nil)
+          ("homepage-rss"
+           :base-directory "~/install/git/homepage/"
+           :base-extension "org"
+           :html-link-home "http://bzg.fr/"
+           :publishing-directory "/home/guerry/public_html/org/homepage/"
+           :publishing-function (org-rss-publish-to-rss)
+           :html-link-use-abs-url t
+           :section-numbers nil
+           :exclude ".*"
+           :with-tasks nil
+           :include ("blog.org")
+           :with-toc nil)
+          ("homepage-css"
+           :base-directory "~/install/git/homepage"
+           :base-extension "css"
+           :publishing-directory "/home/guerry/public_html/org/homepage/"
+           :publishing-function org-publish-attachment)
+          ("homepage-attachments"
+           :base-directory "~/install/git/homepage"
+           :base-extension "png\\|jpg\\|gif\\|atom"
+           :publishing-directory "/home/guerry/public_html/org/homepage/u/"
+           :publishing-function org-publish-attachment)
+          
+          ("dll"
+           :base-directory "~/install/git/dunlivrelautre/"
+           :html-extension "html"
+           :base-extension "org"
+           :publishing-directory "/home/guerry/public_html/org/dunlivrelautre/"
+           :publishing-function (org-html-publish-to-html)
+           :auto-sitemap nil
+           :recursive t
+           :with-tasks nil
+           :makeindex t
+           :preserve-breaks nil
+           :sitemap-sort-files chronologically
+           :section-numbers nil
+           :with-toc nil
+           :html-head-extra "<link rel=\"stylesheet\" href=\"/index.css\" type=\"text/css\" />"
+           :html-postamble nil
+           :htmlized-source nil
+           :html-preamble "<script>
+  \(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  \(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            
+  ga('create', 'UA-42064173-1', 'dunlivrelautre.net');
+  ga('send', 'pageview');
   </script>
-  
+            
   <a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png\" /></a><br />
-  
+            
   <a href=\"https://twitter.com/share\" class=\"twitter-share-button\"
   data-count=\"none\" data-via=\"bzg2\" data-lang=\"fr\">Tweeter</a><script
   type=\"text/javascript\" src=\"//platform.twitter.com/widgets.js\"></script>")
-  
-            ("dllrss"
-             :base-directory "~/install/git/dunlivrelautre/"
-             :base-extension "org"
-             :html-link-home "http://www.dunlivrelautre.net"
-             :publishing-directory "/home/guerry/public_html/org/dunlivrelautre/"
-             :publishing-function (org-rss-publish-to-rss)
-             :html-link-use-abs-url t
-             :section-numbers nil
-             :exclude ".*"
-             :include ("blog.org")
-             :with-tasks nil
-             :with-toc nil)
-            ("dll-attachments"
-             :base-directory "~/install/git/dunlivrelautre"
-             :base-extension "png\\|jpg\\|gif\\|xml\\|atom"
-             :publishing-directory "/home/guerry/public_html/org/dunlivrelautre/"
-             :publishing-function org-publish-attachment)
-  
-            ;; Meta projects
-            ("hp" :components ("homepage" "homepage-attachments" "homepagerss" "homepage_articles"))
-            ("dll" :components ("dll" "dll-attachments" "dllrss"))
-            ("CoursWeb" :components ("cours" "cours-images"))
-            ))
+          
+          ("dll-rss"
+           :base-directory "~/install/git/dunlivrelautre/"
+           :base-extension "org"
+           :html-link-home "http://www.dunlivrelautre.net"
+           :publishing-directory "/home/guerry/public_html/org/dunlivrelautre/"
+           :publishing-function (org-rss-publish-to-rss)
+           :html-link-use-abs-url t
+           :section-numbers nil
+           :exclude ".*"
+           :include ("blog.org")
+           :with-tasks nil
+           :with-toc nil)
+          ("dll-css"
+           :base-directory "~/install/git/dunlivrelautre"
+           :base-extension "css"
+           :publishing-directory "/home/guerry/public_html/org/dunlivrelautre/"
+           :publishing-function org-publish-attachment)
+          ("dll-attachments"
+           :base-directory "~/install/git/dunlivrelautre"
+           :base-extension "png\\|jpg\\|gif\\|xml\\|atom"
+           :publishing-directory "/home/guerry/public_html/org/dunlivrelautre/"
+           :publishing-function org-publish-attachment)
+          
+          ;; Meta projects
+          ("hp" :components
+           ("homepage" "homepage-attachments" "homepage-rss" "homepage-css" "homepage_articles"))
+          ("dll" :components ("dll" "dll-attachments" "dll-rss"))
+          ("CoursWeb" :components ("cours" "cours-images"))
+          ))
 #+END_SRC
 
 ** Org other variables
@@ -888,10 +918,11 @@ urchinTracker();
 #+BEGIN_SRC emacs-lisp
   ;; Generic / unsorted
   (setq org-global-properties
-        '(("Effort_ALL" . "0 0:10 0:20 0:30 0:40 0:50 1:00 1:30 2:00 2:30 3:00 4:00 5:00 6:00 7:00 8:00")
+        '(("Effort_ALL" .
+           "0 0:10 0:20 0:30 0:40 0:50 1:00 1:30 2:00 2:30 3:00 4:00 5:00 6:00 7:00 8:00")
           ("Progress_ALL" . "10% 20% 30% 40% 50% 60% 70% 80% 90%")
           ("Status_ALL" . "Work Leisure GTD WOT")))
-
+    
   (setq org-confirm-elisp-link-function nil)
   (setq org-confirm-shell-link-function nil)
   (setq org-context-in-file-links t)
@@ -907,7 +938,7 @@ urchinTracker();
 
 #+BEGIN_SRC emacs-lisp
   (defun org-dblock-write:fb_like (params)
-    (let ((url (concat "http://lumiere.ens.fr/~guerry/"
+    (let ((url (concat "http://bzg.fr/"
                        (file-name-sans-extension (file-name-nondirectory
                                                   (buffer-file-name)))
                        ".html")))
@@ -1222,9 +1253,9 @@ urchinTracker();
         gnus-score-decay-scale 0.03    ;default = 0.05
         gnus-decay-scores t)           ;(gnus-decay-score 1000)
   
-  (setq gnus-face-0 '((t (:foreground "grey60"))))
-  (setq gnus-face-1 '((t (:foreground "grey30"))))
-  (setq gnus-face-2 '((t (:foreground "grey90"))))
+  ;; (setq gnus-face-0 '((t (:foreground "grey60"))))
+  ;; (setq gnus-face-1 '((t (:foreground "grey30"))))
+  ;; (setq gnus-face-2 '((t (:foreground "grey90"))))
   
   ;; Prompt for the right group
   (setq gnus-group-jump-to-group-prompt
@@ -1309,38 +1340,40 @@ urchinTracker();
 ** ERC variables
 
 #+BEGIN_SRC emacs-lisp
-(require 'erc)
-(require 'erc-services)
-
-(setq erc-modules '(autoaway autojoin irccontrols log netsplit noncommands notify pcomplete completion ring services stamp track truncate)
-      erc-keywords nil
-      erc-prompt-for-nickserv-password nil
-      erc-hide-timestamps t
-      erc-log-insert-log-on-open nil
-      erc-log-channels t
-      erc-log-write-after-insert nil
-      erc-save-buffer-on-part t
-      erc-input-line-position 0
-      ;; erc-fill-function (quote erc-fill-static)
-      ;; erc-fill-mode t
-      erc-insert-timestamp-function 'erc-insert-timestamp-left
-      erc-insert-away-timestamp-function 'erc-insert-timestamp-left
-      erc-notify-list nil
-      erc-whowas-on-nosuchnick t
-      erc-public-away-p nil
-      erc-save-buffer-on-part t
-      erc-echo-notice-always-hook '(erc-echo-notice-in-minibuffer)
-      erc-autoaway-message "%i seconds out..."
-      erc-away-nickname "bz_g"
-      erc-kill-queries-on-quit nil
-      erc-kill-server-buffer-on-quit t
-      erc-log-channels-directory "~/.erc_log"
-      erc-query-on-unjoined-chan-privmsg t
-      erc-auto-query 'window-noselect
-      erc-server-coding-system '(utf-8 . utf-8)
-      erc-encoding-coding-alist '(("#emacs" . utf-8)
-				  ("#frlab" . iso-8859-1)
-				  ("&bitlbee" . utf-8)))
+  (require 'erc)
+  (require 'erc-services)
+  
+  (setq erc-modules '(autoaway autojoin irccontrols log netsplit noncommands
+                               notify pcomplete completion ring services stamp
+                               track truncate)
+        erc-keywords nil
+        erc-prompt-for-nickserv-password nil
+        erc-hide-timestamps t
+        erc-log-insert-log-on-open nil
+        erc-log-channels t
+        erc-log-write-after-insert nil
+        erc-save-buffer-on-part t
+        erc-input-line-position 0
+        ;; erc-fill-function (quote erc-fill-static)
+        ;; erc-fill-mode t
+        erc-insert-timestamp-function 'erc-insert-timestamp-left
+        erc-insert-away-timestamp-function 'erc-insert-timestamp-left
+        erc-notify-list nil
+        erc-whowas-on-nosuchnick t
+        erc-public-away-p nil
+        erc-save-buffer-on-part t
+        erc-echo-notice-always-hook '(erc-echo-notice-in-minibuffer)
+        erc-autoaway-message "%i seconds out..."
+        erc-away-nickname "bz_g"
+        erc-kill-queries-on-quit nil
+        erc-kill-server-buffer-on-quit t
+        erc-log-channels-directory "~/.erc_log"
+        erc-query-on-unjoined-chan-privmsg t
+        erc-auto-query 'window-noselect
+        erc-server-coding-system '(utf-8 . utf-8)
+        erc-encoding-coding-alist '(("#emacs" . utf-8)
+                                    ("#frlab" . iso-8859-1)
+                                    ("&bitlbee" . utf-8)))
 #+END_SRC
 
 ** ERC connect to bitlbee
@@ -1640,9 +1673,10 @@ urchinTracker();
 ** Emacs lisp
 
 #+BEGIN_SRC emacs-lisp
-(add-hook 'emacs-lisp-mode-hook 'turn-on-orgstruct++)
+(add-hook 'emacs-lisp-mode-hook 'turn-on-orgstruct)
 (add-hook 'emacs-lisp-mode-hook 'fontify-todo)
 (add-hook 'emacs-lisp-mode-hook 'fontify-headline)
+(add-hook 'clojure-mode-hook 'turn-on-orgstruct)
 
 ;; (add-hook 'emacs-lisp-mode-hook 'electric-pair-mode)
 ;; (add-hook 'emacs-lisp-mode-hook 'electric-indent-mode)
