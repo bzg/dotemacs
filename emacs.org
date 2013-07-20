@@ -1414,7 +1414,12 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 #+BEGIN_SRC emacs-lisp
   (require 'erc)
   (require 'erc-services)
-
+  
+  (font-lock-add-keywords 
+   'erc-mode
+   '((";;.*\\(bzg2\\|éducation\\|clojure\\|emacs\\|orgmode\\)"
+      (1 todo-comment-face t))))
+  
   (setq erc-modules '(autoaway autojoin irccontrols log netsplit noncommands
                                notify pcomplete completion ring services stamp
                                track truncate)
@@ -1427,6 +1432,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
         erc-log-write-after-insert nil
         erc-save-buffer-on-part t
         erc-input-line-position 0
+        erc-fill-column 120
         ;; erc-fill-function (quote erc-fill-static)
         ;; erc-fill-mode t
         erc-insert-timestamp-function 'erc-insert-timestamp-left
@@ -1448,7 +1454,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
         erc-encoding-coding-alist '(("#emacs" . utf-8)
                                     ("#frlab" . iso-8859-1)
                                     ("&bitlbee" . utf-8)))
-
+  
   (defun erc-notify-on-msg (msg)
     (if (string-match "bz_g:" msg)
         (shell-command (concat "notify-send \"" msg "\""))))
@@ -1488,7 +1494,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 #+BEGIN_SRC emacs-lisp
 (add-hook 'erc-mode-hook
           '(lambda ()
-	     (auto-fill-mode 0)
+	     (auto-fill-mode -1)
              (pcomplete-erc-setup)
 	     (erc-completion-mode 1)
 	     (erc-ring-mode 1)
