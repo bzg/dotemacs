@@ -1425,29 +1425,30 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
                                track truncate)
         erc-keywords nil
         erc-prompt-for-nickserv-password nil
+        erc-timestamp-format "%s"
         erc-hide-timestamps t
-        erc-timestamp-format "%a, %d %h %Y %H:%M:%S %z"
-        erc-log-insert-log-on-open nil
         erc-log-channels t
-        erc-log-write-after-insert nil
+        erc-log-write-after-insert t
+        erc-log-insert-log-on-open nil
         erc-save-buffer-on-part t
         erc-input-line-position 0
-        erc-fill-column 120
-        ;; erc-fill-function (quote erc-fill-static)
-        ;; erc-fill-mode t
+        erc-fill-function 'erc-fill-static
+        erc-fill-static-center 30
+        erc-fill-column 130
         erc-insert-timestamp-function 'erc-insert-timestamp-left
         erc-insert-away-timestamp-function 'erc-insert-timestamp-left
-        erc-log-insert-log-on-open nil
         erc-whowas-on-nosuchnick t
         erc-public-away-p nil
         erc-save-buffer-on-part t
         erc-echo-notice-always-hook '(erc-echo-notice-in-minibuffer)
+        erc-auto-set-away nil
         erc-autoaway-message "%i seconds out..."
         erc-away-nickname "bz_g"
         erc-kill-queries-on-quit nil
         erc-kill-server-buffer-on-quit t
         erc-log-channels-directory "~/.erc_log"
-        erc-enable-logging 'erc-log-all-but-server-buffers
+        ;; erc-enable-logging 'erc-log-all-but-server-buffers
+        erc-enable-logging t
         erc-query-on-unjoined-chan-privmsg t
         erc-auto-query 'window-noselect
         erc-server-coding-system '(utf-8 . utf-8)
