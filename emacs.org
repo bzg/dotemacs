@@ -13,7 +13,7 @@
 
 This is my =.emacs.el= file, as a HTMLized =emacs.org= file.
 
-You can browse the =.el= file [[http://lumiere.ens.fr/~guerry/u/emacs.el][here]] or clone the =.org= file from [[https://github.com/bzg/dotemacs][github]].
+You can browse the =.el= file [[http://bzg.fr/u/emacs.el][here]] or clone the =.org= file from [[https://github.com/bzg/dotemacs][github]].
 
 Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
@@ -101,7 +101,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (add-to-list 'load-path "~/install/git/nrepl.el/")
 (add-to-list 'load-path "~/install/git/clojure-cheatsheet/")
 (add-to-list 'load-path "~/install/git/magit/")
-(add-to-list 'load-path "~/install/src/bbdb/lisp/")
+(add-to-list 'load-path "~/install/git/git-modes/")
+;; (add-to-list 'load-path "~/install/src/bbdb/lisp/")
+;; (add-to-list 'load-path "~/install/git/bbdb/lisp/")
 
 (add-to-list 'load-path "~/install/git/notmuch/emacs/")
 
@@ -172,17 +174,17 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'custom-theme-load-path "~/install/git/cyberpunk-theme.el/")
-(load-theme 'cyberpunk)
+;; (load-theme 'cyberpunk)
 #+END_SRC
 
 ** Fonts
 
 #+BEGIN_SRC emacs-lisp
 ;; This is my favorite default font:
-;; (set-frame-font "Monospace 11")
+;; (set-frame-font "Monospace 12")
 
 ;; I use this sometimes for reading long blog posts:
-(set-frame-font "Inconsolata 13")
+(set-frame-font "Inconsolata 14")
 
 (setq org-export-htmlize-output-type 'css)
 #+END_SRC
@@ -298,7 +300,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq dired-guess-shell-alist-user
       (list
 ;;       (list "\\.pdf$" "acroread")
-       (list "\\.pdf$" "mupdf-x11")
+       (list "\\.pdf$" "mupdf")
        (list "\\.docx?$" "libreoffice")
        (list "\\.aup?$" "audacity")
        (list "\\.pptx?$" "libreoffice")
@@ -359,13 +361,13 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 #+BEGIN_SRC emacs-lisp
 (require 'org)
-(require 'org-trello)
+;; (require 'org-trello)
 (require 'ox-rss)
 (require 'ox-beamer)
 (require 'ox-latex)
 (require 'ox-odt)
 (require 'org-gnus)
-(require 'ox-koma-letter)
+;; (require 'ox-koma-letter)
 
 ;; Hook to update all blocks before saving
 (add-hook 'org-mode-hook
@@ -444,7 +446,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-agenda-dim-blocked-tasks nil)
 (setq org-agenda-entry-text-maxlines 10)
 (setq org-agenda-file-regexp "\\.org\\'")
-(setq org-agenda-files '("~/org/rdv.org" "~/org/bzg.org"))
+(setq org-agenda-files '("~/org/rdv.org" "~/org/bzg.org" "~/org/org.org"))
 (setq org-agenda-include-diary nil)
 (setq org-agenda-prefix-format
       '((agenda . " %i %-12:c%?-14t%s")
@@ -459,7 +461,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-agenda-skip-deadline-prewarning-if-scheduled t)
 (setq org-agenda-skip-scheduled-if-done t)
 (setq org-agenda-skip-timestamp-if-done t)
-(setq org-agenda-sorting-strategy 
+(setq org-agenda-sorting-strategy
       '((agenda time-up) (todo time-up) (tags time-up) (search time-up)))
 (setq org-agenda-start-on-weekday 1)
 (setq org-agenda-sticky nil)
@@ -505,11 +507,13 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
            '(todo-state-up time-up priority-up))))
 
         ("n" todo "NEXT|TODO"
-         (;; (org-agenda-max-tags -1)
-          (org-agenda-sorting-strategy
+         ((org-agenda-sorting-strategy
            '(timestamp-up))
-          (org-agenda-max-entries 10)
-          )) ;; todo-state-up time-up priority-up))))
+          (org-agenda-max-entries 10)))
+
+        ("N" todo "NEXT|TODO"
+         ((org-agenda-sorting-strategy
+           '(timestamp-up))))
 
         ("x" "Scheduled all" agenda "List of scheduled tasks for today"
          ((org-agenda-span 1)
@@ -557,12 +561,12 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-capture-templates
       ;; for org/rdv.org
       '(
-  
+
         ;; Mise, put it on top of my main .org file
         (" " "Misc" entry (file "~/org/bzg.org")
          "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?" :prepend t
          :immediate-finish t)
-  
+
         ;; for org/rdv.org
         ("r" "Bzg RDV" entry (file+headline "~/org/rdv.org" "RDV")
          "* %a :RDV:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?" :prepend t)
@@ -570,76 +574,74 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
         ;; for org/rdv.org
         ("B" "Blog" entry (file+headline "~/org/bzg.org" "Blog")
          "* %a :Write:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?" :prepend t)
-  
+
         ;; Basement et garden
         ("b" "Basement" entry (file+headline "~/org/bzg.org" "Basement")
          "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-  
+
         ;; Basement et garden
-        ("C" "Coursera" entry (file+headline "~/org/bzg.org" "Coursera")
-         "* NEXT %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-  
         ("g" "Garden" entry (file+headline "~/org/garden.org" "Garden")
          "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-  
+
         ;; Boite (lml) et cours
         ("b" "Boîte" entry (file+headline "~/org/bzg.org" "Boîte")
          "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-  
-        ("c" "Cours" entry (file+headline "~/org/bzg.org" "Cours")
-         "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-  
+
         ("O" "OLPC" entry (file+headline "~/org/libre.org" "OLPC")
          "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-  
+
         ("e" "Emacs" entry (file+headline "~/org/libre.org" "Emacs")
          "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend nil)
-  
+
         ("w" "Wikipedia" entry (file+headline "~/org/libre.org" "Wikipedia")
          "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-  
+
         ("i" "ITIC" entry (file+headline "~/org/libre.org" "itic")
          "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-  
-        ("k" "Krowdfounding" entry (file+headline "~/org/bzg.org" "Kickhub")
+
+        ("j" "jecode" entry (file+headline "~/org/libre.org" "jecode")
          "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-  
+
+        ("k" "Kickhub" entry (file+headline "~/org/bzg.org" "Kickhub")
+         "* NEXT %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
+
         ("s" "ShareLex" entry (file+headline "~/org/libre.org" "ShareLex")
          "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-  
+
         ;; Informations
         ("I" "Information")
         ("Ir" "Information read" entry
          (file+headline "~/org/garden.org" "Infos")
          "* TODO %?%a :Read:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i"
          :prepend t)
-  
+
         ("IR" "Information read (!)" entry
          (file+headline "~/org/garden.org" "Infos")
          "* TODO %?%a :Read:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i"
          :prepend t :immediate-finish t)
-  
+
         ("Ic" "Information read (clocking)" entry
          (file+headline "~/org/garden.org" "Infos")
          "* TODO %?%a :Read:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i"
          :prepend t :clock-in t)
-  
+
         ("IC" "Information read (keep clocking)" entry
          (file+headline "~/org/garden.org" "Infos")
          "* TODO %?%a :Read:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i"
          :prepend t :clock-in t :immediate-finish t :clock-keep t :jump-to-captured t)
-  
-        ("o" "Org")
-        ("ot" "Org Test" entry (file+headline "~/org/org.org" "To test")
-         "* TODO %?%a :Code:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-        ("of" "Org FR" entry (file+headline "~/org/org.org" "Current ideas")
-         "* TODO %?%a :Code:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-        ("ob" "Org Bug" entry (file+headline "~/org/org.org" "Mailing list")
-         "* NEXT %?%a :Bug:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-        ("op" "Org Patch" entry (file+headline "~/org/org.org" "Mailing list")
-         "* NEXT [#A] %?%a :Patch:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-        ("ow" "Worg" entry (file+headline "~/org/org.org" "Worg")
-         "* TODO [#A] %?%a :Worg:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
+
+        ;; ("o" "Org")
+        ;; ("ot" "Org Test" entry (file+headline "~/org/org.org" "To test")
+        ;;  "* TODO %?%a :Code:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
+        ;; ("of" "Org FR" entry (file+headline "~/org/org.org" "Current ideas")
+        ;;  "* TODO %?%a :Code:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
+        ;; ("ob" "Org Bug" entry (file+headline "~/org/org.org" "Mailing list")
+        ;;  "* NEXT %?%a :Bug:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
+        ;; ("op" "Org Patch" entry (file+headline "~/org/org.org" "Mailing list")
+        ;;  "* NEXT [#A] %?%a :Patch:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
+        ;; ("ow" "Worg" entry (file+headline "~/org/org.org" "Worg")
+        ;;  "* TODO [#A] %?%a :Worg:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
+
         ))
 #+END_SRC
 
@@ -786,8 +788,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
         ("\\.x?html?\\'" . default)
         ("\\.pdf\\'" . "mupdf %s")))
 #+END_SRC
-   
-** COMMENT Org publish project alist
+
+** Org publish project alist
 
 #+BEGIN_SRC emacs-lisp
 (setq html-preamble "
@@ -815,7 +817,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
       <a class=\"home\" title=\"Home\" href=\"http://bzg.fr/\"></a>
       <a class=\"blog\" title=\"Blog\" href=\"http://bzg.fr/blog.html\"></a>
       <a class=\"rss\" title=\"RSS\" href=\"http://bzg.fr/blog.xml\"></a>
-      <a class=\"github\"title=\"Github\" href=\"https://github.com/bzg/\"></a>
+      <a class=\"github\" title=\"Github\" href=\"https://github.com/bzg/\"></a>
 
       <br/>
 
@@ -871,9 +873,17 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
          :html-head-extra
          "<link rel=\"stylesheet\" href=\"http://bzg.fr/index.css\" type=\"text/css\" />
 <link rel=\"alternate\" type=\"application/rss+xml\" href=\"http://bzg.fr/blog.xml\" title=\"RSS feed for bzg.fr\">"
-         :html-preamble ,html-preamble           
-         :htmlized-source nil
+         :html-preamble ,html-preamble
+         :htmlized-source t
          :html-postamble nil)
+        ("homepage-sources"
+         :base-directory "~/install/git/homepage/"
+         :base-extension "org"
+         :publishing-directory "/home/guerry/public_html/org/homepage/"
+         :publishing-function (org-org-publish-to-org)
+         :recursive t
+         :with-tasks nil
+         :htmlized-source t)
         ("homepage-rss"
          :base-directory "~/install/git/homepage/"
          :base-extension "org"
@@ -886,6 +896,18 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
          :with-tasks nil
          :include ("blog.org")
          :with-toc nil)
+        ("clojure-rss"
+         :base-directory "~/install/git/homepage/"
+         :base-extension "org"
+         :html-link-home "http://bzg.fr/"
+         :publishing-directory "/home/guerry/public_html/org/homepage/"
+         :publishing-function (org-rss-publish-to-rss)
+         :html-link-use-abs-url t
+         :section-numbers nil
+         :exclude ".*"
+         :with-tasks nil
+         :include ("clojure.org")
+         :with-toc nil)
         ("homepage-css"
          :base-directory "~/install/git/homepage"
          :base-extension "css"
@@ -896,7 +918,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
          :base-extension "png\\|jpg\\|gif\\|atom"
          :publishing-directory "/home/guerry/public_html/org/homepage/u/"
          :publishing-function org-publish-attachment)
-        
+
         ("dotemacs"
          :base-directory "~/install/git/dotemacs/"
          :html-extension "html"
@@ -915,7 +937,26 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
          :html-preamble ,html-preamble
          :htmlized-source nil
          :html-postamble nil)
-        
+
+        ("faqrel"
+         :base-directory "~/install/git/faqrel/"
+         :html-extension "html"
+         :base-extension "org"
+         :publishing-directory "/home/guerry/public_html/org/homepage/"
+         :publishing-function (org-html-publish-to-html)
+         :auto-sitemap nil
+         :recursive t
+         :makeindex nil
+         :preserve-breaks nil
+         :sitemap-sort-files chronologically
+         :section-numbers nil
+         :with-toc nil
+         :html-head-extra
+         "<link rel=\"stylesheet\" href=\"http://bzg.fr/index.css\" type=\"text/css\" />"
+         :html-preamble ,html-preamble
+         :htmlized-source nil
+         :html-postamble nil)
+
         ("hugadevweb"
          :base-directory "~/install/git/hugadevweb/"
          :html-extension "html"
@@ -935,7 +976,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
          :html-preamble nil
          :htmlized-source nil
          :html-postamble nil)
-        
+
         ("memeweb"
          :base-directory "~/install/git/memeweb/"
          :html-extension "html"
@@ -955,7 +996,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
          :html-preamble nil
          :htmlized-source nil
          :html-postamble nil)
-        
+
         ("clorgweb"
          :base-directory "~/install/git/clorgweb/"
          :html-extension "html"
@@ -975,7 +1016,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
          :html-preamble nil
          :htmlized-source nil
          :html-postamble nil)
-        
+
         ("dll"
          :base-directory "~/install/git/dunlivrelautre/"
          :html-extension "html"
@@ -998,32 +1039,32 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
     \(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  
+
     ga('create', 'UA-42064173-1', 'dunlivrelautre.net');
     ga('send', 'pageview');
     </script>
-  
+
     <div class=\"toprightbutton\">
     <a href=\"blog.xml\"><img width=\"70px\" src=\"u/rss.jpg\" /></a>
     </div>
-  
+
     <div class=\"topleftbutton\">
-  
+
     <a href=\"/index.html\">Home</a></br>
-  
+
     <a href=\"http://flattr.com/thing/1654106/Dun-Livre-Lautre\" target=\"_blank\"><img src=\"http://api.flattr.com/button/flattr-badge-large.png\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" /></a><br/>
-  
+
     <a href=\"https://twitter.com/share\" class=\"twitter-share-button\"
     data-count=\"none\" data-via=\"bzg2\" data-lang=\"fr\">Tweeter</a><script
     type=\"text/javascript\" src=\"//platform.twitter.com/widgets.js\"></script>
-  
+
     </div>
-  
+
     <div class=\"bottomrightbutton\">
     <a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png\" /></a>
     </div>
   ")
-        
+
         ("dll-rss"
          :base-directory "~/install/git/dunlivrelautre/"
          :base-extension "org"
@@ -1046,10 +1087,10 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
          :base-extension "png\\|jpg\\|gif\\|xml\\|atom"
          :publishing-directory "/home/guerry/public_html/org/dunlivrelautre/"
          :publishing-function org-publish-attachment)
-        
+
         ;; Meta projects
         ("hp" :components
-         ("homepage" "homepage-attachments" "homepage-rss" "homepage-css"))
+         ("homepage" "homepage-sources" "homepage-attachments" "homepage-rss" "clojure-rss" "homepage-css"))
         ("dll" :components ("dll" "dll-attachments" "dll-rss"))
         ("CoursWeb" :components ("cours" "cours-images"))
         ))
@@ -1100,6 +1141,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 #+BEGIN_SRC emacs-lisp
 (require 'notmuch)
+
+(setq notmuch-fcc-dirs nil)
 (add-hook 'gnus-group-mode-hook 'bzg-notmuch-shortcut)
 
 (defun bzg-notmuch-shortcut ()
@@ -1133,8 +1176,27 @@ article."
 ** Gnus general
 
 #+BEGIN_SRC emacs-lisp
+(setq gnus-ignored-from-addresses
+      (regexp-opt '("Bastien.Guerry@ens.fr"
+                    "bastien.guerry@free.fr"
+                    "bastien.guerry@cnam.fr"
+                    "bastien@olpc-france.org"
+                    "bastienguerry@gmail.com"
+                    "bastienguerry@googlemail.com"
+                    "bastien1@free.fr"
+                    "bzg@altern.org"
+                    "bzg@gnu.org"
+                    "bzg@laptop.org"
+                    "bastien.guerry@u-paris10.fr"
+                    "bastienguerry@hotmail.com"
+                    "bastienguerry@yahoo.fr"
+                    "b.guerry@philosophy.bbk.ac.uk"
+                    "castle@philosophy.bbk.ac.uk")))
+
 (require 'message)
 (require 'gnus)
+(require 'bbdb-loaddefs)
+(require 'bbdb)
 (require 'bbdb-config)
 (require 'starttls)
 (require 'epg)
@@ -1207,7 +1269,7 @@ article."
 (setq gnus-agent-consider-all-articles t)
 (setq gnus-agent-enable-expiration 'disable)
 #+END_SRC
-   
+
 ** Set basics
 
 #+BEGIN_SRC emacs-lisp
@@ -1246,25 +1308,6 @@ article."
       gnus-nov-is-evil nil
       nnml-marks-is-evil t
       nntp-marks-is-evil t)
-
-(setq gnus-ignored-from-addresses
-      (regexp-opt '("Bastien.Guerry@ens.fr"
-                    "bastien.guerry@free.fr"
-                    "bastien.guerry@cnam.fr"
-                    "bastien.guerry@wikimedia.fr"
-                    "bastien@olpc-france.org"
-                    "bastienguerry@gmail.com"
-                    "bastienguerry@googlemail.com"
-                    "bastien1@free.fr"
-                    "bzg@altern.org"
-                    "bzg@gnu.org"
-                    "bzg@laptop.org"
-                    "bastien.guerry@u-paris10.fr"
-                    "bastienguerry@hotmail.com"
-                    "bastienguerry@yahoo.fr"
-                    "b.guerry@philosophy.bbk.ac.uk"
-                    "castle@philosophy.bbk.ac.uk"
-                    "guerry@lumiere.ens.fr")))
 
 (setq message-dont-reply-to-names gnus-ignored-from-addresses)
 
@@ -1331,16 +1374,7 @@ article."
 
 ;; bbdb
 (setq gnus-use-generic-from t
-      gnus-use-bbdb t
-      bbdb/gnus-split-crosspost-default nil
-      bbdb/gnus-split-default-group nil
-      bbdb/gnus-split-myaddr-regexp gnus-ignored-from-addresses
-      bbdb-user-mail-names gnus-ignored-from-addresses
-      bbdb/gnus-split-nomatch-function nil
-      bbdb/gnus-summary-known-poster-mark "+"
-      bbdb/gnus-summary-mark-known-posters t)
-
-(defalias 'bbdb-y-or-n-p '(lambda (prompt) t))
+      gnus-use-bbdb t)
 
 ;;; Trier les mails
 (setq nnmail-split-abbrev-alist
@@ -1528,7 +1562,7 @@ the copy in the last group."
 (require 'erc)
 (require 'erc-services)
 
-(font-lock-add-keywords 
+(font-lock-add-keywords
  'erc-mode
  '((";;.*\\(bzg2\\|éducation\\|clojure\\|emacs\\|orgmode\\)"
     (1 todo-comment-face t))))
@@ -1917,17 +1951,20 @@ the copy in the last group."
    nil '(("^;;;;* ?\\(.*\\)\\>"
 	  (1 headline-face t)))))
 #+END_SRC
-   
+
 ** Geiser
 
 #+BEGIN_SRC emacs-lisp
 (setq geiser-active-implementations '(guile racket))
+(setq geiser-scheme-implementation 'racket)
 (setq geiser-repl-startup-time 20000)
 #+END_SRC
 
 ** Magit
 
 #+BEGIN_SRC emacs-lisp
+(require 'git-commit-mode)
+(require 'rebase-mode)
 (require 'magit)
 
 (global-set-key (quote [f9]) 'magit-status)
@@ -1940,6 +1977,13 @@ the copy in the last group."
 
 #+BEGIN_SRC emacs-lisp
 (require 'helm-config)
+
+(defun helm-clojure-headlines ()
+  "Display headlines for the current Clojure file."
+  (interactive)
+  (helm :sources '(((name . "Clojure Headlines")
+                    (volatile)
+                    (headline "^[;(]")))))
 #+END_SRC
 
 ** clojure-cheatsheet
