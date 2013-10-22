@@ -1,5 +1,5 @@
 This is my =.emacs.el= file, as a HTMLized =emacs.org= file.
 
-You can browse the =.el= file [[http://lumiere.ens.fr/~guerry/u/emacs.el][here]] or clone the =.org= file from [[https://github.com/bzg/dotemacs][github]].
+You can browse the =.el= file [[http://bzg.fr/u/emacs.el][here]] or clone the =.org= file from [[https://github.com/bzg/dotemacs][github]].
 
 Comments and suggestions are welcome! =bzg AT gnu DOT org=
