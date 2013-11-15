@@ -41,6 +41,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ;; (setq default-major-mode 'org-mode)
 
 (setq debug-on-error t)
+
 (setq byte-compile-debug t)
 (setq elp-sort-by-function 'elp-sort-by-average-time)
 
@@ -66,6 +67,10 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setenv "CVS_RSH" "ssh")
 (setq completion-use-tooltip nil)
 (setq battery-mode-line-format " [%b%p%%,%d°C]")
+(display-battery-mode 1)
+
+(require 'whitespace)
+(add-to-list 'whitespace-style 'lines-tail)
 #+END_SRC
 
 * Enable/Disable some minor modes
@@ -98,7 +103,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (add-to-list 'load-path "~/install/git/helm/")
 (add-to-list 'load-path "~/install/git/geiser/elisp/")
 (add-to-list 'load-path "~/install/git/clojure-mode/")
-(add-to-list 'load-path "~/install/git/nrepl.el/")
+(add-to-list 'load-path "~/install/git/cider/")
+(add-to-list 'load-path "~/install/git/smartparens/")
 (add-to-list 'load-path "~/install/git/clojure-cheatsheet/")
 (add-to-list 'load-path "~/install/git/magit/")
 (add-to-list 'load-path "~/install/git/git-modes/")
@@ -127,7 +133,17 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 (require 'session)
 (require 'ibuffer)
-(require 'nrepl)
+;; (require 'paredit)
+;; (require 'smartparens-config)
+;; (show-smartparens-global-mode)
+
+(require 'dash)
+(require 'cider)
+(setq nrepl-hide-special-buffers t)
+(setq cider-repl-pop-to-buffer-on-connect nil)
+(setq cider-popup-stacktraces nil)
+(setq cider-repl-popup-stacktraces t)
+;; (add-hook 'cider-repl-mode-hook 'paredit-mode)
 #+END_SRC
 
 * Info initialization
@@ -184,7 +200,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ;; (set-frame-font "Monospace 12")
 
 ;; I use this sometimes for reading long blog posts:
-(set-frame-font "Inconsolata 14")
+;; (set-frame-font "Avenir 14")
 
 (setq org-export-htmlize-output-type 'css)
 #+END_SRC
@@ -231,13 +247,14 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 #+BEGIN_SRC emacs-lisp
 (if window-system
+    ;; (setq browse-url-browser-function 'w3m-browse-url)
     (setq browse-url-browser-function 'browse-url-firefox)
           ;; (setq browse-url-browser-function 'w3m-browse-url
           ;;      browse-url-generic-program "conkeror")
           ;; browse-url-generic-program "chromium")
           ;; browse-url-generic-program "firefox"
   (setq browse-url-browser-function 'w3m-browse-url))
-(setq browse-url-text-browser "lynx")
+(setq browse-url-text-browser "w3m")
 
 (setq browse-url-firefox-new-window-is-tab t)
 (setq browse-url-firefox-program "firefox")
@@ -320,9 +337,10 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
        (list "\\.css$" "gedit")
        (list "\\.html$" "w3m")
        (list "\\.jpe?g$" "gqview")
-       (list "\\.psd$" "gimp")
        (list "\\.png$" "gqview")
        (list "\\.gif$" "gqview")
+       (list "\\.psd$" "gimp")
+       (list "\\.xcf" "gimp")
        (list "\\.odt$" "libreoffice")
        (list "\\.xo$" "unzip")
        (list "\\.3gp$" "vlc")
@@ -330,7 +348,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
        (list "\\.flac$" "vlc")
        (list "\\.avi$" "mplayer -fs")
        ;; (list "\\.og[av]$" "vlc")
-       (list "\\.wmv$" "vlc")
+       (list "\\.wm[va]$" "vlc")
        (list "\\.flv$" "mplayer -fs")
        (list "\\.mov$" "mplayer -fs")
        (list "\\.divx$" "mplayer -fs")
@@ -367,7 +385,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (require 'ox-latex)
 (require 'ox-odt)
 (require 'org-gnus)
-;; (require 'ox-koma-letter)
+(require 'ox-koma-letter)
 
 ;; Hook to update all blocks before saving
 (add-hook 'org-mode-hook
@@ -436,6 +454,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
         (:padnewline . "yes")))
 
 (setq org-edit-src-content-indentation 0)
+(setq org-babel-clojure-backend 'cider)
 #+END_SRC
 
 ** Org agenda
@@ -478,6 +497,11 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 #+BEGIN_SRC emacs-lisp
 (setq org-agenda-custom-commands
       `(
+
+        ("B" "Today" tags-todo
+         "DEADLINE<=\"<today>\""
+         ((org-agenda-overriding-header "Today")
+          (org-agenda-sorting-strategy '(deadline-up))))
 
         ;; list of WP tasks for today
         (" " "Aujourd'hui" agenda "List of rendez-vous and tasks for today"
@@ -533,6 +557,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
         ("Y" tags-todo "+SCHEDULED<=\"<now>\"")
         ("Z" tags-todo "+DEADLINE<=\"<now>\"")
 
+        ("R" tags-todo "+Read+TODO={TODO\\|NEXT}" nil)
+
         ;; Everything that has a "Read" tag
         ("r" . "Read")
         ("rr" tags-todo "+Read+TODO={TODO\\|NEXT}" ((org-agenda-max-entries 10)))
@@ -540,6 +566,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
         ("r," tags-todo "+Read/STRT" nil)
         ("rF" tags "+Read+@Offline" nil)
 
+        ("W" tags-todo "+Write/NEXT|TODO|STRT" nil)
         ;; Everything that has a "Write" tag
         ("w" . "write")
         ("ww" tags-todo "+Write/NEXT|TODO|STRT" ((org-agenda-max-entries 10)))
@@ -673,6 +700,14 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
     (setq org-export-allow-BIND-local t)
     (setq org-publish-list-skipped-files nil)
 
+    (setq org-html-table-row-tags
+          (cons '(cond (top-row-p "<tr class=\"tr-top\">")
+                       (bottom-row-p "<tr class=\"tr-bottom\">")
+                       (t (if (= (mod row-number 2) 1)
+                              "<tr class=\"tr-odd\">"
+                            "<tr class=\"tr-even\">")))
+                "</tr>"))
+
     (add-to-list 'org-latex-classes
                  '("my-letter"
                    "\\documentclass\{scrlttr2\}
@@ -696,8 +731,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
           '((done . "CLOSING NOTE %t") (state . "State %-12s %t") (clock-out . "")))
     (setq org-priority-start-cycle-with-default nil)
     (setq org-refile-targets '((org-agenda-files . (:maxlevel . 3))
-                                       (("~/org/garden.org") . (:maxlevel . 3))
-                                       (("~/org/libre.org") . (:maxlevel . 3))))
+                               (("~/org/garden.org") . (:maxlevel . 3))
+                               (("~/org/libre.org") . (:maxlevel . 3))))
     (setq org-refile-use-outline-path t)
     (setq org-refile-use-cache t)
     (setq org-return-follows-link t)
@@ -1122,6 +1157,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-directory "~/org/")
 (setq org-ellipsis nil)
 (setq org-email-link-description-format "%c: %.50s")
+(setq org-support-shift-select t)
 #+END_SRC
 
 ** Org dynamic blocks
