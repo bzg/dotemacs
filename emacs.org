@@ -387,6 +387,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (require 'org-gnus)
 (require 'ox-koma-letter)
 
+(setq org-element-use-cache nil)
+
 ;; Hook to update all blocks before saving
 (add-hook 'org-mode-hook
           (lambda() (add-hook 'before-save-hook
@@ -1953,8 +1955,10 @@ the copy in the last group."
 ;; (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 ;; (add-hook 'clojure-mode-hook 'paredit-mode)
 
-;; (add-hook 'emacs-lisp-mode-hook 'electric-pair-mode)
-;; (add-hook 'emacs-lisp-mode-hook 'electric-indent-mode)
+(electric-indent-mode 1)
+
+(add-hook 'emacs-lisp-mode-hook 'electric-pair-mode)
+(add-hook 'emacs-lisp-mode-hook 'electric-indent-mode)
 ;; (add-hook 'emacs-lisp-mode-hook 'electric-layout-mode)
 
 (defvar todo-comment-face 'todo-comment-face)
