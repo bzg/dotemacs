@@ -68,6 +68,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq completion-use-tooltip nil)
 (setq battery-mode-line-format " [%b%p%%,%d°C]")
 (display-battery-mode 1)
+(electric-indent-mode -1)
+(electric-pair-mode -1)
 
 (require 'whitespace)
 (add-to-list 'whitespace-style 'lines-tail)
@@ -98,10 +100,15 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (let ((default-directory "~/install/git/gnus/"))
   (normal-top-level-add-subdirs-to-load-path))
 
+(add-to-list 'load-path "~/install/git/auto-complete")
+(let ((default-directory "~/install/git/auto-complete/"))
+  (normal-top-level-add-subdirs-to-load-path))
+
 (add-to-list 'load-path "~/install/cvs/emacs-w3m/")
 (add-to-list 'load-path "~/install/git/org-trello/")
 (add-to-list 'load-path "~/install/git/helm/")
 (add-to-list 'load-path "~/install/git/geiser/elisp/")
+(add-to-list 'load-path "~/install/git/ac-nrepl/")
 (add-to-list 'load-path "~/install/git/clojure-mode/")
 (add-to-list 'load-path "~/install/git/cider/")
 (add-to-list 'load-path "~/install/git/smartparens/")
@@ -138,11 +145,25 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ;; (show-smartparens-global-mode)
 
 (require 'dash)
+(require 'auto-complete)
 (require 'cider)
+
+(require 'ac-nrepl)
+(add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
+(add-hook 'cider-mode-hook 'ac-nrepl-setup)
+(eval-after-load "auto-complete"
+  '(progn (add-to-list 'ac-modes 'cider-repl-mode)
+          (add-to-list 'ac-modes 'cider-mode)))
+
+(eval-after-load "cider"
+  '(define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-do))
+
 (setq nrepl-hide-special-buffers t)
 (setq cider-repl-pop-to-buffer-on-connect nil)
 (setq cider-popup-stacktraces nil)
 (setq cider-repl-popup-stacktraces t)
+
+(add-hook 'clojure-mode-hook 'auto-complete-mode)
 ;; (add-hook 'cider-repl-mode-hook 'paredit-mode)
 #+END_SRC
 
@@ -190,14 +211,14 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'custom-theme-load-path "~/install/git/cyberpunk-theme.el/")
-;; (load-theme 'cyberpunk)
+(load-theme 'cyberpunk)
 #+END_SRC
 
 ** Fonts
 
 #+BEGIN_SRC emacs-lisp
 ;; This is my favorite default font:
-;; (set-frame-font "Monospace 12")
+(set-frame-font "Monospace 11")
 
 ;; I use this sometimes for reading long blog posts:
 ;; (set-frame-font "Avenir 14")
@@ -208,7 +229,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ** Startup
 
 #+BEGIN_SRC emacs-lisp
-(setq-default line-spacing 0.2)
+(setq-default line-spacing 0.1)
 (setq fill-column 70)
 (setq line-move-visual nil)
 (setq show-trailing-whitespace t)
@@ -837,9 +858,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq html-preamble "
 
 <div class=\"bg\">
-<a title=\"About me\" href=\"http://bzg.fr/about.html\"><img src=\"u/bg.jpg\" /></a>
-<br/>
-<a class=\"bg_link\" title=\"Support\" href=\"http://bzg.fr/crowdsupport.html\">Support</a>
+  <a title=\"About me\" href=\"http://bzg.fr/about.html\"><img src=\"u/bg.jpg\" /></a><br/>
+  <a class=\"bg_link\" title=\"Support\" href=\"http://bzg.fr/crowdsupport.html\">Support</a>
 </div>
 
 <script src=\"http://www.google-analytics.com/urchin.js\" type=\"text/javascript\">
@@ -894,7 +914,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
         js.src = \"//connect.facebook.net/fr_FR/all.js#xfbml=1\";
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));</script>
-      ")
+      </div>")
 
 (setq org-publish-project-alist
       `(
@@ -1959,8 +1979,6 @@ the copy in the last group."
 ;; (require 'paredit)
 ;; (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 ;; (add-hook 'clojure-mode-hook 'paredit-mode)
-
-(electric-indent-mode 1)
 
 (add-hook 'emacs-lisp-mode-hook 'electric-pair-mode)
 (add-hook 'emacs-lisp-mode-hook 'electric-indent-mode)
