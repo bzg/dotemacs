@@ -106,6 +106,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 (add-to-list 'load-path "~/install/cvs/emacs-w3m/")
 (add-to-list 'load-path "~/install/git/org-trello/")
+(add-to-list 'load-path "~/install/git/org-reveal/")
 (add-to-list 'load-path "~/install/git/helm/")
 (add-to-list 'load-path "~/install/git/geiser/elisp/")
 (add-to-list 'load-path "~/install/git/ac-nrepl/")
@@ -218,10 +219,10 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 #+BEGIN_SRC emacs-lisp
 ;; This is my favorite default font:
-(set-frame-font "Monospace 11")
+;; (set-frame-font "Monospace 10")
 
 ;; I use this sometimes for reading long blog posts:
-;; (set-frame-font "Avenir 14")
+(set-frame-font "Inconsolata 13")
 
 (setq org-export-htmlize-output-type 'css)
 #+END_SRC
@@ -267,6 +268,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 * Browser
 
 #+BEGIN_SRC emacs-lisp
+
+(require 'w3m)
 (if window-system
     ;; (setq browse-url-browser-function 'w3m-browse-url)
     (setq browse-url-browser-function 'browse-url-firefox)
@@ -339,7 +342,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
       (list
 ;;       (list "\\.pdf$" "acroread")
        (list "\\.pdf$" "mupdf")
-       ;; (list "\\.docx?$" "libreoffice")
+       (list "\\.docx?$" "libreoffice")
        (list "\\.aup?$" "audacity")
        (list "\\.pptx?$" "libreoffice")
        (list "\\.odf$" "libreoffice")
@@ -402,6 +405,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (require 'org)
 ;; (require 'org-trello)
 (require 'ox-rss)
+(require 'ox-reveal)
 (require 'ox-beamer)
 (require 'ox-latex)
 (require 'ox-odt)
