@@ -4,7 +4,7 @@
 #+LANGUAGE:    fr
 #+LINK:        guerry http://bzg.fr/%s
 #+OPTIONS:     skip:nil toc:nil
-#+INFOJS_OPT:  view:overview toc:nil ltoc:nil mouse:#cccccc buttons:0 path:http://orgmode.org/org-info.js
+# #+INFOJS_OPT:  view:overview toc:nil ltoc:nil mouse:#cccccc buttons:0 path:http://orgmode.org/org-info.js
 #+HTML_HEAD:   <link rel="publisher" href="https://plus.google.com/103809710979116858042" />
 #+PROPERTY:    tangle /home/guerry/elisp/config/emacs.el
 # #+PROPERTY:    tangle /home/guerry/public_html/org/homepage/u/emacs.el
@@ -26,7 +26,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (require 'package)
 (setq package-archives
       '(("org" . "http://orgmode.org/elpa/")
-        ("marmalade". "http://marmalade-repo.org/packages/")
+        ("marmalade" . "http://marmalade-repo.org/packages/")
         ("gnu" . "http://elpa.gnu.org/packages/")
         ;; ("SC" . "http://joseito.republika.pl/sunrise-commander/")
         ;; ("ELPA" . "http://tromey.com/elpa/")
@@ -67,12 +67,14 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setenv "CVS_RSH" "ssh")
 (setq completion-use-tooltip nil)
 (setq battery-mode-line-format " [%b%p%%,%d°C]")
-(display-battery-mode 1)
 (electric-indent-mode -1)
 (electric-pair-mode -1)
+(setq-default electric-indent-chars nil)
 
 (require 'whitespace)
 (add-to-list 'whitespace-style 'lines-tail)
+
+(setq load-prefer-newer t)
 #+END_SRC
 
 * Enable/Disable some minor modes
@@ -268,7 +270,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 * Browser
 
 #+BEGIN_SRC emacs-lisp
-
 (require 'w3m)
 (if window-system
     ;; (setq browse-url-browser-function 'w3m-browse-url)
@@ -277,7 +278,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
           ;;      browse-url-generic-program "conkeror")
           ;; browse-url-generic-program "chromium")
           ;; browse-url-generic-program "firefox"
-  (setq browse-url-browser-function 'w3m-browse-url))
+  (setq browse-url-browser-function 'w3m-browse-url)) ;
 (setq browse-url-text-browser "w3m")
 
 (setq browse-url-firefox-new-window-is-tab t)
@@ -725,9 +726,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-taskjuggler-target-version 3.0)
 
 (setq org-latex-listings 'minted)
+(add-to-list 'org-latex-packages-alist '("" "minted"))
 ;; (add-to-list 'org-latex-packages-alist '("" "listings"))
 ;; (add-to-list 'org-latex-packages-alist '("" "color"))
-(add-to-list 'org-latex-packages-alist '("" "minted"))
 
 (setq org-export-allow-bind-keywords t)
 (setq org-publish-list-skipped-files nil)
@@ -859,66 +860,73 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ** Org publish project alist
 
 #+BEGIN_SRC emacs-lisp
-(setq html-preamble "
-
-<div class=\"bg\">
-  <a title=\"About me\" href=\"http://bzg.fr/about.html\"><img src=\"u/bg.jpg\" /></a><br/>
-  <a class=\"bg_link\" title=\"Support\" href=\"http://bzg.fr/crowdsupport.html\">Support</a>
+(setq html-preamble "<div class=\"bg\">
+  <a title=\"bzg.fr\" href=\"http://bzg.fr\"><img alt=\"Bastien Guerry\" src=\"u/bg.jpg\" /></a>
 </div>
 
-<script src=\"http://www.google-analytics.com/urchin.js\" type=\"text/javascript\">
-      </script>
-      <script type=\"text/javascript\">
-      _uacct = \"UA-2658857-1\";
-      urchinTracker();
-      </script>
+<div id=\"share\">
+<!-- Place this tag where you want the share button to render. -->
+<div class=\"g-plus\" data-action=\"share\" data-annotation=\"none\"></div>
 
-      <script type=\"text/javascript\">
-      lloogg_clientid = \"2080028090290f8e\";
-      </script>
-      <script type=\"text/javascript\" src=\"http://lloogg.com/l.js?c=2080028090290f8e\">
-      </script>
+<!-- Place this tag after the last share tag. -->
+<script type=\"text/javascript\">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
 
-      <div class=\"topleftbutton\">
-      <a class=\"home\" title=\"Home\" href=\"http://bzg.fr/\"></a>
-      <a class=\"blog\" title=\"Blog\" href=\"http://bzg.fr/blog.html\"></a>
-      <a class=\"rss\" title=\"RSS\" href=\"http://bzg.fr/blog.xml\"></a>
-      <a class=\"github\" title=\"Github\" href=\"https://github.com/bzg/\"></a>
+<br/>
 
-      <br/>
+<a href=\"https://twitter.com/share\" class=\"twitter-share-button\" data-via=\"bzg2\">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
-      <script type=\"text/javascript\">
-      current_url = window.location.href;
-      current_title = encodeURIComponent(document.title);
-      tweet = \"<a title=\\\"Share on twitter\\\" target=\\\"_blank\\\" href=\\\"https://twitter.com/share?via=bzg2&text=\" + current_title + \"\\\" class=\\\"twitter\\\"></a>\";
-      document.write(tweet);
-      </script>
+<br/>
 
-      <script type=\"text/javascript\">
-      base_url = \"https://plus.google.com/share?url=\";
-      google_url = \"<a class=\\\"google\\\" target=\\\"_blank\\\" title=\\\"Share on Google\\\" href=\" + base_url + current_url + \">\";
-      close = \"</a></br>\";
-      document.write(google_url);
-      document.write(close);
-      </script>
+<a href=\"https://twitter.com/bzg2\" class=\"twitter-follow-button\" data-show-count=\"false\">Follow @bzg2</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
 
-      <script type=\"text/javascript\" src=\"https://apis.google.com/js/plusone.js\">
-      {lang: 'fr'}
-      </script>
+<div id=\"menu\">
+  <a href=\"/about.en.html\"><button class=\"btn btn-success\" type=\"button\">About</button></a>
+  <a href=\"/blog.html\"><button class=\"btn btn-warning\" type=\"button\">Blog</button></a>
+  <a href=\"/job.html\"><button class=\"btn btn-danger\" type=\"button\">Job</button></a>
+  <a target=\"new\" href=\"http://github.com/bzg/\"><button class=\"btn btn-default\" type=\"button\">Github</button></a>
+</div>
 
-      <div class=\"bottomrightbutton\">
-      <a rel=\"license\" href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.en_US\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"http://i.creativecommons.org/l/by-sa/3.0/88x31.png\" /></a>
-      </div>
+<script src=\"http://www.google-analytics.com/urchin.js\" type=\"text/javascript\"></script>
+<script type=\"text/javascript\">
+ _uacct = \"UA-2658857-1\";
+ urchinTracker();
+</script>
 
-      <div id=\"fb-root\"></div>
-      <script>(function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
-        js = d.createElement(s); js.id = id;
-        js.src = \"//connect.facebook.net/fr_FR/all.js#xfbml=1\";
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));</script>
-      </div>")
+<script type=\"text/javascript\">
+lloogg_clientid = \"2080028090290f8e\";
+</script>
+<script type=\"text/javascript\" src=\"http://lloogg.com/l.js?c=2080028090290f8e\">
+</script>
+
+<div class=\"bottomrightbutton\">
+<a href=\"http://flattr.com/thing/1653281/bzg\" target=\"_blank\"><img src=\"http://api.flattr.com/button/flattr-badge-large.png\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" /></a>
+
+<br/>
+
+<a rel=\"license\" href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.en_US\"><img class=\"flattr\" alt=\"Creative Commons License\" src=\"http://i.creativecommons.org/l/by-sa/3.0/88x31.png\" /></a>
+</div>
+
+<div id=\"fb-root\"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = \"//connect.facebook.net/fr_FR/all.js#xfbml=1\";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+")
+
+(setq html-postamble "
+    <script src=\"u/bootstrap.min.js\"></script>")
 
 (setq org-publish-project-alist
       `(
@@ -937,11 +945,12 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
          :section-numbers nil
          :with-toc nil
          :html-head-extra
-         "<link rel=\"stylesheet\" href=\"index.css\" type=\"text/css\" />
-<link rel=\"alternate\" type=\"application/rss+xml\" href=\"http://bzg.fr/blog.xml\" title=\"RSS feed for bzg.fr\">"
+         "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"http://bzg.fr/blog.xml\" title=\"RSS feed for bzg.fr\">
+<link rel=\"stylesheet\" href=\"u/bootstrap.min.css\" />
+<link rel=\"stylesheet\" href=\"index.css\" type=\"text/css\" />"
          :html-preamble ,html-preamble
          :htmlized-source t
-         :html-postamble nil)
+         :html-postamble ,html-postamble)
         ("homepage-sources"
          :base-directory "~/install/git/homepage/"
          :base-extension "org"
@@ -999,8 +1008,10 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
          :section-numbers nil
          :with-toc nil
          :html-head-extra
-         "<link rel=\"stylesheet\" href=\"http://bzg.fr/index.css\" type=\"text/css\" />"
+         "<link rel=\"stylesheet\" href=\"u/bootstrap.min.css\" />
+<link rel=\"stylesheet\" href=\"index.css\" type=\"text/css\" />"
          :html-preamble ,html-preamble
+         :html-postamble ,html-postamble
          :htmlized-source nil
          :html-postamble nil)
 
@@ -1018,10 +1029,10 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
          :section-numbers nil
          :with-toc nil
          :html-head-extra
-         "<link rel=\"stylesheet\" href=\"http://bzg.fr/index.css\" type=\"text/css\" />"
+         "<link rel=\"stylesheet\" href=\"index.css\" type=\"text/css\" />"
          :html-preamble ,html-preamble
          :htmlized-source nil
-         :html-postamble nil)
+         :html-postamble ,html-postamble)
 
         ("hugadevweb"
          :base-directory "~/install/git/hugadevweb/"
@@ -1097,7 +1108,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
          :sitemap-sort-files chronologically
          :section-numbers nil
          :with-toc nil
-         :html-head-extra "<link rel=\"stylesheet\" href=\"/index.css\" type=\"text/css\" />"
+         :html-head-extra "<link rel=\"stylesheet\" href=\"index.css\" type=\"text/css\" />"
          :html-postamble nil
          :htmlized-source nil
          :html-preamble "<script>
@@ -1111,14 +1122,14 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
     </script>
 
     <div class=\"toprightbutton\">
-    <a href=\"blog.xml\"><img width=\"70px\" src=\"u/rss.jpg\" /></a>
+    <a href=\"blog.xml\"><img alt=\"RSS\" width=\"70px\" src=\"u/rss.jpg\" /></a>
     </div>
 
     <div class=\"topleftbutton\">
 
-    <a href=\"/index.html\">Home</a></br>
+    <a href=\"/index.html\">Home</a><br/>
 
-    <a href=\"http://flattr.com/thing/1654106/Dun-Livre-Lautre\" target=\"_blank\"><img src=\"http://api.flattr.com/button/flattr-badge-large.png\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" /></a><br/>
+    <a href=\"http://flattr.com/thing/1654106/Dun-Livre-Lautre\" target=\"new\"><img src=\"http://api.flattr.com/button/flattr-badge-large.png\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" /></a><br/>
 
     <a href=\"https://twitter.com/share\" class=\"twitter-share-button\"
     data-count=\"none\" data-via=\"bzg2\" data-lang=\"fr\">Tweeter</a><script
