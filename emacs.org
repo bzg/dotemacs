@@ -59,9 +59,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; I find this useful to have a local (i)search ring:
+;; I find this useful to have a local search ring:
 (make-variable-buffer-local 'search-ring)
-(make-variable-buffer-local 'isearch-string)
 
 (setenv "EDITOR" "emacsclient")
 (setenv "CVS_RSH" "ssh")
@@ -214,7 +213,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'custom-theme-load-path "~/install/git/cyberpunk-theme.el/")
-(load-theme 'cyberpunk)
+;; (load-theme 'cyberpunk)
 #+END_SRC
 
 ** Fonts
@@ -232,7 +231,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ** Startup
 
 #+BEGIN_SRC emacs-lisp
-(setq-default line-spacing 0.1)
+(setq-default line-spacing nil) ; 0.1)
 (setq fill-column 70)
 (setq line-move-visual nil)
 (setq show-trailing-whitespace t)
@@ -266,7 +265,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
       ps-left-margin 56.69291338582677
       ps-print-color-p (quote black-white))
 #+END_SRC
-
 * Browser
 
 #+BEGIN_SRC emacs-lisp
@@ -493,7 +491,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-agenda-dim-blocked-tasks nil)
 (setq org-agenda-entry-text-maxlines 10)
 (setq org-agenda-file-regexp "\\.org\\'")
-(setq org-agenda-files '("~/org/rdv.org" "~/org/bzg.org" "~/org/org.org"))
+(setq org-agenda-files '("~/org/rdv.org" "~/org/bzg.org"))
 (setq org-agenda-include-diary nil)
 (setq org-agenda-prefix-format
       '((agenda . " %i %-12:c%?-14t%s")
@@ -518,6 +516,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-agenda-deadline-faces
       '((1.0001 . org-warning)              ; due yesterday or before
         (0.0    . org-upcoming-deadline)))  ; due today or later
+(org-agenda-to-appt)
 #+END_SRC
 
 ** Org agenda custom commands
@@ -730,6 +729,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ;; (add-to-list 'org-latex-packages-alist '("" "listings"))
 ;; (add-to-list 'org-latex-packages-alist '("" "color"))
 
+(setq org-latex-pdf-process
+      '("pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f" "pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f" "pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f"))
+
 (setq org-export-allow-bind-keywords t)
 (setq org-publish-list-skipped-files nil)
 
@@ -749,6 +751,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
             \[NO-PACKAGES]
             \[EXTRA]"))
 
+(setq org-pretty-entities t)
 (setq org-fast-tag-selection-single-key 'expert)
 (setq org-fontify-done-headline t)
 (setq org-fontify-emphasized-text t)
@@ -1184,6 +1187,7 @@ lloogg_clientid = \"2080028090290f8e\";
 
 #+BEGIN_SRC emacs-lisp
 ;; Generic / unsorted
+(setq org-reveal-theme "night")
 (setq org-global-properties
       '(("Effort_ALL" .
          "0 0:10 0:20 0:30 0:40 0:50 1:00 1:30 2:00 2:30 3:00 4:00 5:00 6:00 7:00 8:00")
@@ -1213,6 +1217,12 @@ lloogg_clientid = \"2080028090290f8e\";
     (insert (format
              "#+HTML: <div class=\"fb-like\" data-href=\"%s\" data-send=\"true\" data-width=\"450\" data-show-faces=\"false\"></div>"
              url))))
+#+END_SRC
+* debbugs
+
+#+BEGIN_SRC emacs-lisp
+(require 'debbugs-org)
+(setq debbugs-gnu-default-packages '("emacs" "org-mode"))
 #+END_SRC
 
 * notmuch
@@ -1414,6 +1424,7 @@ article."
 
 ;; Select the first mail when entering a group
 (setq gnus-auto-select-first t)
+(setq gnus-auto-select-subject 'unread)
 
 ;; Group sorting
 (setq gnus-group-sort-function
@@ -1995,8 +2006,8 @@ the copy in the last group."
 ;; (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 ;; (add-hook 'clojure-mode-hook 'paredit-mode)
 
-(add-hook 'emacs-lisp-mode-hook 'electric-pair-mode)
-(add-hook 'emacs-lisp-mode-hook 'electric-indent-mode)
+(add-hook 'emacs-lisp-mode-hook 'electric-pair-mode 'append 'local)
+(add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append 'local)
 ;; (add-hook 'emacs-lisp-mode-hook 'electric-layout-mode)
 
 (defvar todo-comment-face 'todo-comment-face)
@@ -2005,29 +2016,29 @@ the copy in the last group."
 ;; Fontifying todo items outside of org-mode
 (defface todo-comment-face
   '((t (:background "#3f3f3f"
-	:foreground "white"
-	:weight bold
-	:bold t)))
+        :foreground "white"
+        :weight bold
+        :bold t)))
   "Face for TODO in code buffers."
   :group 'org-faces)
 
 (defface headline-face
   '((t (:foreground "white"
-	:background "#3f3f3f"
-	:weight bold
-	:bold t)))
+        :background "#3f3f3f"
+        :weight bold
+        :bold t)))
   "Face for headlines."
   :group 'org-faces)
 
 (defun fontify-todo ()
   (font-lock-add-keywords
    nil '((";;.*\\(TODO\\|FIXME\\)"
-	  (1 todo-comment-face t)))))
+          (1 todo-comment-face t)))))
 
 (defun fontify-headline ()
   (font-lock-add-keywords
    nil '(("^;;;;* ?\\(.*\\)\\>"
-	  (1 headline-face t)))))
+          (1 headline-face t)))))
 #+END_SRC
 
 ** Geiser
