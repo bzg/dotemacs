@@ -45,6 +45,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq byte-compile-debug t)
 (setq elp-sort-by-function 'elp-sort-by-average-time)
 
+(setq line-height 0.1)
 (setq auto-save-default nil)
 (setq make-backup-files nil)
 (setq kill-whole-line t)
@@ -85,9 +86,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (auto-compression-mode t)
 
 ;; Don't clutter the emacs screen
-(tool-bar-mode -1)
+;; (tool-bar-mode -1)
+;; (menu-bar-mode -1)
 (blink-cursor-mode -1)
-(menu-bar-mode -1)
 #+END_SRC
 
 * Set my exec/load paths
@@ -199,21 +200,14 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (load custom-file)
 
 (setq initial-frame-alist
-      '(;; (left-fringe . 180)
-        ;; (right-fringe . 180)
+      '((left-fringe . 10)
+        (right-fringe . 10)
         (menu-bar-lines . 0)
         (tool-bar-lines . 0)
         (vertical-scroll-bars . nil)
         ;; (background-color . "black")
         ;; (foreground-color . "#dddddd")
         ))
-#+END_SRC
-
-** Theme
-
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'custom-theme-load-path "~/install/git/cyberpunk-theme.el/")
-;; (load-theme 'cyberpunk)
 #+END_SRC
 
 ** Fonts
@@ -238,7 +232,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq initial-scratch-message "")
 (setq initial-major-mode 'org-mode)
 (setq inhibit-startup-message t)
-(setq inhibit-startup-echo-area-message t)
+(setq inhibit-startup-echo-area-message "guerry")
 (setq visible-bell t)
 (setq spell-command "aspell")
 (setq speedbar-use-images nil)
@@ -248,6 +242,13 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq text-mode-hook '(turn-on-auto-fill text-mode-hook-identify))
 
 ;; (mouse-avoidance-mode 'cat-and-mouse)
+#+END_SRC
+
+** Theme
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'custom-theme-load-path "~/install/git/cyberpunk-theme.el/")
+;; (load-theme 'cyberpunk)
 #+END_SRC
 
 ** Printing
@@ -294,6 +295,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (global-set-key (kbd "<insert>") (lambda() (interactive) (insert-char ?<)))
 (global-set-key (kbd "<deletechar>") (lambda() (interactive) (insert-char ?>)))
 (global-set-key (quote [f1]) 'gnus)
+(global-set-key (quote [f2]) 'hidden-mode-line-mode)
+(global-set-key (quote [f3]) 'bzg-big-fringe-mode)
 (global-set-key (quote [f5]) 'edebug-defun)
 (global-set-key (quote [f6]) 'w3m)
 (global-set-key (quote [f7]) 'auto-fill-mode)
@@ -446,7 +449,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((emacs-lisp . t)
-   (sh . t)
+   (shell . t)
    (dot . t)
    (clojure . t)
    (org . t)
@@ -459,6 +462,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
    (gnuplot . t)))
 
 (org-clock-persistence-insinuate)
+
+(add-hook 'org-clock-in-hook (lambda() (org-todo "STRT")))
 
 (appt-activate t)
 
@@ -600,7 +605,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
         ("wW" tags-todo "+Write/NEXT|TODO|STRT" nil)
         ("w," tags-todo "+Write/STRT" nil)
         ("wt" tags-tree "+Write/STRT" nil)
-        ("w;" tags-todo "+Write+@Offline" nil)
+        ("w;" tags "+Write+@Offline" nil)
 
         ;; Everything that has a "Write" tag
         ("c" . "Code")
@@ -779,6 +784,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-special-ctrl-a/e 'reversed)
 (setq org-special-ctrl-k t)
 (setq org-stuck-projects '("+LEVEL=1" ("NEXT" "TODO" "DONE")))
+(setq org-tag-persistent-alist '(("Write" . ?w) ("Read" . ?r)))
 (setq org-tag-alist
       '((:startgroup . nil)
         ("Write" . ?w) ("Trad" . ?t) ("Read" . ?r) ("Proofread" . ?f) ("RDV" . ?R)
@@ -1983,6 +1989,79 @@ the copy in the last group."
   (while (re-search-forward "\\([0-9]+:[0-9]+:[0-9]+\\)," nil t)
     (let ((s (save-match-data (org-hh:mm:ss-string-to-seconds (match-string 1)))))
       (replace-match (save-match-data (org-format-seconds "%.2h:%.2m:%.2s," (+ s n))) t t))))
+
+;; No mode-line
+(if (custom-theme-enabled-p "cyberpunk")
+    (custom-set-faces
+     '(fringe ((t (:background "white"))))
+     '(mode-line-highlight ((t nil)))
+     '(mode-line ((t (:foreground "white" :background "white"))))
+     '(mode-line-inactive ((t (:background "white" :foreground "white")))))
+  (custom-set-faces
+   '(fringe ((t (:background "black"))))
+   '(mode-line-highlight ((t nil)))
+   '(mode-line ((t (:foreground "black" :background "black"))))
+   '(mode-line-inactive ((t (:background "white" :foreground "black"))))))
+
+;; Hide fringe indicators
+(mapcar (lambda(fb) (set-fringe-bitmap-face fb 'org-hide))
+        fringe-bitmaps)
+
+;; Command to toggle the display of the mode-line as a header
+;; Careful: you need to deactivate hidden-mode-line-mode
+(defun mode-line-in-header ()
+  (interactive)
+  (if (not header-line-format)
+      (setq header-line-format mode-line-format)
+    (setq header-line-format nil))
+  (force-mode-line-update))
+(global-set-key (kbd "C-s-SPC") 'mode-line-in-header)
+
+(defvar-local bzg-big-fringe-mode nil)
+(define-minor-mode bzg-big-fringe-mode
+  "Minor mode to hide the mode-line in the current buffer."
+  :init-value nil
+  :global nil
+  :variable bzg-big-fringe-mode
+  :group 'editing-basics
+  (if (not bzg-big-fringe-mode)
+      (set-fringe-style nil)
+    (set-fringe-mode
+     (/ (- (frame-pixel-width)
+           (* 120 (frame-char-width)))
+        2))))
+
+(defvar-local bzg-big-fringe-mode nil)
+(define-minor-mode bzg-big-fringe-mode
+  "Minor mode to hide the mode-line in the current buffer."
+  :init-value nil
+  :global nil
+  :variable bzg-big-fringe-mode
+  :group 'editing-basics
+  (if (not bzg-big-fringe-mode)
+      (set-fringe-mode 10)
+    (set-fringe-mode 300)))
+
+;; (defvar-local hidden-mode-line nil)
+(defvar-local hidden-mode-line-mode nil)
+
+(define-minor-mode hidden-mode-line-mode
+  "Minor mode to hide the mode-line in the current buffer."
+  :init-value nil
+  :global nil
+  :variable hidden-mode-line-mode
+  :group 'editing-basics
+  (if hidden-mode-line-mode
+      (setq hide-mode-line mode-line-format
+            mode-line-format nil)
+    (setq mode-line-format hide-mode-line
+          hide-mode-line nil))
+  (when (and (called-interactively-p 'interactive)
+             hidden-mode-line-mode)
+    (run-with-idle-timer
+     0 nil 'message
+     (concat "Hidden Mode Line Mode enabled.  "
+             "Use M-x hidden-mode-line-mode RET to make the mode-line appear."))))
 #+END_SRC
 
 * Start the server
