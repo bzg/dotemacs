@@ -9,8 +9,6 @@
 #+PROPERTY:    tangle /home/guerry/elisp/config/emacs.el
 # #+PROPERTY:    tangle /home/guerry/public_html/org/homepage/u/emacs.el
 
-* General information
-
 This is my =.emacs.el= file, as a HTMLized =emacs.org= file.
 
 You can browse the =.el= file [[http://bzg.fr/u/emacs.el][here]] or clone the =.org= file from [[https://github.com/bzg/dotemacs][github]].
@@ -60,16 +58,13 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; I find this useful to have a local search ring:
-(make-variable-buffer-local 'search-ring)
-
 (setenv "EDITOR" "emacsclient")
 (setenv "CVS_RSH" "ssh")
 (setq completion-use-tooltip nil)
 (setq battery-mode-line-format " [%b%p%%,%d°C]")
 (electric-indent-mode -1)
 (electric-pair-mode -1)
-(setq-default electric-indent-chars nil)
+(setq-default electric-indent-chars '(?\n))
 
 (require 'whitespace)
 (add-to-list 'whitespace-style 'lines-tail)
@@ -202,12 +197,16 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq initial-frame-alist
       '((left-fringe . 10)
         (right-fringe . 10)
+        ;; (cursor-type . (hbar . 1))
+        (left-margin-width . 10)
         (menu-bar-lines . 0)
         (tool-bar-lines . 0)
         (vertical-scroll-bars . nil)
         ;; (background-color . "black")
         ;; (foreground-color . "#dddddd")
         ))
+
+(setq default-frame-alist initial-frame-alist)
 #+END_SRC
 
 ** Fonts
@@ -217,7 +216,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ;; (set-frame-font "Monospace 10")
 
 ;; I use this sometimes for reading long blog posts:
-(set-frame-font "Inconsolata 13")
+;; (set-frame-font "Inconsolata 13")
+;; (set-frame-font "Deja Vu Sans Mono 13")
+(set-frame-font "Meslo LG M DZ 11")
 
 (setq org-export-htmlize-output-type 'css)
 #+END_SRC
@@ -449,7 +450,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((emacs-lisp . t)
-   (shell . t)
+   ;; (shell . t)
    (dot . t)
    (clojure . t)
    (org . t)
@@ -566,6 +567,10 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
          ((org-agenda-sorting-strategy
            '(timestamp-up))
           (org-agenda-max-entries 10)))
+
+        ("S" todo "NEXT|STRT|TODO"
+         ((org-agenda-sorting-strategy
+           '(timestamp-up))))
 
         ("N" todo "NEXT|TODO"
          ((org-agenda-sorting-strategy
@@ -775,6 +780,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
                            (("~/org/garden.org") . (:maxlevel . 3))
                            (("~/org/libre.org") . (:maxlevel . 3))))
 (setq org-refile-use-outline-path t)
+(setq org-refile-allow-creating-parent-nodes t)
 (setq org-refile-use-cache t)
 (setq org-return-follows-link t)
 (setq org-reverse-note-order t)
@@ -829,7 +835,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-goto-auto-isearch nil)
 (setq org-beamer-outline-frame-title "Survol")
 (setq org-image-actual-width 600)
-(setq org-refile-allow-creating-parent-nodes t)
 (setq org-src-fontify-natively t)
 (setq org-todo-keyword-faces '(("STRT" . "lightgoldenrod1")
                                ("NEXT" . "Cyan3")
@@ -1265,6 +1270,111 @@ article."
 (define-key notmuch-show-mode-map (kbd "C-c C-c") 'bzg-notmuch-goto-message-in-gnus)
 #+END_SRC
 
+* BBDB
+
+#+BEGIN_SRC emacs-lisp
+(setq bbdb-file "~/elisp/config/bbdb")
+
+(require 'bbdb)
+(require 'bbdb-loaddefs)
+;; (require 'bbdb-hooks)
+(require 'bbdb-com)
+(require 'bbdb-anniv)
+(require 'bbdb-gnus)
+;; (require 'moy-bbdb)
+
+(setq bbdb-pop-up-window-size 5)
+
+(setq bbdb-update-records-p 'create)
+(bbdb-mua-auto-update-init 'gnus 'message)
+(setq bbdb-mua-pop-up nil)
+
+(bbdb-insinuate-message)
+(bbdb-initialize 'message 'gnus)
+
+(setq bbdb-allow-duplicates t)
+
+;; (autoload 'bbdb/send-hook "moy-bbdb"
+;;   "Function to be added to `message-send-hook' to notice records
+;;   when sending messages" t)
+
+;; (add-hook 'message-send-hook 'bbdb/send-hook)
+
+(add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
+;; (add-hook 'message-setup-hook 'bbdb-define-all-aliases) Not in bbdb3?
+(add-hook 'bbdb-change-hook 'bbdb-timestamp)
+(add-hook 'bbdb-create-hook 'bbdb-creation-date)
+(add-hook 'bbdb-notice-mail-hook 'bbdb-auto-notes)
+(autoload 'bbdb-insinuate-gnus "bbdb-insinuate-gnus" "BBDB Gnus" t)
+;; (add-hook 'list-diary-entries-hook 'bbdb-include-anniversaries)
+
+(setq bbdb-always-add-addresses t
+      bbdb-complete-name-allow-cycling t
+      bbdb-completion-display-record t
+      bbdb-default-area-code nil
+      bbdb-dwim-net-address-allow-redundancy t
+      bbdb-electric-p nil
+      bbdb-new-nets-always-primary 'never
+      bbdb-north-american-phone-numbers-p nil
+      bbdb-offer-save 'auto
+      bbdb-pop-up-target-lines 3
+      bbdb-print-net 'primary
+      bbdb-print-require t
+      bbdb-use-pop-up nil
+      bbdb-user-mail-names gnus-ignored-from-addresses
+      bbdb/gnus-split-crosspost-default nil
+      bbdb/gnus-split-default-group nil
+      bbdb/gnus-split-myaddr-regexp gnus-ignored-from-addresses
+      bbdb/gnus-split-nomatch-function nil
+      bbdb/gnus-summary-known-poster-mark "+"
+      bbdb/gnus-summary-mark-known-posters t)
+
+(defalias 'bbdb-y-or-n-p '(lambda (prompt) t))
+
+;; only set this when bbdb-user-mail-names is set
+;; (setq bbdb-ignore-most-messages-alist
+;;       `(("To" . ,bbdb-user-mail-names)))
+
+;; FIXME: ignore hook est cassé
+;; (setq bbdb/mail-auto-create-p 'bbdb-ignore-most-messages-hook)
+;; (setq bbdb/news-auto-create-p 'bbdb-ignore-most-messages-hook)
+
+(setq bbdb-auto-notes-alist
+      `(("Newsgroups" ("[^,]+" newsgroups 0))
+	("Subject" (".*" last-subj 0 t))
+	("User-Agent" (".*" mailer 0))
+	("X-Mailer" (".*" mailer 0))
+	("Organization" (".*" organization 0))
+	("X-Newsreader" (".*" mailer 0))
+	("X-Face" (".+" face 0 'replace))
+	("Face" (".+" face 0 'replace))))
+
+(add-hook 'bbdb-list-hook 'my-bbdb-display-xface)
+
+(defun my-bbdb-display-xface ()
+  "Search for face properties and display the faces."
+  (when (or (gnus-image-type-available-p 'xface)
+	    (gnus-image-type-available-p 'pbm))
+    (save-excursion
+      (goto-char (point-min))
+      (let ((inhibit-read-only t)
+	    (default-enable-multibyte-characters nil)
+	    pbm faces)
+	(while (re-search-forward "^           face: \\(.*\\)" nil t)
+	  (setq faces (match-string 1))
+	  (replace-match "" t t nil 1)
+	  (dolist (data (split-string faces ", "))
+	    (condition-case nil
+		(insert-image (create-image (gnus-convert-face-to-png data) nil t))
+	      (error
+	       (insert-image (gnus-create-image (uncompface data) nil t :face 'tooltip))))
+	    (insert " ")))))))
+
+;; (setq bbdb-quiet-about-name-mismatches 0)
+
+;; (setq bbdb-message-caching-enabled nil)
+#+END_SRC
+
 * Gnus
 
 ** Gnus general
@@ -1289,9 +1399,6 @@ article."
 
 (require 'message)
 (require 'gnus)
-(require 'bbdb)
-(require 'bbdb-loaddefs)
-(require 'bbdb-config)
 (require 'starttls)
 (require 'epg)
 (require 'epa)
@@ -1991,59 +2098,60 @@ the copy in the last group."
       (replace-match (save-match-data (org-format-seconds "%.2h:%.2m:%.2s," (+ s n))) t t))))
 
 ;; No mode-line
-(if (custom-theme-enabled-p "cyberpunk")
-    (custom-set-faces
-     '(fringe ((t (:background "white"))))
-     '(mode-line-highlight ((t nil)))
-     '(mode-line ((t (:foreground "white" :background "white"))))
-     '(mode-line-inactive ((t (:background "white" :foreground "white")))))
-  (custom-set-faces
-   '(fringe ((t (:background "black"))))
-   '(mode-line-highlight ((t nil)))
-   '(mode-line ((t (:foreground "black" :background "black"))))
-   '(mode-line-inactive ((t (:background "white" :foreground "black"))))))
+;; (if (custom-theme-enabled-p "cyberpunk")
+;;     (custom-set-faces
+;;      '(fringe ((t (:background "white"))))
+;;      '(mode-line-highlight ((t nil)))
+;;      '(mode-line ((t (:foreground "white" :background "white"))))
+;;      '(mode-line-inactive ((t (:background "white" :foreground "white")))))
+;;   (custom-set-faces
+;;    '(fringe ((t (:background "black"))))
+;;    '(mode-line-highlight ((t nil)))
+;;    '(mode-line ((t (:foreground "black" :background "black"))))
+;;    '(mode-line-inactive ((t (:background "black" :foreground "black"))))))
 
 ;; Hide fringe indicators
 (mapcar (lambda(fb) (set-fringe-bitmap-face fb 'org-hide))
         fringe-bitmaps)
 
+
 ;; Command to toggle the display of the mode-line as a header
-;; Careful: you need to deactivate hidden-mode-line-mode
 (defun mode-line-in-header ()
   (interactive)
   (if (not header-line-format)
-      (setq header-line-format mode-line-format)
-    (setq header-line-format nil))
+      (rotatef header-line-format mode-line-format)
+    (rotatef mode-line-format header-line-format))
   (force-mode-line-update))
 (global-set-key (kbd "C-s-SPC") 'mode-line-in-header)
 
-(defvar-local bzg-big-fringe-mode nil)
+(defvar bzg-big-fringe-mode nil)
 (define-minor-mode bzg-big-fringe-mode
   "Minor mode to hide the mode-line in the current buffer."
   :init-value nil
-  :global nil
+  :global t
   :variable bzg-big-fringe-mode
   :group 'editing-basics
   (if (not bzg-big-fringe-mode)
       (set-fringe-style nil)
     (set-fringe-mode
-     (/ (- (frame-pixel-width)
-           (* 120 (frame-char-width)))
-        2))))
+     ;; (/ (- (frame-pixel-width)
+     ;;       (* 120 (frame-char-width)))
+     ;;    2)
+     200
+     )))
 
-(defvar-local bzg-big-fringe-mode nil)
-(define-minor-mode bzg-big-fringe-mode
-  "Minor mode to hide the mode-line in the current buffer."
-  :init-value nil
-  :global nil
-  :variable bzg-big-fringe-mode
-  :group 'editing-basics
-  (if (not bzg-big-fringe-mode)
-      (set-fringe-mode 10)
-    (set-fringe-mode 300)))
+(add-hook 'window-configuration-change-hook
+          (lambda ()
+            (if (delq nil
+                      (let ((fw (frame-width)))
+                        (mapcar (lambda(w) (< (window-width w) fw))
+                                (window-list))))
+                (bzg-big-fringe-mode 0)
+              (bzg-big-fringe-mode 1))))
 
-;; (defvar-local hidden-mode-line nil)
+;; See http://bzg.fr/emacs-hide-mode-line.html
 (defvar-local hidden-mode-line-mode nil)
+(defvar-local hide-mode-line nil)
 
 (define-minor-mode hidden-mode-line-mode
   "Minor mode to hide the mode-line in the current buffer."
@@ -2056,12 +2164,18 @@ the copy in the last group."
             mode-line-format nil)
     (setq mode-line-format hide-mode-line
           hide-mode-line nil))
+  (force-mode-line-update)
+  ;; Apparently force-mode-line-update is not always enough to
+  ;; redisplay the mode-line
+  (redraw-display)
   (when (and (called-interactively-p 'interactive)
              hidden-mode-line-mode)
     (run-with-idle-timer
      0 nil 'message
      (concat "Hidden Mode Line Mode enabled.  "
-             "Use M-x hidden-mode-line-mode RET to make the mode-line appear."))))
+             "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
+
+(add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
 #+END_SRC
 
 * Start the server
