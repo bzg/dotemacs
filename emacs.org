@@ -19,7 +19,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 #+BEGIN_SRC emacs-lisp
 ;; I don't use package a lot but don't want to configure the list of
-;; archives each time I do use it.
+;; archives each time I use it.
 
 (require 'package)
 (setq package-archives
@@ -36,39 +36,54 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 * General defaults
 
 #+BEGIN_SRC emacs-lisp
-;; (setq default-major-mode 'org-mode)
-
+;; Let's get a backtrace when errors are
 (setq debug-on-error t)
 
+;; Scrolling done right
+(setq scroll-error-top-bottom t)
+
+;; Display byte-compiler warnings on error
 (setq byte-compile-debug t)
+
+;; elp.el is the Emacs Lisp profiler, sort by average time
 (setq elp-sort-by-function 'elp-sort-by-average-time)
 
-(setq line-height 0.1)
+;; Stop polluting the directory with auto-saved files and backup
 (setq auto-save-default nil)
 (setq make-backup-files nil)
-(setq kill-whole-line t)
+
+;; Well, it's more so that you know this option
 (setq kill-ring-max 120)
-(setq sentence-end-double-space t)
-(setq require-final-newline t)
-(setq next-screen-context-lines 0)
-(setq bidi-display-reordering nil)
-(setq enable-local-variables t)
-(setq enable-local-eval t)
+(setq kill-whole-line t)
 (setq kill-read-only-ok t)
 
+(setq sentence-end-double-space t)
+(setq require-final-newline t)
+
+;; Number of lines of continuity when scrolling by screenfuls.
+(setq next-screen-context-lines 0)
+
+;; (setq bidi-display-reordering nil)
+(setq enable-local-variables t)
+(setq enable-local-eval t)
+
+;; Always use "y" for "yes"
 (fset 'yes-or-no-p 'y-or-n-p)
 
 (setenv "EDITOR" "emacsclient")
 (setenv "CVS_RSH" "ssh")
-(setq completion-use-tooltip nil)
-(setq battery-mode-line-format " [%b%p%%,%d°C]")
-(electric-indent-mode -1)
-(electric-pair-mode -1)
+
+;; I see my battery info in i3, I don't use this anymore
+;; (setq battery-mode-line-format " [%b%p%%,%d°C]")
+
+;; I used to deactivate this but find it useful now
+;; (electric-indent-mode -1)
+;; (electric-pair-mode -1)
 (setq-default electric-indent-chars '(?\n))
 
 (require 'whitespace)
 (add-to-list 'whitespace-style 'lines-tail)
-
+(setq whitespace-line-column 80)
 (setq load-prefer-newer t)
 #+END_SRC
 
@@ -197,6 +212,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq initial-frame-alist
       '((left-fringe . 10)
         (right-fringe . 10)
+        (alpha . 85)
         ;; (cursor-type . (hbar . 1))
         (left-margin-width . 10)
         (menu-bar-lines . 0)
@@ -220,7 +236,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ;; (set-frame-font "Deja Vu Sans Mono 13")
 (set-frame-font "Meslo LG M DZ 11")
 
-(setq org-export-htmlize-output-type 'css)
+(setq line-height 0.1)
 #+END_SRC
 
 ** Startup
@@ -802,7 +818,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
         ("Twit" . ?i) ("Tel" . ?T) ("Buy" . ?B) ("Doc" . ?d) ("Mail" . ?@)))
 (setq org-tags-column -74)
 (setq org-tags-match-list-sublevels t)
-(setq org-todo-keywords '((type "NEXT" "TODO" "STRT" "WAIT" "|" "DONE" "DELEGATED" "CANCELED")))
+(setq org-todo-keywords '((type "STRT" "NEXT" "TODO" "WAIT" "|" "DONE" "DELEGATED" "CANCELED")))
 (setq org-use-property-inheritance t)
 (setq org-clock-persist t)
 (setq org-clock-history-length 35)
@@ -1185,6 +1201,8 @@ lloogg_clientid = \"2080028090290f8e\";
         ("dll" :components ("dll" "dll-attachments" "dll-rss"))
         ("CoursWeb" :components ("cours" "cours-images"))
         ))
+
+(setq org-export-htmlize-output-type 'css)
 
 (setq org-export-filter-planning-functions
       '(my-org-html-export-planning))
@@ -2140,14 +2158,19 @@ the copy in the last group."
      200
      )))
 
+(defun bzg-enable-big-fringe-conditionnally ()
+  (if (delq nil
+  (let ((fw (frame-width)))
+    (mapcar (lambda(w) (< (window-width w) fw))
+            (window-list))))
+      (bzg-big-fringe-mode 0)
+    (bzg-big-fringe-mode 1)))
+
 (add-hook 'window-configuration-change-hook
-          (lambda ()
-            (if (delq nil
-                      (let ((fw (frame-width)))
-                        (mapcar (lambda(w) (< (window-width w) fw))
-                                (window-list))))
-                (bzg-big-fringe-mode 0)
-              (bzg-big-fringe-mode 1))))
+          'bzg-enable-big-fringe-conditionnally)
+
+;; (remove-hook 'window-configuration-change-hook
+;;              'bzg-enable-big-fringe-conditionnally)
 
 ;; See http://bzg.fr/emacs-hide-mode-line.html
 (defvar-local hidden-mode-line-mode nil)
