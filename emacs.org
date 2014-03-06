@@ -21,11 +21,14 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ;; I don't use package a lot but don't want to configure the list of
 ;; archives each time I use it.
 
+(define-key global-map (kbd "<print>") (lambda()(interactive)(insert " ")))
+
 (require 'package)
 (setq package-archives
       '(("org" . "http://orgmode.org/elpa/")
         ("marmalade" . "http://marmalade-repo.org/packages/")
         ("gnu" . "http://elpa.gnu.org/packages/")
+        ("melpa" . "http://melpa.milkbox.net/packages/")
         ;; ("SC" . "http://joseito.republika.pl/sunrise-commander/")
         ;; ("ELPA" . "http://tromey.com/elpa/")
         ))
@@ -78,7 +81,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 ;; I used to deactivate this but find it useful now
 ;; (electric-indent-mode -1)
-;; (electric-pair-mode -1)
+(electric-pair-mode -1)
 (setq-default electric-indent-chars '(?\n))
 
 (require 'whitespace)
@@ -121,7 +124,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (add-to-list 'load-path "~/install/git/org-reveal/")
 (add-to-list 'load-path "~/install/git/helm/")
 (add-to-list 'load-path "~/install/git/geiser/elisp/")
-(add-to-list 'load-path "~/install/git/ac-nrepl/")
+;; (add-to-list 'load-path "~/install/git/ac-nrepl/")
+
+
 (add-to-list 'load-path "~/install/git/clojure-mode/")
 (add-to-list 'load-path "~/install/git/cider/")
 (add-to-list 'load-path "~/install/git/smartparens/")
@@ -158,25 +163,29 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ;; (show-smartparens-global-mode)
 
 (require 'dash)
-(require 'auto-complete)
+;; (require 'auto-complete)
 (require 'cider)
-
-(require 'ac-nrepl)
-(add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
-(add-hook 'cider-mode-hook 'ac-nrepl-setup)
-(eval-after-load "auto-complete"
-  '(progn (add-to-list 'ac-modes 'cider-repl-mode)
-          (add-to-list 'ac-modes 'cider-mode)))
-
-(eval-after-load "cider"
-  '(define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
 
 (setq nrepl-hide-special-buffers t)
 (setq cider-repl-pop-to-buffer-on-connect nil)
 (setq cider-popup-stacktraces nil)
 (setq cider-repl-popup-stacktraces t)
 
-(add-hook 'clojure-mode-hook 'auto-complete-mode)
+(require 'company)
+(require 'company-cider)
+(eval-after-load 'company '(add-to-list 'company-backends 'company-cider))
+
+;; (require 'ac-nrepl)
+;; (add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
+;; (add-hook 'cider-mode-hook 'ac-nrepl-setup)
+;; (eval-after-load "auto-complete"
+;;   '(progn (add-to-list 'ac-modes 'cider-repl-mode)
+;;           (add-to-list 'ac-modes 'cider-mode)))
+;; (eval-after-load "cider"
+;;   '(define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
+
+
+;; (remove-hook 'clojure-mode-hook 'auto-complete-mode)
 ;; (add-hook 'cider-repl-mode-hook 'paredit-mode)
 #+END_SRC
 
@@ -305,7 +314,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 * Define global keys
 
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-h :") 'find-function)
+(global-set-key (kbd "C-h /") 'find-function)
 (global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
@@ -343,9 +352,11 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 #+BEGIN_SRC emacs-lisp
 (require 'dired)
 (require 'dired-x)
+(require 'dired-details)
 (require 'wdired)
 
 (define-key dired-mode-map "\C-cb" 'org-ibuffer)
+(define-key dired-mode-map ")" 'dired-details-toggle)
 (define-key dired-mode-map "\C-cg" 'grep-find)
 (define-key dired-mode-map "\C-cd" 'dired-clean-tex)
 
@@ -466,7 +477,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((emacs-lisp . t)
-   ;; (shell . t)
+   (sh . t)
    (dot . t)
    (clojure . t)
    (org . t)
@@ -546,12 +557,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 #+BEGIN_SRC emacs-lisp
 (setq org-agenda-custom-commands
       `(
-
-        ("B" "Today" tags-todo
-         "DEADLINE<=\"<today>\""
-         ((org-agenda-overriding-header "Today")
-          (org-agenda-sorting-strategy '(deadline-up))))
-
         ;; list of WP tasks for today
         (" " "Aujourd'hui" agenda "List of rendez-vous and tasks for today"
          ((org-agenda-span 1)
@@ -559,17 +564,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
           (org-deadline-warning-days 10)
           (org-agenda-sorting-strategy
            '(todo-state-up time-up priority-up))))
-
-        ("b" . "Blog")
-        ("ba" "Blog agenda" agenda "Upcoming blog tasks"
-         ((org-agenda-files '("~/install/git/homepage/blog.org"
-                              "~/install/git/dunlivrelautre/todo.org"))
-          (org-deadline-warning-days 3)
-          (org-agenda-skip-function
-           '(org-agenda-skip-entry-if 'scheduled))))
-        ("bn" "Blog tasks" todo "NEXT|TODO|STRT"
-         ((org-agenda-files '("~/install/git/homepage/blog.org"
-                              "~/install/git/dunlivrelautre/todo.org"))))
 
         ;; list of WP tasks for today
         ("%" "Rendez-vous" agenda* "Week RDV"
@@ -579,18 +573,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
           (org-agenda-sorting-strategy
            '(todo-state-up time-up priority-up))))
 
-        ("n" todo "NEXT|TODO"
-         ((org-agenda-sorting-strategy
-           '(timestamp-up))
-          (org-agenda-max-entries 10)))
-
-        ("S" todo "NEXT|STRT|TODO"
-         ((org-agenda-sorting-strategy
-           '(timestamp-up))))
-
-        ("N" todo "NEXT|TODO"
-         ((org-agenda-sorting-strategy
-           '(timestamp-up))))
+        ("n" todo "NEXT" ((org-agenda-sorting-strategy '(timestamp-up))))
+        ("d" todo "TODO" ((org-agenda-sorting-strategy '(timestamp-up))))
+        ("s" todo "STRT" ((org-agenda-sorting-strategy '(timestamp-up))))
 
         ("x" "Scheduled all" agenda "List of scheduled tasks for today"
          ((org-agenda-span 1)
@@ -610,28 +595,23 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
         ("Y" tags-todo "+SCHEDULED<=\"<now>\"")
         ("Z" tags-todo "+DEADLINE<=\"<now>\"")
 
-        ("R" tags-todo "+Read+TODO={TODO\\|NEXT}" nil)
-
+        ("R" tags-todo "+Read+TODO={NEXT}" nil)
         ;; Everything that has a "Read" tag
         ("r" . "Read")
-        ("rr" tags-todo "+Read+TODO={TODO\\|NEXT}" ((org-agenda-max-entries 10)))
-        ("rR" tags-todo "+Read+TODO={TODO\\|NEXT}" nil)
-        ("r," tags-todo "+Read/STRT" nil)
+        ("rn" tags-todo "+Read+TODO={NEXT}" nil)
+        ("rt" tags-todo "+Read+TODO={TODO}" nil)
+        ("rs" tags-todo "+Read+TODO={STRT}" nil)
         ("rF" tags "+Read+@Offline" nil)
 
-        ("W" tags-todo "+Write/NEXT|TODO|STRT" nil)
-        ;; Everything that has a "Write" tag
-        ("w" . "write")
-        ("ww" tags-todo "+Write/NEXT|TODO|STRT" ((org-agenda-max-entries 10)))
-        ("wW" tags-todo "+Write/NEXT|TODO|STRT" nil)
-        ("w," tags-todo "+Write/STRT" nil)
-        ("wt" tags-tree "+Write/STRT" nil)
-        ("w;" tags "+Write+@Offline" nil)
+        ("W" tags-todo "+Write+TODO={NEXT}" nil)
 
-        ;; Everything that has a "Write" tag
-        ("c" . "Code")
-        ("cc" tags-todo "+Code/NEXT|TODO|STRT" nil)
-        ("c," tags-todo "+Code/STRT" nil)
+        ;; Everything that has a "Read" tag
+        ("w" . "Write")
+        ("wn" tags-todo "+Write+TODO={NEXT}" nil)
+        ("wt" tags-todo "+Write+TODO={TODO}" nil)
+        ("ws" tags-todo "+Write+TODO={STRT}" nil)
+        ("wF" tags "+Write+@Offline" nil)
+
         ))
 #+END_SRC
 
@@ -644,12 +624,16 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
         ;; Mise, put it on top of my main .org file
         (" " "Misc" entry (file "~/org/bzg.org")
-         "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?" :prepend t
-         :immediate-finish t)
+         "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?"
+         :prepend t :immediate-finish t)
 
         ;; for org/rdv.org
         ("r" "Bzg RDV" entry (file+headline "~/org/rdv.org" "RDV")
          "* %a :RDV:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?" :prepend t)
+
+        ;; Basement et garden
+        ("g" "Garden" entry (file+headline "~/org/garden.org" "Garden")
+         "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
 
         ;; for org/rdv.org
         ("B" "Blog" entry (file+headline "~/org/bzg.org" "Blog")
@@ -657,10 +641,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
         ;; Basement et garden
         ("b" "Basement" entry (file+headline "~/org/bzg.org" "Basement")
-         "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-
-        ;; Basement et garden
-        ("g" "Garden" entry (file+headline "~/org/garden.org" "Garden")
          "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
 
         ;; Boite (lml) et cours
@@ -921,8 +901,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 <div id=\"menu\">
   <a href=\"/about.en.html\"><button class=\"btn btn-success\" type=\"button\">About</button></a>
   <a href=\"/blog.html\"><button class=\"btn btn-warning\" type=\"button\">Blog</button></a>
-  <a href=\"/job.html\"><button class=\"btn btn-danger\" type=\"button\">Job</button></a>
-  <a target=\"new\" href=\"http://github.com/bzg/\"><button class=\"btn btn-default\" type=\"button\">Github</button></a>
+  <a href=\"/job.en.html\"><button class=\"btn btn-danger\" type=\"button\">Job</button></a>
+  <a href=\"http://bzg.fr/talks.en.html\"><button class=\"btn btn-default\" type=\"button\">Talks</button></a>
+  <a href=\"http://bzg.fr/libre.en.html\"><button class=\"btn btn-success\" type=\"button\">Libre</button></a>
 </div>
 
 <script src=\"http://www.google-analytics.com/urchin.js\" type=\"text/javascript\"></script>
@@ -953,6 +934,22 @@ lloogg_clientid = \"2080028090290f8e\";
   js.src = \"//connect.facebook.net/fr_FR/all.js#xfbml=1\";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
+
+<div id=\"page-wrap\">
+  <div class=\"jqmWindow\" id=\"dialog\">
+    <p>I'm now working full-time on <strong>KickHub</strong>, a donation/crowdfunding platform for free software developers and free culture contributors.</p>
+    <p><a href=\"http://kickhub.com\" target=\"new\">Check the project out</a> and let me know what you think!</p>
+    <a href=\"#\" class=\"jqmClose\">Close</a>
+  </div>
+</div>
+
+<script type=\"text/javascript\">
+      (function(){ var bsa = document.createElement('script'); bsa.type = 'text/javascript'; bsa.async = true; bsa.src = '//s3.buysellads.com/ac/bsa.js'; (document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(bsa); })();
+</script>
+
+<script type=\"text/javascript\">
+  var _gaq = _gaq || []; _gaq.push(['_setAccount', 'UA-68528-29']); _gaq.push(['_trackPageview']); (function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga); })();
+</script>
 ")
 
 (setq html-postamble "
@@ -977,7 +974,25 @@ lloogg_clientid = \"2080028090290f8e\";
          :html-head-extra
          "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"http://bzg.fr/blog.xml\" title=\"RSS feed for bzg.fr\">
 <link rel=\"stylesheet\" href=\"u/bootstrap.min.css\" />
-<link rel=\"stylesheet\" href=\"index.css\" type=\"text/css\" />"
+<link rel=\"stylesheet\" href=\"index.css\" type=\"text/css\" />
+    <script src=\"http://www.google.com/jsapi\" type=\"text/javascript\"></script>
+    <script type=\"text/javascript\">
+      google.load(\"jquery\", \"1.3.1\");
+    </script>
+    <script src=\"http://css-tricks.com/examples/ModalOnPageLoad/js/jquery.cookie.js\" type=\"text/javascript\"></script>
+    <script src=\"http://css-tricks.com/examples/ModalOnPageLoad/js/jqModal.js\" type=\"text/javascript\"></script>
+    <script type=\"text/javascript\">
+      $(function(){
+      var modalCookie = \"modal_cookie\";
+      var options = { path: '/', expires: 10 };
+      var shouldOpen = $.cookie(modalCookie);
+      $('#dialog').jqm();
+      if (shouldOpen != \"no\") {
+      $('#dialog').jqmShow();
+      $.cookie(modalCookie, 'no', options);
+      };
+      });
+    </script>"
          :html-preamble ,html-preamble
          :htmlized-source t
          :html-postamble ,html-postamble)
@@ -1445,8 +1460,8 @@ article."
           (concat "nnfolder+archive:" (format-time-string "%Y-%m")
                   "-divers-mail"))))
 
-;; Delete mail backups older than 3 days
-(setq mail-source-delete-incoming 3)
+;; Delete mail backups older than 1 days
+(setq mail-source-delete-incoming 1)
 
 ;; Select the first mail when entering a group
 (setq gnus-auto-select-first t)
@@ -1460,15 +1475,15 @@ article."
         gnus-group-sort-by-level))
 
 ;; Thread sorting (from Gnus master branch as of 2013-07-30)
-(setq gnus-thread-sort-functions
-      '(gnus-thread-sort-by-most-recent-date
-        gnus-thread-sort-by-number
-        gnus-thread-sort-by-total-score)
-      gnus-subthread-sort-functions
-      '(gnus-thread-sort-by-date
-        gnus-thread-sort-by-number)
-      gnus-sort-gathered-threads-function
-      'gnus-thread-sort-by-date)
+;; (setq gnus-thread-sort-functions
+;;       '(gnus-thread-sort-by-most-recent-date
+;;         gnus-thread-sort-by-number
+;;         gnus-thread-sort-by-total-score)
+;;       gnus-subthread-sort-functions
+;;       '(gnus-thread-sort-by-date
+;;         gnus-thread-sort-by-number)
+;;       gnus-sort-gathered-threads-function
+;;       'gnus-thread-sort-by-date)
 
 ;; Display the thread by default
 (setq gnus-thread-hide-subtree nil)
@@ -2213,16 +2228,18 @@ the copy in the last group."
 (add-hook 'emacs-lisp-mode-hook 'turn-on-orgstruct)
 (add-hook 'emacs-lisp-mode-hook 'fontify-todo)
 (add-hook 'emacs-lisp-mode-hook 'fontify-headline)
+(add-hook 'emacs-lisp-mode-hook 'company-mode)
+(add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
+
 (add-hook 'clojure-mode-hook 'turn-on-orgstruct)
 (add-hook 'clojure-mode-hook 'fontify-todo)
 (add-hook 'clojure-mode-hook 'fontify-headline)
+(add-hook 'emacs-lisp-mode-hook 'company-mode 'append)
+(add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
 
 ;; (require 'paredit)
 ;; (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 ;; (add-hook 'clojure-mode-hook 'paredit-mode)
-
-(add-hook 'emacs-lisp-mode-hook 'electric-pair-mode 'append 'local)
-(add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append 'local)
 ;; (add-hook 'emacs-lisp-mode-hook 'electric-layout-mode)
 
 (defvar todo-comment-face 'todo-comment-face)
@@ -2294,6 +2311,8 @@ the copy in the last group."
 
 #+BEGIN_SRC emacs-lisp
 (require 'clojure-cheatsheet)
+(require 'clj-refactor)
+(cljr-add-keybindings-with-prefix "C-c C-x")
 #+END_SRC
 
 ** doc-view-mode
