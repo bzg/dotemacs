@@ -565,6 +565,14 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
           (org-agenda-sorting-strategy
            '(todo-state-up time-up priority-up))))
 
+	;; list of WP tasks for today
+        ("c" "Aujourd'hui" tags "+LEVEL=1+SCHEDULED=\"<today>\""
+	 ((org-agenda-span 1)
+          (org-agenda-files '("~/org/bzg.org" "~/org/org.org" "~/org/libre.org"))
+          (org-deadline-warning-days 10)
+          (org-agenda-sorting-strategy
+           '(todo-state-up time-up priority-up))))
+
         ;; list of WP tasks for today
         ("%" "Rendez-vous" agenda* "Week RDV"
          ((org-agenda-span 'week)
