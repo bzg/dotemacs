@@ -524,7 +524,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-agenda-dim-blocked-tasks nil)
 (setq org-agenda-entry-text-maxlines 10)
 (setq org-agenda-file-regexp "\\.org\\'")
-(setq org-agenda-files '("~/org/rdv.org" "~/org/bzg.org"))
+(setq org-agenda-files '("~/org/rdv.org" "~/org/bzg.org" "~/org/libre.org"))
 (setq org-agenda-include-diary nil)
 (setq org-agenda-prefix-format
       '((agenda . " %i %-12:c%?-14t%s")
@@ -652,7 +652,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
          "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
 
         ;; Boite (lml) et cours
-        ("b" "Boîte" entry (file+headline "~/org/bzg.org" "Boîte")
+        ("b" "Boulot" entry (file+headline "~/org/bzg.org" "Boulot")
          "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
 
         ("O" "OLPC" entry (file+headline "~/org/libre.org" "OLPC")
@@ -780,9 +780,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-log-note-headings
       '((done . "CLOSING NOTE %t") (state . "State %-12s %t") (clock-out . "")))
 (setq org-priority-start-cycle-with-default nil)
-(setq org-refile-targets '((org-agenda-files . (:maxlevel . 3))
-                           (("~/org/garden.org") . (:maxlevel . 3))
-                           (("~/org/libre.org") . (:maxlevel . 3))))
+(setq org-refile-targets '((org-agenda-files . (:maxlevel . 2))
+                           (("~/org/garden.org") . (:maxlevel . 2))
+                           (("~/org/libre.org") . (:maxlevel . 2))))
 (setq org-refile-use-outline-path t)
 (setq org-refile-allow-creating-parent-nodes t)
 (setq org-refile-use-cache t)
@@ -918,12 +918,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 <script type=\"text/javascript\">
  _uacct = \"UA-2658857-1\";
  urchinTracker();
-</script>
-
-<script type=\"text/javascript\">
-lloogg_clientid = \"2080028090290f8e\";
-</script>
-<script type=\"text/javascript\" src=\"http://lloogg.com/l.js?c=2080028090290f8e\">
 </script>
 
 <div class=\"bottomrightbutton\">
