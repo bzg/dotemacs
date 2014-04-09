@@ -25,8 +25,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 (require 'package)
 (setq package-archives
-      '(("org" . "http://orgmode.org/elpa/")
-        ("marmalade" . "http://marmalade-repo.org/packages/")
+      '(;; ("org" . "http://orgmode.org/elpa/")
+        ;; ("marmalade" . "http://marmalade-repo.org/packages/")
         ("gnu" . "http://elpa.gnu.org/packages/")
         ("melpa" . "http://melpa.milkbox.net/packages/")
         ;; ("SC" . "http://joseito.republika.pl/sunrise-commander/")
@@ -243,7 +243,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ;; I use this sometimes for reading long blog posts:
 ;; (set-frame-font "Inconsolata 13")
 ;; (set-frame-font "Deja Vu Sans Mono 13")
-(set-frame-font "Meslo LG M DZ 11")
+(set-frame-font "Meslo LG M DZ 12")
 
 (setq line-height 0.1)
 #+END_SRC
@@ -274,7 +274,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'custom-theme-load-path "~/install/git/cyberpunk-theme.el/")
-;; (load-theme 'cyberpunk)
+(load-theme 'cyberpunk)
 #+END_SRC
 
 ** Printing
@@ -568,7 +568,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	;; list of WP tasks for today
         ("c" "Aujourd'hui" tags "+LEVEL=1+SCHEDULED=\"<today>\""
 	 ((org-agenda-span 1)
-          (org-agenda-files '("~/org/bzg.org" "~/org/org.org" "~/org/libre.org"))
+          (org-agenda-files '("~/org/bzg.org" "~/org/libre.org"))
           (org-deadline-warning-days 10)
           (org-agenda-sorting-strategy
            '(todo-state-up time-up priority-up))))
@@ -635,6 +635,11 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
          "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?"
          :prepend t :immediate-finish t)
 
+        ;; Mise, put it on top of my main .org file
+        ("c" "Misc" entry (file "~/org/bzg.org")
+         "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?"
+         :prepend t)
+
         ;; for org/rdv.org
         ("r" "Bzg RDV" entry (file+headline "~/org/rdv.org" "RDV")
          "* %a :RDV:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?" :prepend t)
@@ -643,72 +648,22 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
         ("g" "Garden" entry (file+headline "~/org/garden.org" "Garden")
          "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
 
-        ;; for org/rdv.org
-        ("B" "Blog" entry (file+headline "~/org/bzg.org" "Blog")
-         "* %a :Write:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?" :prepend t)
-
-        ;; Basement et garden
-        ("b" "Basement" entry (file+headline "~/org/bzg.org" "Basement")
-         "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-
         ;; Boite (lml) et cours
         ("b" "Boulot" entry (file+headline "~/org/bzg.org" "Boulot")
          "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
 
-        ("O" "OLPC" entry (file+headline "~/org/libre.org" "OLPC")
-         "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-
         ("e" "Emacs" entry (file+headline "~/org/libre.org" "Emacs")
-         "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend nil)
-
-        ("w" "Wikipedia" entry (file+headline "~/org/libre.org" "Wikipedia")
          "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
 
-        ("i" "ITIC" entry (file+headline "~/org/libre.org" "itic")
-         "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-
-        ("j" "jecode" entry (file+headline "~/org/libre.org" "jecode")
-         "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-
-        ("k" "Kickhub" entry (file+headline "~/org/bzg.org" "Kickhub")
-         "* NEXT %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-
-        ("s" "ShareLex" entry (file+headline "~/org/libre.org" "ShareLex")
-         "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-
-        ;; Informations
-        ("I" "Information")
-        ("Ir" "Information read" entry
-         (file+headline "~/org/garden.org" "Infos")
-         "* TODO %?%a :Read:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i"
-         :prepend t)
-
-        ("IR" "Information read (!)" entry
-         (file+headline "~/org/garden.org" "Infos")
-         "* TODO %?%a :Read:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i"
-         :prepend t :immediate-finish t)
-
-        ("Ic" "Information read (clocking)" entry
-         (file+headline "~/org/garden.org" "Infos")
-         "* TODO %?%a :Read:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i"
-         :prepend t :clock-in t)
-
-        ("IC" "Information read (keep clocking)" entry
-         (file+headline "~/org/garden.org" "Infos")
-         "* TODO %?%a :Read:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i"
-         :prepend t :clock-in t :immediate-finish t :clock-keep t :jump-to-captured t)
-
-        ;; ("o" "Org")
-        ;; ("ot" "Org Test" entry (file+headline "~/org/org.org" "To test")
-        ;;  "* TODO %?%a :Code:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-        ;; ("of" "Org FR" entry (file+headline "~/org/org.org" "Current ideas")
-        ;;  "* TODO %?%a :Code:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-        ;; ("ob" "Org Bug" entry (file+headline "~/org/org.org" "Mailing list")
-        ;;  "* NEXT %?%a :Bug:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-        ;; ("op" "Org Patch" entry (file+headline "~/org/org.org" "Mailing list")
-        ;;  "* NEXT [#A] %?%a :Patch:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-        ;; ("ow" "Worg" entry (file+headline "~/org/org.org" "Worg")
-        ;;  "* TODO [#A] %?%a :Worg:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
+        ("o" "Org")
+        ("of" "Org FR" entry (file+headline "~/org/libre.org" "Features")
+         "* TODO %?%a :Code:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%^{OrgVersion}p%i" :prepend t)
+        ("ob" "Org Bug" entry (file+headline "~/org/libre.org" "To fix")
+         "* NEXT %?%a :Bug:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%^{OrgVersion}p%i" :prepend t)
+        ("op" "Org Patch" entry (file+headline "~/org/libre.org" "Patches")
+         "* NEXT [#A] %?%a :Patch:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%^{OrgVersion}p%i" :prepend t)
+        ("ow" "Worg" entry (file+headline "~/org/libre.org" "Worg")
+         "* TODO [#A] %?%a :Worg:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
 
         ))
 #+END_SRC
@@ -782,7 +737,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-priority-start-cycle-with-default nil)
 (setq org-refile-targets '((org-agenda-files . (:maxlevel . 2))
                            (("~/org/garden.org") . (:maxlevel . 2))
-                           (("~/org/libre.org") . (:maxlevel . 2))))
+                           (("~/org/libre.org") . (:maxlevel . 2))
+                           (("~/org/extra.org") . (:maxlevel . 2))
+                           ))
 (setq org-refile-use-outline-path t)
 (setq org-refile-allow-creating-parent-nodes t)
 (setq org-refile-use-cache t)
@@ -907,11 +864,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 </div>
 
 <div id=\"menu\">
-  <a href=\"/about.en.html\"><button class=\"btn btn-success\" type=\"button\">About</button></a>
   <a href=\"/blog.html\"><button class=\"btn btn-warning\" type=\"button\">Blog</button></a>
   <a href=\"/job.en.html\"><button class=\"btn btn-danger\" type=\"button\">Job</button></a>
-  <a href=\"http://bzg.fr/talks.en.html\"><button class=\"btn btn-default\" type=\"button\">Talks</button></a>
-  <a href=\"http://bzg.fr/libre.en.html\"><button class=\"btn btn-success\" type=\"button\">Libre</button></a>
+  <a href=\"http://bzg.fr/talks.en.html\"><button class=\"btn btn-success\" type=\"button\">Talks</button></a>
 </div>
 
 <script src=\"http://www.google-analytics.com/urchin.js\" type=\"text/javascript\"></script>
@@ -927,32 +882,39 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 <a rel=\"license\" href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.en_US\"><img class=\"flattr\" alt=\"Creative Commons License\" src=\"http://i.creativecommons.org/l/by-sa/3.0/88x31.png\" /></a>
 </div>
-
-<div id=\"fb-root\"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id;
-  js.src = \"//connect.facebook.net/fr_FR/all.js#xfbml=1\";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-
-<div id=\"page-wrap\">
-  <div class=\"jqmWindow\" id=\"dialog\">
-    <p>I'm now working full-time on <strong>KickHub</strong>, a donation/crowdfunding platform for free software developers and free culture contributors.</p>
-    <p><a href=\"http://kickhub.com\" target=\"new\">Check the project out</a> and let me know what you think!</p>
-    <a href=\"#\" class=\"jqmClose\">Close</a>
-  </div>
-</div>
-
-<script type=\"text/javascript\">
-      (function(){ var bsa = document.createElement('script'); bsa.type = 'text/javascript'; bsa.async = true; bsa.src = '//s3.buysellads.com/ac/bsa.js'; (document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(bsa); })();
-</script>
-
-<script type=\"text/javascript\">
-  var _gaq = _gaq || []; _gaq.push(['_setAccount', 'UA-68528-29']); _gaq.push(['_trackPageview']); (function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga); })();
-</script>
 ")
+
+(setq html-dll-preamble
+"<script>
+    \(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    \(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-42064173-1', 'dunlivrelautre.net');
+    ga('send', 'pageview');
+    </script>
+
+    <div class=\"toprightbutton\">
+    <a href=\"blog.xml\"><img alt=\"RSS\" width=\"70px\" src=\"u/rss.jpg\" /></a>
+    </div>
+
+    <div class=\"topleftbutton\">
+
+    <a href=\"/index.html\">Home</a><br/>
+
+    <a href=\"http://flattr.com/thing/1654106/Dun-Livre-Lautre\" target=\"new\"><img src=\"http://api.flattr.com/button/flattr-badge-large.png\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" /></a><br/>
+
+    <a href=\"https://twitter.com/share\" class=\"twitter-share-button\"
+    data-count=\"none\" data-via=\"bzg2\" data-lang=\"fr\">Tweeter</a><script
+    type=\"text/javascript\" src=\"//platform.twitter.com/widgets.js\"></script>
+
+    </div>
+
+    <div class=\"bottomrightbutton\">
+    <a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png\" /></a>
+    </div>
+  ")
 
 (setq html-postamble "
     <script src=\"u/bootstrap.min.js\"></script>")
@@ -980,20 +942,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
     <script src=\"http://www.google.com/jsapi\" type=\"text/javascript\"></script>
     <script type=\"text/javascript\">
       google.load(\"jquery\", \"1.3.1\");
-    </script>
-    <script src=\"http://css-tricks.com/examples/ModalOnPageLoad/js/jquery.cookie.js\" type=\"text/javascript\"></script>
-    <script src=\"http://css-tricks.com/examples/ModalOnPageLoad/js/jqModal.js\" type=\"text/javascript\"></script>
-    <script type=\"text/javascript\">
-      $(function(){
-      var modalCookie = \"modal_cookie\";
-      var options = { path: '/', expires: 10 };
-      var shouldOpen = $.cookie(modalCookie);
-      $('#dialog').jqm();
-      if (shouldOpen != \"no\") {
-      $('#dialog').jqmShow();
-      $.cookie(modalCookie, 'no', options);
-      };
-      });
     </script>"
          :html-preamble ,html-preamble
          :htmlized-source t
@@ -1081,66 +1029,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
          :htmlized-source nil
          :html-postamble ,html-postamble)
 
-        ("hugadevweb"
-         :base-directory "~/install/git/hugadevweb/"
-         :html-extension "html"
-         :base-extension "org"
-         :publishing-directory "/home/guerry/install/git/hugadev/"
-         :publishing-function (org-html-publish-to-html)
-         :auto-sitemap nil
-         :recursive t
-         :makeindex nil
-         :preserve-breaks nil
-         :sitemap-sort-files chronologically
-         :with-tasks nil
-         :section-numbers nil
-         :with-toc nil
-         :html-head-extra
-         "<link rel=\"stylesheet\" href=\"http://bzg.fr/code.css\" type=\"text/css\" />"
-         :html-preamble nil
-         :htmlized-source nil
-         :html-postamble nil)
-
-        ("memeweb"
-         :base-directory "~/install/git/memeweb/"
-         :html-extension "html"
-         :base-extension "org"
-         :publishing-directory "/home/guerry/install/git/meme/"
-         :publishing-function (org-html-publish-to-html)
-         :auto-sitemap nil
-         :recursive t
-         :makeindex nil
-         :preserve-breaks nil
-         :sitemap-sort-files chronologically
-         :with-tasks nil
-         :section-numbers nil
-         :with-toc nil
-         :html-head-extra
-         "<link rel=\"stylesheet\" href=\"http://bzg.fr/code.css\" type=\"text/css\" />"
-         :html-preamble nil
-         :htmlized-source nil
-         :html-postamble nil)
-
-        ("clorgweb"
-         :base-directory "~/install/git/clorgweb/"
-         :html-extension "html"
-         :base-extension "org"
-         :publishing-directory "/home/guerry/install/git/clorg/"
-         :publishing-function (org-html-publish-to-html)
-         :auto-sitemap nil
-         :recursive t
-         :makeindex nil
-         :preserve-breaks nil
-         :sitemap-sort-files chronologically
-         :with-tasks nil
-         :section-numbers nil
-         :with-toc nil
-         :html-head-extra
-         "<link rel=\"stylesheet\" href=\"http://bzg.fr/code.css\" type=\"text/css\" />"
-         :html-preamble nil
-         :htmlized-source nil
-         :html-postamble nil)
-
         ("dll"
          :base-directory "~/install/git/dunlivrelautre/"
          :html-extension "html"
@@ -1158,37 +1046,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
          :html-head-extra "<link rel=\"stylesheet\" href=\"index.css\" type=\"text/css\" />"
          :html-postamble nil
          :htmlized-source nil
-         :html-preamble "<script>
-    \(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    \(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-42064173-1', 'dunlivrelautre.net');
-    ga('send', 'pageview');
-    </script>
-
-    <div class=\"toprightbutton\">
-    <a href=\"blog.xml\"><img alt=\"RSS\" width=\"70px\" src=\"u/rss.jpg\" /></a>
-    </div>
-
-    <div class=\"topleftbutton\">
-
-    <a href=\"/index.html\">Home</a><br/>
-
-    <a href=\"http://flattr.com/thing/1654106/Dun-Livre-Lautre\" target=\"new\"><img src=\"http://api.flattr.com/button/flattr-badge-large.png\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" /></a><br/>
-
-    <a href=\"https://twitter.com/share\" class=\"twitter-share-button\"
-    data-count=\"none\" data-via=\"bzg2\" data-lang=\"fr\">Tweeter</a><script
-    type=\"text/javascript\" src=\"//platform.twitter.com/widgets.js\"></script>
-
-    </div>
-
-    <div class=\"bottomrightbutton\">
-    <a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png\" /></a>
-    </div>
-  ")
-
+         :html-preamble ,html-dll-preamble)
         ("dll-rss"
          :base-directory "~/install/git/dunlivrelautre/"
          :base-extension "org"
@@ -1216,7 +1074,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
         ("hp" :components
          ("homepage" "homepage-sources" "homepage-attachments" "homepage-rss" "clojure-rss" "homepage-css"))
         ("dll" :components ("dll" "dll-attachments" "dll-rss"))
-        ("CoursWeb" :components ("cours" "cours-images"))
         ))
 
 (setq org-export-htmlize-output-type 'css)
@@ -1563,7 +1420,7 @@ article."
 (setq gnus-group-line-format
       ;;      "%M\%S\%p\%P\%5T>%5y: %(%-40,40g%) %ud\n")
       ;;      "%M\%S\%p\%P\%y: %(%-40,40g%) %T/%i\n")
-      ;;      "%M\%S\%p\%P %(%-30,30G%) %-3y %-3T %-3I\n")
+      ;; "%M\%S\%p\%P %(%-30,30G%) %-3y %-3T %-3I\n"
       "%M\%S\%p\%P %(%-40,40G%)\n")
 
 (setq gnus-topic-indent-level 3)
@@ -1923,7 +1780,7 @@ the copy in the last group."
 (setq w3m-broken-proxy-cache t)
 (setq w3m-confirm-leaving-secure-page nil)
 (setq w3m-cookie-accept-bad-cookies t)
-(setq w3m-cookie-accept-domains t)
+(setq w3m-cookie-accept-domains nil)
 (setq w3m-cookie-file "/home/guerry/.w3m/cookie")
 (setq w3m-fill-column 70)
 (setq w3m-form-textarea-edit-mode 'org-mode)
@@ -2119,9 +1976,17 @@ the copy in the last group."
   (next-word-at-point t))
 
 (defun current-word-search ()
-    "search forward for word under cursor"
-    (interactive)
-    (word-search-forward (current-word)))
+  "Search forward for word under cursor"
+  (interactive)
+  (word-search-forward (current-word)))
+
+(defun org-hh:mm:ss-string-to-seconds (hhmmss-string)
+  (when (string-match "\\([0-9]+\\):\\([0-9]+\\):\\([0-9]+\\)"
+		      hhmmss-string)
+    (let ((hours (string-to-number (match-string 1 hhmmss-string)))
+	  (mins (string-to-number (match-string 2 hhmmss-string)))
+	  (secs (string-to-number (match-string 3 hhmmss-string))))
+      (+ (* 3600 hours) (* 60 mins) secs))))
 
 (defun increase-srt (n)
   "Increase srt timestamp by N seconds."
@@ -2147,7 +2012,6 @@ the copy in the last group."
 ;; Hide fringe indicators
 (mapcar (lambda(fb) (set-fringe-bitmap-face fb 'org-hide))
         fringe-bitmaps)
-
 
 ;; Command to toggle the display of the mode-line as a header
 (defun mode-line-in-header ()
