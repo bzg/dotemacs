@@ -1,0 +1,5 @@
+
+
+#+BEGIN_SRC clojure
+(map #(str "abc" %) ["0" "1"))
+#+END_SRC

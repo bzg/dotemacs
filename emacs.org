@@ -15,7 +15,6 @@ You can browse the =.el= file [[http://bzg.fr/u/emacs.el][here]] or clone the =.
 
 Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
-
 * Package initialization
 
 #+BEGIN_SRC emacs-lisp
