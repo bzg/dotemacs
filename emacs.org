@@ -60,6 +60,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq kill-whole-line t)
 (setq kill-read-only-ok t)
 
+(tooltip-mode -1)
+(setq tooltip-delay 3.0)
+
 (setq sentence-end-double-space t)
 (setq require-final-newline t)
 
@@ -355,6 +358,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (require 'dired-details)
 (require 'wdired)
 
+(global-set-key (kbd "C-x d") 'dired)
 (define-key dired-mode-map "\C-cb" 'org-ibuffer)
 (define-key dired-mode-map ")" 'dired-details-toggle)
 (define-key dired-mode-map "\C-cg" 'grep-find)
@@ -442,7 +446,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (require 'org-gnus)
 (require 'ox-koma-letter)
 
-(setq org-element-use-cache nil)
+(setq org-element-use-cache t)
+(setq org-adapt-indentation t)
 
 ;; Hook to update all blocks before saving
 (add-hook 'org-mode-hook
@@ -555,19 +560,20 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ** Org agenda custom commands
 
 #+BEGIN_SRC emacs-lisp
+
 (setq org-agenda-custom-commands
       `(
         ;; list of WP tasks for today
         (" " "Aujourd'hui" agenda "List of rendez-vous and tasks for today"
          ((org-agenda-span 1)
           (org-agenda-files '("~/org/rdv.org" "~/org/bzg.org"))
-          (org-deadline-warning-days 10)
+          (org-deadline-warning-days 3)
           (org-agenda-sorting-strategy
            '(todo-state-up time-up priority-up))))
 
-	;; list of WP tasks for today
+        ;; list of WP tasks for today
         ("c" "Aujourd'hui" tags "+LEVEL=1+SCHEDULED=\"<today>\""
-	 ((org-agenda-span 1)
+         ((org-agenda-span 1)
           (org-agenda-files '("~/org/bzg.org" "~/org/libre.org"))
           (org-deadline-warning-days 10)
           (org-agenda-sorting-strategy
@@ -608,7 +614,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
         ("r" . "Read")
         ("rn" tags-todo "+Read+TODO={NEXT}" nil)
         ("rt" tags-todo "+Read+TODO={TODO}" nil)
-        ("rs" tags-todo "+Read+TODO={STRT}" nil)
+        ("rr" tags-todo "+Read+TODO={STRT}" nil)
         ("rF" tags "+Read+@Offline" nil)
 
         ("W" tags-todo "+Write+TODO={NEXT}" nil)
@@ -617,7 +623,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
         ("w" . "Write")
         ("wn" tags-todo "+Write+TODO={NEXT}" nil)
         ("wt" tags-todo "+Write+TODO={TODO}" nil)
-        ("ws" tags-todo "+Write+TODO={STRT}" nil)
+        ("ww" tags-todo "+Write+TODO={STRT}" nil)
         ("wF" tags "+Write+@Offline" nil)
 
         ))
@@ -818,7 +824,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-gnus-prefer-web-links nil)
 (setq org-html-head-include-default-style nil)
 (setq org-html-head-include-scripts nil)
-(setq org-blank-before-new-entry '((heading . auto) (plain-list-item . auto)))
+(setq org-blank-before-new-entry '((heading . t) (plain-list-item . auto)))
 (setq org-contacts-files '("~/org/contacts.org"))
 (setq org-crypt-key "Bastien Guerry")
 (setq org-enforce-todo-dependencies t)
@@ -1673,7 +1679,7 @@ the copy in the last group."
       erc-save-buffer-on-part t
       erc-input-line-position 0
       erc-fill-function 'erc-fill-static
-      erc-fill-static-center 30
+      erc-fill-static-center 0
       erc-fill-column 130
       erc-insert-timestamp-function 'erc-insert-timestamp-left
       erc-insert-away-timestamp-function 'erc-insert-timestamp-left
