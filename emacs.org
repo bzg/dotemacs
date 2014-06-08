@@ -118,10 +118,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (let ((default-directory "~/install/git/gnus/"))
   (normal-top-level-add-subdirs-to-load-path))
 
-(add-to-list 'load-path "~/install/git/auto-complete")
-(let ((default-directory "~/install/git/auto-complete/"))
-  (normal-top-level-add-subdirs-to-load-path))
-
 (add-to-list 'load-path "~/install/cvs/emacs-w3m/")
 (add-to-list 'load-path "~/install/git/org-trello/")
 (add-to-list 'load-path "~/install/git/org-reveal/")
@@ -246,9 +242,10 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ;; I use this sometimes for reading long blog posts:
 ;; (set-frame-font "Inconsolata 13")
 ;; (set-frame-font "Deja Vu Sans Mono 13")
-(set-frame-font "Meslo LG M DZ 12")
-
-(setq line-height 0.1)
+;; (set-frame-font "Consolas 12")
+;; (set-frame-font "Droid Sans Mono 11")
+;; (set-frame-font "Source Code Pro 10")
+(set-frame-font "Meslo LG M DZ 11")
 #+END_SRC
 
 ** Startup
@@ -277,7 +274,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'custom-theme-load-path "~/install/git/cyberpunk-theme.el/")
-(load-theme 'cyberpunk)
+;; (load-theme 'cyberpunk)
 #+END_SRC
 
 ** Printing
@@ -488,7 +485,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
    (org . t)
    (ditaa . t)
    (org . t)
-;;   (ledger . t)
+   (ledger . t)
    (scheme . t)
    (plantuml . t)
    (R . t)
@@ -563,19 +560,20 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 (setq org-agenda-custom-commands
       `(
-        ;; list of WP tasks for today
+        ;; list of tasks for today
         (" " "Aujourd'hui" agenda "List of rendez-vous and tasks for today"
          ((org-agenda-span 1)
           (org-agenda-files '("~/org/rdv.org" "~/org/bzg.org"))
           (org-deadline-warning-days 3)
+          (org-agenda-effort-filter '("+=30"))
           (org-agenda-sorting-strategy
            '(todo-state-up time-up priority-up))))
 
-        ;; list of WP tasks for today
-        ("c" "Aujourd'hui" tags "+LEVEL=1+SCHEDULED=\"<today>\""
+        ;; list of free tasks for today
+        ("+" "Aujourd'hui" agenda "List of rendez-vous and tasks for today"
          ((org-agenda-span 1)
-          (org-agenda-files '("~/org/bzg.org" "~/org/libre.org"))
-          (org-deadline-warning-days 10)
+          (org-agenda-files '("~/org/libre.org" "~/org/extra.org"))
+          (org-deadline-warning-days 3)
           (org-agenda-sorting-strategy
            '(todo-state-up time-up priority-up))))
 
@@ -733,7 +731,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-footnote-auto-label 'confirm)
 (setq org-footnote-auto-adjust t)
 (setq org-footnote-define-inline nil)
-(setq org-hide-emphasis-markers nil)
+(setq org-hide-emphasis-markers t)
 (setq org-icalendar-include-todo 'all)
 (setq org-list-indent-offset 0)
 (setq org-link-frame-setup '((gnus . gnus) (file . find-file-other-window)))
@@ -803,9 +801,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-beamer-outline-frame-title "Survol")
 (setq org-image-actual-width 600)
 (setq org-src-fontify-natively t)
-(setq org-todo-keyword-faces '(("STRT" . "lightgoldenrod1")
-                               ("NEXT" . "Cyan3")
-                               ("WAIT" . "lightgoldenrod3")))
+(setq org-todo-keyword-faces '(("STRT" . "DarkOrange")
+                               ("WAIT" . "Black")
+                               ("CANCELED" . "DarkGray")))
 
 (setq org-plantuml-jar-path "~/bin/plantuml.jar")
 (setq org-link-abbrev-alist
@@ -1096,6 +1094,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 #+BEGIN_SRC emacs-lisp
 ;; Generic / unsorted
+(setq org-hide-leading-stars t)
 (setq org-reveal-theme "night")
 (setq org-global-properties
       '(("Effort_ALL" .
@@ -1179,8 +1178,13 @@ article."
                     "bastien.guerry@cnam.fr"
                     "bastien@olpc-france.org"
                     "bastienguerry@gmail.com"
+                    "bzg@kickhub.com"
+                    "noreply"
+                    "bzg@librefunding.org"
+                    "bzg@jecode.org"
                     "bastienguerry@googlemail.com"
                     "bastien1@free.fr"
+                    "@bzg.fr"
                     "bzg@altern.org"
                     "bzg@gnu.org"
                     "bzg@laptop.org"
@@ -1206,6 +1210,15 @@ article."
 (setq smiley-style 'medium)
 #+END_SRC
 
+** COMMENT Gnus Registry
+
+#+BEGIN_SRC emacs-lisp
+(setq gnus-registry-max-entries 2500)
+(gnus-registry-initialize)
+(setq gnus-refer-article-method
+      '(current	(nnregistry)))
+#+END_SRC
+
 ** Set sendmail function and Gnus methods
 
 #+BEGIN_SRC emacs-lisp
@@ -1216,7 +1229,8 @@ article."
 
 (setq use-dialog-box nil)
 (setq user-full-name "Bastien Guerry")
-(setq user-mail-address "bzg@altern.org")
+;; (setq user-mail-address "bzg@altern.org")
+(setq user-mail-address "bastien.guerry@free.fr")
 
 (setq mail-header-separator "----")
 (setq mail-specify-envelope-from t)
@@ -1250,10 +1264,9 @@ article."
       gnus-select-method '(nnmaildir "Bastien" (directory "~/Maildir/"))
       gnus-secondary-select-methods
       '((nnml "")
-        ;; (nntp "bzg.ath.cx")
-        ;; (nntp-address "news.gmane.org")
-        ;; (nntp "news" (nntp-address "news.gwene.org"))
-        (nnimap "imap.cnam.fr")
+        ;; (nntp "news" (nntp-address "news.gmane.org"))
+        ;; (nntp "free" (nntp-address "news.free.fr"))
+        ;; (nnimap "imap.cnam.fr")
         ;; (nnimap "obm-front.u-paris10.fr")
         ))
 
@@ -1270,8 +1283,8 @@ article."
 (setq read-mail-command 'gnus
       message-mail-user-agent 'gnus-user-agent
       message-kill-buffer-on-exit t
-      user-mail-address "bzg@altern.org"
-      mail-envelope-from "bzg@altern.org"
+      ;; user-mail-address "bzg@altern.org"
+      ;; mail-envelope-from "bzg@altern.org"
       mail-user-agent 'gnus-user-agent
       mail-specify-envelope-from nil
       gnus-directory "~/News/"
@@ -1279,7 +1292,7 @@ article."
       gnus-inhibit-startup-message t
       gnus-play-startup-jingle nil
       gnus-interactive-exit nil
-      gnus-no-groups-message "No news, good news."
+      gnus-no-groups-message ""
       gnus-show-all-headers nil
       gnus-use-correct-string-widths nil
       gnus-use-cross-reference nil
@@ -1440,15 +1453,30 @@ article."
     (setq gnus-group-line-format
           "%M\%S\%p\%P %(%-40,40G%) %-3y %-3T %-3I\n")))
 
-(defun bzg-gnus-add-gmane ()
-  (add-to-list 'gnus-secondary-select-methods
-               '(nntp "news" (nntp-address "news.gmane.org"))))
+;; (defun bzg-gnus-add-gmane ()
+;;   (add-to-list 'gnus-secondary-select-methods
+;;                '(nntp "news" (nntp-address "news.gmane.org"))))
 
 (define-key gnus-group-mode-map "x"
   (lambda () (interactive) (bzg-gnus-toggle-group-line-format) (gnus)))
 
 (define-key gnus-group-mode-map "X"
-  (lambda () (interactive) (bzg-gnus-add-gmane) (gnus)))
+  (lambda (maybe-close)
+    (interactive "P")
+    (if maybe-close
+        (progn (gnus-server-offline-server "nnimap:imap.cnam.fr")
+               (gnus-server-offline-server "nntp:news")
+               (gnus-server-offline-server "nntp:free"))
+      (setq gnus-secondary-select-methods
+            '((nnml "")
+              (nntp "news" (nntp-address "news.gmane.org"))
+              (nntp "free" (nntp-address "news.free.fr"))
+              (nnimap "imap.cnam.fr")
+              (nnimap "obm-front.u-paris10.fr")))
+      (gnus-server-open-server "nnimap:imap.cnam.fr")
+      (gnus-server-open-server "nntp:news")
+      (gnus-server-open-server "nntp:free"))
+    (gnus)))
 
 (define-key gnus-summary-mode-map "$" 'gnus-summary-mark-as-spam)
 
@@ -2192,4 +2220,16 @@ the copy in the last group."
 #+BEGIN_SRC emacs-lisp
 (setq doc-view-continuous t)
 (set-frame-parameter nil 'fullscreen 'fullboth)
+#+END_SRC
+* Code
+
+#+BEGIN_SRC emacs-lisp
+;; (put 'org-paragraph 'bounds-of-thing-at-point
+;;      'thing-at-point-bounds-of-org-paragraph-at-point)
+
+;; (defun thing-at-point-bounds-of-org-paragraph-at-point ()
+;;   "Return the bounds of the org paragraph at point."
+;;   (save-excursion
+;;     (cons (progn (ignore-errors (org-backward-paragraph) (point)))
+;; 	  (progn (ignore-errors (org-forward-paragraph))))))
 #+END_SRC
