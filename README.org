@@ -1,3 +1,5 @@
+[![Gittip](http://img.shields.io/gittip/bzg.svg)](https://www.gittip.com/bzg/)
+
 This is my =.emacs.el= file, as a HTMLized =emacs.org= file.
 
 You can browse the =.el= file [[http://bzg.fr/u/emacs.el][here]] or clone the =.org= file from [[https://github.com/bzg/dotemacs][github]].

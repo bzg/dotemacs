@@ -225,6 +225,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
         (left-margin-width . 10)
         (menu-bar-lines . 0)
         (tool-bar-lines . 0)
+        (horizontal-scroll-bars . nil)
         (vertical-scroll-bars . nil)
         ;; (background-color . "black")
         ;; (foreground-color . "#dddddd")
@@ -274,7 +275,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'custom-theme-load-path "~/install/git/cyberpunk-theme.el/")
-;; (load-theme 'cyberpunk)
+(enable-theme 'cyberpunk)
 #+END_SRC
 
 ** Printing
@@ -368,6 +369,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq dired-omit-mode nil)
 (setq dired-recursive-copies 'always)
 (setq dired-recursive-deletes 'always)
+(setq delete-old-versions t)
 
 (setq dired-guess-shell-alist-user
       (list
@@ -570,7 +572,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
            '(todo-state-up time-up priority-up))))
 
         ;; list of free tasks for today
-        ("+" "Aujourd'hui" agenda "List of rendez-vous and tasks for today"
+        ("+" "Aujourd'hui" agenda "List of core+extra tasks for today"
          ((org-agenda-span 1)
           (org-agenda-files '("~/org/libre.org" "~/org/extra.org"))
           (org-deadline-warning-days 3)
@@ -585,11 +587,23 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
           (org-agenda-sorting-strategy
            '(todo-state-up time-up priority-up))))
 
-        ("n" todo "NEXT" ((org-agenda-sorting-strategy '(timestamp-up))))
-        ("d" todo "TODO" ((org-agenda-sorting-strategy '(timestamp-up))))
-        ("s" todo "STRT" ((org-agenda-sorting-strategy '(timestamp-up))))
+        ("n" "NEXT (core)"
+         todo "NEXT" ((org-agenda-files '("~/org/bzg.org"))
+                      (org-agenda-sorting-strategy '(timestamp-up))))
+        ("N" "NEXT (all)"
+         todo "NEXT" ((org-agenda-sorting-strategy '(timestamp-up))))
+        ("d" "TODO (core)"
+         todo "TODO" ((org-agenda-files '("~/org/bzg.org"))
+                      (org-agenda-sorting-strategy '(timestamp-up))))
+        ("D" "TODO (all)"
+         todo "TODO" ((org-agenda-sorting-strategy '(timestamp-up))))
+        ("s" "STRT (core)"
+         todo "STRT" ((org-agenda-files '("~/org/bzg.org"))
+                      (org-agenda-sorting-strategy '(timestamp-up))))
+        ("S" "STRT (all)"
+         todo "STRT" ((org-agenda-sorting-strategy '(timestamp-up))))
 
-        ("x" "Scheduled all" agenda "List of scheduled tasks for today"
+        ("x" "All tasks scheduled today" agenda "List of scheduled tasks for today"
          ((org-agenda-span 1)
           (org-agenda-entry-types '(:timestamp :scheduled))
           (org-agenda-sorting-strategy
@@ -801,9 +815,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-beamer-outline-frame-title "Survol")
 (setq org-image-actual-width 600)
 (setq org-src-fontify-natively t)
-(setq org-todo-keyword-faces '(("STRT" . "DarkOrange")
-                               ("WAIT" . "Black")
-                               ("CANCELED" . "DarkGray")))
+(setq org-todo-keyword-faces '(("STRT" . "Purple")
+                               ("WAIT" . "Gray")
+                               ("CANCELED" . "Gray")))
 
 (setq org-plantuml-jar-path "~/bin/plantuml.jar")
 (setq org-link-abbrev-alist
@@ -1233,7 +1247,6 @@ article."
 (setq user-mail-address "bastien.guerry@free.fr")
 
 (setq mail-header-separator "----")
-(setq mail-specify-envelope-from t)
 (setq mail-use-rfc822 nil)
 
 (setq message-cite-function (quote message-cite-original-without-signature))
@@ -1264,10 +1277,10 @@ article."
       gnus-select-method '(nnmaildir "Bastien" (directory "~/Maildir/"))
       gnus-secondary-select-methods
       '((nnml "")
-        ;; (nntp "news" (nntp-address "news.gmane.org"))
-        ;; (nntp "free" (nntp-address "news.free.fr"))
+        (nntp "news" (nntp-address "news.gmane.org"))
+        (nntp "free" (nntp-address "news.free.fr"))
         ;; (nnimap "imap.cnam.fr")
-        ;; (nnimap "obm-front.u-paris10.fr")
+        (nnimap "obm-front.u-paris10.fr")
         ))
 
 (setq gnus-check-new-newsgroups nil)
@@ -1453,30 +1466,22 @@ article."
     (setq gnus-group-line-format
           "%M\%S\%p\%P %(%-40,40G%) %-3y %-3T %-3I\n")))
 
-;; (defun bzg-gnus-add-gmane ()
-;;   (add-to-list 'gnus-secondary-select-methods
-;;                '(nntp "news" (nntp-address "news.gmane.org"))))
-
 (define-key gnus-group-mode-map "x"
   (lambda () (interactive) (bzg-gnus-toggle-group-line-format) (gnus)))
 
-(define-key gnus-group-mode-map "X"
-  (lambda (maybe-close)
-    (interactive "P")
-    (if maybe-close
-        (progn (gnus-server-offline-server "nnimap:imap.cnam.fr")
-               (gnus-server-offline-server "nntp:news")
-               (gnus-server-offline-server "nntp:free"))
-      (setq gnus-secondary-select-methods
-            '((nnml "")
-              (nntp "news" (nntp-address "news.gmane.org"))
-              (nntp "free" (nntp-address "news.free.fr"))
-              (nnimap "imap.cnam.fr")
-              (nnimap "obm-front.u-paris10.fr")))
-      (gnus-server-open-server "nnimap:imap.cnam.fr")
-      (gnus-server-open-server "nntp:news")
-      (gnus-server-open-server "nntp:free"))
-    (gnus)))
+;; (define-key gnus-group-mode-map "X"
+;;   (lambda ()
+;;     (interactive)
+;;     (setq gnus-secondary-select-methods
+;;           '((nnml "")
+;;             (nntp "news" (nntp-address "news.gmane.org"))
+;;             (nntp "free" (nntp-address "news.free.fr"))
+;;             (nnimap "imap.cnam.fr")
+;;             (nnimap "obm-front.u-paris10.fr")))
+;;     (gnus-server-open-server "nnimap:imap.cnam.fr")
+;;     (gnus-server-open-server "nntp:news")
+;;     (gnus-server-open-server "nntp:free"))
+;;     (gnus))
 
 (define-key gnus-summary-mode-map "$" 'gnus-summary-mark-as-spam)
 
@@ -1813,7 +1818,7 @@ the copy in the last group."
 (setq w3m-antenna-sites '(("http://eucd.info" "EUCD.INFO" time)))
 (setq w3m-broken-proxy-cache t)
 (setq w3m-confirm-leaving-secure-page nil)
-(setq w3m-cookie-accept-bad-cookies t)
+(setq w3m-cookie-accept-bad-cookies nil)
 (setq w3m-cookie-accept-domains nil)
 (setq w3m-cookie-file "/home/guerry/.w3m/cookie")
 (setq w3m-fill-column 70)
@@ -2016,10 +2021,10 @@ the copy in the last group."
 
 (defun org-hh:mm:ss-string-to-seconds (hhmmss-string)
   (when (string-match "\\([0-9]+\\):\\([0-9]+\\):\\([0-9]+\\)"
-		      hhmmss-string)
+                      hhmmss-string)
     (let ((hours (string-to-number (match-string 1 hhmmss-string)))
-	  (mins (string-to-number (match-string 2 hhmmss-string)))
-	  (secs (string-to-number (match-string 3 hhmmss-string))))
+          (mins (string-to-number (match-string 2 hhmmss-string)))
+          (secs (string-to-number (match-string 3 hhmmss-string))))
       (+ (* 3600 hours) (* 60 mins) secs))))
 
 (defun increase-srt (n)
@@ -2033,15 +2038,15 @@ the copy in the last group."
 ;; No mode-line
 ;; (if (custom-theme-enabled-p "cyberpunk")
 ;;     (custom-set-faces
-;;      '(fringe ((t (:background "white"))))
+;;      '(fringe ((t (:background "black"))))
 ;;      '(mode-line-highlight ((t nil)))
-;;      '(mode-line ((t (:foreground "white" :background "white"))))
-;;      '(mode-line-inactive ((t (:background "white" :foreground "white")))))
+;;      '(mode-line ((t (:foreground "white" :background "black"))))
+;;      '(mode-line-inactive ((t (:background "white" :foreground "black")))))
 ;;   (custom-set-faces
-;;    '(fringe ((t (:background "black"))))
+;;    '(fringe ((t (:background "white"))))
 ;;    '(mode-line-highlight ((t nil)))
-;;    '(mode-line ((t (:foreground "black" :background "black"))))
-;;    '(mode-line-inactive ((t (:background "black" :foreground "black"))))))
+;;    '(mode-line ((t (:foreground "black" :background "white"))))
+;;    '(mode-line-inactive ((t (:background "black" :foreground "white"))))))
 
 ;; Hide fringe indicators
 (mapcar (lambda(fb) (set-fringe-bitmap-face fb 'org-hide))
@@ -2147,16 +2152,16 @@ the copy in the last group."
 
 ;; Fontifying todo items outside of org-mode
 (defface todo-comment-face
-  '((t (:background "#3f3f3f"
-        :foreground "white"
+  '((t (:background "gray"
+        :foreground "black"
         :weight bold
         :bold t)))
   "Face for TODO in code buffers."
   :group 'org-faces)
 
 (defface headline-face
-  '((t (:foreground "white"
-        :background "#3f3f3f"
+  '((t (:foreground "gray"
+        :background "black"
         :weight bold
         :bold t)))
   "Face for headlines."
@@ -2205,6 +2210,30 @@ the copy in the last group."
   (helm :sources '(((name . "Clojure Headlines")
                     (volatile)
                     (headline "^[;(]")))))
+#+END_SRC
+
+** lein kibit
+
+#+BEGIN_SRC emacs-lisp
+;; Teach compile the syntax of the kibit output
+(require 'compile)
+(add-to-list 'compilation-error-regexp-alist-alist
+         '(kibit "At \\([^:]+\\):\\([[:digit:]]+\\):" 1 2 nil 0))
+(add-to-list 'compilation-error-regexp-alist 'kibit)
+
+;; A convenient command to run "lein kibit" in the project to which
+;; the current emacs buffer belongs to.
+(defun kibit ()
+  "Run kibit on the current project.
+Display the results in a hyperlinked *compilation* buffer."
+  (interactive)
+  (compile "lein kibit"))
+
+(defun kibit-current-file ()
+  "Run kibit on the current file.
+Display the results in a hyperlinked *compilation* buffer."
+  (interactive)
+  (compile (concat "lein kibit " buffer-file-name)))
 #+END_SRC
 
 ** clojure-cheatsheet
