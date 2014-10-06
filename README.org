@@ -1,4 +1,6 @@
-[![Gittip](http://img.shields.io/gittip/bzg.svg)](https://www.gittip.com/bzg/)
+# [![Gittip](http://img.shields.io/gittip/bzg.svg)](https://www.gittip.com/bzg/)
+
+[[https://www.gittip.com/bzg/][http://img.shields.io/gittip/bzg.svg]]
 
 This is my =.emacs.el= file, as a HTMLized =emacs.org= file.
 
