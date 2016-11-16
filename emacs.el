@@ -1,16 +1,5 @@
-<<<<<<< HEAD:emacs.org
-#+TITLE:       bzg .emacs.el file
-#+EMAIL:       bzg AT bzg DOT fr
-#+STARTUP:     odd hidestars fold
-#+LANGUAGE:    fr
-#+LINK:        guerry http://bzg.fr/%s
-#+OPTIONS:     skip:nil toc:nil
-#+HTML_HEAD:   <link rel="publisher" href="https://plus.google.com/103809710979116858042" />
-#+PROPERTY:    tangle /home/guerry/elisp/config/emacs.el
-=======
 ;; I don't use package a lot but don't want to configure the list of
 ;; archives each time I use it.
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
 
 ;; Package initialization
 (require 'package)
@@ -19,97 +8,6 @@
         ("melpa" . "http://melpa.org/packages/")))
 (package-initialize)
 
-;; Initialize `exec-path' and `load-path'
-(add-to-list 'exec-path "~/bin/")
-(let ((default-directory "~/elisp/"))
-  (normal-top-level-add-subdirs-to-load-path))
-(let ((default-directory "/usr/share/emacs/site-lisp/"))
-  (normal-top-level-add-subdirs-to-load-path))
-(let ((default-directory "/usr/local/share/emacs/site-lisp/"))
-  (normal-top-level-add-subdirs-to-load-path))
-(add-to-list 'load-path "~/install/cvs/emacs-w3m/")
-(add-to-list 'load-path "~/install/git/org-caldav/")
-(add-to-list 'load-path "~/install/git/elscreen/")
-(add-to-list 'load-path "~/install/git/bbdb/lisp/")
-(add-to-list 'load-path "~/install/git/notmuch/emacs/")
-(add-to-list 'load-path "~/install/git/org-mode/lisp/")
-(add-to-list 'load-path "~/install/git/org-mode/contrib/lisp/")
-
-;; Start server to use emacsclient
-(server-start)
-
-;; Load custom file
-(setq custom-file "/home/guerry/elisp/config/emacs-custom.el")
-(load custom-file)
-
-;; Load theme
-(add-to-list 'custom-theme-load-path "~/install/git/cyberpunk-theme.el/")
-(load-theme 'cyberpunk)
-
-<<<<<<< HEAD:emacs.org
-;; Package initialization
-(require 'package)
-(setq package-archives
-      '(("gnu" . "http://elpa.gnu.org/packages/")
-        ("melpa" . "http://melpa.org/packages/")))
-(package-initialize)
-#+END_SRC
-=======
-;; Initialize `Info-directory-list' to include org-mode
-(setq Info-refill-paragraphs t)
-(add-to-list 'Info-directory-list "~/install/git/org-mode/doc/")
-
-;; Don't ask for confirmation for "dangerous" commands
-(put 'erase-buffer 'disabled nil)
-(put 'narrow-to-page 'disabled nil)
-(put 'upcase-region 'disabled nil)
-(put 'narrow-to-region 'disabled nil)
-(put 'downcase-region 'disabled nil)
-(put 'scroll-left 'disabled nil)
-(put 'scroll-right 'disabled nil)
-(put 'set-goal-column 'disabled nil)
-
-;; We expect local variables to be known
-(setq enable-local-variables t)
-(setq enable-local-eval t)
-
-;; Enabling and disabling some modes
-(show-paren-mode 1)
-(display-time-mode 1)
-(tooltip-mode -1)
-(electric-pair-mode -1)
-(blink-cursor-mode -1)
-(mouse-avoidance-mode 'cat-and-mouse)
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
-
-(setq max-lisp-eval-depth 10000)
-
-;; Default Frame
-(setq initial-frame-alist
-      '((alpha . 85)
-        (left-margin-width . 10)
-        (menu-bar-lines . 0)
-        (tool-bar-lines . 0)
-        (horizontal-scroll-bars . nil)
-        (vertical-scroll-bars . nil)))
-(setq default-frame-alist initial-frame-alist)
-
-;; FIXME: put it at the end?
-(set-frame-parameter nil 'fullscreen 'fullboth)
-
-;; Don't display initial messages
-(setq initial-scratch-message "")
-(setq initial-major-mode 'org-mode)
-(setq inhibit-startup-message t)
-(setq inhibit-startup-echo-area-message "guerry")
-(setq use-dialog-box nil)
-
-;; Who I am
-(setq user-full-name "Bastien Guerry")
-(setq user-mail-address "bastien.guerry@free.fr")
-
-<<<<<<< HEAD:emacs.org
-#+BEGIN_SRC emacs-lisp
 ;; Initialize `exec-path' and `load-path'
 (add-to-list 'exec-path "~/bin/")
 (let ((default-directory "~/elisp/"))
@@ -155,11 +53,7 @@
 ;; We expect local variables to be known
 (setq enable-local-variables t)
 (setq enable-local-eval t)
-#+END_SRC
 
-* Enable/Disable some minor modes
-
-#+BEGIN_SRC emacs-lisp
 ;; Enabling and disabling some modes
 (show-paren-mode 1)
 (display-time-mode 1)
@@ -186,11 +80,7 @@
 (setq use-dialog-box nil)
 (setq default-frame-alist initial-frame-alist)
 (set-frame-parameter nil 'fullscreen 'fullboth)
-#+END_SRC
 
-* Other useful defaults
-
-#+BEGIN_SRC emacs-lisp
 ;; Who I am
 (setq user-full-name "Bastien Guerry")
 (setq user-mail-address "bzg@bzg.fr")
@@ -240,11 +130,7 @@
 (elscreen-start)
 (setq elscreen-display-tab nil)
 (setq elscreen-tab-display-control nil)
-#+END_SRC
 
-* Require
-
-#+BEGIN_SRC emacs-lisp
 (require 'ibuffer)
 (require 'dash)
 (require 'cider)
@@ -263,73 +149,6 @@
 (setq fill-column 72)
 (setq line-move-visual nil)
 ;; (setq show-trailing-whitespace t)
-=======
-;; Let's get a backtrace when errors are
-(setq debug-on-error t)
-
-;; Display byte-compiler warnings on error
-(setq byte-compile-debug t)
-
-;; The default is to wait 1 second, which I find a bit long
-(setq echo-keystrokes 0.1)
-
-;; Stop polluting the directory with auto-saved files and backup
-(setq auto-save-default nil)
-(setq make-backup-files nil)
-(setq auto-save-list-file-prefix nil)
-
-;; Well, it's more so that you know this option
-(setq kill-ring-max 120)
-(setq kill-whole-line t)
-(setq kill-read-only-ok t)
-(setq require-final-newline t)
-
-;; Scrolling done right
-(setq scroll-error-top-bottom t)
-
-;; Number of lines of continuity when scrolling by screenfulls
-(setq next-screen-context-lines 0)
-
-;; Always use "y" for "yes"
-(fset 'yes-or-no-p 'y-or-n-p)
-
-;; elp.el is the Emacs Lisp profiler, sort by average time
-(setq elp-sort-by-function 'elp-sort-by-average-time)
-
-(setenv "EDITOR" "emacsclient")
-(setenv "CVS_RSH" "ssh")
-
-(require 'whitespace)
-(add-to-list 'whitespace-style 'lines-tail)
-(setq whitespace-line-column 80)
-
-;; I'm using an old elscreen but there is more recent activity:
-;; https://github.com/knu/elscreen
-(require 'elscreen)
-(elscreen-start)
-(setq elscreen-display-tab nil)
-(setq elscreen-tab-display-control nil)
-
-(require 'ibuffer)
-(require 'dash)
-(require 'cider)
-(require 'company)
-
-;; M-x package-install RET register-list RET
-(require 'register-list)
-
-;; cider basic configuration
-(setq nrepl-hide-special-buffers t)
-(setq cider-repl-pop-to-buffer-on-connect nil)
-
-;; `line-spacing' is nil by default, I keep it here to change it
-;; easily
-(setq line-spacing nil)
-
-(setq fill-column 72)
-(setq line-move-visual nil)
-(setq show-trailing-whitespace t)
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
 (setq visible-bell t)
 (setq spell-command "aspell")
 (setq tab-always-indent 'always)
@@ -346,12 +165,6 @@
 (setq browse-url-text-browser "w3m")
 (setq browse-url-new-window-flag t)
 (setq browse-url-firefox-new-window-is-tab t)
-<<<<<<< HEAD:emacs.org
-#+END_SRC
-
-* Keybindings
-=======
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
 
 (global-set-key (kbd "C-h /") 'find-function)
 (global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
@@ -378,46 +191,26 @@
 (global-set-key (quote [f12]) 'calendar)
 (global-set-key (kbd "C-x r L") 'register-list)
 
-<<<<<<< HEAD:emacs.org
 ;; (global-set-key (kbd "<XF86AudioLowerVolume>")
 ;; 		(lambda () (interactive) (shell-command "pactl set-sink-volume 0 0")))
 ;; (global-set-key (kbd "<XF86AudioRaiseVolume>")
 ;; 		(lambda () (interactive) (shell-command "pactl set-sink-volume 0 64000")))
 
 (require 'dired-x)
-=======
-(global-set-key (kbd "<XF86AudioLowerVolume>")
-		(lambda () (interactive) (shell-command "pactl set-sink-volume 0 0")))
-(global-set-key (kbd "<XF86AudioRaiseVolume>")
-		(lambda () (interactive) (shell-command "pactl set-sink-volume 0 64000")))
-
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
 (global-set-key (kbd "C-x d") 'dired)
 (define-key dired-mode-map ")" 'dired-details-toggle)
 (define-key dired-mode-map "\C-cg" 'grep-find)
 (define-key dired-mode-map "\C-cd" 'dired-clean-tex)
 
 (defun unfill-paragraph ()
-<<<<<<< HEAD:emacs.org
   "Make a multi-line paragraph into a single line of text."
-=======
-  "Takes a multi-line paragraph and makes it into a single line of text."
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
   (interactive)
   (let ((fill-column (point-max)))
     (fill-paragraph nil)))
 
 ;; Handy key definition
 (define-key global-map "\M-Q" 'unfill-paragraph)
-<<<<<<< HEAD:emacs.org
-#+END_SRC
 
-* Dired
-
-#+BEGIN_SRC emacs-lisp
-=======
-
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
 (setq directory-free-space-args "-Pkh")
 (setq list-directory-verbose-switches "-al")
 (setq dired-listing-switches "-l")
@@ -463,10 +256,7 @@
        (list "\\.mov$" "mplayer")
        (list "\\.divx$" "mplaer")
        (list "\\.mp4$" "mplayer")
-<<<<<<< HEAD:emacs.org
        (list "\\.webm$" "mplayer")
-=======
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
        (list "\\.mkv$" "mplayer")
        (list "\\.mpe?g$" "mplayer")
        (list "\\.m4[av]$" "mplayer")
@@ -483,16 +273,7 @@
 
 (setq dired-tex-unclean-extensions
   '(".toc" ".log" ".aux" ".dvi" ".out" ".nav" ".snm"))
-<<<<<<< HEAD:emacs.org
-#+END_SRC
 
-* Appointments
-
-#+BEGIN_SRC emacs-lisp
-=======
-
-;; Activate appointments
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
 (appt-activate t)
 (setq display-time-24hr-format t
       display-time-day-and-date t
@@ -500,12 +281,6 @@
       appt-display-interval 10
       appt-message-warning-time 120)
 (setq diary-file "~/.diary")
-<<<<<<< HEAD:emacs.org
-#+END_SRC
-
-* org-mode
-=======
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
 
 (require 'org)
 (require 'ox-rss)
@@ -525,13 +300,8 @@
 (define-key global-map "\C-cL" 'org-occur-link-in-agenda-files)
 
 ;; I keep those here to change it on the fly
-<<<<<<< HEAD:emacs.org
 ;; (setq org-element-use-cache nil)
 ;; (setq org-adapt-indentation t)
-=======
-(setq org-element-use-cache t)
-(setq org-adapt-indentation t)
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
 
 ;; Hook to update all blocks before saving
 (add-hook 'org-mode-hook
@@ -831,11 +601,7 @@
 
 	("#" "DONE/CANCELED"
          todo "DONE|CANCELED"
-<<<<<<< HEAD:emacs.org
 	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/libre.org"))
-=======
-	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org"))
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
 	  (org-agenda-sorting-strategy '(timestamp-up))))
         ))
 
@@ -1041,15 +807,7 @@ type=\"text/javascript\" src=\"//platform.twitter.com/widgets.js\"></script>
 (setq org-caldav-calendar-id "personnel")
 (setq org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
 (setq org-caldav-files nil)
-<<<<<<< HEAD:emacs.org
-#+END_SRC
 
-* notmuch
-
-#+BEGIN_SRC emacs-lisp
-=======
-
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
 ;; notmuch configuration
 (require 'notmuch)
 (setq notmuch-fcc-dirs nil)
@@ -1081,21 +839,10 @@ article."
       (message "Couldn't get relevant infos for switching to Gnus."))))
 
 (define-key notmuch-show-mode-map (kbd "C-c C-c") 'bzg-notmuch-goto-message-in-gnus)
-<<<<<<< HEAD:emacs.org
-
-(define-key global-map (kbd "<M-f1>") (lambda()(interactive) (notmuch-search "tag:flagged")))
-(define-key global-map (kbd "<S-f1>") (lambda()(interactive) (notmuch-search "tag:unread")))
-#+END_SRC
-=======
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
 
 (define-key global-map (kbd "<M-f1>") (lambda()(interactive) (notmuch-search "tag:flagged")))
 (define-key global-map (kbd "<S-f1>") (lambda()(interactive) (notmuch-search "tag:unread")))
 
-<<<<<<< HEAD:emacs.org
-#+BEGIN_SRC emacs-lisp
-=======
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
 ;; Gnus configuration
 (setq nnml-directory "~/Maildir/Mail/")
 
@@ -1139,11 +886,7 @@ article."
 (require 'starttls)
 (require 'epg)
 (require 'epa)
-<<<<<<< HEAD:emacs.org
 ;; (require 'smtpmail)
-=======
-(require 'smtpmail)
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
 (require 'boxquote)
 (require 'ecomplete)
 (require 'gnus-gravatar)
@@ -1156,11 +899,7 @@ article."
 (setq send-mail-function 'sendmail-send-it)
 (setq message-send-mail-function 'message-send-mail-with-sendmail)
 ;; (setq mail-header-separator "----")
-<<<<<<< HEAD:emacs.org
 (setq mail-use-rfc822 t)
-=======
-(setq mail-use-rfc822 nil)
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
 
 (setq message-cite-function (quote message-cite-original-without-signature))
 
@@ -1219,17 +958,10 @@ article."
       gnus-use-bbdb t
       gnus-use-correct-string-widths nil
       gnus-use-cross-reference nil
-<<<<<<< HEAD:emacs.org
       gnus-verbose 6
       mail-specify-envelope-from t
       mail-envelope-from 'header
       message-sendmail-envelope-from 'header
-=======
-      gnus-use-generic-from t
-      gnus-verbose 6
-      mail-envelope-from 'header
-      mail-specify-envelope-from t
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
       mail-user-agent 'gnus-user-agent
       message-fill-column 70
       message-kill-buffer-on-exit t
@@ -1249,7 +981,6 @@ article."
       gnus-level-subscribed 6
       gnus-activate-level 6
       gnus-level-unsubscribed 7)
-<<<<<<< HEAD:emacs.org
 
 (setq nnir-notmuch-remove-prefix "/home/guerry/Maildir/")
 (setq nnir-method-default-engines
@@ -1257,14 +988,6 @@ article."
 	;; (nntp . gmane) FIXME: Gmane is broken for now
 	))
 
-=======
-
-(setq nnir-notmuch-remove-prefix "/home/guerry/Maildir/")
-(setq nnir-method-default-engines
-      '((nnmaildir . notmuch)
-	(nntp . gmane)))
-
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
 (setq message-dont-reply-to-names gnus-ignored-from-addresses)
 (setq message-alternative-emails gnus-ignored-from-addresses)
 
@@ -1474,15 +1197,7 @@ the copy in the last group."
 		   (null message-sent-message-via))
      	  (push (buffer-name buffer) buffers))))
     (nreverse buffers)))
-<<<<<<< HEAD:emacs.org
-#+END_SRC
 
-* BBDB
-
-#+BEGIN_SRC emacs-lisp
-=======
-
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
 (setq bbdb-file "~/elisp/config/bbdb")
 
 (require 'bbdb)
@@ -1540,23 +1255,11 @@ the copy in the last group."
         ("X-Newsreader" (".*" mailer 0))
         ("X-Face" (".+" face 0 'replace))
         ("Face" (".+" face 0 'replace))))
-<<<<<<< HEAD:emacs.org
-#+END_SRC
 
-* ERC
-
-#+BEGIN_SRC emacs-lisp
 (require 'erc)
 (require 'erc-services)
 
 ;; highlight notifications in ERC
-=======
-
-(require 'erc)
-(require 'erc-services)
-
-;; Highlight notifications in ERC
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
 (font-lock-add-keywords
  'erc-mode
  '((";;.*\\(bzg2\\|éducation\\|clojure\\|emacs\\|orgmode\\)"
@@ -1637,12 +1340,6 @@ the copy in the last group."
 ;; This contains my passwords
 (load "/home/guerry/elisp/config/erc_.el")
 
-<<<<<<< HEAD:emacs.org
-* w3m
-
-#+BEGIN_SRC emacs-lisp
-=======
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
 ;; w3m configuration
 (setq w3m-accept-languages '("fr;" "q=1.0" "en;"))
 (setq w3m-antenna-sites '(("http://eucd.info" "EUCD.INFO" time)))
@@ -1658,15 +1355,7 @@ the copy in the last group."
 (setq w3m-use-cookies t)
 (setq w3m-use-tab t)
 (setq w3m-use-toolbar nil)
-<<<<<<< HEAD:emacs.org
-#+END_SRC
 
-* Calendar
-
-#+BEGIN_SRC emacs-lisp
-=======
-
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
 (setq french-holiday
       '((holiday-fixed 1 1 "Jour de l'an")
         (holiday-fixed 5 8 "Victoire 45")
@@ -1710,15 +1399,7 @@ the copy in the last group."
       calendar-mark-diary-entries-flag nil)
 
 (setq TeX-master 'dwim)
-<<<<<<< HEAD:emacs.org
-#+END_SRC
 
-* fringe
-
-#+BEGIN_SRC emacs-lisp
-=======
-
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
 ;; Hide fringe indicators
 (mapcar (lambda(fb) (set-fringe-bitmap-face fb 'org-hide))
         fringe-bitmaps)
@@ -1773,10 +1454,6 @@ the copy in the last group."
 
 (add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
 
-<<<<<<< HEAD:emacs.org
-* Emacs Lisp and Clojure initialization
-
-#+BEGIN_SRC emacs-lisp
 ;; Emacs Lisp and Clojure initialization
 (add-hook 'emacs-lisp-mode-hook 'company-mode)
 (add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
@@ -1792,42 +1469,6 @@ the copy in the last group."
 ;; (global-company-mode)
 ;; (setq company-idle-delay nil) ; never start completions automatically
 ;; (global-set-key (kbd "M-TAB") #'company-complete) ; use M-TAB, a.k.a. C-M-i, as manual trigger
-#+END_SRC
-
-* misc
-
-#+BEGIN_SRC emacs-lisp
-;; magit configuration
-(require 'magit)
-(setq magit-save-some-buffers 'dontask
-      magit-commit-all-when-nothing-staged 'ask
-      magit-auto-revert-mode nil
-      magit-last-seen-setup-instructions "1.4.0"
-      magit-push-always-verify nil)
-
-;; doc-view and eww/shr configuration
-(setq doc-view-continuous t)
-(setq doc-view-scale-internally nil)
-
-(setq eww-header-line-format nil
-      shr-use-fonts nil
-      shr-color-visible-distance-min 10
-      shr-color-visible-luminance-min 80)
-
-;; Use imagemagick, if available
-(when (fboundp 'imagemagick-register-types)
-  (imagemagick-register-types))
-=======
-;; Emacs Lisp and Clojure initialization
-(add-hook 'emacs-lisp-mode-hook 'company-mode)
-(add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
-(add-hook 'emacs-lisp-mode-hook 'fontify-headline)
-(add-hook 'emacs-lisp-mode-hook 'fontify-todo)
-(add-hook 'emacs-lisp-mode-hook 'turn-on-orgstruct)
-(add-hook 'clojure-mode-hook 'company-mode)
-(add-hook 'clojure-mode-hook 'fontify-headline)
-(add-hook 'clojure-mode-hook 'fontify-todo)
-(add-hook 'clojure-mode-hook 'turn-on-orgstruct)
 
 ;; magit configuration
 (require 'magit)
@@ -1849,42 +1490,6 @@ the copy in the last group."
 ;; Use imagemagick, if available
 (when (fboundp 'imagemagick-register-types)
   (imagemagick-register-types))
-
-(add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
-
-;; Use smart-mode-line package
-(smart-mode-line-enable)
-
-;; Personal stuff
-(defun bzg-find-bzg nil
-  "Find the bzg.org file."
-  (interactive)
-  (find-file "~/org/bzg.org"))
-
-(defun uniquify-all-lines-region (start end)
-  "Find duplicate lines in region START to END keeping first occurrence."
-  (interactive "*r")
-  (save-excursion
-    (let ((end (copy-marker end)))
-      (while
-          (progn
-            (goto-char start)
-            (re-search-forward "^\\(.*\\)\n\\(\\(.*\n\\)*\\)\\1\n" end t))
-        (replace-match "\\1\n\\2")))))
-
-(defun uniquify-all-lines-buffer ()
-  "Delete duplicate lines in buffer and keep first occurrence."
-  (interactive "*")
-  (uniquify-all-lines-region (point-min) (point-max)))
-
-(defun org-dblock-write:amazon (params)
-  "Dynamic block for inserting the cover of a book."
-  (interactive)
-  (let* ((asin (plist-get params :asin))
-         (tpl "<a style=\"float:right;width:160px;margin:2em;\" href=\"http://www.amazon.fr/gp/product/%s/ref=as_li_qf_sp_asin_il?ie=UTF8&tag=bastguer-21&linkCode=as2&camp=1642&creative=6746&creativeASIN=%s\"><img border=\"0\" src=\"http://images.amazon.com/images/P/%s.jpg\" ></a><img src=\"http://www.assoc-amazon.fr/e/ir?t=bastguer-21&l=as2&o=8&a=%s\" width=\"1\" height=\"1\" border=\"0\" alt=\"\" style=\"border:none !important; margin:0px !important;\" />")
-         (str (format tpl asin asin asin asin)))
-    (insert "#+begin_html\n" str "\n#+end_html")))
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el
 
 (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 
@@ -1947,14 +1552,6 @@ the copy in the last group."
    nil '(("^;;;;* ?\\(.*\\)\\>"
           (1 headline-face t)))))
 
-<<<<<<< HEAD:emacs.org
 ;; (defun insert-xo () (interactive) (insert "⨰"))
 
 ;; (pdf-tools-install)
-#+END_SRC
-
-=======
-(defun insert-xo () (interactive) (insert "⨰"))
-
-(pdf-tools-install)
->>>>>>> 7331f9b425dffcac1b3cb68a0f2a7275b1d7f4e7:emacs.el

@@ -1,7 +1,5 @@
-# [![Gittip](http://img.shields.io/gittip/bzg.svg)](https://www.gittip.com/bzg/)
-
-[[https://www.gittip.com/bzg/][http://img.shields.io/gittip/bzg.svg]]
-
 This is my =.emacs.el= file.
 
-Comments and suggestions are welcome! =bzg AT gnu DOT org=
+Comments and suggestions are welcome!
+
+=bzg AT gnu DOT org=
