@@ -429,9 +429,9 @@
         (:endgroup . nil)
 	("@Offline" . ?O)
         ("Print" . ?P) ("Patch" . ?p) ("Bug" . ?b)
-	("Buy" . ?B) ("Mail" . ?@)))
+	("Buy" . ?B) ("Mail" . ?@) ("Tel" . ?t)))
 (setq org-tags-column -74)
-(setq org-todo-keywords '((type "STRT" "LONG" "NEXT" "TODO" "WAIT" "|" "DONE" "CANCELED")))
+(setq org-todo-keywords '((type "STRT" "NEXT" "TODO" "WAIT" "|" "DONE" "CANCELED")))
 (setq org-use-property-inheritance t)
 (setq org-use-sub-superscripts nil)
 (setq org-clock-persist t)
@@ -584,9 +584,6 @@
           (org-agenda-entry-types '(:timestamp :scheduled))
           (org-agenda-sorting-strategy
            '(todo-state-up priority-down time-up))))
-
-	("l" "LONG (bzg)" tags-todo "TODO={LONG}"
-	 ((org-agenda-files '("~/org/bzg.org"))))
 
         ("r" tags-todo "+Read+TODO={NEXT}" nil)
         ("R" tags-todo "+Read+TODO={NEXT}"
