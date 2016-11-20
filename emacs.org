@@ -1550,7 +1550,7 @@ the copy in the last group."
 ;; (global-set-key (kbd "M-TAB") #'company-complete) ; use M-TAB, a.k.a. C-M-i, as manual trigger
 #+END_SRC
 
-* misc
+* Misc
 
 #+BEGIN_SRC emacs-lisp
 ;; magit configuration
