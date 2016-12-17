@@ -1552,3 +1552,10 @@ the copy in the last group."
 ;; (defun insert-xo () (interactive) (insert "⨰"))
 
 ;; (pdf-tools-install)
+
+(add-to-list 'org-src-lang-modes '("inline-js" . javascript))
+(defvar org-babel-default-header-args:inline-js
+  '((:results . "html")
+    (:exports . "results")))
+(defun org-babel-execute:inline-js (body _params)
+  (format "<script type=\"text/javascript\">\n%s\n</script>" body))
