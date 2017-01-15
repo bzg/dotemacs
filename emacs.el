@@ -155,6 +155,7 @@
 (setq display-time-mail-string "#")
 (setq focus-follows-mouse t)
 (setq text-mode-hook '(turn-on-auto-fill text-mode-hook-identify))
+(setq write-file-hooks '(delete-trailing-whitespace))
 
 ;; Set browser
 (require 'w3m)
@@ -174,6 +175,8 @@
 (global-set-key (kbd "<XF86AudioMute>") 'gnus)
 (global-set-key (quote [f2]) 'hidden-mode-line-mode)
 (global-set-key (quote [f3]) 'bzg-big-fringe-mode)
+(global-set-key (quote [f4]) 'delete-other-windows)
+(global-set-key (quote [f5]) (lambda()(interactive) (dired "~")))
 (global-set-key (quote [f6]) 'w3m)
 (global-set-key (quote [f7]) 'auto-fill-mode)
 (global-set-key (quote [f8]) 'occur)
@@ -181,6 +184,7 @@
 (global-set-key [(shift f8)] 'multi-occur)
 (global-set-key (quote [f10]) 'calc)
 (global-set-key (quote [f11]) 'eshell)
+(global-set-key (quote [f12]) 'calendar)
 (global-set-key (kbd "M-+") 'text-scale-increase)
 (global-set-key (kbd "M--") 'text-scale-decrease)
 (global-set-key (kbd "M-0") 'text-scale-adjust)
@@ -188,7 +192,6 @@
 (global-set-key (kbd "M-]")
                 (lambda () (interactive)
                   (ignore-errors (end-of-defun) (beginning-of-defun)) (org-cycle)))
-(global-set-key (quote [f12]) 'calendar)
 (global-set-key (kbd "C-x r L") 'register-list)
 
 ;; (global-set-key (kbd "<XF86AudioLowerVolume>")
@@ -349,7 +352,9 @@
 (setq org-agenda-bulk-mark-char "*")
 (setq org-agenda-diary-file "/home/guerry/org/rdv.org")
 (setq org-agenda-dim-blocked-tasks nil)
+(setq org-log-into-drawer "LOGBOOK")
 (setq org-agenda-entry-text-maxlines 10)
+(setq org-timer-default-timer 25)
 (setq org-agenda-files '("~/org/rdv.org" "~/org/bzg.org"))
 (setq org-agenda-prefix-format
       '((agenda . " %i %-12:c%?-14t%s")
@@ -435,6 +440,7 @@
 (setq org-use-property-inheritance t)
 (setq org-use-sub-superscripts nil)
 (setq org-clock-persist t)
+(setq org-clock-idle-time 30)
 (setq org-clock-history-length 35)
 (setq org-clock-in-resume t)
 (setq org-clock-out-remove-zero-time-clocks t)
@@ -447,7 +453,6 @@
 (setq org-icalendar-use-deadline '(todo-due event-if-todo event-if-not-todo))
 (setq org-icalendar-timezone "Europe/Paris")
 (setq org-icalendar-store-UID t)
-(setq org-timer-default-timer "20")
 (setq org-confirm-babel-evaluate nil)
 (setq org-archive-default-command 'org-archive-to-archive-sibling)
 (setq org-clock-idle-time 15)
@@ -513,6 +518,31 @@
 
 (org-agenda-to-appt)
 
+;; Set headlines to STRT and clock-in when running a countdown
+(add-hook 'org-timer-set-hook
+	  (lambda ()
+	    (if (eq major-mode 'org-agenda-mode)
+		(call-interactively 'org-agenda-clock-in)
+	      (call-interactively 'org-clock-in))))
+(add-hook 'org-timer-done-hook
+	  (lambda ()
+	    (if (and (eq major-mode 'org-agenda-mode)
+		     org-clock-current-task)
+		(call-interactively 'org-agenda-clock-out)
+	      (call-interactively 'org-clock-out))))
+(add-hook 'org-timer-pause-hook
+	  (lambda ()
+	    (if (and (eq major-mode 'org-agenda-mode)
+		     org-clock-current-task)
+		(call-interactively 'org-agenda-clock-out)
+	      (call-interactively 'org-clock-out))))
+(add-hook 'org-timer-stop-hook
+	  (lambda ()
+	    (if (and (eq major-mode 'org-agenda-mode)
+		     org-clock-current-task)
+		(call-interactively 'org-agenda-clock-out)
+	      (call-interactively 'org-clock-out))))
+
 (setq org-agenda-custom-commands
       `(
         ;; Week agenda for rendez-vous and tasks
@@ -537,7 +567,7 @@
 		((org-agenda-files '("~/org/bzg.org"))
 		 (org-agenda-sorting-strategy '(timestamp-up))))
 	  ))
-	
+
 	("	" "Libre (tout)"
 	 ((agenda "List of rendez-vous and tasks for today"
 		   ((org-agenda-span 1)
@@ -556,7 +586,9 @@
 	("!" tags-todo "+DEADLINE<=\"<now>\"")
         ("@" tags-todo "+SCHEDULED<=\"<now>\"")
 	("?" "WAIT (bzg)" tags-todo "TODO={WAIT}"
-	 ((org-agenda-files '("~/org/rdv.org" "~/org/bzg.org"))))
+	 ((org-agenda-files '("~/org/rdv.org" "~/org/bzg.org"))
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up priority-down time-up))))
 
         ("z" "Work deadlines" agenda "Past/upcoming work deadlines"
          ((org-agenda-span 1)
