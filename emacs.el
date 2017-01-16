@@ -155,7 +155,10 @@
 (setq display-time-mail-string "#")
 (setq focus-follows-mouse t)
 (setq text-mode-hook '(turn-on-auto-fill text-mode-hook-identify))
-(setq write-file-hooks '(delete-trailing-whitespace))
+(defun bzg-delete-trailing-whitespace ()
+  (unless (eq major-mode 'message-mode)
+    (delete-trailing-whitespace)))
+(setq write-file-hooks '(bzg-delete-trailing-whitespace))
 
 ;; Set browser
 (require 'w3m)
