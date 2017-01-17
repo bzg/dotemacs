@@ -620,15 +620,14 @@
           (org-agenda-sorting-strategy
            '(todo-state-up priority-down time-up))))
 
-        ("r" tags-todo "+Read+TODO={NEXT}" nil)
-        ("R" tags-todo "+Read+TODO={NEXT}"
-	 ((org-agenda-files '("~/org/libre.org" "~/org/garden.org"))
-	  (org-agenda-max-entries 50)))
-	("v" tags-todo "+View+TODO={NEXT}" nil)
-	("V" tags-todo "+View+TODO={NEXT}"
+        ("r" tags-todo "+Read+TODO={NEXT}")
+        ("R" tags-todo "+Read+TODO={TODO}"
 	 ((org-agenda-files '("~/org/libre.org" "~/org/garden.org"))))
-	("w" tags-todo "+Write+TODO={NEXT}" nil)
-	("W" tags-todo "+Write+TODO={NEXT}"
+	("v" tags-todo "+View+TODO={NEXT}")
+	("V" tags-todo "+View+TODO={TODO}"
+	 ((org-agenda-files '("~/org/libre.org" "~/org/garden.org"))))
+	("w" tags-todo "+Write+TODO={NEXT}")
+	("W" tags-todo "+Write+TODO={TODO}"
 	 ((org-agenda-files '("~/org/libre.org" "~/org/garden.org"))))
 
 	("#" "DONE/CANCELED"
