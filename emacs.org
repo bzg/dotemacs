@@ -189,10 +189,10 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq display-time-mail-string "#")
 (setq focus-follows-mouse t)
 (setq text-mode-hook '(turn-on-auto-fill text-mode-hook-identify))
-(defun bzg-delete-trailing-whitespace ()
-  (unless (eq major-mode 'message-mode)
-    (delete-trailing-whitespace)))
-(setq write-file-hooks '(bzg-delete-trailing-whitespace))
+;; (defun bzg-delete-trailing-whitespace ()
+;;   (unless (eq major-mode 'message-mode)
+;;     (delete-trailing-whitespace)))
+;; (setq write-file-hooks '(bzg-delete-trailing-whitespace))
 
 ;; Set browser
 (require 'w3m)
@@ -270,7 +270,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 (setq dired-guess-shell-alist-user
       (list
-       (list "\\.pdf$" "evince")
+       (list "\\.pdf$" "okular &")
        (list "\\.docx?$" "libreoffice")
        (list "\\.aup?$" "audacity")
        (list "\\.pptx?$" "libreoffice")
@@ -544,7 +544,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
       '((auto-mode . emacs)
         ("\\.mm\\'" . default)
         ("\\.x?html?\\'" . default)
-        ("\\.pdf\\'" . "evince %s")))
+        ("\\.pdf\\'" . "okular %s")))
 (setq org-hide-leading-stars t)
 (setq org-global-properties '(("Effort_ALL" . "0:10 0:30 1:00 2:00 3:30 7:00")))
 (setq org-confirm-elisp-link-function nil)
@@ -615,10 +615,10 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 		     '(todo-state-up time-up priority-down))))
 	  (todo "STRT"
 		((org-agenda-files '("~/org/bzg.org"))
-		 (org-agenda-sorting-strategy '(timestamp-up))))
+		 (org-agenda-sorting-strategy '(timestamp-up priority-up))))
 	  (todo "NEXT"
 		((org-agenda-files '("~/org/bzg.org"))
-		 (org-agenda-sorting-strategy '(timestamp-up))))
+		 (org-agenda-sorting-strategy '(timestamp-up priority-up))))
 	  ))
 
 	("	" "Libre (tout)"
@@ -643,22 +643,15 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up priority-down time-up))))
 
-        ("z" "Work deadlines" agenda "Past/upcoming work deadlines"
-         ((org-agenda-span 1)
-          (org-deadline-warning-days 15)
-          (org-agenda-entry-types '(:deadline))
-          (org-agenda-sorting-strategy
-           '(todo-state-up priority-down time-up))))
 	("x" "Agenda work" agenda "Work scheduled for today"
 	 ((org-agenda-span 1)
 	  (org-deadline-warning-days 3)
           (org-agenda-entry-types '(:timestamp :scheduled))
           (org-agenda-sorting-strategy
            '(todo-state-up priority-down time-up))))
-	("Z" "Libre deadlin." agenda "Past/upcoming leisure deadlines"
+        ("z" "Work deadlines" agenda "Past/upcoming work deadlines"
          ((org-agenda-span 1)
           (org-deadline-warning-days 15)
-	  (org-agenda-files '("~/org/libre.org" "~/org/garden.org"))
           (org-agenda-entry-types '(:deadline))
           (org-agenda-sorting-strategy
            '(todo-state-up priority-down time-up))))
@@ -667,6 +660,13 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	  (org-deadline-warning-days 3)
 	  (org-agenda-files '("~/org/libre.org" "~/org/garden.org"))
           (org-agenda-entry-types '(:timestamp :scheduled))
+          (org-agenda-sorting-strategy
+           '(todo-state-up priority-down time-up))))
+	("Z" "Libre deadlin." agenda "Past/upcoming leisure deadlines"
+         ((org-agenda-span 1)
+          (org-deadline-warning-days 15)
+	  (org-agenda-files '("~/org/libre.org" "~/org/garden.org"))
+          (org-agenda-entry-types '(:deadline))
           (org-agenda-sorting-strategy
            '(todo-state-up priority-down time-up))))
 
@@ -682,7 +682,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 	("#" "DONE/CANCELED"
          todo "DONE|CANCELED"
-	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/libre.org"))
+	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/libre.org" "~/org/garden.org"))
 	  (org-agenda-sorting-strategy '(timestamp-up))))
         ))
 
@@ -937,6 +937,7 @@ article."
 
 (setq gnus-ignored-from-addresses
       (regexp-opt '("bastien.guerry@ens.fr"
+		    "bastien.guerry@culture.gouv.fr"
                     "bastien.guerry@free.fr"
 		    "bastien.guerry@aful.org"
                     "bastien@olpc-france.org"
@@ -1017,7 +1018,7 @@ article."
       '(;; (nnml "")
 	(nnmaildir "bzgfr" (directory "~/Maildir/bzgfr"))
 	(nnmaildir "bzgfrio" (directory "~/Maildir/bzgfrio"))
-	(nnmaildir "free" (directory "~/Maildir/free"))
+	;; (nnmaildir "free" (directory "~/Maildir/free"))
 	;; (nnmaildir "digited" (directory "~/Maildir/digited"))
 	;; (nnmaildir "gmail" (directory "~/Maildir/gmail"))
 	;; (nnmaildir "hackadon" (directory "~/Maildir/hackadon"))
@@ -1456,6 +1457,12 @@ the copy in the last group."
 (setq w3m-use-cookies t)
 (setq w3m-use-tab t)
 (setq w3m-use-toolbar nil)
+#+END_SRC
+
+* eww
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'eww-mode-hook 'visual-line-mode)
 #+END_SRC
 
 * Calendar
