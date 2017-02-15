@@ -418,9 +418,9 @@
 (setq org-log-note-headings
       '((done . "CLOSING NOTE %t") (state . "State %-12s %t") (clock-out . "")))
 (setq org-priority-start-cycle-with-default nil)
-(setq org-refile-targets '((org-agenda-files . (:maxlevel . 2))
-                           (("~/org/garden.org") . (:maxlevel . 2))
-                           (("~/org/libre.org") . (:maxlevel . 2))))
+(setq org-refile-targets '((org-agenda-files . (:maxlevel . 2))))
+                           ;; (("~/org/garden.org") . (:maxlevel . 2))
+                           ;; (("~/org/libre.org") . (:maxlevel . 2))))
 (setq org-refile-use-outline-path t)
 (setq org-refile-allow-creating-parent-nodes t)
 (setq org-refile-use-cache t)
@@ -481,7 +481,7 @@
 (setq org-loop-over-headlines-in-active-region t)
 (setq org-create-formula-image-program 'dvipng) ;; imagemagick
 (setq org-allow-promoting-top-level-subtree t)
-(setq org-description-max-indent 5)
+(setq org-list-description-max-indent 5)
 (setq org-gnus-prefer-web-links nil)
 (setq org-html-head-include-default-style nil)
 (setq org-html-head-include-scripts nil)
