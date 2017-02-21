@@ -563,6 +563,12 @@
 		    (org-deadline-warning-days 3)
 		    (org-agenda-sorting-strategy
 		     '(todo-state-up time-up priority-down))))
+	  (agenda "List of things to learn for today"
+		   ((org-agenda-span 1)
+		    (org-agenda-files '("~/org/apprendre.org"))
+		    (org-deadline-warning-days 3)
+		    (org-agenda-sorting-strategy
+		     '(todo-state-up time-up priority-down))))
 	  (todo "STRT"
 		((org-agenda-files '("~/org/bzg.org"))
 		 (org-agenda-sorting-strategy '(timestamp-up priority-up))))
@@ -574,7 +580,7 @@
 	("	" "Libre (tout)"
 	 ((agenda "List of rendez-vous and tasks for today"
 		   ((org-agenda-span 1)
-		    (org-agenda-files '("~/org/rdv.org" "~/org/libre.org" "~/org/garden.org"))
+		    (org-agenda-files '("~/org/rdv.org" "~/org/libre.org" "~/org/garden.org" "~/org/apprendre.org"))
 		    (org-deadline-warning-days 3)
 		    (org-agenda-sorting-strategy
 		     '(todo-state-up priority-down time-up))))
@@ -586,6 +592,9 @@
 		 (org-agenda-sorting-strategy '(timestamp-up))))
 	  ))
 
+	("l" agenda "Apprendre aujourd'hui"
+	 ((org-agenda-span 1)
+	  (org-agenda-files '("~/org/apprendre.org"))))
 	("!" tags-todo "+DEADLINE<=\"<now>\"")
         ("@" tags-todo "+SCHEDULED<=\"<now>\"")
 	("?" "WAIT (bzg)" tags-todo "TODO={WAIT}"
