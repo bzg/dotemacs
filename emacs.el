@@ -1596,7 +1596,3 @@ the copy in the last group."
     (:exports . "results")))
 (defun org-babel-execute:inline-js (body _params)
   (format "<script type=\"text/javascript\">\n%s\n</script>" body))
-
-;; (add-to-list 'load-path "~/install/git/el-go/")
-;; (add-to-list 'load-path "~/install/git/el-go/back-ends")
-;; (require 'go)
