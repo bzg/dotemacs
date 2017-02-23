@@ -418,8 +418,8 @@
 (setq org-log-note-headings
       '((done . "CLOSING NOTE %t") (state . "State %-12s %t") (clock-out . "")))
 (setq org-priority-start-cycle-with-default nil)
-(setq org-refile-targets '((org-agenda-files . (:maxlevel . 2))))
-                           ;; (("~/org/garden.org") . (:maxlevel . 2))
+(setq org-refile-targets '((org-agenda-files . (:maxlevel . 2))
+			   (("~/org/apprendre.org") . (:maxlevel . 2))))
                            ;; (("~/org/libre.org") . (:maxlevel . 2))))
 (setq org-refile-use-outline-path t)
 (setq org-refile-allow-creating-parent-nodes t)
@@ -1256,8 +1256,11 @@ the copy in the last group."
 (setq bbdb-mua-pop-up nil)
 (setq bbdb-mua-update-interactive-p '(create . query))
 (setq bbdb-mua-auto-update-p t)
+
 (add-to-list 'bbdb-mua-mode-alist '(message mu4e-compose-mode))
 
+(add-hook 'mail-setup-hook 'bbdb-mail-aliases)
+(add-hook 'message-setup-hook 'bbdb-mail-aliases)
 (add-hook 'bbdb-change-hook 'bbdb-timestamp)
 (add-hook 'bbdb-create-hook 'bbdb-creation-date)
 (add-hook 'bbdb-notice-mail-hook 'bbdb-auto-notes)

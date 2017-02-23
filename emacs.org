@@ -1318,8 +1318,11 @@ the copy in the last group."
 (setq bbdb-mua-pop-up nil)
 (setq bbdb-mua-update-interactive-p '(create . query))
 (setq bbdb-mua-auto-update-p t)
+
 (add-to-list 'bbdb-mua-mode-alist '(message mu4e-compose-mode))
 
+(add-hook 'mail-setup-hook 'bbdb-mail-aliases)
+(add-hook 'message-setup-hook 'bbdb-mail-aliases)
 (add-hook 'bbdb-change-hook 'bbdb-timestamp)
 (add-hook 'bbdb-create-hook 'bbdb-creation-date)
 (add-hook 'bbdb-notice-mail-hook 'bbdb-auto-notes)
