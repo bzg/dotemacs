@@ -170,6 +170,7 @@
 (setq browse-url-new-window-flag t)
 (setq browse-url-firefox-new-window-is-tab t)
 
+(global-set-key "\M- " 'hippie-expand)
 (global-set-key (kbd "C-h /") 'find-function)
 (global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
@@ -934,6 +935,7 @@ article."
 
 ;; Use electric completion in Gnus
 (setq message-mail-alias-type 'ecomplete)
+;; (setq message-mail-alias-type 'abbrev)
 (setq epa-popup-info-window nil)
 (setq smiley-style 'medium)
 
@@ -1247,6 +1249,7 @@ the copy in the last group."
 (require 'bbdb-anniv)
 (require 'bbdb-gnus)
 
+;; (bbdb-mail-aliases)
 (bbdb-initialize 'message 'gnus)
 (bbdb-mua-auto-update-init 'message 'gnus)
 
