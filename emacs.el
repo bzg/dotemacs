@@ -419,7 +419,7 @@
 (setq org-log-note-headings
       '((done . "CLOSING NOTE %t") (state . "State %-12s %t") (clock-out . "")))
 (setq org-priority-start-cycle-with-default nil)
-(setq org-refile-targets '((org-agenda-files . (:maxlevel . 2))
+(setq org-refile-targets '((org-agenda-files . (:maxlevel . 3))
 			   (("~/org/apprendre.org") . (:maxlevel . 2))))
                            ;; (("~/org/libre.org") . (:maxlevel . 2))))
 (setq org-refile-use-outline-path t)
