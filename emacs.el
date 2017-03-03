@@ -1506,13 +1506,13 @@ the copy in the last group."
 ;; Emacs Lisp and Clojure initialization
 (add-hook 'emacs-lisp-mode-hook 'company-mode)
 (add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
-(add-hook 'emacs-lisp-mode-hook 'bzg-fontify-headline)
-(add-hook 'emacs-lisp-mode-hook 'bzg-fontify-todo)
+;; (add-hook 'emacs-lisp-mode-hook 'bzg-fontify-headline)
+;; (add-hook 'emacs-lisp-mode-hook 'bzg-fontify-todo)
 (add-hook 'emacs-lisp-mode-hook 'turn-on-orgstruct)
 (add-hook 'clojure-mode-hook 'company-mode)
 (add-hook 'cider-repl-mode-hook 'company-mode)
-(add-hook 'clojure-mode-hook 'bzg-fontify-headline)
-(add-hook 'clojure-mode-hook 'bzg-fontify-todo)
+;; (add-hook 'clojure-mode-hook 'bzg-fontify-headline)
+;; (add-hook 'clojure-mode-hook 'bzg-fontify-todo)
 (add-hook 'clojure-mode-hook 'turn-on-orgstruct)
 
 ;; (global-company-mode)
@@ -1591,15 +1591,15 @@ the copy in the last group."
 (defvar bzg-todo-comment-face 'bzg-todo-comment-face)
 (defvar bzg-headline-face 'bzg-headline-face)
 
-(defun bzg-fontify-todo ()
-  (font-lock-add-keywords
-   nil '((";;.*\\(TODO\\|FIXME\\)"
-          (1 todo-comment-face t)))))
+;; (defun bzg-fontify-todo ()
+;;   (font-lock-add-keywords
+;;    nil '((";;.*\\(TODO\\|FIXME\\)"
+;;           (1 todo-comment-face t)))))
 
-(defun bzg-fontify-headline ()
-  (font-lock-add-keywords
-   nil '(("^;;;;* ?\\(.*\\)\\>"
-          (1 headline-face t)))))
+;; (defun bzg-fontify-headline ()
+;;   (font-lock-add-keywords
+;;    nil '(("^;;;;* ?\\(.*\\)\\>"
+;;           (1 headline-face t)))))
 
 ;; (defun insert-xo () (interactive) (insert "⨰"))
 
