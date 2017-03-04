@@ -1617,7 +1617,7 @@ the copy in the last group."
 (require 'helm-config)
 ;; (global-set-key (kbd "M-x") 'helm-M-x)
 ;; (global-set-key (kbd "C-x C-f") #'helm-find-files)
-(helm-mode 1)
+;; (helm-mode 1)
 
 (require 'guide-key)
 (setq guide-key/guide-key-sequence '("C-x r" "C-x 4"))

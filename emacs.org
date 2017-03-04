@@ -1717,8 +1717,11 @@ the copy in the last group."
   (require 'helm-config)
   ;; (global-set-key (kbd "M-x") 'helm-M-x)
   ;; (global-set-key (kbd "C-x C-f") #'helm-find-files)
-  (helm-mode 1)
+  ;; (helm-mode 1)
   #+END_SRC
+
+  #+RESULTS:
+  : helm-config
 
 *** guide-key
 
@@ -1729,3 +1732,4 @@ the copy in the last group."
   #+END_SRC
 
 
+  
