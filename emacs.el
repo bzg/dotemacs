@@ -1614,7 +1614,7 @@ the copy in the last group."
 (defun org-babel-execute:inline-js (body _params)
   (format "<script type=\"text/javascript\">\n%s\n</script>" body))
 
-(require 'helm-config)
+;; (require 'helm-config)
 ;; (global-set-key (kbd "M-x") 'helm-M-x)
 ;; (global-set-key (kbd "C-x C-f") #'helm-find-files)
 ;; (helm-mode 1)
