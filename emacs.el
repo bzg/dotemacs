@@ -1605,9 +1605,20 @@ the copy in the last group."
 
 ;; (pdf-tools-install)
 
+(desktop-save-mode)
+
 (add-to-list 'org-src-lang-modes '("inline-js" . javascript))
 (defvar org-babel-default-header-args:inline-js
   '((:results . "html")
     (:exports . "results")))
 (defun org-babel-execute:inline-js (body _params)
   (format "<script type=\"text/javascript\">\n%s\n</script>" body))
+
+(require 'helm-config)
+;; (global-set-key (kbd "M-x") 'helm-M-x)
+;; (global-set-key (kbd "C-x C-f") #'helm-find-files)
+(helm-mode 1)
+
+(require 'guide-key)
+(setq guide-key/guide-key-sequence '("C-x r" "C-x 4"))
+(guide-key-mode 1) ; Enable guide-key-mode

@@ -1694,9 +1694,13 @@ the copy in the last group."
 ;; (defun insert-xo () (interactive) (insert "⨰"))
 
 ;; (pdf-tools-install)
+
+(desktop-save-mode)
 #+END_SRC
 
 * Experimental
+
+** Inline-js
 
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'org-src-lang-modes '("inline-js" . javascript))
@@ -1706,3 +1710,22 @@ the copy in the last group."
 (defun org-babel-execute:inline-js (body _params)
   (format "<script type=\"text/javascript\">\n%s\n</script>" body))
 #+END_SRC
+
+*** helm
+
+  #+BEGIN_SRC emacs-lisp
+  (require 'helm-config)
+  ;; (global-set-key (kbd "M-x") 'helm-M-x)
+  ;; (global-set-key (kbd "C-x C-f") #'helm-find-files)
+  (helm-mode 1)
+  #+END_SRC
+
+*** guide-key
+
+  #+BEGIN_SRC emacs-lisp
+  (require 'guide-key)
+  (setq guide-key/guide-key-sequence '("C-x r" "C-x 4"))
+  (guide-key-mode 1) ; Enable guide-key-mode
+  #+END_SRC
+
+
