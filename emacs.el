@@ -1605,7 +1605,7 @@ the copy in the last group."
 
 ;; (pdf-tools-install)
 
-(desktop-save-mode)
+;; (desktop-save-mode)
 
 (add-to-list 'org-src-lang-modes '("inline-js" . javascript))
 (defvar org-babel-default-header-args:inline-js
@@ -1620,5 +1620,5 @@ the copy in the last group."
 ;; (helm-mode 1)
 
 (require 'guide-key)
-(setq guide-key/guide-key-sequence '("C-x r" "C-x 4"))
+(setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c @"))
 (guide-key-mode 1) ; Enable guide-key-mode

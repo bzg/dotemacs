@@ -1695,21 +1695,21 @@ the copy in the last group."
 
 ;; (pdf-tools-install)
 
-(desktop-save-mode)
+;; (desktop-save-mode)
 #+END_SRC
 
 * Experimental
 
-** Inline-js
+*** Inline-js
 
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'org-src-lang-modes '("inline-js" . javascript))
-(defvar org-babel-default-header-args:inline-js
-  '((:results . "html")
-    (:exports . "results")))
-(defun org-babel-execute:inline-js (body _params)
-  (format "<script type=\"text/javascript\">\n%s\n</script>" body))
-#+END_SRC
+   #+BEGIN_SRC emacs-lisp
+   (add-to-list 'org-src-lang-modes '("inline-js" . javascript))
+   (defvar org-babel-default-header-args:inline-js
+     '((:results . "html")
+       (:exports . "results")))
+   (defun org-babel-execute:inline-js (body _params)
+     (format "<script type=\"text/javascript\">\n%s\n</script>" body))
+   #+END_SRC
 
 *** helm
 
@@ -1720,14 +1720,11 @@ the copy in the last group."
   ;; (helm-mode 1)
   #+END_SRC
 
-  #+RESULTS:
-  : helm-config
-
 *** guide-key
 
   #+BEGIN_SRC emacs-lisp
   (require 'guide-key)
-  (setq guide-key/guide-key-sequence '("C-x r" "C-x 4"))
+  (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c @"))
   (guide-key-mode 1) ; Enable guide-key-mode
   #+END_SRC
 
