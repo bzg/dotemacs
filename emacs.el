@@ -644,7 +644,7 @@
 
 	("#" "DONE/CANCELED"
          todo "DONE|CANCELED"
-	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/libre.org" "~/org/garden.org"))
+	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/apprendre.org" "~/org/libre.org" "~/org/garden.org"))
 	  (org-agenda-sorting-strategy '(timestamp-up))))
         ))
 
