@@ -1583,7 +1583,7 @@ the copy in the last group."
 
 ;; (defun insert-xo () (interactive) (insert "⨰"))
 
-;; (pdf-tools-install)
+(pdf-tools-install)
 
 ;; (desktop-save-mode)
 
