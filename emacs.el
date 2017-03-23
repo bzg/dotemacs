@@ -856,16 +856,6 @@ article."
   (define-key global-map (kbd "<S-f1>")
     (lambda() (interactive) (notmuch-search "tag:unread"))))
 
-(use-package message
-  :config
-  ;; Use electric completion in Gnus
-  ;; (setq message-mail-alias-type 'abbrev)
-  (setq message-mail-alias-type 'ecomplete)
-  (setq message-send-mail-function 'message-send-mail-with-sendmail)
-  (setq message-cite-function 'message-cite-original-without-signature)
-  (setq message-dont-reply-to-names gnus-ignored-from-addresses)
-  (setq message-alternative-emails gnus-ignored-from-addresses))
-
 (use-package starttls)
 (use-package epg)
 (use-package epa
@@ -1212,6 +1202,16 @@ the copy in the last group."
 		     (null message-sent-message-via))
 	    (push (buffer-name buffer) buffers))))
       (nreverse buffers))))
+
+(use-package message
+  :config
+  ;; Use electric completion in Gnus
+  ;; (setq message-mail-alias-type 'abbrev)
+  (setq message-mail-alias-type 'ecomplete)
+  (setq message-send-mail-function 'message-send-mail-with-sendmail)
+  (setq message-cite-function 'message-cite-original-without-signature)
+  (setq message-dont-reply-to-names gnus-ignored-from-addresses)
+  (setq message-alternative-emails gnus-ignored-from-addresses))
 
 (use-package bbdb
   :config
