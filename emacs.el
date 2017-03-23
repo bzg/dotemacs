@@ -408,7 +408,9 @@
 	'((done . "CLOSING NOTE %t") (state . "State %-12s %t") (clock-out . "")))
   (setq org-priority-start-cycle-with-default nil)
   (setq org-refile-targets '((org-agenda-files . (:maxlevel . 3))
-			     (("~/org/apprendre.org") . (:maxlevel . 3))))
+			     (("~/org/libre.org"
+			       "~/org/garden.org"
+			       "~/org/apprendre.org") . (:maxlevel . 1))))
   ;; (("~/org/libre.org") . (:maxlevel . 2))))
   (setq org-refile-use-outline-path t)
   (setq org-refile-allow-creating-parent-nodes t)
