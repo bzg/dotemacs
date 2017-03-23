@@ -1287,7 +1287,7 @@ the copy in the last group."
 			       track truncate)
 	erc-keywords nil
 	erc-prompt-for-nickserv-password nil
-	erc-prompt-for-password 'auth-source
+	erc-prompt-for-password nil
 	erc-timestamp-format "%s "
 	erc-hide-timestamps t
 	erc-log-channels t
@@ -1359,9 +1359,17 @@ the copy in the last group."
 
     (require 'tls)
     (defun bzg-erc-connect-lll ()
-      "Connect to Freenode server with ERC."
+      "Connect to LLL's slack server with ERC."
       (interactive)
       (erc-tls :server "libertelivinglab.irc.slack.com"
+	       :port 6667
+	       :nick "bzg"
+	       :full-name "Bastien"))
+    
+    (defun bzg-erc-connect-eig ()
+      "Connect to EIG's slack with ERC."
+      (interactive)
+      (erc-tls :server "eig-hq.irc.slack.com"
 	       :port 6667
 	       :nick "bzg"
 	       :full-name "Bastien")))
@@ -1612,3 +1620,5 @@ the copy in the last group."
    :config
    (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c @"))
    (guide-key-mode 1)) ; Enable guide-key-mode
+
+(setq twittering-use-master-password t)
