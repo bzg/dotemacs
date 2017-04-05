@@ -13,13 +13,13 @@
 
 ;; Initialize `exec-path' and `load-path'
 (add-to-list 'exec-path "~/bin/")
-(let ((default-directory "~/elisp/"))
+(let ((default-directory "~/Documents/elisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 (let ((default-directory "/usr/share/emacs/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 (let ((default-directory "/usr/local/share/emacs/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
-;; (add-to-list 'load-path "~/install/cvs/emacs-w3m/")
+(add-to-list 'load-path "~/install/cvs/emacs-w3m/")
 (add-to-list 'load-path "~/install/git/org-caldav/")
 (add-to-list 'load-path "~/install/git/elscreen/")
 (add-to-list 'load-path "~/install/git/bbdb/lisp/")
@@ -31,7 +31,7 @@
 (server-start)
 
 ;; Load custom file
-(setq custom-file "/home/guerry/elisp/config/emacs-custom.el")
+(setq custom-file "/home/guerry/Documents/elisp/config/emacs-custom.el")
 (load custom-file)
 
 ;; Load theme
@@ -1060,7 +1060,7 @@ article."
   (setq gnus-buttonized-mime-types '("multipart/alternative"))
 
   ;; Use w3m to display HTML mails
-  (setq mm-text-html-renderer 'shr
+  (setq mm-text-html-renderer 'gnus-w3m
 	mm-inline-text-html-with-images t
 	mm-inline-large-images nil
 	mm-attachment-file-modes 420)
@@ -1215,7 +1215,7 @@ the copy in the last group."
   (require 'bbdb-com)
   (require 'bbdb-anniv)
   (require 'bbdb-gnus)
-  (setq bbdb-file "~/elisp/config/bbdb")
+  (setq bbdb-file "~/Documents/elisp/config/bbdb")
   ;; (bbdb-mail-aliases)
   (bbdb-initialize 'message 'gnus)
   (bbdb-mua-auto-update-init 'message 'gnus)
@@ -1381,22 +1381,22 @@ the copy in the last group."
 (setq browse-url-new-window-flag t)
 (setq browse-url-firefox-new-window-is-tab t)
 
-;; (use-package w3m
-;;   :config
-;;   (setq w3m-accept-languages '("fr;" "q=1.0" "en;"))
-;;   (setq w3m-antenna-sites '(("http://eucd.info" "EUCD.INFO" time)))
-;;   (setq w3m-broken-proxy-cache t)
-;;   (setq w3m-confirm-leaving-secure-page nil)
-;;   (setq w3m-cookie-accept-bad-cookies nil)
-;;   (setq w3m-cookie-accept-domains nil)
-;;   (setq w3m-cookie-file "/home/guerry/.w3m/cookie")
-;;   (setq w3m-fill-column 70)
-;;   (setq w3m-form-textarea-edit-mode 'org-mode)
-;;   (setq w3m-icon-directory nil)
-;;   (setq w3m-key-binding 'info)
-;;   (setq w3m-use-cookies t)
-;;   (setq w3m-use-tab t)
-;;   (setq w3m-use-toolbar nil))
+(use-package w3m
+  :config
+  (setq w3m-accept-languages '("fr;" "q=1.0" "en;"))
+  (setq w3m-antenna-sites '(("http://eucd.info" "EUCD.INFO" time)))
+  (setq w3m-broken-proxy-cache t)
+  (setq w3m-confirm-leaving-secure-page nil)
+  (setq w3m-cookie-accept-bad-cookies nil)
+  (setq w3m-cookie-accept-domains nil)
+  (setq w3m-cookie-file "/home/guerry/.w3m/cookie")
+  (setq w3m-fill-column 70)
+  (setq w3m-form-textarea-edit-mode 'org-mode)
+  (setq w3m-icon-directory nil)
+  (setq w3m-key-binding 'info)
+  (setq w3m-use-cookies t)
+  (setq w3m-use-tab t)
+  (setq w3m-use-toolbar nil))
 
 (use-package eww
   :config
@@ -1540,7 +1540,7 @@ the copy in the last group."
 (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 
 ;; Use smart-mode-line package
-(smart-mode-line-enable)
+;; (smart-mode-line-enable)
 
 ;; Personal stuff
 (defun bzg-find-bzg nil
@@ -1620,5 +1620,8 @@ the copy in the last group."
    :config
    (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c @"))
    (guide-key-mode 1)) ; Enable guide-key-mode
+
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 5) ((control) . nil)))
+(setq mouse-wheel-progressive-speed nil)
 
 (setq twittering-use-master-password t)
