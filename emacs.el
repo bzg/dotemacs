@@ -19,7 +19,7 @@
   (normal-top-level-add-subdirs-to-load-path))
 (let ((default-directory "/usr/local/share/emacs/site-lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
-(add-to-list 'load-path "~/install/cvs/emacs-w3m/")
+;; (add-to-list 'load-path "~/install/cvs/emacs-w3m/")
 (add-to-list 'load-path "~/install/git/org-caldav/")
 (add-to-list 'load-path "~/install/git/elscreen/")
 (add-to-list 'load-path "~/install/git/bbdb/lisp/")
@@ -176,7 +176,7 @@
 (global-set-key (quote [f3]) 'bzg-big-fringe-mode)
 (global-set-key (quote [f4]) 'delete-other-windows)
 (global-set-key (quote [f5]) (lambda()(interactive) (dired "~")))
-(global-set-key (quote [f6]) 'w3m)
+;; (global-set-key (quote [f6]) 'w3m)
 (global-set-key (quote [f7]) 'auto-fill-mode)
 (global-set-key (quote [f8]) 'occur)
 (global-set-key (quote [f9]) 'magit-status)
@@ -186,10 +186,8 @@
 (global-set-key (kbd "M-+") 'text-scale-increase)
 (global-set-key (kbd "M--") 'text-scale-decrease)
 (global-set-key (kbd "M-0") 'text-scale-adjust)
-(global-set-key (kbd "C-M-[") 'outline-show-all)
-(global-set-key (kbd "C-M-]") 'outline-hide-body)
-(global-set-key (kbd "M-[") 'outline-hide-entry)
-(global-set-key (kbd "M-]") 'outline-show-entry)
+(global-set-key (kbd "C-M-]") 'origami-toggle-all-nodes)
+(global-set-key (kbd "M-]") 'origami-toggle-node)
 (global-set-key (kbd "C-x r L") 'register-list)
 (global-set-key (kbd "C-x d") 'dired)
 (define-key dired-mode-map "\C-cg" 'grep-find)
@@ -225,7 +223,6 @@
 	 (list "\\.txt$" "gedit")
 	 (list "\\.sql$" "gedit")
 	 (list "\\.css$" "gedit")
-	 (list "\\.html$" "w3m")
 	 (list "\\.jpe?g$" "geeqie")
 	 (list "\\.png$" "geeqie")
 	 (list "\\.gif$" "geeqie")
@@ -451,7 +448,7 @@
   (setq org-archive-default-command 'org-archive-to-archive-sibling)
   (setq org-clock-idle-time 15)
   (setq org-id-uuid-program "uuidgen")
-  (setq org-modules '(org-bbdb org-bibtex org-docview org-gnus org-protocol org-info org-irc org-w3m org-learn))
+  (setq org-modules '(org-bbdb org-bibtex org-docview org-gnus org-protocol org-info org-irc org-learn))
   (setq org-use-speed-commands
 	(lambda nil
 	  (and (looking-at org-outline-regexp-bol)
@@ -918,7 +915,6 @@ article."
 	  ("application/x-patch" 8bit)
 	  (".*" base64))))
 
-  (setq mm-url-program 'w3m)
   (setq mm-url-use-external nil)
 
   (setq nnmail-extra-headers
@@ -1064,7 +1060,7 @@ article."
   (setq gnus-buttonized-mime-types '("multipart/alternative"))
 
   ;; Use w3m to display HTML mails
-  (setq mm-text-html-renderer 'gnus-w3m
+  (setq mm-text-html-renderer 'shr
 	mm-inline-text-html-with-images t
 	mm-inline-large-images nil
 	mm-attachment-file-modes 420)
@@ -1385,22 +1381,22 @@ the copy in the last group."
 (setq browse-url-new-window-flag t)
 (setq browse-url-firefox-new-window-is-tab t)
 
-(use-package w3m
-  :config
-  (setq w3m-accept-languages '("fr;" "q=1.0" "en;"))
-  (setq w3m-antenna-sites '(("http://eucd.info" "EUCD.INFO" time)))
-  (setq w3m-broken-proxy-cache t)
-  (setq w3m-confirm-leaving-secure-page nil)
-  (setq w3m-cookie-accept-bad-cookies nil)
-  (setq w3m-cookie-accept-domains nil)
-  (setq w3m-cookie-file "/home/guerry/.w3m/cookie")
-  (setq w3m-fill-column 70)
-  (setq w3m-form-textarea-edit-mode 'org-mode)
-  (setq w3m-icon-directory nil)
-  (setq w3m-key-binding 'info)
-  (setq w3m-use-cookies t)
-  (setq w3m-use-tab t)
-  (setq w3m-use-toolbar nil))
+;; (use-package w3m
+;;   :config
+;;   (setq w3m-accept-languages '("fr;" "q=1.0" "en;"))
+;;   (setq w3m-antenna-sites '(("http://eucd.info" "EUCD.INFO" time)))
+;;   (setq w3m-broken-proxy-cache t)
+;;   (setq w3m-confirm-leaving-secure-page nil)
+;;   (setq w3m-cookie-accept-bad-cookies nil)
+;;   (setq w3m-cookie-accept-domains nil)
+;;   (setq w3m-cookie-file "/home/guerry/.w3m/cookie")
+;;   (setq w3m-fill-column 70)
+;;   (setq w3m-form-textarea-edit-mode 'org-mode)
+;;   (setq w3m-icon-directory nil)
+;;   (setq w3m-key-binding 'info)
+;;   (setq w3m-use-cookies t)
+;;   (setq w3m-use-tab t)
+;;   (setq w3m-use-toolbar nil))
 
 (use-package eww
   :config
@@ -1513,10 +1509,12 @@ the copy in the last group."
 ;; Emacs Lisp and Clojure initialization
 (add-hook 'emacs-lisp-mode-hook 'company-mode)
 (add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
-(add-hook 'emacs-lisp-mode-hook 'turn-on-orgstruct)
+(add-hook 'emacs-lisp-mode-hook 'origami-mode)
 (add-hook 'clojure-mode-hook 'company-mode)
-(add-hook 'clojure-mode-hook 'turn-on-orgstruct)
+(add-hook 'clojure-mode-hook 'origami-mode)
 
+;; (add-hook 'emacs-lisp-mode-hook 'turn-on-orgstruct)
+;; (add-hook 'clojure-mode-hook 'turn-on-orgstruct)
 ;; (add-hook 'emacs-lisp-mode-hook 'bzg-fontify-headline)
 ;; (add-hook 'emacs-lisp-mode-hook 'bzg-fontify-todo)
 ;; (add-hook 'clojure-mode-hook 'bzg-fontify-headline)
