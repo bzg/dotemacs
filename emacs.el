@@ -1,3 +1,5 @@
+(package-initialize)
+
 (eval-when-compile (require 'use-package))
 
 ;; I don't use package a lot but don't want to configure the list of
