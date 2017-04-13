@@ -598,13 +598,13 @@
 	     '(todo-state-up priority-down time-up))))
 
 	  ("r" tags-todo "+Read+TODO={NEXT}")
-	  ("R" tags-todo "+Read+TODO={TODO}"
+	  ("R" tags-todo "+Read+TODO={NEXT}"
 	   ((org-agenda-files '("~/org/libre.org" "~/org/garden.org"))))
 	  ("v" tags-todo "+View+TODO={NEXT}")
-	  ("V" tags-todo "+View+TODO={TODO}"
+	  ("V" tags-todo "+View+TODO={NEXT}"
 	   ((org-agenda-files '("~/org/libre.org" "~/org/garden.org"))))
 	  ("w" tags-todo "+Write+TODO={NEXT}")
-	  ("W" tags-todo "+Write+TODO={TODO}"
+	  ("W" tags-todo "+Write+TODO={NEXT}"
 	   ((org-agenda-files '("~/org/libre.org" "~/org/garden.org"))))
 
 	  ("#" "DONE/CANCELED"
