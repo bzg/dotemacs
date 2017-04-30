@@ -208,7 +208,7 @@
   (define-key dired-mode-map "\C-cd" 'dired-clean-tex)
   (setq dired-guess-shell-alist-user
 	(list
-	 (list "\\.pdf$" "okular &")
+	 (list "\\.pdf$" "evince &")
 	 (list "\\.docx?$" "libreoffice")
 	 (list "\\.aup?$" "audacity")
 	 (list "\\.pptx?$" "libreoffice")
@@ -484,7 +484,7 @@
 	'((auto-mode . emacs)
 	  ("\\.mm\\'" . default)
 	  ("\\.x?html?\\'" . default)
-	  ("\\.pdf\\'" . "okular %s")))
+	  ("\\.pdf\\'" . "evince %s")))
   (setq org-hide-leading-stars t)
   (setq org-global-properties '(("Effort_ALL" . "0:10 0:30 1:00 2:00 3:30 7:00")))
   (setq org-confirm-elisp-link-function nil)
