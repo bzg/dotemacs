@@ -607,11 +607,16 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	    (org-agenda-sorting-strategy
 	     '(todo-state-up priority-down time-up))))
 
-	  ("l" agenda "Apprendre aujourd'hui"
-	   ((org-agenda-span 1)
-	    (org-agenda-files '("~/org/apprendre.org"))))
 	  ("!" tags-todo "+DEADLINE<=\"<+7d>\"")
 	  ("@" tags-todo "+SCHEDULED<=\"<now>\"")
+	  ("n" "NEXT (bzg)" tags-todo "TODO={STRT\\|NEXT}"
+	   ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org"))
+	    (org-agenda-sorting-strategy
+	     '(todo-state-up time-up priority-down))))
+	  ("N" "NEXT (bzg)" tags-todo "TODO={STRT\\|NEXT}"
+	   ((org-agenda-files '("~/org/libre.org"))
+	    (org-agenda-sorting-strategy
+	     '(todo-state-up time-up priority-down))))
 	  ("?" "WAIT (bzg)" tags-todo "TODO={WAIT}"
 	   ((org-agenda-files '("~/org/rdv.org" "~/org/bzg.org"))
 	    (org-agenda-sorting-strategy
@@ -623,17 +628,17 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	    (org-agenda-entry-types '(:timestamp :scheduled))
 	    (org-agenda-sorting-strategy
 	     '(todo-state-up priority-down time-up))))
-	  ("z" "Work deadlines" agenda "Past/upcoming work deadlines"
-	   ((org-agenda-span 1)
-	    (org-deadline-warning-days 15)
-	    (org-agenda-entry-types '(:deadline))
-	    (org-agenda-sorting-strategy
-	     '(todo-state-up priority-down time-up))))
 	  ("X" "Agenda libre" agenda "Libre scheduled for today"
 	   ((org-agenda-span 1)
 	    (org-deadline-warning-days 3)
 	    (org-agenda-files '("~/org/libre.org"))
 	    (org-agenda-entry-types '(:timestamp :scheduled))
+	    (org-agenda-sorting-strategy
+	     '(todo-state-up priority-down time-up))))
+	  ("z" "Work deadlines" agenda "Past/upcoming work deadlines"
+	   ((org-agenda-span 1)
+	    (org-deadline-warning-days 15)
+	    (org-agenda-entry-types '(:deadline))
 	    (org-agenda-sorting-strategy
 	     '(todo-state-up priority-down time-up))))
 	  ("Z" "Libre deadlin." agenda "Past/upcoming leisure deadlines"
@@ -657,8 +662,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	  ("#" "DONE/CANCELED"
 	   todo "DONE|CANCELED"
 	   ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/libre.org"))
-	    (org-agenda-sorting-strategy '(timestamp-up))))
-	  ))
+	    (org-agenda-sorting-strategy '(timestamp-up))))))
 
   (setq org-capture-templates
 	'((" " "Misc" entry (file "~/org/bzg.org")
@@ -916,6 +920,9 @@ article."
 (use-package ecomplete)
 (use-package gnus
   :config
+  (setq nndraft-directory "~/News/drafts/")
+  (setq nnmh-directory "~/News/drafts/")
+  (setq nnfolder-directory "~/Mail/archive")
   (setq nnml-directory "~/Maildir/Mail/")
   (setq gnus-ignored-from-addresses
 	(regexp-opt '("bastien.guerry@ens.fr"
@@ -1257,6 +1264,7 @@ the copy in the last group."
   :config
   ;; Use electric completion in Gnus
   ;; (setq message-mail-alias-type 'abbrev)
+  (setq message-directory "~/Mail/")
   (setq message-mail-alias-type 'ecomplete)
   (setq message-send-mail-function 'message-send-mail-with-sendmail)
   (setq message-cite-function 'message-cite-original-without-signature)
@@ -1593,7 +1601,25 @@ the copy in the last group."
 (add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
 (add-hook 'emacs-lisp-mode-hook 'origami-mode)
 (add-hook 'clojure-mode-hook 'company-mode)
-(add-hook 'clojure-mode-hook 'origami-mode)
+ (add-hook 'clojure-mode-hook 'origami-mode)
+;; (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'clojure-mode-hook 'paredit-mode)
+(add-hook 'clojure-mode-hook 'aggressive-indent-mode)
+(add-hook 'clojure-mode-hook 'clj-refactor-mode)
+(add-hook 'clojure-mode-hook 'yas-minor-mode)
+(setq clojure-align-forms-automatically t)
+
+(with-eval-after-load 'clj-refactor
+  (setq cljr-thread-all-but-last t)
+  (cljr-add-keybindings-with-prefix "C-c m")
+  (define-key clj-refactor-map "\C-ctf" #'cljr-thread-first-all)
+  (define-key clj-refactor-map "\C-ctl" #'cljr-thread-last-all)
+  (define-key clj-refactor-map "\C-cu" #'cljr-unwind)
+  (define-key clj-refactor-map "\C-cU" #'cljr-unwind-all)
+  (add-to-list 'cljr-magic-require-namespaces
+               '("s"  . "clojure.string")))
+
+(define-key paredit-mode-map (kbd "C-M-w") 'sp-copy-sexp)
 
 ;; (add-hook 'emacs-lisp-mode-hook 'turn-on-orgstruct)
 ;; (add-hook 'clojure-mode-hook 'turn-on-orgstruct)
