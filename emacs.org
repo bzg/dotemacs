@@ -4,7 +4,6 @@
 #+LANGUAGE:    fr
 #+LINK:        guerry https://bzg.fr/%s
 #+OPTIONS:     skip:nil toc:nil
-#+HTML_HEAD:   <link rel="publisher" href="https://plus.google.com/103809710979116858042" />
 #+PROPERTY:    header-args :tangle emacs.el
 
 This is my =.emacs.el= file, as a HTMLized =emacs.org= file.
@@ -87,6 +86,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 #+BEGIN_SRC emacs-lisp
 ;; Enabling and disabling some modes
 (show-paren-mode 1)
+(auto-insert-mode 1)
 (display-time-mode 1)
 (tooltip-mode -1)
 ;; (electric-pair-mode -1)
@@ -281,7 +281,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	 (list "\\.wm[va]$" "mplayer")
 	 (list "\\.flv$" "mplayer")
 	 (list "\\.mov$" "mplayer")
-	 (list "\\.divx$" "mplaer")
+	 (list "\\.divx$" "mplayer")
 	 (list "\\.mp4$" "mplayer")
 	 (list "\\.webm$" "mplayer")
 	 (list "\\.mkv$" "mplayer")
@@ -1599,9 +1599,10 @@ the copy in the last group."
 ;; Emacs Lisp and Clojure initialization
 (add-hook 'emacs-lisp-mode-hook 'company-mode)
 (add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
+;; (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'emacs-lisp-mode-hook 'origami-mode)
 (add-hook 'clojure-mode-hook 'company-mode)
- (add-hook 'clojure-mode-hook 'origami-mode)
+(add-hook 'clojure-mode-hook 'origami-mode)
 ;; (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'clojure-mode-hook 'paredit-mode)
 (add-hook 'clojure-mode-hook 'aggressive-indent-mode)
@@ -1759,7 +1760,7 @@ the copy in the last group."
 #+BEGIN_SRC emacs-lisp
 (setq twittering-use-master-password t)
 #+END_SRC
-*** COMMENT winstack
+*** winstack
 
 #+BEGIN_SRC emacs-lisp
 ;; http://emacs.stackexchange.com/questions/2710/switching-between-window-layouts
@@ -1791,6 +1792,24 @@ Use `winstack-push' and
 
 (global-set-key (kbd "C-c i") 'winstack-push)
 (global-set-key (kbd "C-c o") 'winstack-pop)
+#+END_SRC
+
+*** Emacs party 1
+    <2017-06-20 mar.>
+
+#+BEGIN_SRC emacs-lisp
+;; (require 'browse-kill-ring)
+;; (require 'key-chord)
+;; (key-chord-mode 1)
+;; (key-chord-define-global "qq" "\M-bHello")
+
+(defun backward-kill-word-noring (arg)
+  (interactive "p")
+  (let ((kr kill-ring))
+    (backward-kill-word arg)
+    (setq kill-ring (reverse kr))))
+
+(global-set-key (kbd "C-M-<backspace>") 'backward-kill-word-noring)
 #+END_SRC
 
 

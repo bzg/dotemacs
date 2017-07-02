@@ -61,6 +61,7 @@
 
 ;; Enabling and disabling some modes
 (show-paren-mode 1)
+(auto-insert-mode 1)
 (display-time-mode 1)
 (tooltip-mode -1)
 ;; (electric-pair-mode -1)
@@ -239,7 +240,7 @@
 	 (list "\\.wm[va]$" "mplayer")
 	 (list "\\.flv$" "mplayer")
 	 (list "\\.mov$" "mplayer")
-	 (list "\\.divx$" "mplaer")
+	 (list "\\.divx$" "mplayer")
 	 (list "\\.mp4$" "mplayer")
 	 (list "\\.webm$" "mplayer")
 	 (list "\\.mkv$" "mplayer")
@@ -1513,9 +1514,10 @@ the copy in the last group."
 ;; Emacs Lisp and Clojure initialization
 (add-hook 'emacs-lisp-mode-hook 'company-mode)
 (add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
+;; (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'emacs-lisp-mode-hook 'origami-mode)
 (add-hook 'clojure-mode-hook 'company-mode)
- (add-hook 'clojure-mode-hook 'origami-mode)
+(add-hook 'clojure-mode-hook 'origami-mode)
 ;; (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'clojure-mode-hook 'paredit-mode)
 (add-hook 'clojure-mode-hook 'aggressive-indent-mode)
@@ -1647,3 +1649,46 @@ the copy in the last group."
 (setq mouse-wheel-progressive-speed nil)
 
 (setq twittering-use-master-password t)
+
+;; http://emacs.stackexchange.com/questions/2710/switching-between-window-layouts
+(defvar winstack-stack '()
+  "A Stack holding window configurations.
+Use `winstack-push' and
+`winstack-pop' to modify it.")
+
+(defun winstack-push ()
+  "Push the current window configuration onto `winstack-stack'."
+  (interactive)
+  (if (and (window-configuration-p (first winstack-stack))
+	   (compare-window-configurations
+	    (first winstack-stack)
+	    (current-window-configuration)))
+      (message "Current config already pushed")
+    (progn (push (current-window-configuration) winstack-stack)
+           (message (concat "pushed " (number-to-string
+                                       (length (window-list (selected-frame))))
+			    " frame config")))))
+
+(defun winstack-pop ()
+  "Pop the last window configuration off `winstack-stack' and apply it."
+  (interactive)
+  (if (first winstack-stack)
+      (progn (set-window-configuration (pop winstack-stack))
+             (message "popped"))
+    (message "End of window stack")))
+
+(global-set-key (kbd "C-c i") 'winstack-push)
+(global-set-key (kbd "C-c o") 'winstack-pop)
+
+;; (require 'browse-kill-ring)
+;; (require 'key-chord)
+;; (key-chord-mode 1)
+;; (key-chord-define-global "qq" "\M-bHello")
+
+(defun backward-kill-word-noring (arg)
+  (interactive "p")
+  (let ((kr kill-ring))
+    (backward-kill-word arg)
+    (setq kill-ring (reverse kr))))
+
+(global-set-key (kbd "C-M-<backspace>") 'backward-kill-word-noring)
