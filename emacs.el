@@ -106,7 +106,6 @@
 (setq auto-save-list-file-prefix nil)
 
 ;; Well, it's more so that you know this option
-(setq kill-ring-max 120)
 (setq kill-whole-line t)
 (setq kill-read-only-ok t)
 (setq require-final-newline t)
@@ -312,7 +311,7 @@
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
-     (sh . t)
+     (shell . t)
      (dot . t)
      (clojure . t)
      (org . t)
@@ -942,7 +941,7 @@ article."
 	  ;; (nnmaildir "latelierliban" (directory "~/Maildir/latelierliban"))
 	  ;; (nnmaildir "ceis" (directory "~/Maildir/ceis"))
 	  ;; Serveurs de news :
-	  ;; (nntp "news" (nntp-address "news.gmane.org"))
+	  ;; (nntp "news" (nntp-address "news.gwene.org"))
 	  ;; (nntp "free" (nntp-address "news.free.fr"))
 	  ))
 

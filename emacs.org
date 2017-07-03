@@ -135,7 +135,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq auto-save-list-file-prefix nil)
 
 ;; Well, it's more so that you know this option
-(setq kill-ring-max 120)
 (setq kill-whole-line t)
 (setq kill-read-only-ok t)
 (setq require-final-newline t)
@@ -361,7 +360,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
-     (sh . t)
+     (shell . t)
      (dot . t)
      (clojure . t)
      (org . t)
