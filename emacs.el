@@ -130,7 +130,7 @@
 (setq tab-always-indent 'always)
 (setq display-time-mail-string "#")
 (setq focus-follows-mouse t)
-(setq text-mode-hook '(turn-on-auto-fill text-mode-hook-identify))
+(setq text-mode-hook '(turn-on-auto-fill text-mode-hook-identify electric-quote-local-mode))
 
 (setenv "EDITOR" "emacsclient")
 (setenv "CVS_RSH" "ssh")
@@ -143,7 +143,7 @@
 ;; I'm using an old elscreen but there is more recent activity:
 ;; https://github.com/knu/elscreen
 (use-package elscreen
-  :config 
+  :config
   (elscreen-start)
   (setq elscreen-display-tab nil)
   (setq elscreen-tab-display-control nil))
@@ -301,13 +301,15 @@
   (add-hook 'org-mode-hook
 	    (lambda() (add-hook 'before-save-hook
 				'org-update-all-dblocks t t)))
-  
+
   ;; Hook to display dormant article in Gnus
   (add-hook 'org-follow-link-hook
 	    (lambda ()
 	      (if (eq major-mode 'gnus-summary-mode)
 		  (gnus-summary-insert-dormant-articles))))
-  
+
+  (add-hook 'org-mode-hook 'electric-quote-local-mode)
+
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
@@ -322,7 +324,7 @@
      (plantuml . t)
      (R . t)
      (gnuplot . t)))
-  
+
   (setq org-babel-default-header-args
 	'((:session . "none")
 	  (:results . "replace")
@@ -332,12 +334,12 @@
 	  (:hlines . "no")
 	  (:tangle . "no")
 	  (:padnewline . "yes")))
-  
+
   (org-clock-persistence-insinuate)
-  
+
   ;; Set headlines to STRT when clocking in
   (add-hook 'org-clock-in-hook (lambda() (org-todo "STRT")))
-  
+
   (setq org-edit-src-content-indentation 0)
   (setq org-babel-clojure-backend 'cider)
   (setq org-agenda-bulk-mark-char "*")
@@ -430,7 +432,7 @@
   (setq org-use-property-inheritance t)
   (setq org-use-sub-superscripts nil)
   (setq org-clock-persist t)
-  (setq org-clock-idle-time 30)
+  (setq org-clock-idle-time 60)
   (setq org-clock-history-length 35)
   (setq org-clock-in-resume t)
   (setq org-clock-out-remove-zero-time-clocks t)
@@ -445,7 +447,6 @@
   (setq org-icalendar-store-UID t)
   (setq org-confirm-babel-evaluate nil)
   (setq org-archive-default-command 'org-archive-to-archive-sibling)
-  (setq org-clock-idle-time 15)
   (setq org-id-uuid-program "uuidgen")
   (setq org-modules '(org-bbdb org-bibtex org-docview org-gnus org-protocol org-info org-irc org-learn))
   (setq org-use-speed-commands
@@ -462,7 +463,7 @@
 	'(("ggle" . "http://www.google.com/search?q=%s")
 	  ("gmap" . "http://maps.google.com/maps?q=%s")
 	  ("omap" . "http://nominatim.openstreetmap.org/search?q=%s&polygon=1")))
-  
+
   (setq org-attach-directory "~/org/data/")
   (setq org-link-display-descriptive nil)
   (setq org-loop-over-headlines-in-active-region t)
@@ -497,7 +498,7 @@
 	'(my-org-html-export-planning))
   (setq org-export-with-broken-links t)
   (setq org-ellipsis "…")
-  
+
   (add-to-list 'org-latex-classes
 	       '("my-letter"
 		 "\\documentclass\{scrlttr2\}
@@ -505,9 +506,9 @@
             \[NO-DEFAULT-PACKAGES]
             \[NO-PACKAGES]
             \[EXTRA]"))
-  
+
   (org-agenda-to-appt)
-  
+
   ;; Set headlines to STRT and clock-in when running a countdown
   (add-hook 'org-timer-set-hook
 	    (lambda ()
@@ -532,7 +533,7 @@
 		       org-clock-current-task)
 		  (call-interactively 'org-agenda-clock-out)
 		(call-interactively 'org-clock-out))))
-  
+
   (setq org-agenda-custom-commands
 	`(
 	  ;; Week agenda for rendez-vous and tasks
@@ -542,7 +543,7 @@
 	    ;; (org-deadline-warning-days 3)
 	    (org-agenda-sorting-strategy
 	     '(todo-state-up time-up priority-down))))
-	  
+
 	  (" " "Work (tout)" agenda "List of rendez-vous and tasks for today"
 	   ((org-agenda-span 1)
 	    (org-agenda-files '("~/org/rdv.org" "~/org/bzg.org"))
@@ -941,7 +942,7 @@ article."
 	  ;; (nnmaildir "latelierliban" (directory "~/Maildir/latelierliban"))
 	  ;; (nnmaildir "ceis" (directory "~/Maildir/ceis"))
 	  ;; Serveurs de news :
-	  ;; (nntp "news" (nntp-address "news.gwene.org"))
+	  ;; (nntp "news" (nntp-address "news.gmane.org"))
 	  ;; (nntp "free" (nntp-address "news.free.fr"))
 	  ))
 
@@ -1013,10 +1014,10 @@ article."
        (t "nnmaildir+bzgfr:sent"))))
 
   (setq gnus-message-archive-group 'my-gnus-message-archive-group)
-  
+
   ;; Delete mail backups older than 1 days
   (setq mail-source-delete-incoming 1)
-  
+
   ;; Group sorting
   (setq gnus-group-sort-function
 	'(gnus-group-sort-by-unread
@@ -1025,18 +1026,18 @@ article."
 	  ;; gnus-group-sort-by-level
 	  ;; gnus-group-sort-by-alphabet
 	  ))
-  
+
   (add-hook 'gnus-summary-exit-hook 'gnus-summary-bubble-group)
   (add-hook 'gnus-suspend-gnus-hook 'gnus-group-sort-groups-by-rank)
   (add-hook 'gnus-exit-gnus-hook 'gnus-group-sort-groups-by-rank)
-  
+
   ;; Display the thread by default
   (setq gnus-thread-hide-subtree nil)
-  
+
   ;; Headers we wanna see:
   (setq gnus-visible-headers
 	"^From:\\|^Subject:\\|^X-Mailer:\\|^X-Newsreader:\\|^Date:\\|^To:\\|^Cc:\\|^User-agent:\\|^Newsgroups:\\|^Comments:")
-  
+
   ;; Sort mails
   (setq nnmail-split-abbrev-alist
 	'((any . "From\\|To\\|Cc\\|Sender\\|Apparently-To\\|Delivered-To\\|X-Apparently-To\\|Resent-From\\|Resent-To\\|Resent-Cc")
@@ -1045,7 +1046,7 @@ article."
 	  (from . "From\\|Sender\\|Resent-From")
 	  (nato . "To\\|Cc\\|Resent-To\\|Resent-Cc\\|Delivered-To\\|X-Apparently-To")
 	  (naany . "From\\|To\\|Cc\\|Sender\\|Resent-From\\|Resent-To\\|Delivered-To\\|X-Apparently-To\\|Resent-Cc")))
-  
+
   ;; Simplify the subject lines
   (setq gnus-simplify-subject-functions
 	'(gnus-simplify-subject-re
@@ -1230,16 +1231,18 @@ the copy in the last group."
   (setq bbdb-mua-pop-up nil)
   (setq bbdb-mua-update-interactive-p '(create . query))
   (setq bbdb-mua-auto-update-p t)
-  
+
   (add-to-list 'bbdb-mua-mode-alist '(message mu4e-compose-mode))
-  
+
   (add-hook 'mail-setup-hook 'bbdb-mail-aliases)
   (add-hook 'message-setup-hook 'bbdb-mail-aliases)
+  (add-hook 'mail-setup-hook 'electric-quote-local-mode)
+  (add-hook 'message-setup-hook 'electric-quote-local-mode)
   (add-hook 'bbdb-change-hook 'bbdb-timestamp)
   (add-hook 'bbdb-create-hook 'bbdb-creation-date)
   (add-hook 'bbdb-notice-mail-hook 'bbdb-auto-notes)
   ;; (add-hook 'list-diary-entries-hook 'bbdb-include-anniversaries)
-  
+
   (setq bbdb-always-add-addresses t
 	bbdb-complete-name-allow-cycling t
 	bbdb-completion-display-record t
@@ -1283,7 +1286,7 @@ the copy in the last group."
    'erc-mode
    '((";;.*\\(bzg2\\|éducation\\|clojure\\|emacs\\|orgmode\\)"
       (1 bzg-todo-comment-face t))))
-  
+
   (setq erc-modules '(autoaway autojoin irccontrols log netsplit noncommands
 			       notify pcomplete completion ring services stamp
 			       track truncate)
@@ -1335,14 +1338,14 @@ the copy in the last group."
 	       (erc-nickserv-mode 1)
 	       (erc-timestamp-mode 1)
 	       (erc-services-mode 1)))
-    
+
     (defun erc-notify-on-msg (msg)
       (if (string-match "bz_g:" msg)
 	  (shell-command (concat "notify-send \"" msg "\""))))
-    
+
     (add-hook 'erc-insert-pre-hook 'erc-notify-on-msg)
     ;; (add-to-list 'erc-networks-alist '(lll "libertelivinglab.irc.slack.com"))
-    
+
     ;; (defun bzg-erc-connect-bitlbee ()
     ;;   "Connect to &bitlbee channel with ERC."
     ;;   (interactive)
@@ -1350,7 +1353,7 @@ the copy in the last group."
     ;; 		:port 6667
     ;; 		:nick "bz_g"
     ;; 		:full-name "Bastien"))
-    
+
     (defun bzg-erc-connect-freenode ()
       "Connect to Freenode server with ERC."
       (interactive)
@@ -1367,7 +1370,7 @@ the copy in the last group."
 	       :port 6667
 	       :nick "bzg"
 	       :full-name "Bastien"))
-    
+
     (defun bzg-erc-connect-eig ()
       "Connect to EIG's slack with ERC."
       (interactive)
@@ -1562,9 +1565,6 @@ the copy in the last group."
 
 (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 
-;; Use smart-mode-line package
-;; (smart-mode-line-enable)
-
 ;; Personal stuff
 (defun bzg-find-bzg nil
   "Find the bzg.org file."
@@ -1691,3 +1691,27 @@ Use `winstack-push' and
     (setq kill-ring (reverse kr))))
 
 (global-set-key (kbd "C-M-<backspace>") 'backward-kill-word-noring)
+
+(eval-after-load 'flycheck '(flycheck-clojure-setup))
+
+(load-file "~/install/git/flycheck-grammalecte/flycheck-grammalecte.el")
+
+(defun eshell-here ()
+  "Opens up a new shell in the directory associated with the
+current buffer's file. The eshell is renamed to match that
+directory to make multiple eshell windows easier."
+  (interactive)
+  (let* ((parent (if (buffer-file-name)
+                     (file-name-directory (buffer-file-name))
+                   default-directory))
+         (height (/ (window-total-height) 3))
+         (name   (car (last (split-string parent "/" t)))))
+    (split-window-vertically (- height))
+    (other-window 1)
+    (eshell "new")
+    (rename-buffer (concat "*eshell: " name "*"))
+
+    (insert (concat "ls"))
+    (eshell-send-input)))
+
+(global-set-key (kbd "C-!") 'eshell-here)

@@ -159,7 +159,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq tab-always-indent 'always)
 (setq display-time-mail-string "#")
 (setq focus-follows-mouse t)
-(setq text-mode-hook '(turn-on-auto-fill text-mode-hook-identify))
+(setq text-mode-hook '(turn-on-auto-fill text-mode-hook-identify electric-quote-local-mode))
 
 (setenv "EDITOR" "emacsclient")
 (setenv "CVS_RSH" "ssh")
@@ -357,6 +357,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	      (if (eq major-mode 'gnus-summary-mode)
 		  (gnus-summary-insert-dormant-articles))))
 
+  (add-hook 'org-mode-hook 'electric-quote-local-mode)
+
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
@@ -479,7 +481,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (setq org-use-property-inheritance t)
   (setq org-use-sub-superscripts nil)
   (setq org-clock-persist t)
-  (setq org-clock-idle-time 30)
+  (setq org-clock-idle-time 60)
   (setq org-clock-history-length 35)
   (setq org-clock-in-resume t)
   (setq org-clock-out-remove-zero-time-clocks t)
@@ -494,7 +496,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (setq org-icalendar-store-UID t)
   (setq org-confirm-babel-evaluate nil)
   (setq org-archive-default-command 'org-archive-to-archive-sibling)
-  (setq org-clock-idle-time 15)
   (setq org-id-uuid-program "uuidgen")
   (setq org-modules '(org-bbdb org-bibtex org-docview org-gnus org-protocol org-info org-irc org-learn))
   (setq org-use-speed-commands
@@ -1296,6 +1297,8 @@ the copy in the last group."
 
   (add-hook 'mail-setup-hook 'bbdb-mail-aliases)
   (add-hook 'message-setup-hook 'bbdb-mail-aliases)
+  (add-hook 'mail-setup-hook 'electric-quote-local-mode)
+  (add-hook 'message-setup-hook 'electric-quote-local-mode)
   (add-hook 'bbdb-change-hook 'bbdb-timestamp)
   (add-hook 'bbdb-create-hook 'bbdb-creation-date)
   (add-hook 'bbdb-notice-mail-hook 'bbdb-auto-notes)
@@ -1651,9 +1654,6 @@ the copy in the last group."
 
 (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 
-;; Use smart-mode-line package
-;; (smart-mode-line-enable)
-
 ;; Personal stuff
 (defun bzg-find-bzg nil
   "Find the bzg.org file."
@@ -1809,4 +1809,31 @@ Use `winstack-push' and
     (setq kill-ring (reverse kr))))
 
 (global-set-key (kbd "C-M-<backspace>") 'backward-kill-word-noring)
+
+(eval-after-load 'flycheck '(flycheck-clojure-setup))
+
+(load-file "~/install/git/flycheck-grammalecte/flycheck-grammalecte.el")
+#+END_SRC
+*** eshell
+
+#+BEGIN_SRC emacs-lisp
+(defun eshell-here ()
+  "Opens up a new shell in the directory associated with the
+current buffer's file. The eshell is renamed to match that
+directory to make multiple eshell windows easier."
+  (interactive)
+  (let* ((parent (if (buffer-file-name)
+                     (file-name-directory (buffer-file-name))
+                   default-directory))
+         (height (/ (window-total-height) 3))
+         (name   (car (last (split-string parent "/" t)))))
+    (split-window-vertically (- height))
+    (other-window 1)
+    (eshell "new")
+    (rename-buffer (concat "*eshell: " name "*"))
+
+    (insert (concat "ls"))
+    (eshell-send-input)))
+
+(global-set-key (kbd "C-!") 'eshell-here)
 #+END_SRC
