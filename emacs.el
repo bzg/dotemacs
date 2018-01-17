@@ -13,25 +13,6 @@
 	'(("gnu" . "http://elpa.gnu.org/packages/")
 	  ("melpa" . "http://melpa.org/packages/"))))
 
-;; Initialize `exec-path' and `load-path'
-(add-to-list 'exec-path "~/bin/")
-(let ((default-directory "~/Documents/elisp/"))
-  (normal-top-level-add-subdirs-to-load-path))
-(let ((default-directory "/usr/share/emacs/site-lisp/"))
-  (normal-top-level-add-subdirs-to-load-path))
-(let ((default-directory "/usr/local/share/emacs/site-lisp/"))
-  (normal-top-level-add-subdirs-to-load-path))
-(add-to-list 'load-path "~/install/cvs/emacs-w3m/")
-(add-to-list 'load-path "~/install/git/org-caldav/")
-(add-to-list 'load-path "~/install/git/elscreen/")
-(add-to-list 'load-path "~/install/git/bbdb/lisp/")
-(add-to-list 'load-path "~/install/git/notmuch/emacs/")
-(add-to-list 'load-path "~/install/git/org-mode/lisp/")
-(add-to-list 'load-path "~/install/git/org-mode/contrib/lisp/")
-
-;; Start server to use emacsclient
-(server-start)
-
 ;; Load custom file
 (setq custom-file "/home/guerry/Documents/elisp/config/emacs-custom.el")
 (load custom-file)
@@ -40,6 +21,29 @@
 (add-to-list 'custom-theme-load-path "~/install/git/cyberpunk-theme.el/")
 (load-theme 'cyberpunk)
 ;; (load-theme 'paganini)
+
+;; Initialize Org
+(add-to-list 'load-path "~/install/git/org-mode/lisp/")
+(add-to-list 'load-path "~/install/git/org-mode/contrib/lisp/")
+(add-to-list 'load-path "~/install/git/org-caldav/")
+
+;; Initialize other important modes
+(add-to-list 'load-path "~/install/cvs/emacs-w3m/")
+(add-to-list 'load-path "~/install/git/elscreen/")
+(add-to-list 'load-path "~/install/git/bbdb/lisp/")
+(add-to-list 'load-path "~/install/git/notmuch/emacs/")
+
+;; Initialize `exec-path' and `load-path'
+(add-to-list 'exec-path "~/bin/")
+(let ((default-directory "~/Documents/elisp/"))
+  (normal-top-level-add-subdirs-to-load-path))
+(let ((default-directory "/usr/share/emacs/site-lisp/"))
+  (normal-top-level-add-subdirs-to-load-path))
+(let ((default-directory "/usr/local/share/emacs/site-lisp/"))
+  (normal-top-level-add-subdirs-to-load-path))
+
+;; Start server to use emacsclient
+(server-start)
 
 ;; Initialize `Info-directory-list' to include org-mode
 (setq Info-refill-paragraphs t)
@@ -130,7 +134,7 @@
 (setq tab-always-indent 'always)
 (setq display-time-mail-string "#")
 (setq focus-follows-mouse t)
-(setq text-mode-hook '(turn-on-auto-fill text-mode-hook-identify electric-quote-local-mode))
+(setq text-mode-hook '(turn-on-auto-fill text-mode-hook-identify))
 
 (setenv "EDITOR" "emacsclient")
 (setenv "CVS_RSH" "ssh")
@@ -429,6 +433,7 @@
 	  ("Buy" . ?B) ("Mail" . ?@) ("Tel" . ?t)))
   (setq org-tags-column -74)
   (setq org-todo-keywords '((type "STRT" "NEXT" "TODO" "WAIT" "|" "DONE" "CANCELED")))
+  (setq org-todo-repeat-to-state t)
   (setq org-use-property-inheritance t)
   (setq org-use-sub-superscripts nil)
   (setq org-clock-persist t)
@@ -600,14 +605,14 @@
 	    (org-agenda-sorting-strategy
 	     '(todo-state-up priority-down time-up))))
 
-	  ("r" tags-todo "+Read+TODO={NEXT}")
-	  ("R" tags-todo "+Read+TODO={NEXT}"
+	  ("r" tags-todo "+Read+TODO={NEXT|STRT}")
+	  ("R" tags-todo "+Read+TODO={NEXT|STRT}"
 	   ((org-agenda-files '("~/org/libre.org"))))
-	  ("v" tags-todo "+View+TODO={NEXT}")
-	  ("V" tags-todo "+View+TODO={NEXT}"
+	  ("v" tags-todo "+View+TODO={NEXT|STRT}")
+	  ("V" tags-todo "+View+TODO={NEXT|STRT}"
 	   ((org-agenda-files '("~/org/libre.org"))))
-	  ("w" tags-todo "+Write+TODO={NEXT}")
-	  ("W" tags-todo "+Write+TODO={NEXT}"
+	  ("w" tags-todo "+Write+TODO={NEXT|STRT}")
+	  ("W" tags-todo "+Write+TODO={NEXT|STRT}"
 	   ((org-agenda-files '("~/org/libre.org"))))
 
 	  ("#" "DONE/CANCELED"
@@ -637,15 +642,8 @@
 	  ("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
 	   "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
 
-	  ("o" "Org")
-	  ("of" "Org FR" entry (file+olp "~/org/libre.org" "Org-mode" "Features")
-	   "* TODO %?%a :Code:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%^{OrgVersion}p%i" :prepend t)
-	  ("ob" "Org Bug" entry (file+olp "~/org/libre.org" "Org-mode" "To fix")
-	   "* NEXT %?%a :Bug:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%^{OrgVersion}p%i" :prepend t)
-	  ("op" "Org Patch" entry (file+olp "~/org/libre.org" "Org-mode" "Patches")
-	   "* NEXT [#A] %?%a :Patch:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%^{OrgVersion}p%i" :prepend t)
-	  ("ow" "Worg" entry (file+olp "~/org/libre.org" "Org-mode" "Worg")
-	   "* TODO [#A] %?%a :Worg:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)))
+	  ("o" "Org" entry (file+headline "~/org/libre.org" "Org-mode")
+	   "* TODO %?%a :Code:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)))
 
   (setq html-preamble
 	"
@@ -810,10 +808,22 @@ type=\"text/javascript\" src=\"//platform.twitter.com/widgets.js\"></script>
 
   ;; org caldav
   (require 'org-caldav)
-  (setq org-caldav-inbox "~/org/rdv.org")
-  (setq org-caldav-calendar-id "personnel")
-  (setq org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
-  (setq org-caldav-files nil))
+  (defun org-caldav-sync-perso ()
+    (interactive)
+    (let ((org-caldav-inbox "~/org/rdv.org")
+	  (org-caldav-calendar-id "personnel")
+	  (org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
+	  (org-caldav-files nil))
+      (call-interactively 'org-caldav-sync)))
+
+  (defun org-caldav-sync-eig2018 ()
+    (interactive)
+    (let ((org-caldav-inbox "~/.eig2/git/agenda-eig2018/index.org")
+	  (org-caldav-calendar-id "eig2018")
+	  ;; https://box.bzg.io/cloud/index.php/apps/calendar/p/BS33A1YSC0X2MWML
+	  (org-caldav-url "https://box.bzg.io/cloud/remote.php/dav/calendars/bzg%40bzg.fr")
+	  (org-caldav-files nil))
+      (call-interactively 'org-caldav-sync))))
 
 ;; notmuch configuration
 (use-package notmuch
@@ -875,6 +885,7 @@ article."
 		      "bastien@olpc-france.org"
 		      "bzg@latelierliban.net"
 		      "bastienguerry@gmail.com"
+		      "bastien.guerry@data.gouv.fr"
 		      "bzg@kickhub.com"
 		      "hackadon@librefunding.org"
 		      "bastien@hackadon.org"
@@ -934,6 +945,7 @@ article."
 	'(;; (nnml "")
 	  (nnmaildir "bzgfr" (directory "~/Maildir/bzgfr"))
 	  (nnmaildir "bzgfrio" (directory "~/Maildir/bzgfrio"))
+	  (nnmaildir "datagouv" (directory "~/Maildir/datagouv"))
 	  ;; (nnmaildir "free" (directory "~/Maildir/free"))
 	  ;; (nnmaildir "digited" (directory "~/Maildir/digited"))
 	  ;; (nnmaildir "gmail" (directory "~/Maildir/gmail"))
@@ -1094,11 +1106,11 @@ article."
   (defun bzg-gnus-toggle-group-line-format ()
     (interactive)
     (if (equal gnus-group-line-format
-	       "%M\%S\%p\%P %(%-40,40g%) %-3y %-3T %-3I\n")
+	       "%M\%S\%p\%P %(%-50,50g%) %-3y %-3T %-3I\n")
 	(setq gnus-group-line-format
-	      "%M\%S\%p\%P %(%-40,40g%)\n")
+	      "%M\%S\%p\%P %(%-50,50g%)\n")
       (setq gnus-group-line-format
-	    "%M\%S\%p\%P %(%-40,40g%) %-3y %-3T %-3I\n")))
+	    "%M\%S\%p\%P %(%-50,50g%) %-3y %-3T %-3I\n")))
 
   ;; Toggle the group line format
   (define-key gnus-group-mode-map "x"
@@ -1236,8 +1248,6 @@ the copy in the last group."
 
   (add-hook 'mail-setup-hook 'bbdb-mail-aliases)
   (add-hook 'message-setup-hook 'bbdb-mail-aliases)
-  (add-hook 'mail-setup-hook 'electric-quote-local-mode)
-  (add-hook 'message-setup-hook 'electric-quote-local-mode)
   (add-hook 'bbdb-change-hook 'bbdb-timestamp)
   (add-hook 'bbdb-create-hook 'bbdb-creation-date)
   (add-hook 'bbdb-notice-mail-hook 'bbdb-auto-notes)
@@ -1381,7 +1391,8 @@ the copy in the last group."
 
 ;; Set browser
 (if window-system
-    (setq browse-url-browser-function 'browse-url-chromium)
+    (setq browse-url-browser-function 'browse-url-firefox)
+  ;; (setq browse-url-browser-function 'browse-url-chromium)
   ;; (setq browse-url-browser-function 'eww-browse-url)
   (setq browse-url-browser-function 'eww-browse-url))
 (setq browse-url-text-browser "w3m")
