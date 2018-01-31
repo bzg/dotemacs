@@ -821,11 +821,29 @@ type=\"text/javascript\" src=\"//platform.twitter.com/widgets.js\"></script>
     (interactive)
     (let ((org-caldav-inbox "~/org/eig.org")
 	  (org-caldav-calendar-id "eig-bastien")
-	  (org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
+          ;; https://cloud.eig-forever.org/index.php/apps/calendar/p/N29QNRZV1E19X848/EIG-Bastien
+	  (org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
 	  (org-caldav-files nil))
       (call-interactively 'org-caldav-sync)))
 
   (defun org-caldav-sync-eig2018 ()
+    (interactive)
+    (let ((org-caldav-inbox "~/.eig2/git/agenda-eig2018/index.org")
+	  (org-caldav-calendar-id "eig2018")
+	  ;; https://cloud.eig-forever.org/index.php/apps/calendar/p/5S4DP594PDIVTARU/EIG2018
+	  (org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
+	  (org-caldav-files nil))
+      (call-interactively 'org-caldav-sync)))
+
+  (defun org-caldav-sync-eig-perso-old ()
+    (interactive)
+    (let ((org-caldav-inbox "~/org/eig.org")
+	  (org-caldav-calendar-id "eig-bastien")
+	  (org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
+	  (org-caldav-files nil))
+      (call-interactively 'org-caldav-sync)))
+
+  (defun org-caldav-sync-eig2018-old ()
     (interactive)
     (let ((org-caldav-inbox "~/.eig2/git/agenda-eig2018/index.org")
 	  (org-caldav-calendar-id "eig2018")
@@ -1017,22 +1035,16 @@ article."
 
   (defun my-gnus-message-archive-group (group-current)
     "Return prefered archive group."
-    (let (; (group-plain (replace-regexp-in-string "^.*:" "" group-current))
-	  (group-prefix (replace-regexp-in-string "[^:]+$" "" group-current)))
+    (let ((group-prefix (replace-regexp-in-string "[^:]+$" "" group-current)))
       (cond
        ((string-match "bzgio" group-prefix)
 	(concat group-prefix "sent"))
-       ((or (string-match "latelierliban" group-prefix)
-	    (string-match "digited" group-prefix)
-	    (string-match "hackadon" group-prefix)
-	    (string-match "bzgfrio" group-prefix)
-	    (string-match "bzgfr" group-prefix))
+       ((string-match "bzgfr" group-prefix) ; matches bzgfrio too
 	(concat group-prefix "Sent"))
-       ;; Followup to news:
        ((message-news-p)
 	(concat "nnfolder+archive:" (format-time-string "%Y-%m")
 		"-divers-news"))
-       (t "nnmaildir+bzgfr:sent"))))
+       (t "nnmaildir+bzgfr:Sent"))))
 
   (setq gnus-message-archive-group 'my-gnus-message-archive-group)
 
