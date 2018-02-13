@@ -58,10 +58,10 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (add-to-list 'exec-path "~/bin/")
 (let ((default-directory "~/Documents/elisp/"))
   (normal-top-level-add-subdirs-to-load-path))
-(let ((default-directory "/usr/share/emacs/site-lisp/"))
-  (normal-top-level-add-subdirs-to-load-path))
-(let ((default-directory "/usr/local/share/emacs/site-lisp/"))
-  (normal-top-level-add-subdirs-to-load-path))
+;; (let ((default-directory "/usr/share/emacs/site-lisp/"))
+;;   (normal-top-level-add-subdirs-to-load-path))
+;; (let ((default-directory "/usr/local/share/emacs/site-lisp/"))
+;;   (normal-top-level-add-subdirs-to-load-path))
 
 ;; Start server to use emacsclient
 (server-start)
@@ -401,7 +401,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (setq org-log-into-drawer "LOGBOOK")
   (setq org-agenda-entry-text-maxlines 10)
   (setq org-timer-default-timer 25)
-  (setq org-agenda-files '("~/org/rdv.org" "~/org/eig.org" "~/org/bzg.org"))
+  (setq org-agenda-files '("~/org/rdv.org" "~/org/eig.org" "~/org/bzg.org" "~/.eig2/git/agenda-eig2018/index.org"))
   (setq org-agenda-prefix-format
 	'((agenda . " %i %-12:c%?-14t%s")
 	  (timeline . "  % s")
@@ -594,21 +594,21 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	  ;; Week agenda for rendez-vous and tasks
 	  ("%" "Rendez-vous" agenda* "Week RDV"
 	   ((org-agenda-span 'week)
-	    (org-agenda-files '("~/org/rdv.org" "~/org/eig.org"))
+	    (org-agenda-files '("~/org/rdv.org" "~/.eig2/git/agenda-eig2018/index.org" "~/org/eig.org"))
 	    ;; (org-deadline-warning-days 3)
 	    (org-agenda-sorting-strategy
 	     '(todo-state-up time-up priority-down))))
 
 	  (" " "Work (tout)" agenda "List of rendez-vous and tasks for today"
 	   ((org-agenda-span 1)
-	    (org-agenda-files '("~/org/rdv.org" "~/org/eig.org" "~/org/bzg.org"))
+	    (org-agenda-files '("~/org/rdv.org" "~/org/eig.org" "~/.eig2/git/agenda-eig2018/index.org" "~/org/bzg.org"))
 	    (org-deadline-warning-days 3)
 	    (org-agenda-sorting-strategy
 	     '(todo-state-up time-up priority-down))))
 
 	  ("	" "Libre (tout)" agenda "List of rendez-vous and tasks for today"
 	   ((org-agenda-span 1)
-	    (org-agenda-files '("~/org/rdv.org" "~/org/eig.org" "~/org/libre.org"))
+	    (org-agenda-files '("~/org/libre.org"))
 	    (org-deadline-warning-days 3)
 	    (org-agenda-sorting-strategy
 	     '(todo-state-up priority-down time-up))))
@@ -667,7 +667,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 	  ("#" "DONE/CANCELED"
 	   todo "DONE|CANCELED"
-	   ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/eig.org" "~/org/libre.org"))
+	   ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/eig.org" "~/org/libre.org" "~/.eig2/git/agenda-eig2018/index.org"))
 	    (org-agenda-sorting-strategy '(timestamp-up))))))
 
   (setq org-capture-templates
@@ -686,7 +686,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	  ("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
 	   "* RDV %:fromname\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%a%i%?" :prepend t)
 
-	  ("R" "EIG RDV" entry (file+headline "~/org/eig.org" "RDV EIG")
+	  ("R" "RDV EIG" entry (file+headline "~/org/eig.org" "RDV EIG")
 	   "* %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?" :prepend t)
 
 	  ("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
@@ -884,6 +884,11 @@ type=\"text/javascript\" src=\"//platform.twitter.com/widgets.js\"></script>
 	  (org-caldav-files nil))
       (call-interactively 'org-caldav-sync)))
 
+  (defun bzg-eig-caldavt-sync ()
+    (interactive)
+    (org-caldav-sync-eig2018)
+    (org-caldav-sync-eig-perso))
+
   (defun org-caldav-sync-eig-perso-old ()
     (interactive)
     (let ((org-caldav-inbox "~/org/eig.org")
@@ -1043,7 +1048,6 @@ article."
 	  ))
 
   (setq gnus-check-new-newsgroups nil)
-  (setq gnus-thread-ignore-subject nil)
 
   (setq read-mail-command 'gnus
 	gnus-asynchronous t
@@ -1094,6 +1098,8 @@ article."
     "Return prefered archive group."
     (let ((group-prefix (replace-regexp-in-string "[^:]+$" "" group-current)))
       (cond
+       ((string-match "data" group-prefix)
+	(concat group-prefix "Sent")) ;; FIXME
        ((string-match "bzgio" group-prefix)
 	(concat group-prefix "sent"))
        ((string-match "bzgfr" group-prefix) ; matches bzgfrio too
@@ -1121,9 +1127,6 @@ article."
   (add-hook 'gnus-suspend-gnus-hook 'gnus-group-sort-groups-by-rank)
   (add-hook 'gnus-exit-gnus-hook 'gnus-group-sort-groups-by-rank)
 
-  ;; Display the thread by default
-  (setq gnus-thread-hide-subtree nil)
-
   ;; Headers we wanna see:
   (setq gnus-visible-headers
 	"^From:\\|^Subject:\\|^X-Mailer:\\|^X-Newsreader:\\|^Date:\\|^To:\\|^Cc:\\|^User-agent:\\|^Newsgroups:\\|^Comments:")
@@ -1147,8 +1150,15 @@ article."
 
   ;; Thread by Xref, not by subject
   (setq gnus-thread-ignore-subject t)
-  (setq gnus-summary-thread-gathering-function
-	'gnus-gather-threads-by-references)
+  (setq gnus-thread-hide-subtree nil)
+  (setq gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references
+	gnus-thread-sort-functions '(gnus-thread-sort-by-date)
+	gnus-sum-thread-tree-false-root ""
+	gnus-sum-thread-tree-indent " "
+	gnus-sum-thread-tree-leaf-with-other "├► "
+	gnus-sum-thread-tree-root ""
+	gnus-sum-thread-tree-single-leaf "╰► "
+	gnus-sum-thread-tree-vertical "│")
 
   ;; Dispkay a button for MIME parts
   (setq gnus-buttonized-mime-types '("multipart/alternative"))
@@ -1276,6 +1286,7 @@ the copy in the last group."
   ;; NOTE: both the capture file and the headline(s) inside must already exist
   (setq gnus-icalendar-org-capture-file "~/org/eig.org")
   (setq gnus-icalendar-org-capture-headline '("RDV EIG"))
+  (setq gnus-icalendar-org-template-key "R")
   (gnus-icalendar-org-setup))
 
 (use-package gnus-dired
@@ -1325,8 +1336,6 @@ the copy in the last group."
   (setq bbdb-mua-pop-up nil)
   (setq bbdb-mua-update-interactive-p '(create . query))
   (setq bbdb-mua-auto-update-p t)
-
-  (add-to-list 'bbdb-mua-mode-alist '(message mu4e-compose-mode))
 
   (add-hook 'mail-setup-hook 'bbdb-mail-aliases)
   (add-hook 'message-setup-hook 'bbdb-mail-aliases)
@@ -1455,7 +1464,7 @@ the copy in the last group."
       (interactive)
       (erc-select :server "irc.freenode.net"
 		  :port 6666
-		  :nick "bz_g"
+		  :nick "bzg"
 		  :full-name "Bastien"))
 
     (require 'tls)
