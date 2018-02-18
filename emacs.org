@@ -647,7 +647,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	    (org-agenda-entry-types '(:deadline))
 	    (org-agenda-sorting-strategy
 	     '(todo-state-up priority-down time-up))))
-	  ("Z" "Libre deadlin." agenda "Past/upcoming leisure deadlines"
+	  ("Z" "Libre deadlines" agenda "Past/upcoming leisure deadlines"
 	   ((org-agenda-span 1)
 	    (org-deadline-warning-days 15)
 	    (org-agenda-files '("~/org/libre.org"))
@@ -655,45 +655,23 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	    (org-agenda-sorting-strategy
 	     '(todo-state-up priority-down time-up))))
 
-	  ("r" tags-todo "+Read+TODO={NEXT|STRT}")
-	  ("R" tags-todo "+Read+TODO={NEXT|STRT}"
+	  ("r" tags-todo "+Read+TODO={NEXT\\|STRT}")
+	  ("R" tags-todo "+Read+TODO={NEXT\\|STRT}"
 	   ((org-agenda-files '("~/org/libre.org"))))
-	  ("v" tags-todo "+View+TODO={NEXT|STRT}")
-	  ("V" tags-todo "+View+TODO={NEXT|STRT}"
+	  ("v" tags-todo "+View+TODO={NEXT\\|STRT}")
+	  ("V" tags-todo "+View+TODO={NEXT\\|STRT}"
 	   ((org-agenda-files '("~/org/libre.org"))))
-	  ("w" tags-todo "+Write+TODO={NEXT|STRT}")
-	  ("W" tags-todo "+Write+TODO={NEXT|STRT}"
+	  ("w" tags-todo "+Write+TODO={NEXT\\|STRT}")
+	  ("W" tags-todo "+Write+TODO={NEXT\\|STRT}"
+	   ((org-agenda-files '("~/org/libre.org"))))
+	  ("c" tags-todo "+Code+TODO={NEXT\\|STRT}")
+	  ("C" tags-todo "+Code+TODO={NEXT\\|STRT}"
 	   ((org-agenda-files '("~/org/libre.org"))))
 
 	  ("#" "DONE/CANCELED"
 	   todo "DONE|CANCELED"
 	   ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/eig.org" "~/org/libre.org" "~/.eig2/git/agenda-eig2018/index.org"))
 	    (org-agenda-sorting-strategy '(timestamp-up))))))
-
-  (setq org-capture-templates
-	'((" " "Misc" entry (file "~/org/bzg.org")
-	   "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?"
-	   :prepend t :immediate-finish t)
-
-	  ("	" "Misc (clock-in)" entry (file "~/org/bzg.org")
-	   "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?"
-	   :prepend t :immediate-finish t :clock-in t :clock-keep t)
-
-	  ("c" "Misc (edit)" entry (file "~/org/bzg.org")
-	   "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?"
-	   :prepend t)
-
-	  ("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
-	   "* RDV %:fromname\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%a%i%?" :prepend t)
-
-	  ("R" "RDV EIG" entry (file+headline "~/org/eig.org" "RDV EIG")
-	   "* %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?" :prepend t)
-
-	  ("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
-	   "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
-
-	  ("o" "Org" entry (file+headline "~/org/libre.org" "Org-mode")
-	   "* TODO %?%a :Code:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)))
 
   (setq html-preamble
 	"
@@ -852,60 +830,73 @@ type=\"text/javascript\" src=\"//platform.twitter.com/widgets.js\"></script>
 	  ("dll" :components ("dll" "dll-attachments" "dll-rss"))
 	  ))
 
+  (setq org-capture-templates
+	'((" " "Misc" entry (file "~/org/bzg.org")
+	   "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?"
+	   :prepend t :immediate-finish t)
+
+	  ("	" "Misc (clock-in)" entry (file "~/org/bzg.org")
+	   "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?"
+	   :prepend t :immediate-finish t :clock-in t :clock-keep t)
+
+	  ("c" "Misc (edit)" entry (file "~/org/bzg.org")
+	   "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?"
+	   :prepend t)
+
+	  ("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
+	   "* RDV %:fromname\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%a%i%?" :prepend t)
+
+	  ("R" "RDV EIG" entry (file+headline "~/org/eig.org" "RDV EIG")
+	   "* %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?" :prepend t)
+
+	  ("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
+	   "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
+
+	  ("o" "Org" entry (file+headline "~/org/libre.org" "Org-mode")
+	   "* TODO %?%a :Code:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)))
+  
   (defun my-org-html-export-planning (planning-string backend info)
     (when (string-match "<p>.+><\\([0-9]+-[0-9]+-[0-9]+\\)[^>]+><.+</p>" planning-string)
-      (concat "<span class=\"planning\">" (match-string 1 planning-string) "</span>")))
-
-  ;; org caldav
-  (require 'org-caldav)
-  (defun org-caldav-sync-perso ()
-    (interactive)
-    (let ((org-caldav-inbox "~/org/rdv.org")
-	  (org-caldav-calendar-id "personnel")
-	  (org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
-	  (org-caldav-files nil))
-      (call-interactively 'org-caldav-sync)))
-
-  (defun org-caldav-sync-eig-perso ()
-    (interactive)
-    (let ((org-caldav-inbox "~/org/eig.org")
-	  (org-caldav-calendar-id "eig-bastien")
-          ;; https://cloud.eig-forever.org/index.php/apps/calendar/p/N29QNRZV1E19X848/EIG-Bastien
-	  (org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
-	  (org-caldav-files nil))
-      (call-interactively 'org-caldav-sync)))
-
-  (defun org-caldav-sync-eig2018 ()
-    (interactive)
-    (let ((org-caldav-inbox "~/.eig2/git/agenda-eig2018/index.org")
-	  (org-caldav-calendar-id "eig2018")
-	  ;; https://cloud.eig-forever.org/index.php/apps/calendar/p/5S4DP594PDIVTARU/EIG2018
-	  (org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
-	  (org-caldav-files nil))
-      (call-interactively 'org-caldav-sync)))
-
-  (defun bzg-eig-caldavt-sync ()
-    (interactive)
-    (org-caldav-sync-eig2018)
-    (org-caldav-sync-eig-perso))
-
-  (defun org-caldav-sync-eig-perso-old ()
-    (interactive)
-    (let ((org-caldav-inbox "~/org/eig.org")
-	  (org-caldav-calendar-id "eig-bastien")
-	  (org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
-	  (org-caldav-files nil))
-      (call-interactively 'org-caldav-sync)))
-
-  (defun org-caldav-sync-eig2018-old ()
-    (interactive)
-    (let ((org-caldav-inbox "~/.eig2/git/agenda-eig2018/index.org")
-	  (org-caldav-calendar-id "eig2018")
-	  ;; https://box.bzg.io/cloud/index.php/apps/calendar/p/BS33A1YSC0X2MWML
-	  (org-caldav-url "https://box.bzg.io/cloud/remote.php/dav/calendars/bzg%40bzg.fr")
-	  (org-caldav-files nil))
-      (call-interactively 'org-caldav-sync))))
+      (concat "<span class=\"planning\">" (match-string 1 planning-string) "</span>"))))
 #+END_SRC
+
+** org-caldav
+
+   #+begin_src emacs-lisp
+   ;; org caldav
+   (require 'org-caldav)
+
+   (defun bzg-caldav-sync-perso ()
+     (interactive)
+     (let ((org-caldav-inbox "~/org/rdv.org")
+	   (org-caldav-calendar-id "personnel")
+	   (org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
+	   (org-caldav-files nil))
+       (call-interactively 'org-caldav-sync)))
+
+   (defun bzg-caldav-sync-eig-perso ()
+     (interactive)
+     (let ((org-caldav-inbox "~/org/eig.org")
+	   (org-caldav-calendar-id "eig-bastien")
+	   ;; https://cloud.eig-forever.org/index.php/apps/calendar/p/N29QNRZV1E19X848/EIG-Bastien
+	   (org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
+	   (org-caldav-files nil))
+       (call-interactively 'org-caldav-sync)))
+
+   (defun bzg-caldav-sync-eig2018 ()
+     (interactive)
+     (let ((org-caldav-inbox "~/.eig2/git/agenda-eig2018/index.org")
+	   (org-caldav-calendar-id "eig2018")
+	   ;; https://cloud.eig-forever.org/index.php/apps/calendar/p/5S4DP594PDIVTARU/EIG2018
+	   (org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
+	   (org-caldav-files nil))
+       (call-interactively 'org-caldav-sync)))
+
+   (defun bzg-eig-caldavt-sync ()
+     (interactive)
+     (bzg-caldav-sync-eig2018)
+     (bzg-caldav-sync-eig-perso)))
+   #+end_src
 
 * notmuch
 
@@ -1878,3 +1869,10 @@ directory to make multiple eshell windows easier."
 
 (global-set-key (kbd "C-!") 'eshell-here)
 #+END_SRC
+*** avy
+
+    #+begin_src 
+    (avy-setup-default)
+    (global-set-key (kbd "C-:") 'avy-goto-char)
+    (global-set-key (kbd "C-&") 'avy-goto-char-2)
+    #+end_src
