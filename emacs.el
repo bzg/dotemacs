@@ -207,6 +207,14 @@
 ;; Handy key definition
 (define-key global-map "\M-Q" 'unfill-paragraph)
 
+(use-package helm
+    :config
+    (require 'helm-config)
+    ;; (global-set-key (kbd "M-x") 'helm-M-x)
+    (global-set-key (kbd "C-x X") 'helm-M-x)
+    (global-set-key (kbd "C-x F") #'helm-find-files)
+    (global-set-key (kbd "C-x A") #'helm-ag))
+
 (use-package dired-x
   :config
   (define-key dired-mode-map "\C-cd" 'dired-clean-tex)
@@ -279,353 +287,352 @@
       appt-message-warning-time 120)
 (setq diary-file "~/.diary")
 
-(use-package org
-  :config
-  (require 'ox-rss)
-  (require 'ox-md)
-  (require 'ox-beamer)
-  (require 'ox-latex)
-  (require 'ox-odt)
-  (require 'org-gnus)
-  (require 'ox-koma-letter)
-  (setq org-koma-letter-use-email t)
-  (setq org-koma-letter-use-foldmarks nil)
+(require 'ox-rss)
+(require 'ox-md)
+(require 'ox-beamer)
+(require 'org-mode)
+(require 'ox-latex)
+(require 'ox-odt)
+(require 'org-gnus)
+(require 'ox-koma-letter)
+(setq org-koma-letter-use-email t)
+(setq org-koma-letter-use-foldmarks nil)
 
-  ;; org-mode global keybindings
-  (define-key global-map "\C-cl" 'org-store-link)
-  (define-key global-map "\C-ca" 'org-agenda)
-  (define-key global-map "\C-cc" 'org-capture)
-  (define-key global-map "\C-cL" 'org-occur-link-in-agenda-files)
+;; org-mode global keybindings
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(define-key global-map "\C-cc" 'org-capture)
+(define-key global-map "\C-cL" 'org-occur-link-in-agenda-files)
 
-  ;; I keep those here to change it on the fly
-  ;; (setq org-element-use-cache nil)
-  ;; (setq org-adapt-indentation t)
+;; I keep those here to change it on the fly
+;; (setq org-element-use-cache nil)
+;; (setq org-adapt-indentation t)
 
-  ;; Hook to update all blocks before saving
-  (add-hook 'org-mode-hook
-	    (lambda() (add-hook 'before-save-hook
-				'org-update-all-dblocks t t)))
+;; Hook to update all blocks before saving
+(add-hook 'org-mode-hook
+	  (lambda() (add-hook 'before-save-hook
+			      'org-update-all-dblocks t t)))
 
-  ;; Hook to display dormant article in Gnus
-  (add-hook 'org-follow-link-hook
-	    (lambda ()
-	      (if (eq major-mode 'gnus-summary-mode)
-		  (gnus-summary-insert-dormant-articles))))
+;; Hook to display dormant article in Gnus
+(add-hook 'org-follow-link-hook
+	  (lambda ()
+	    (if (eq major-mode 'gnus-summary-mode)
+		(gnus-summary-insert-dormant-articles))))
 
-  (add-hook 'org-mode-hook 'electric-quote-local-mode)
+(add-hook 'org-mode-hook 'electric-quote-local-mode)
 
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((emacs-lisp . t)
-     (shell . t)
-     (dot . t)
-     (clojure . t)
-     (org . t)
-     (ditaa . t)
-     (org . t)
-     (ledger . t)
-     (scheme . t)
-     (plantuml . t)
-     (R . t)
-     (gnuplot . t)))
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (shell . t)
+   (dot . t)
+   (clojure . t)
+   (org . t)
+   (ditaa . t)
+   (org . t)
+   (ledger . t)
+   (scheme . t)
+   (plantuml . t)
+   (R . t)
+   (gnuplot . t)))
 
-  (setq org-babel-default-header-args
-	'((:session . "none")
-	  (:results . "replace")
-	  (:exports . "code")
-	  (:cache . "no")
-	  (:noweb . "yes")
-	  (:hlines . "no")
-	  (:tangle . "no")
-	  (:padnewline . "yes")))
+(setq org-babel-default-header-args
+      '((:session . "none")
+	(:results . "replace")
+	(:exports . "code")
+	(:cache . "no")
+	(:noweb . "yes")
+	(:hlines . "no")
+	(:tangle . "no")
+	(:padnewline . "yes")))
 
-  (org-clock-persistence-insinuate)
+(org-clock-persistence-insinuate)
 
-  ;; Set headlines to STRT when clocking in
-  (add-hook 'org-clock-in-hook (lambda() (org-todo "STRT")))
+;; Set headlines to STRT when clocking in
+(add-hook 'org-clock-in-hook (lambda() (org-todo "STRT")))
 
-  (setq org-edit-src-content-indentation 0)
-  (setq org-babel-clojure-backend 'cider)
-  (setq org-agenda-bulk-mark-char "*")
-  (setq org-agenda-diary-file "/home/guerry/org/rdv.org")
-  (setq org-agenda-dim-blocked-tasks nil)
-  (setq org-log-into-drawer "LOGBOOK")
-  (setq org-agenda-entry-text-maxlines 10)
-  (setq org-timer-default-timer 25)
-  (setq org-agenda-files '("~/org/rdv.org" "~/org/eig.org" "~/org/bzg.org" "~/.eig2/git/agenda-eig2018/index.org"))
-  (setq org-agenda-prefix-format
-	'((agenda . " %i %-12:c%?-14t%s")
-	  (timeline . "  % s")
-	  (todo . " %i %-14:c")
-	  (tags . " %i %-14:c")
-	  (search . " %i %-14:c")))
-  (setq org-agenda-remove-tags t)
-  (setq org-agenda-restore-windows-after-quit t)
-  (setq org-agenda-show-inherited-tags nil)
-  (setq org-agenda-skip-deadline-if-done t)
-  (setq org-agenda-skip-deadline-prewarning-if-scheduled t)
-  (setq org-agenda-skip-scheduled-if-done t)
-  (setq org-agenda-skip-timestamp-if-done t)
-  (setq org-agenda-sorting-strategy
-	'((agenda time-up) (todo time-up) (tags time-up) (search time-up)))
-  (setq org-agenda-tags-todo-honor-ignore-options t)
-  (setq org-agenda-use-tag-inheritance nil)
-  (setq org-agenda-window-frame-fractions '(0.0 . 0.5))
-  (setq org-agenda-deadline-faces
-	'((1.0001 . org-warning)              ; due yesterday or before
-	  (0.0    . org-upcoming-deadline)))  ; due today or later
-  (setq org-export-default-language "fr")
-  (setq org-export-backends '(latex odt icalendar html ascii rss koma-letter))
-  (setq org-export-with-archived-trees nil)
-  (setq org-export-with-drawers '("HIDE"))
-  (setq org-export-with-section-numbers nil)
-  (setq org-export-with-sub-superscripts nil)
-  (setq org-export-with-tags 'not-in-toc)
-  (setq org-export-with-timestamps t)
-  (setq org-html-head "")
-  (setq org-html-head-include-default-style nil)
-  (setq org-export-with-toc nil)
-  (setq org-export-with-priority t)
-  (setq org-export-dispatch-use-expert-ui nil)
-  (setq org-export-babel-evaluate t)
-  (setq org-latex-listings t)
-  (setq org-latex-pdf-process
-	'("pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f" "pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f" "pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f"))
-  (setq org-export-allow-bind-keywords t)
-  (setq org-publish-list-skipped-files nil)
-  (setq org-html-table-row-tags
-	(cons '(cond (top-row-p "<tr class=\"tr-top\">")
-		     (bottom-row-p "<tr class=\"tr-bottom\">")
-		     (t (if (= (mod row-number 2) 1)
-			    "<tr class=\"tr-odd\">"
-			  "<tr class=\"tr-even\">")))
-	      "</tr>"))
-  (setq org-pretty-entities t)
-  (setq org-fast-tag-selection-single-key 'expert)
-  (setq org-fontify-done-headline t)
-  (setq org-footnote-auto-label 'confirm)
-  (setq org-footnote-auto-adjust t)
-  (setq org-hide-emphasis-markers t)
-  (setq org-hide-macro-markers t)
-  (setq org-icalendar-include-todo 'all)
-  (setq org-link-frame-setup '((gnus . gnus) (file . find-file-other-window)))
-  (setq org-link-mailto-program '(browse-url-mail "mailto:%a?subject=%s"))
-  (setq org-log-note-headings
-	'((done . "CLOSING NOTE %t") (state . "State %-12s %t") (clock-out . "")))
-  (setq org-priority-start-cycle-with-default nil)
-  (setq org-refile-targets '((org-agenda-files . (:maxlevel . 3))
-			     (("~/org/libre.org") . (:maxlevel . 1))))
-  (setq org-refile-use-outline-path t)
-  (setq org-refile-allow-creating-parent-nodes t)
-  (setq org-refile-use-cache t)
-  (setq org-return-follows-link t)
-  (setq org-reverse-note-order t)
-  (setq org-scheduled-past-days 100)
-  (setq org-special-ctrl-a/e 'reversed)
-  (setq org-special-ctrl-k t)
-  (setq org-stuck-projects '("+LEVEL=1" ("NEXT" "TODO" "DONE")))
-  (setq org-tag-persistent-alist '(("Write" . ?w) ("Read" . ?r)))
-  (setq org-tag-alist
-	'((:startgroup . nil)
-	  ("Write" . ?w) ("Code" . ?c) ("Read" . ?r) ("View" . ?v) ("Listen" . ?l)
-	  (:endgroup . nil)
-	  ("@Offline" . ?O)
-	  ("Print" . ?P) ("Patch" . ?p) ("Bug" . ?b)
-	  ("Buy" . ?B) ("Mail" . ?@) ("Tel" . ?t)))
-  (setq org-tags-column -74)
-  (setq org-todo-keywords '((type "STRT" "NEXT" "TODO" "WAIT" "|" "DONE" "CANCELED")))
-  (setq org-todo-repeat-to-state t)
-  (setq org-use-property-inheritance t)
-  (setq org-use-sub-superscripts nil)
-  (setq org-clock-persist t)
-  (setq org-clock-idle-time 60)
-  (setq org-clock-history-length 35)
-  (setq org-clock-in-resume t)
-  (setq org-clock-out-remove-zero-time-clocks t)
-  (setq org-clock-sound "~/Music/clock.wav")
-  (setq org-insert-heading-respect-content t)
-  (setq org-id-method 'uuidgen)
-  (setq org-combined-agenda-icalendar-file "~/org/bzg.ics")
-  (setq org-icalendar-combined-name "Bastien Guerry ORG")
-  (setq org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo))
-  (setq org-icalendar-use-deadline '(todo-due event-if-todo event-if-not-todo))
-  (setq org-icalendar-timezone "Europe/Paris")
-  (setq org-icalendar-store-UID t)
-  (setq org-confirm-babel-evaluate nil)
-  (setq org-archive-default-command 'org-archive-to-archive-sibling)
-  (setq org-id-uuid-program "uuidgen")
-  (setq org-modules '(org-bbdb org-bibtex org-docview org-gnus org-protocol org-info org-irc org-learn))
-  (setq org-use-speed-commands
-	(lambda nil
-	  (and (looking-at org-outline-regexp-bol)
-	       (not (org-in-src-block-p t)))))
-  (setq org-src-fontify-natively t)
-  (setq org-todo-keyword-faces '(("STRT" . "yellow3")
-				 ("WAIT" . "grey")
-				 ("CANCELED" . "grey30")))
-  (setq org-footnote-section "Notes")
-  (setq org-plantuml-jar-path "~/bin/plantuml.jar")
-  (setq org-link-abbrev-alist
-	'(("ggle" . "http://www.google.com/search?q=%s")
-	  ("gmap" . "http://maps.google.com/maps?q=%s")
-	  ("omap" . "http://nominatim.openstreetmap.org/search?q=%s&polygon=1")))
+(setq org-edit-src-content-indentation 0)
+(setq org-babel-clojure-backend 'cider)
+(setq org-agenda-bulk-mark-char "*")
+(setq org-agenda-diary-file "/home/guerry/org/rdv.org")
+(setq org-agenda-dim-blocked-tasks nil)
+(setq org-log-into-drawer "LOGBOOK")
+(setq org-agenda-entry-text-maxlines 10)
+(setq org-timer-default-timer 25)
+(setq org-agenda-files '("~/org/rdv.org" "~/org/eig.org" "~/org/bzg.org" "~/.eig2/git/agenda-eig2018/index.org"))
+(setq org-agenda-prefix-format
+      '((agenda . " %i %-12:c%?-14t%s")
+	(timeline . "  % s")
+	(todo . " %i %-14:c")
+	(tags . " %i %-14:c")
+	(search . " %i %-14:c")))
+(setq org-agenda-remove-tags t)
+(setq org-agenda-restore-windows-after-quit t)
+(setq org-agenda-show-inherited-tags nil)
+(setq org-agenda-skip-deadline-if-done t)
+(setq org-agenda-skip-deadline-prewarning-if-scheduled t)
+(setq org-agenda-skip-scheduled-if-done t)
+(setq org-agenda-skip-timestamp-if-done t)
+(setq org-agenda-sorting-strategy
+      '((agenda time-up) (todo time-up) (tags time-up) (search time-up)))
+(setq org-agenda-tags-todo-honor-ignore-options t)
+(setq org-agenda-use-tag-inheritance nil)
+(setq org-agenda-window-frame-fractions '(0.0 . 0.5))
+(setq org-agenda-deadline-faces
+      '((1.0001 . org-warning)              ; due yesterday or before
+	(0.0    . org-upcoming-deadline)))  ; due today or later
+(setq org-export-default-language "fr")
+(setq org-export-backends '(latex odt icalendar html ascii rss koma-letter))
+(setq org-export-with-archived-trees nil)
+(setq org-export-with-drawers '("HIDE"))
+(setq org-export-with-section-numbers nil)
+(setq org-export-with-sub-superscripts nil)
+(setq org-export-with-tags 'not-in-toc)
+(setq org-export-with-timestamps t)
+(setq org-html-head "")
+(setq org-html-head-include-default-style nil)
+(setq org-export-with-toc nil)
+(setq org-export-with-priority t)
+(setq org-export-dispatch-use-expert-ui nil)
+(setq org-export-babel-evaluate t)
+(setq org-latex-listings t)
+(setq org-latex-pdf-process
+      '("pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f" "pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f" "pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f"))
+(setq org-export-allow-bind-keywords t)
+(setq org-publish-list-skipped-files nil)
+(setq org-html-table-row-tags
+      (cons '(cond (top-row-p "<tr class=\"tr-top\">")
+		   (bottom-row-p "<tr class=\"tr-bottom\">")
+		   (t (if (= (mod row-number 2) 1)
+			  "<tr class=\"tr-odd\">"
+			"<tr class=\"tr-even\">")))
+	    "</tr>"))
+(setq org-pretty-entities t)
+(setq org-fast-tag-selection-single-key 'expert)
+(setq org-fontify-done-headline t)
+(setq org-footnote-auto-label 'confirm)
+(setq org-footnote-auto-adjust t)
+(setq org-hide-emphasis-markers t)
+(setq org-hide-macro-markers t)
+(setq org-icalendar-include-todo 'all)
+(setq org-link-frame-setup '((gnus . gnus) (file . find-file-other-window)))
+(setq org-link-mailto-program '(browse-url-mail "mailto:%a?subject=%s"))
+(setq org-log-note-headings
+      '((done . "CLOSING NOTE %t") (state . "State %-12s %t") (clock-out . "")))
+(setq org-priority-start-cycle-with-default nil)
+(setq org-refile-targets '((org-agenda-files . (:maxlevel . 3))
+			   (("~/org/libre.org") . (:maxlevel . 1))))
+(setq org-refile-use-outline-path t)
+(setq org-refile-allow-creating-parent-nodes t)
+(setq org-refile-use-cache t)
+(setq org-return-follows-link t)
+(setq org-reverse-note-order t)
+(setq org-scheduled-past-days 100)
+(setq org-special-ctrl-a/e 'reversed)
+(setq org-special-ctrl-k t)
+(setq org-stuck-projects '("+LEVEL=1" ("NEXT" "TODO" "DONE")))
+(setq org-tag-persistent-alist '(("Write" . ?w) ("Read" . ?r)))
+(setq org-tag-alist
+      '((:startgroup . nil)
+	("Write" . ?w) ("Code" . ?c) ("Read" . ?r) ("View" . ?v) ("Listen" . ?l)
+	(:endgroup . nil)
+	("@Offline" . ?O)
+	("Print" . ?P) ("Patch" . ?p) ("Bug" . ?b)
+	("Buy" . ?B) ("Mail" . ?@) ("Tel" . ?t)))
+(setq org-tags-column -74)
+(setq org-todo-keywords '((type "STRT" "NEXT" "TODO" "WAIT" "|" "DONE" "CANCELED")))
+(setq org-todo-repeat-to-state t)
+(setq org-use-property-inheritance t)
+(setq org-use-sub-superscripts nil)
+(setq org-clock-persist t)
+(setq org-clock-idle-time 60)
+(setq org-clock-history-length 35)
+(setq org-clock-in-resume t)
+(setq org-clock-out-remove-zero-time-clocks t)
+(setq org-clock-sound "~/Music/clock.wav")
+(setq org-insert-heading-respect-content t)
+(setq org-id-method 'uuidgen)
+(setq org-combined-agenda-icalendar-file "~/org/bzg.ics")
+(setq org-icalendar-combined-name "Bastien Guerry ORG")
+(setq org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo))
+(setq org-icalendar-use-deadline '(todo-due event-if-todo event-if-not-todo))
+(setq org-icalendar-timezone "Europe/Paris")
+(setq org-icalendar-store-UID t)
+(setq org-confirm-babel-evaluate nil)
+(setq org-archive-default-command 'org-archive-to-archive-sibling)
+(setq org-id-uuid-program "uuidgen")
+(setq org-modules '(org-bbdb org-bibtex org-docview org-gnus org-protocol org-info org-irc org-learn))
+(setq org-use-speed-commands
+      (lambda nil
+	(and (looking-at org-outline-regexp-bol)
+	     (not (org-in-src-block-p t)))))
+(setq org-src-fontify-natively t)
+(setq org-todo-keyword-faces '(("STRT" . "yellow3")
+			       ("WAIT" . "grey")
+			       ("CANCELED" . "grey30")))
+(setq org-footnote-section "Notes")
+(setq org-plantuml-jar-path "~/bin/plantuml.jar")
+(setq org-link-abbrev-alist
+      '(("ggle" . "http://www.google.com/search?q=%s")
+	("gmap" . "http://maps.google.com/maps?q=%s")
+	("omap" . "http://nominatim.openstreetmap.org/search?q=%s&polygon=1")))
 
-  (setq org-attach-directory "~/org/data/")
-  (setq org-link-display-descriptive nil)
-  (setq org-loop-over-headlines-in-active-region t)
-  (setq org-create-formula-image-program 'dvipng) ;; imagemagick
-  (setq org-allow-promoting-top-level-subtree t)
-  (setq org-list-description-max-indent 5)
-  (setq org-gnus-prefer-web-links nil)
-  (setq org-html-head-include-default-style nil)
-  (setq org-html-head-include-scripts nil)
-  (setq org-clock-display-default-range nil)
-  (setq org-blank-before-new-entry '((heading . t) (plain-list-item . auto)))
-  (setq org-crypt-key "Bastien Guerry")
-  (setq org-enforce-todo-dependencies t)
-  (setq org-fontify-whole-heading-line t)
-  (setq org-file-apps
-	'((auto-mode . emacs)
-	  ("\\.mm\\'" . default)
-	  ("\\.x?html?\\'" . default)
-	  ("\\.pdf\\'" . "evince %s")))
-  (setq org-hide-leading-stars t)
-  (setq org-global-properties '(("Effort_ALL" . "0:10 0:30 1:00 2:00 3:30 7:00")))
-  (setq org-confirm-elisp-link-function nil)
-  (setq org-confirm-shell-link-function nil)
-  (setq org-cycle-include-plain-lists nil)
-  (setq org-deadline-warning-days 7)
-  (setq org-default-notes-file "~/org/notes.org")
-  (setq org-directory "~/org/")
-  (setq org-ellipsis nil)
-  (setq org-email-link-description-format "%c: %.50s")
-  (setq org-support-shift-select t)
-  (setq org-export-filter-planning-functions
-	'(my-org-html-export-planning))
-  (setq org-export-with-broken-links t)
-  (setq org-ellipsis "…")
+(setq org-attach-directory "~/org/data/")
+(setq org-link-display-descriptive nil)
+(setq org-loop-over-headlines-in-active-region t)
+(setq org-create-formula-image-program 'dvipng) ;; imagemagick
+(setq org-allow-promoting-top-level-subtree t)
+(setq org-list-description-max-indent 5)
+(setq org-gnus-prefer-web-links nil)
+(setq org-html-head-include-default-style nil)
+(setq org-html-head-include-scripts nil)
+(setq org-clock-display-default-range nil)
+(setq org-blank-before-new-entry '((heading . t) (plain-list-item . auto)))
+(setq org-crypt-key "Bastien Guerry")
+(setq org-enforce-todo-dependencies t)
+(setq org-fontify-whole-heading-line t)
+(setq org-file-apps
+      '((auto-mode . emacs)
+	("\\.mm\\'" . default)
+	("\\.x?html?\\'" . default)
+	("\\.pdf\\'" . "evince %s")))
+(setq org-hide-leading-stars t)
+(setq org-global-properties '(("Effort_ALL" . "0:10 0:30 1:00 2:00 3:30 7:00")))
+(setq org-confirm-elisp-link-function nil)
+(setq org-confirm-shell-link-function nil)
+(setq org-cycle-include-plain-lists nil)
+(setq org-deadline-warning-days 7)
+(setq org-default-notes-file "~/org/notes.org")
+(setq org-directory "~/org/")
+(setq org-ellipsis nil)
+(setq org-email-link-description-format "%c: %.50s")
+(setq org-support-shift-select t)
+(setq org-export-filter-planning-functions
+      '(my-org-html-export-planning))
+(setq org-export-with-broken-links t)
+(setq org-ellipsis "…")
 
-  (add-to-list 'org-latex-classes
-	       '("my-letter"
-		 "\\documentclass\{scrlttr2\}
+(add-to-list 'org-latex-classes
+	     '("my-letter"
+	       "\\documentclass\{scrlttr2\}
             \\usepackage[english,frenchb]{babel}
             \[NO-DEFAULT-PACKAGES]
             \[NO-PACKAGES]
             \[EXTRA]"))
 
-  (org-agenda-to-appt)
+(org-agenda-to-appt)
 
-  ;; Set headlines to STRT and clock-in when running a countdown
-  (add-hook 'org-timer-set-hook
-	    (lambda ()
-	      (if (eq major-mode 'org-agenda-mode)
-		  (call-interactively 'org-agenda-clock-in)
-		(call-interactively 'org-clock-in))))
-  (add-hook 'org-timer-done-hook
-	    (lambda ()
-	      (if (and (eq major-mode 'org-agenda-mode)
-		       org-clock-current-task)
-		  (call-interactively 'org-agenda-clock-out)
-		(call-interactively 'org-clock-out))))
-  (add-hook 'org-timer-pause-hook
-	    (lambda ()
-	      (if (and (eq major-mode 'org-agenda-mode)
-		       org-clock-current-task)
-		  (call-interactively 'org-agenda-clock-out)
-		(call-interactively 'org-clock-out))))
-  (add-hook 'org-timer-stop-hook
-	    (lambda ()
-	      (if (and (eq major-mode 'org-agenda-mode)
-		       org-clock-current-task)
-		  (call-interactively 'org-agenda-clock-out)
-		(call-interactively 'org-clock-out))))
+;; Set headlines to STRT and clock-in when running a countdown
+(add-hook 'org-timer-set-hook
+	  (lambda ()
+	    (if (eq major-mode 'org-agenda-mode)
+		(call-interactively 'org-agenda-clock-in)
+	      (call-interactively 'org-clock-in))))
+(add-hook 'org-timer-done-hook
+	  (lambda ()
+	    (if (and (eq major-mode 'org-agenda-mode)
+		     org-clock-current-task)
+		(call-interactively 'org-agenda-clock-out)
+	      (call-interactively 'org-clock-out))))
+(add-hook 'org-timer-pause-hook
+	  (lambda ()
+	    (if (and (eq major-mode 'org-agenda-mode)
+		     org-clock-current-task)
+		(call-interactively 'org-agenda-clock-out)
+	      (call-interactively 'org-clock-out))))
+(add-hook 'org-timer-stop-hook
+	  (lambda ()
+	    (if (and (eq major-mode 'org-agenda-mode)
+		     org-clock-current-task)
+		(call-interactively 'org-agenda-clock-out)
+	      (call-interactively 'org-clock-out))))
 
-  (setq org-agenda-custom-commands
-	`(
-	  ;; Week agenda for rendez-vous and tasks
-	  ("%" "Rendez-vous" agenda* "Week RDV"
-	   ((org-agenda-span 'week)
-	    (org-agenda-files '("~/org/rdv.org" "~/.eig2/git/agenda-eig2018/index.org" "~/org/eig.org"))
-	    ;; (org-deadline-warning-days 3)
-	    (org-agenda-sorting-strategy
-	     '(todo-state-up time-up priority-down))))
+(setq org-agenda-custom-commands
+      `(
+	;; Week agenda for rendez-vous and tasks
+	("%" "Rendez-vous" agenda* "Week RDV"
+	 ((org-agenda-span 'week)
+	  (org-agenda-files '("~/org/rdv.org" "~/.eig2/git/agenda-eig2018/index.org" "~/org/eig.org"))
+	  ;; (org-deadline-warning-days 3)
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up time-up priority-down))))
 
-	  (" " "Work (tout)" agenda "List of rendez-vous and tasks for today"
-	   ((org-agenda-span 1)
-	    (org-agenda-files '("~/org/rdv.org" "~/org/eig.org" "~/.eig2/git/agenda-eig2018/index.org" "~/org/bzg.org"))
-	    (org-deadline-warning-days 3)
-	    (org-agenda-sorting-strategy
-	     '(todo-state-up time-up priority-down))))
+	(" " "Work (tout)" agenda "List of rendez-vous and tasks for today"
+	 ((org-agenda-span 1)
+	  (org-agenda-files '("~/org/rdv.org" "~/org/eig.org" "~/.eig2/git/agenda-eig2018/index.org" "~/org/bzg.org"))
+	  (org-deadline-warning-days 3)
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up time-up priority-down))))
 
-	  ("	" "Libre (tout)" agenda "List of rendez-vous and tasks for today"
-	   ((org-agenda-span 1)
-	    (org-agenda-files '("~/org/libre.org"))
-	    (org-deadline-warning-days 3)
-	    (org-agenda-sorting-strategy
-	     '(todo-state-up priority-down time-up))))
+	("	" "Libre (tout)" agenda "List of rendez-vous and tasks for today"
+	 ((org-agenda-span 1)
+	  (org-agenda-files '("~/org/libre.org"))
+	  (org-deadline-warning-days 3)
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up priority-down time-up))))
 
-	  ("!" tags-todo "+DEADLINE<=\"<+7d>\"")
-	  ("@" tags-todo "+SCHEDULED<=\"<now>\"")
-	  ("n" "NEXT (bzg)" tags-todo "TODO={STRT\\|NEXT}"
-	   ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/eig.org"))
-	    (org-agenda-sorting-strategy
-	     '(todo-state-up time-up priority-down))))
-	  ("N" "NEXT (bzg)" tags-todo "TODO={STRT\\|NEXT}"
-	   ((org-agenda-files '("~/org/libre.org"))
-	    (org-agenda-sorting-strategy
-	     '(todo-state-up time-up priority-down))))
-	  ("?" "WAIT (bzg)" tags-todo "TODO={WAIT}"
-	   ((org-agenda-files '("~/org/rdv.org" "~/org/eig.org" "~/org/bzg.org"))
-	    (org-agenda-sorting-strategy
-	     '(todo-state-up priority-down time-up))))
+	("!" tags-todo "+DEADLINE<=\"<+7d>\"")
+	("@" tags-todo "+SCHEDULED<=\"<now>\"")
+	("n" "NEXT (bzg)" tags-todo "TODO={STRT\\|NEXT}"
+	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/eig.org"))
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up time-up priority-down))))
+	("N" "NEXT (bzg)" tags-todo "TODO={STRT\\|NEXT}"
+	 ((org-agenda-files '("~/org/libre.org"))
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up time-up priority-down))))
+	("?" "WAIT (bzg)" tags-todo "TODO={WAIT}"
+	 ((org-agenda-files '("~/org/rdv.org" "~/org/eig.org" "~/org/bzg.org"))
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up priority-down time-up))))
 
-	  ("x" "Agenda work" agenda "Work scheduled for today"
-	   ((org-agenda-span 1)
-	    (org-deadline-warning-days 3)
-	    (org-agenda-entry-types '(:timestamp :scheduled))
-	    (org-agenda-sorting-strategy
-	     '(todo-state-up priority-down time-up))))
-	  ("X" "Agenda libre" agenda "Libre scheduled for today"
-	   ((org-agenda-span 1)
-	    (org-deadline-warning-days 3)
-	    (org-agenda-files '("~/org/libre.org"))
-	    (org-agenda-entry-types '(:timestamp :scheduled))
-	    (org-agenda-sorting-strategy
-	     '(todo-state-up priority-down time-up))))
-	  ("z" "Work deadlines" agenda "Past/upcoming work deadlines"
-	   ((org-agenda-span 1)
-	    (org-deadline-warning-days 15)
-	    (org-agenda-entry-types '(:deadline))
-	    (org-agenda-sorting-strategy
-	     '(todo-state-up priority-down time-up))))
-	  ("Z" "Libre deadlines" agenda "Past/upcoming leisure deadlines"
-	   ((org-agenda-span 1)
-	    (org-deadline-warning-days 15)
-	    (org-agenda-files '("~/org/libre.org"))
-	    (org-agenda-entry-types '(:deadline))
-	    (org-agenda-sorting-strategy
-	     '(todo-state-up priority-down time-up))))
+	("x" "Agenda work" agenda "Work scheduled for today"
+	 ((org-agenda-span 1)
+	  (org-deadline-warning-days 3)
+	  (org-agenda-entry-types '(:timestamp :scheduled))
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up priority-down time-up))))
+	("X" "Agenda libre" agenda "Libre scheduled for today"
+	 ((org-agenda-span 1)
+	  (org-deadline-warning-days 3)
+	  (org-agenda-files '("~/org/libre.org"))
+	  (org-agenda-entry-types '(:timestamp :scheduled))
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up priority-down time-up))))
+	("z" "Work deadlines" agenda "Past/upcoming work deadlines"
+	 ((org-agenda-span 1)
+	  (org-deadline-warning-days 15)
+	  (org-agenda-entry-types '(:deadline))
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up priority-down time-up))))
+	("Z" "Libre deadlines" agenda "Past/upcoming leisure deadlines"
+	 ((org-agenda-span 1)
+	  (org-deadline-warning-days 15)
+	  (org-agenda-files '("~/org/libre.org"))
+	  (org-agenda-entry-types '(:deadline))
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up priority-down time-up))))
 
-	  ("r" tags-todo "+Read+TODO={NEXT\\|STRT}")
-	  ("R" tags-todo "+Read+TODO={NEXT\\|STRT}"
-	   ((org-agenda-files '("~/org/libre.org"))))
-	  ("v" tags-todo "+View+TODO={NEXT\\|STRT}")
-	  ("V" tags-todo "+View+TODO={NEXT\\|STRT}"
-	   ((org-agenda-files '("~/org/libre.org"))))
-	  ("w" tags-todo "+Write+TODO={NEXT\\|STRT}")
-	  ("W" tags-todo "+Write+TODO={NEXT\\|STRT}"
-	   ((org-agenda-files '("~/org/libre.org"))))
-	  ("c" tags-todo "+Code+TODO={NEXT\\|STRT}")
-	  ("C" tags-todo "+Code+TODO={NEXT\\|STRT}"
-	   ((org-agenda-files '("~/org/libre.org"))))
+	("r" tags-todo "+Read+TODO={NEXT\\|STRT}")
+	("R" tags-todo "+Read+TODO={NEXT\\|STRT}"
+	 ((org-agenda-files '("~/org/libre.org"))))
+	("v" tags-todo "+View+TODO={NEXT\\|STRT}")
+	("V" tags-todo "+View+TODO={NEXT\\|STRT}"
+	 ((org-agenda-files '("~/org/libre.org"))))
+	("w" tags-todo "+Write+TODO={NEXT\\|STRT}")
+	("W" tags-todo "+Write+TODO={NEXT\\|STRT}"
+	 ((org-agenda-files '("~/org/libre.org"))))
+	("c" tags-todo "+Code+TODO={NEXT\\|STRT}")
+	("C" tags-todo "+Code+TODO={NEXT\\|STRT}"
+	 ((org-agenda-files '("~/org/libre.org"))))
 
-	  ("#" "DONE/CANCELED"
-	   todo "DONE|CANCELED"
-	   ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/eig.org" "~/org/libre.org" "~/.eig2/git/agenda-eig2018/index.org"))
-	    (org-agenda-sorting-strategy '(timestamp-up))))))
+	("#" "DONE/CANCELED"
+	 todo "DONE|CANCELED"
+	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/eig.org" "~/org/libre.org" "~/.eig2/git/agenda-eig2018/index.org"))
+	  (org-agenda-sorting-strategy '(timestamp-up))))))
 
-  (setq html-preamble
-	"
+(setq html-preamble
+      "
 <script type=\"text/javascript\"src=\"//platform.twitter.com/widgets.js\"></script>
 <div id=\"menu\">
 <a class=\"top\" href=\"http://bzg.fr\">bzg</a>
@@ -641,8 +648,8 @@
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 </div>")
 
-  (setq html-dll-preamble
-	"<script>
+(setq html-dll-preamble
+      "<script>
     \(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     \(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -671,178 +678,188 @@ type=\"text/javascript\" src=\"//platform.twitter.com/widgets.js\"></script>
 <a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png\" /></a>
 </div>")
 
-  (setq org-publish-project-alist
-	`(
-	  ("homepage"
-	   :base-directory "~/install/git/homepage/"
-	   :html-extension "html"
-	   :base-extension "org"
-	   :publishing-directory "/home/guerry/public_html/org/homepage/"
-	   :publishing-function (org-html-publish-to-html)
-	   :auto-sitemap nil
-	   :recursive t
-	   :makeindex t
-	   :preserve-breaks nil
-	   :sitemap-sort-files chronologically
-	   :with-tasks nil
-	   :section-numbers nil
-	   :with-toc nil
-	   :html-head-extra
-	   "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"http://bzg.fr/blog.xml\" title=\"RSS feed for bzg.fr\">
+(setq org-publish-project-alist
+      `(
+	("homepage"
+	 :base-directory "~/install/git/homepage/"
+	 :html-extension "html"
+	 :base-extension "org"
+	 :publishing-directory "/home/guerry/public_html/org/homepage/"
+	 :publishing-function (org-html-publish-to-html)
+	 :auto-sitemap nil
+	 :recursive t
+	 :makeindex t
+	 :preserve-breaks nil
+	 :sitemap-sort-files chronologically
+	 :with-tasks nil
+	 :section-numbers nil
+	 :with-toc nil
+	 :html-head-extra
+	 "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"http://bzg.fr/blog.xml\" title=\"RSS feed for bzg.fr\">
 <link rel=\"stylesheet\" href=\"u/bootstrap.min.css\" />
 <link rel=\"stylesheet\" href=\"index.css\" type=\"text/css\" />"
-	   :html-preamble ,html-preamble
-	   :html-postamble nil
-	   :htmlized-source t)
-	  ("homepage-rss"
-	   :base-directory "~/install/git/homepage/"
-	   :base-extension "org"
-	   :html-link-home "http://bzg.fr/"
-	   :publishing-directory "/home/guerry/public_html/org/homepage/"
-	   :publishing-function (org-rss-publish-to-rss)
-	   :html-link-use-abs-url t
-	   :section-numbers nil
-	   :exclude ".*"
-	   :with-tasks nil
-	   :include ("blog.org")
-	   :with-toc nil)
-	  ("homepage-css"
-	   :base-directory "~/install/git/homepage"
-	   :base-extension "css"
-	   :publishing-directory "/home/guerry/public_html/org/homepage/"
-	   :publishing-function org-publish-attachment)
-	  ("homepage-attachments"
-	   :base-directory "~/install/git/homepage"
-	   :base-extension "png\\|jpg\\|gif\\|atom"
-	   :publishing-directory "/home/guerry/public_html/org/homepage/u/"
-	   :publishing-function org-publish-attachment)
-	  ("dotemacs"
-	   :base-directory "~/install/git/dotemacs/"
-	   :html-extension "html"
-	   :base-extension "org"
-	   :publishing-directory "/home/guerry/public_html/org/homepage/"
-	   :publishing-function (org-html-publish-to-html)
-	   :auto-sitemap nil
-	   :recursive t
-	   :makeindex nil
-	   :preserve-breaks nil
-	   :sitemap-sort-files chronologically
-	   :section-numbers nil
-	   :with-toc nil
-	   :html-head-extra
-	   "<link rel=\"stylesheet\" href=\"u/bootstrap.min.css\" />
+	 :html-preamble ,html-preamble
+	 :html-postamble nil
+	 :htmlized-source t)
+	("homepage-rss"
+	 :base-directory "~/install/git/homepage/"
+	 :base-extension "org"
+	 :html-link-home "http://bzg.fr/"
+	 :publishing-directory "/home/guerry/public_html/org/homepage/"
+	 :publishing-function (org-rss-publish-to-rss)
+	 :html-link-use-abs-url t
+	 :section-numbers nil
+	 :exclude ".*"
+	 :with-tasks nil
+	 :include ("blog.org")
+	 :with-toc nil)
+	("homepage-css"
+	 :base-directory "~/install/git/homepage"
+	 :base-extension "css"
+	 :publishing-directory "/home/guerry/public_html/org/homepage/"
+	 :publishing-function org-publish-attachment)
+	("homepage-attachments"
+	 :base-directory "~/install/git/homepage"
+	 :base-extension "png\\|jpg\\|gif\\|atom"
+	 :publishing-directory "/home/guerry/public_html/org/homepage/u/"
+	 :publishing-function org-publish-attachment)
+	("dotemacs"
+	 :base-directory "~/install/git/dotemacs/"
+	 :html-extension "html"
+	 :base-extension "org"
+	 :publishing-directory "/home/guerry/public_html/org/homepage/"
+	 :publishing-function (org-html-publish-to-html)
+	 :auto-sitemap nil
+	 :recursive t
+	 :makeindex nil
+	 :preserve-breaks nil
+	 :sitemap-sort-files chronologically
+	 :section-numbers nil
+	 :with-toc nil
+	 :html-head-extra
+	 "<link rel=\"stylesheet\" href=\"u/bootstrap.min.css\" />
 <link rel=\"stylesheet\" href=\"index.css\" type=\"text/css\" />"
-	   :html-preamble ,html-preamble
-	   :html-postamble nil
-	   :htmlized-source nil)
-	  ("dll"
-	   :base-directory "~/install/git/dunlivrelautre/"
-	   :html-extension "html"
-	   :base-extension "org"
-	   :publishing-directory "/home/guerry/public_html/org/dunlivrelautre/"
-	   :publishing-function (org-html-publish-to-html)
-	   :auto-sitemap nil
-	   :recursive t
-	   :with-tasks nil
-	   :makeindex t
-	   :preserve-breaks nil
-	   :sitemap-sort-files chronologically
-	   :section-numbers nil
-	   :with-toc nil
-	   :html-head-extra "<link rel=\"stylesheet\" href=\"index.css\" type=\"text/css\" />"
-	   :htmlized-source nil
-	   :html-preamble ,html-dll-preamble
-	   :html-postamble nil)
-	  ("dll-rss"
-	   :base-directory "~/install/git/dunlivrelautre/"
-	   :base-extension "org"
-	   :html-link-home "http://www.dunlivrelautre.net"
-	   :publishing-directory "/home/guerry/public_html/org/dunlivrelautre/"
-	   :publishing-function (org-rss-publish-to-rss)
-	   :html-link-use-abs-url t
-	   :section-numbers nil
-	   :exclude ".*"
-	   :include ("blog.org")
-	   :with-tasks nil
-	   :with-toc nil)
-	  ("dll-css"
-	   :base-directory "~/install/git/dunlivrelautre"
-	   :base-extension "css"
-	   :publishing-directory "/home/guerry/public_html/org/dunlivrelautre/"
-	   :publishing-function org-publish-attachment)
-	  ("dll-attachments"
-	   :base-directory "~/install/git/dunlivrelautre"
-	   :base-extension "png\\|jpg\\|gif\\|xml\\|atom"
-	   :publishing-directory "/home/guerry/public_html/org/dunlivrelautre/"
-	   :publishing-function org-publish-attachment)
-	  ;; Meta projects
-	  ("hp" :components
-	   ("homepage" "homepage-attachments" "homepage-rss" "homepage-css"))
-	  ("dll" :components ("dll" "dll-attachments" "dll-rss"))
-	  ))
+	 :html-preamble ,html-preamble
+	 :html-postamble nil
+	 :htmlized-source nil)
+	("dll"
+	 :base-directory "~/install/git/dunlivrelautre/"
+	 :html-extension "html"
+	 :base-extension "org"
+	 :publishing-directory "/home/guerry/public_html/org/dunlivrelautre/"
+	 :publishing-function (org-html-publish-to-html)
+	 :auto-sitemap nil
+	 :recursive t
+	 :with-tasks nil
+	 :makeindex t
+	 :preserve-breaks nil
+	 :sitemap-sort-files chronologically
+	 :section-numbers nil
+	 :with-toc nil
+	 :html-head-extra "<link rel=\"stylesheet\" href=\"index.css\" type=\"text/css\" />"
+	 :htmlized-source nil
+	 :html-preamble ,html-dll-preamble
+	 :html-postamble nil)
+	("dll-rss"
+	 :base-directory "~/install/git/dunlivrelautre/"
+	 :base-extension "org"
+	 :html-link-home "http://www.dunlivrelautre.net"
+	 :publishing-directory "/home/guerry/public_html/org/dunlivrelautre/"
+	 :publishing-function (org-rss-publish-to-rss)
+	 :html-link-use-abs-url t
+	 :section-numbers nil
+	 :exclude ".*"
+	 :include ("blog.org")
+	 :with-tasks nil
+	 :with-toc nil)
+	("dll-css"
+	 :base-directory "~/install/git/dunlivrelautre"
+	 :base-extension "css"
+	 :publishing-directory "/home/guerry/public_html/org/dunlivrelautre/"
+	 :publishing-function org-publish-attachment)
+	("dll-attachments"
+	 :base-directory "~/install/git/dunlivrelautre"
+	 :base-extension "png\\|jpg\\|gif\\|xml\\|atom"
+	 :publishing-directory "/home/guerry/public_html/org/dunlivrelautre/"
+	 :publishing-function org-publish-attachment)
+	;; Meta projects
+	("hp" :components
+	 ("homepage" "homepage-attachments" "homepage-rss" "homepage-css"))
+	("dll" :components ("dll" "dll-attachments" "dll-rss"))
+	))
 
-  (setq org-capture-templates
-	'((" " "Misc" entry (file "~/org/bzg.org")
-	   "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?"
-	   :prepend t :immediate-finish t)
+(setq org-capture-templates
+      '((" " "Misc" entry (file "~/org/bzg.org")
+	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?"
+	 :prepend t :immediate-finish t)
 
-	  ("	" "Misc (clock-in)" entry (file "~/org/bzg.org")
-	   "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?"
-	   :prepend t :immediate-finish t :clock-in t :clock-keep t)
+	("	" "Misc (clock-in)" entry (file "~/org/bzg.org")
+	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?"
+	 :prepend t :immediate-finish t :clock-in t :clock-keep t)
 
-	  ("c" "Misc (edit)" entry (file "~/org/bzg.org")
-	   "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?"
-	   :prepend t)
+	("c" "Misc (edit)" entry (file "~/org/bzg.org")
+	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?"
+	 :prepend t)
 
-	  ("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
-	   "* RDV %:fromname\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%a%i%?" :prepend t)
+	("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
+	 "* RDV %:fromname\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%a%i%?" :prepend t)
 
-	  ("R" "RDV EIG" entry (file+headline "~/org/eig.org" "RDV EIG")
-	   "* %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?" :prepend t)
+	("R" "RDV EIG" entry (file+headline "~/org/eig.org" "RDV EIG")
+	 "* %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?" :prepend t)
 
-	  ("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
-	   "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
+	("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
+	 "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
 
-	  ("o" "Org" entry (file+headline "~/org/libre.org" "Org-mode")
-	   "* TODO %?%a :Code:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)))
-  
-  (defun my-org-html-export-planning (planning-string backend info)
-    (when (string-match "<p>.+><\\([0-9]+-[0-9]+-[0-9]+\\)[^>]+><.+</p>" planning-string)
-      (concat "<span class=\"planning\">" (match-string 1 planning-string) "</span>"))))
+	("o" "Org" entry (file+headline "~/org/libre.org" "Org-mode")
+	 "* TODO %?%a :Code:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)))
+
+(defun my-org-html-export-planning (planning-string backend info)
+  (when (string-match "<p>.+><\\([0-9]+-[0-9]+-[0-9]+\\)[^>]+><.+</p>" planning-string)
+    (concat "<span class=\"planning\">" (match-string 1 planning-string) "</span>")))
 
 ;; org caldav
-(require 'org-caldav)
+ (require 'org-caldav)
 
-(defun bzg-caldav-sync-perso ()
-  (interactive)
-  (let ((org-caldav-inbox "~/org/rdv.org")
-	(org-caldav-calendar-id "personnel")
-	(org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
-	(org-caldav-files nil))
-    (call-interactively 'org-caldav-sync)))
+ (defun bzg-caldav-sync-perso ()
+   (interactive)
+   (let ((org-caldav-inbox "~/org/rdv.org")
+	 (org-caldav-calendar-id "personnel")
+	 (org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
+	 (org-caldav-files nil))
+     (call-interactively 'org-caldav-sync)))
 
-(defun bzg-caldav-sync-eig-perso ()
-  (interactive)
-  (let ((org-caldav-inbox "~/org/eig.org")
-	(org-caldav-calendar-id "eig-bastien")
-	;; https://cloud.eig-forever.org/index.php/apps/calendar/p/N29QNRZV1E19X848/EIG-Bastien
-	(org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
-	(org-caldav-files nil))
-    (call-interactively 'org-caldav-sync)))
+ (defun bzg-caldav-sync-eig-perso ()
+   (interactive)
+   (let ((org-caldav-inbox "~/org/eig.org")
+	 (org-caldav-calendar-id "eig-bastien")
+	 ;; https://cloud.eig-forever.org/index.php/apps/calendar/p/N29QNRZV1E19X848/EIG-Bastien
+	 (org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
+	 (org-caldav-files nil))
+     (call-interactively 'org-caldav-sync)))
 
-(defun bzg-caldav-sync-eig2018 ()
-  (interactive)
-  (let ((org-caldav-inbox "~/.eig2/git/agenda-eig2018/index.org")
-	(org-caldav-calendar-id "eig2018")
-	;; https://cloud.eig-forever.org/index.php/apps/calendar/p/5S4DP594PDIVTARU/EIG2018
-	(org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
-	(org-caldav-files nil))
-    (call-interactively 'org-caldav-sync)))
+ (defun bzg-caldav-sync-eig2018 ()
+   (interactive)
+   (let ((org-caldav-inbox "~/.eig2/git/agenda-eig2018/index.org")
+	 (org-caldav-calendar-id "eig2018")
+	 ;; https://cloud.eig-forever.org/index.php/apps/calendar/p/5S4DP594PDIVTARU/EIG2018
+	 (org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
+	 (org-caldav-files nil))
+     (call-interactively 'org-caldav-sync)))
 
-(defun bzg-eig-caldavt-sync ()
-  (interactive)
-  (bzg-caldav-sync-eig2018)
-  (bzg-caldav-sync-eig-perso)))
+(defun bzg-caldav-sync-eig2018-open ()
+   (interactive)
+   (let ((org-caldav-inbox "~/.eig2/git/open-agenda-eig2018/index.org")
+	 (org-caldav-calendar-id "eig2018-open")
+	 ;; https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/eig2018-open/
+	 (org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
+	 (org-caldav-files nil))
+     (call-interactively 'org-caldav-sync)))
+
+ (defun bzg-eig-caldav-sync ()
+   (interactive)
+   (bzg-caldav-sync-eig2018)
+   (bzg-caldav-sync-eig2018-open)
+   (bzg-caldav-sync-eig-perso))
 
 ;; notmuch configuration
 (use-package notmuch
@@ -1662,11 +1679,6 @@ the copy in the last group."
 (defun org-babel-execute:inline-js (body _params)
   (format "<script type=\"text/javascript\">\n%s\n</script>" body))
 
-;; (require 'helm-config)
-;; (global-set-key (kbd "M-x") 'helm-M-x)
-;; (global-set-key (kbd "C-x C-f") #'helm-find-files)
-;; (helm-mode 1)
-
 (use-package guide-key
    :config
    (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c @"))
@@ -1674,8 +1686,6 @@ the copy in the last group."
 
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 5) ((control) . nil)))
 (setq mouse-wheel-progressive-speed nil)
-
-(setq twittering-use-master-password t)
 
 ;; http://emacs.stackexchange.com/questions/2710/switching-between-window-layouts
 (defvar winstack-stack '()
@@ -1707,11 +1717,6 @@ Use `winstack-push' and
 (global-set-key (kbd "C-c i") 'winstack-push)
 (global-set-key (kbd "C-c o") 'winstack-pop)
 
-;; (require 'browse-kill-ring)
-;; (require 'key-chord)
-;; (key-chord-mode 1)
-;; (key-chord-define-global "qq" "\M-bHello")
-
 (defun backward-kill-word-noring (arg)
   (interactive "p")
   (let ((kr kill-ring))
@@ -1719,10 +1724,6 @@ Use `winstack-push' and
     (setq kill-ring (reverse kr))))
 
 (global-set-key (kbd "C-M-<backspace>") 'backward-kill-word-noring)
-
-(eval-after-load 'flycheck '(flycheck-clojure-setup))
-
-(load-file "~/install/git/flycheck-grammalecte/flycheck-grammalecte.el")
 
 (defun eshell-here ()
   "Opens up a new shell in the directory associated with the
