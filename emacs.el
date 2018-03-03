@@ -211,7 +211,7 @@
     :config
     (require 'helm-config)
     ;; (global-set-key (kbd "M-x") 'helm-M-x)
-    (global-set-key (kbd "C-x X") 'helm-M-x)
+    (global-set-key (kbd "C-x X") #'helm-M-x)
     (global-set-key (kbd "C-x F") #'helm-find-files)
     (global-set-key (kbd "C-x A") #'helm-ag))
 
@@ -290,7 +290,7 @@
 (require 'ox-rss)
 (require 'ox-md)
 (require 'ox-beamer)
-(require 'org-mode)
+(require 'org-capture)
 (require 'ox-latex)
 (require 'ox-odt)
 (require 'org-gnus)
@@ -1233,7 +1233,7 @@ the copy in the last group."
   ;; NOTE: both the capture file and the headline(s) inside must already exist
   (setq gnus-icalendar-org-capture-file "~/org/eig.org")
   (setq gnus-icalendar-org-capture-headline '("RDV EIG"))
-  (setq gnus-icalendar-org-template-key "R")
+  (setq gnus-icalendar-org-template-key "I")
   (gnus-icalendar-org-setup))
 
 (use-package gnus-dired
