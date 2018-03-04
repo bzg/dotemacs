@@ -1217,7 +1217,7 @@ the copy in the last group."
 
 (use-package gnus-alias
   :config
-  (define-key message-mode-map (kbd "C-c C-x I")
+  (define-key message-mode-map (kbd "C-c C-x C-i")
     'gnus-alias-select-identity))
 
 (use-package gnus-art
