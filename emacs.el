@@ -211,9 +211,9 @@
     :config
     (require 'helm-config)
     ;; (global-set-key (kbd "M-x") 'helm-M-x)
-    (global-set-key (kbd "C-x X") #'helm-M-x)
-    (global-set-key (kbd "C-x F") #'helm-find-files)
-    (global-set-key (kbd "C-x A") #'helm-ag))
+    (global-set-key (kbd "C-x c x") #'helm-M-x)
+    ;; (global-set-key (kbd "C-x F") #'helm-find-files)
+    (global-set-key (kbd "C-x c A") #'helm-ag))
 
 (use-package dired-x
   :config
@@ -1043,18 +1043,13 @@ article."
 
   (defun my-gnus-message-archive-group (group-current)
     "Return prefered archive group."
-    (let ((group-prefix (replace-regexp-in-string "[^:]+$" "" group-current)))
-      (cond
-       ((string-match "data" group-prefix)
-	(concat group-prefix "Sent")) ;; FIXME
-       ((string-match "bzgio" group-prefix)
-	(concat group-prefix "sent"))
-       ((string-match "bzgfr" group-prefix) ; matches bzgfrio too
-	(concat group-prefix "Sent"))
-       ((message-news-p)
-	(concat "nnfolder+archive:" (format-time-string "%Y-%m")
-		"-divers-news"))
-       (t "nnmaildir+bzgfr:Sent"))))
+    (cond
+     ((message-news-p)
+      (concat "nnfolder+archive:" (format-time-string "%Y-%m")
+	      "-divers-news"))
+     ((and (stringp group-current) (< 0 (length group-current)))
+      (concat (replace-regexp-in-string "[^:]+$" "" group-current) "Sent"))
+     (t "nnmaildir+bzgfrio:Sent")))
 
   (setq gnus-message-archive-group 'my-gnus-message-archive-group)
 
@@ -1219,6 +1214,11 @@ the copy in the last group."
 
   (define-key message-mode-map [(control c) (control meta c)]
     'bzg-message-send-and-org-gnus-store-link))
+
+(use-package gnus-alias
+  :config
+  (define-key message-mode-map (kbd "C-c C-x I")
+    'gnus-alias-select-identity))
 
 (use-package gnus-art
   :config
@@ -1681,7 +1681,7 @@ the copy in the last group."
 
 (use-package guide-key
    :config
-   (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-c @"))
+   (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x c" "C-c @"))
    (guide-key-mode 1)) ; Enable guide-key-mode
 
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 5) ((control) . nil)))
