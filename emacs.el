@@ -805,7 +805,7 @@ type=\"text/javascript\" src=\"//platform.twitter.com/widgets.js\"></script>
 	 "* RDV %:fromname\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%a%i%?" :prepend t)
 
 	("R" "RDV EIG" entry (file+headline "~/org/eig.org" "RDV EIG")
-	 "* %i\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a%?" :prepend t)
+	 "* %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
 	("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
 	 "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
