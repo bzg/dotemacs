@@ -805,7 +805,7 @@ type=\"text/javascript\" src=\"//platform.twitter.com/widgets.js\"></script>
 	 "* RDV %:fromname\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%a%i%?" :prepend t)
 
 	("R" "RDV EIG" entry (file+headline "~/org/eig.org" "RDV EIG")
-	 "* %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?" :prepend t)
+	 "* %i\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a%?" :prepend t)
 
 	("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
 	 "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
@@ -1044,7 +1044,8 @@ article."
   (defun my-gnus-message-archive-group (group-current)
     "Return prefered archive group."
     (cond
-     ((message-news-p)
+     ((or (message-news-p)
+	  (string-match "nntp\\+news" group-current 0))
       (concat "nnfolder+archive:" (format-time-string "%Y-%m")
 	      "-divers-news"))
      ((and (stringp group-current) (< 0 (length group-current)))
