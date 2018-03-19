@@ -1,10 +1,9 @@
-(eval-when-compile (require 'use-package))
+;; (eval-when-compile (require 'use-package))
 
 ;; I don't use package a lot but don't want to configure the list of
 ;; archives each time I use it.
 
 (use-package package
-  :init (package-initialize)
   :config
   (setq package-archives
 	'(("gnu" . "http://elpa.gnu.org/packages/")
@@ -90,7 +89,7 @@
 
 ;; Who I am
 (setq user-full-name "Bastien Guerry")
-(setq user-mail-address "bzg@bzg.fr")
+(setq user-mail-address "bzg@gnu.org")
 
 ;; Let's get a backtrace when errors are
 (setq debug-on-error t)
@@ -149,8 +148,12 @@
   (setq elscreen-display-tab nil)
   (setq elscreen-tab-display-control nil))
 
-(use-package ibuffer)
+(use-package ibuffer
+  :config
+  (global-set-key (kbd "C-x C-b") 'ibuffer))
+
 (use-package dash)
+
 (use-package cider
   :config
   (add-hook 'cider-repl-mode-hook 'company-mode)
