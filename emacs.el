@@ -1,13 +1,10 @@
-(package-initialize)
-
 (eval-when-compile (require 'use-package))
 
 ;; I don't use package a lot but don't want to configure the list of
 ;; archives each time I use it.
 
 (use-package package
-  :init
-  (package-initialize)
+  :init (package-initialize)
   :config
   (setq package-archives
 	'(("gnu" . "http://elpa.gnu.org/packages/")
@@ -536,16 +533,16 @@
 	      (call-interactively 'org-clock-out))))
 (add-hook 'org-timer-pause-hook
 	  (lambda ()
-	    (if (and (eq major-mode 'org-agenda-mode)
-		     org-clock-current-task)
-		(call-interactively 'org-agenda-clock-out)
-	      (call-interactively 'org-clock-out))))
+	    (if org-clock-current-task
+		(if (eq major-mode 'org-agenda-mode)
+		    (call-interactively 'org-agenda-clock-out)
+		  (call-interactively 'org-clock-out)))))
 (add-hook 'org-timer-stop-hook
 	  (lambda ()
-	    (if (and (eq major-mode 'org-agenda-mode)
-		     org-clock-current-task)
-		(call-interactively 'org-agenda-clock-out)
-	      (call-interactively 'org-clock-out))))
+	    (if org-clock-current-task
+		(if (eq major-mode 'org-agenda-mode)
+		    (call-interactively 'org-agenda-clock-out)
+		  (call-interactively 'org-clock-out)))))
 
 (setq org-agenda-custom-commands
       `(
@@ -630,163 +627,6 @@
 	 todo "DONE|CANCELED"
 	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/eig.org" "~/org/libre.org" "~/.eig2/git/agenda-eig2018/index.org"))
 	  (org-agenda-sorting-strategy '(timestamp-up))))))
-
-(setq html-preamble
-      "
-<script type=\"text/javascript\"src=\"//platform.twitter.com/widgets.js\"></script>
-<div id=\"menu\">
-<a class=\"top\" href=\"http://bzg.fr\">bzg</a>
-<a href=\"/blog.html\">Blog</a>
-<a href=\"http://bzg.fr/talks.html\">Talks</a>
-<a href=\"/about.html\">About</a>
-</div>
-<div id=\"share\">
-<a href=\"https://twitter.com/share\" class=\"twitter-share-button\" align=\"right\" data-count=\"horizontal\" data-via=\"bzg2\">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-<br/>
-<a href=\"https://twitter.com/bzg2\" class=\"twitter-follow-button\" data-show-count=\"false\">Follow @bzg2</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-</div>")
-
-(setq html-dll-preamble
-      "<script>
-    \(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    \(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-    ga('create', 'UA-42064173-1', 'dunlivrelautre.net');
-    ga('send', 'pageview');
-</script>
-
-<div class=\"toprightbutton\">
-<a href=\"blog.xml\"><img alt=\"RSS\" width=\"70px\" src=\"u/rss.jpg\" /></a>
-</div>
-
-<div class=\"topleftbutton\">
-
-<a href=\"/index.html\">Home</a><br/>
-
-<a href=\"http://flattr.com/thing/1654106/Dun-Livre-Lautre\" target=\"new\"><img src=\"http://api.flattr.com/button/flattr-badge-large.png\" alt=\"Flattr this\" title=\"Flattr this\" border=\"0\" /></a><br/>
-
-<a href=\"https://twitter.com/share\" class=\"twitter-share-button\"
-data-count=\"none\" data-via=\"bzg2\" data-lang=\"fr\">Tweeter</a><script
-type=\"text/javascript\" src=\"//platform.twitter.com/widgets.js\"></script>
-
-</div>
-
-<div class=\"bottomrightbutton\">
-<a rel=\"license\" href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png\" /></a>
-</div>")
-
-(setq org-publish-project-alist
-      `(
-	("homepage"
-	 :base-directory "~/install/git/homepage/"
-	 :html-extension "html"
-	 :base-extension "org"
-	 :publishing-directory "/home/guerry/public_html/org/homepage/"
-	 :publishing-function (org-html-publish-to-html)
-	 :auto-sitemap nil
-	 :recursive t
-	 :makeindex t
-	 :preserve-breaks nil
-	 :sitemap-sort-files chronologically
-	 :with-tasks nil
-	 :section-numbers nil
-	 :with-toc nil
-	 :html-head-extra
-	 "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"http://bzg.fr/blog.xml\" title=\"RSS feed for bzg.fr\">
-<link rel=\"stylesheet\" href=\"u/bootstrap.min.css\" />
-<link rel=\"stylesheet\" href=\"index.css\" type=\"text/css\" />"
-	 :html-preamble ,html-preamble
-	 :html-postamble nil
-	 :htmlized-source t)
-	("homepage-rss"
-	 :base-directory "~/install/git/homepage/"
-	 :base-extension "org"
-	 :html-link-home "http://bzg.fr/"
-	 :publishing-directory "/home/guerry/public_html/org/homepage/"
-	 :publishing-function (org-rss-publish-to-rss)
-	 :html-link-use-abs-url t
-	 :section-numbers nil
-	 :exclude ".*"
-	 :with-tasks nil
-	 :include ("blog.org")
-	 :with-toc nil)
-	("homepage-css"
-	 :base-directory "~/install/git/homepage"
-	 :base-extension "css"
-	 :publishing-directory "/home/guerry/public_html/org/homepage/"
-	 :publishing-function org-publish-attachment)
-	("homepage-attachments"
-	 :base-directory "~/install/git/homepage"
-	 :base-extension "png\\|jpg\\|gif\\|atom"
-	 :publishing-directory "/home/guerry/public_html/org/homepage/u/"
-	 :publishing-function org-publish-attachment)
-	("dotemacs"
-	 :base-directory "~/install/git/dotemacs/"
-	 :html-extension "html"
-	 :base-extension "org"
-	 :publishing-directory "/home/guerry/public_html/org/homepage/"
-	 :publishing-function (org-html-publish-to-html)
-	 :auto-sitemap nil
-	 :recursive t
-	 :makeindex nil
-	 :preserve-breaks nil
-	 :sitemap-sort-files chronologically
-	 :section-numbers nil
-	 :with-toc nil
-	 :html-head-extra
-	 "<link rel=\"stylesheet\" href=\"u/bootstrap.min.css\" />
-<link rel=\"stylesheet\" href=\"index.css\" type=\"text/css\" />"
-	 :html-preamble ,html-preamble
-	 :html-postamble nil
-	 :htmlized-source nil)
-	("dll"
-	 :base-directory "~/install/git/dunlivrelautre/"
-	 :html-extension "html"
-	 :base-extension "org"
-	 :publishing-directory "/home/guerry/public_html/org/dunlivrelautre/"
-	 :publishing-function (org-html-publish-to-html)
-	 :auto-sitemap nil
-	 :recursive t
-	 :with-tasks nil
-	 :makeindex t
-	 :preserve-breaks nil
-	 :sitemap-sort-files chronologically
-	 :section-numbers nil
-	 :with-toc nil
-	 :html-head-extra "<link rel=\"stylesheet\" href=\"index.css\" type=\"text/css\" />"
-	 :htmlized-source nil
-	 :html-preamble ,html-dll-preamble
-	 :html-postamble nil)
-	("dll-rss"
-	 :base-directory "~/install/git/dunlivrelautre/"
-	 :base-extension "org"
-	 :html-link-home "http://www.dunlivrelautre.net"
-	 :publishing-directory "/home/guerry/public_html/org/dunlivrelautre/"
-	 :publishing-function (org-rss-publish-to-rss)
-	 :html-link-use-abs-url t
-	 :section-numbers nil
-	 :exclude ".*"
-	 :include ("blog.org")
-	 :with-tasks nil
-	 :with-toc nil)
-	("dll-css"
-	 :base-directory "~/install/git/dunlivrelautre"
-	 :base-extension "css"
-	 :publishing-directory "/home/guerry/public_html/org/dunlivrelautre/"
-	 :publishing-function org-publish-attachment)
-	("dll-attachments"
-	 :base-directory "~/install/git/dunlivrelautre"
-	 :base-extension "png\\|jpg\\|gif\\|xml\\|atom"
-	 :publishing-directory "/home/guerry/public_html/org/dunlivrelautre/"
-	 :publishing-function org-publish-attachment)
-	;; Meta projects
-	("hp" :components
-	 ("homepage" "homepage-attachments" "homepage-rss" "homepage-css"))
-	("dll" :components ("dll" "dll-attachments" "dll-rss"))
-	))
 
 (setq org-capture-templates
       '((" " "Misc" entry (file "~/org/bzg.org")
