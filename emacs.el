@@ -637,13 +637,8 @@
 	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?"
 	 :prepend t :immediate-finish t)
 
-	("	" "Misc (clock-in)" entry (file "~/org/bzg.org")
-	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?"
-	 :prepend t :immediate-finish t :clock-in t :clock-keep t)
-
 	("c" "Misc (edit)" entry (file "~/org/bzg.org")
-	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?"
-	 :prepend t)
+	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?" :prepend t)
 
 	("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
 	 "* RDV %:fromname\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%a%i%?" :prepend t)
@@ -651,11 +646,22 @@
 	("R" "RDV EIG" entry (file+headline "~/org/eig.org" "RDV EIG")
 	 "* %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
+	("e" "EIG" entry (file+headline "~/org/bzg.org" "EIG : maintenir le lien entre EIGs")
+	 "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
+
 	("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
 	 "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
 
 	("o" "Org" entry (file+headline "~/org/libre.org" "Org-mode")
 	 "* TODO %?%a :Code:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)))
+
+(setq org-capture-templates-contexts
+      '(("r" ((in-mode . "gnus-summary-mode")
+	      (in-mode . "gnus-article-mode")
+	      (in-mode . "message-mode")))
+	("R" ((in-mode . "gnus-summary-mode")
+	      (in-mode . "gnus-article-mode")
+	      (in-mode . "message-mode")))))
 
 (defun my-org-html-export-planning (planning-string backend info)
   (when (string-match "<p>.+><\\([0-9]+-[0-9]+-[0-9]+\\)[^>]+><.+</p>" planning-string)
