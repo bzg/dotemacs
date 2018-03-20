@@ -196,7 +196,7 @@
 (global-set-key (kbd "M-]") 'origami-toggle-node)
 (global-set-key (kbd "C-x r L") 'register-list)
 (global-set-key (kbd "C-x d") 'dired)
-(define-key dired-mode-map "\C-cg" 'grep-find)
+(define-key dired-mode-map "\C-cG" 'grep-find)
 
 (defun unfill-paragraph ()
   "Make a multi-line paragraph into a single line of text."
@@ -213,7 +213,8 @@
     ;; (global-set-key (kbd "M-x") 'helm-M-x)
     (global-set-key (kbd "C-x c x") #'helm-M-x)
     ;; (global-set-key (kbd "C-x F") #'helm-find-files)
-    (global-set-key (kbd "C-x c A") #'helm-ag))
+    (global-set-key (kbd "C-x c A") #'helm-ag)
+    (define-key dired-mode-map "\C-cg" 'helm-ag))
 
 (use-package dired-x
   :config
@@ -1544,22 +1545,22 @@ Use `winstack-push' and
 	   (compare-window-configurations
 	    (first winstack-stack)
 	    (current-window-configuration)))
-      (message "Current config already pushed")
+      (message "Current configuration already pushed")
     (progn (push (current-window-configuration) winstack-stack)
-           (message (concat "pushed " (number-to-string
+           (message (concat "Pushed " (number-to-string
                                        (length (window-list (selected-frame))))
-			    " frame config")))))
+			    " frame configuration")))))
 
 (defun winstack-pop ()
   "Pop the last window configuration off `winstack-stack' and apply it."
   (interactive)
   (if (first winstack-stack)
       (progn (set-window-configuration (pop winstack-stack))
-             (message "popped"))
+             (message "Popped last frame configuration"))
     (message "End of window stack")))
 
-(global-set-key (kbd "C-c i") 'winstack-push)
-(global-set-key (kbd "C-c o") 'winstack-pop)
+(global-set-key (kbd "C-x <up>") 'winstack-push)
+(global-set-key (kbd "C-x <down>") 'winstack-pop)
 
 (defun backward-kill-word-noring (arg)
   (interactive "p")
