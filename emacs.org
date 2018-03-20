@@ -483,12 +483,15 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-stuck-projects '("+LEVEL=1" ("NEXT" "TODO" "DONE")))
 (setq org-tag-persistent-alist '(("Write" . ?w) ("Read" . ?r)))
 (setq org-tag-alist
-      '((:startgroup . nil)
-	("Write" . ?w) ("Code" . ?c) ("Read" . ?r) ("View" . ?v) ("Listen" . ?l)
-	(:endgroup . nil)
-	("@Offline" . ?O)
-	("Print" . ?P) ("Patch" . ?p) ("Bug" . ?b)
-	("Buy" . ?B) ("Mail" . ?@) ("Tel" . ?t)))
+      '((:startgroup)
+	(:grouptags)
+	("Handson" . ?o) ("Write" . ?w) ("Code" . ?c) ("Mail" . ?@) ("Tel" . ?t)
+	(:endgroup)
+	(:startgroup)
+	(:grouptags)
+	("Handsoff" . ?f) ("Read" . ?r) ("View" . ?v) ("Listen" . ?l)
+	(:endgroup)
+	("Print" . ?P) ("Buy" . ?B) ("Patch" . ?p) ("Bug" . ?b)))
 (setq org-tags-column -74)
 (setq org-todo-keywords '((type "STRT" "NEXT" "TODO" "WAIT" "|" "DONE" "CANCELED")))
 (setq org-todo-repeat-to-state t)
@@ -683,26 +686,26 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 (setq org-capture-templates
       '((" " "Misc" entry (file "~/org/bzg.org")
-	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?"
+	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a"
 	 :prepend t :immediate-finish t)
 
 	("c" "Misc (edit)" entry (file "~/org/bzg.org")
-	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i%?" :prepend t)
+	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
 	("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
-	 "* RDV %:fromname\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%a%i%?" :prepend t)
+	 "* RDV avec %:fromname %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
 	("R" "RDV EIG" entry (file+headline "~/org/eig.org" "RDV EIG")
-	 "* %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
+	 "* RDV avec %:fromname %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
 	("e" "EIG" entry (file+headline "~/org/bzg.org" "EIG : maintenir le lien entre EIGs")
-	 "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
+	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
 
 	("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
-	 "* TODO %?%a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)
+	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
 
 	("o" "Org" entry (file+headline "~/org/libre.org" "Org-mode")
-	 "* TODO %?%a :Code:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n%i" :prepend t)))
+	 "* TODO %? :Code:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)))
 
 (setq org-capture-templates-contexts
       '(("r" ((in-mode . "gnus-summary-mode")
