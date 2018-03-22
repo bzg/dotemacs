@@ -435,12 +435,14 @@
 (setq org-tag-persistent-alist '(("Write" . ?w) ("Read" . ?r)))
 (setq org-tag-alist
       '((:startgroup)
+	("Handson" . ?o)
 	(:grouptags)
-	("Handson" . ?o) ("Write" . ?w) ("Code" . ?c) ("Mail" . ?@) ("Tel" . ?t)
+	("Write" . ?w) ("Code" . ?c) ("Mail" . ?@) ("Tel" . ?t)
 	(:endgroup)
 	(:startgroup)
+	("Handsoff" . ?f)
 	(:grouptags)
-	("Handsoff" . ?f) ("Read" . ?r) ("View" . ?v) ("Listen" . ?l)
+	("Read" . ?r) ("View" . ?v) ("Listen" . ?l)
 	(:endgroup)
 	("Print" . ?P) ("Buy" . ?B) ("Patch" . ?p) ("Bug" . ?b)))
 (setq org-tags-column -74)
@@ -1016,10 +1018,6 @@ article."
 	gnus-score-decay-constant 1    ;default = 3
 	gnus-score-decay-scale 0.03    ;default = 0.05
 	gnus-decay-scores t)           ;(gnus-decay-score 1000)
-
-  ;; Prompt for the right group
-  (setq gnus-group-jump-to-group-prompt
-	'((1 . "nnmaildir+bzgfr:sent")))
 
   (setq gnus-summary-line-format
 	(concat "%*%0{%U%R%z%}"
