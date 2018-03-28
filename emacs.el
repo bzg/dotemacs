@@ -88,8 +88,8 @@
 (set-frame-parameter nil 'fullscreen 'fullboth)
 
 ;; Who I am
-(setq user-full-name "Bastien Guerry")
-(setq user-mail-address "bzg@gnu.org")
+(setq user-full-name "Bastien")
+(setq user-mail-address "bzg@bzg.fr")
 
 ;; Let's get a backtrace when errors are
 (setq debug-on-error t)

@@ -117,8 +117,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 #+BEGIN_SRC emacs-lisp
 ;; Who I am
-(setq user-full-name "Bastien Guerry")
-(setq user-mail-address "bzg@gnu.org")
+(setq user-full-name "Bastien")
+(setq user-mail-address "bzg@bzg.fr")
 
 ;; Let's get a backtrace when errors are
 (setq debug-on-error t)
