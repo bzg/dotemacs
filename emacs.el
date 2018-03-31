@@ -881,7 +881,7 @@ article."
 
   (setq nnir-notmuch-remove-prefix "/home/guerry/Maildir/")
   (setq nnir-method-default-engines
-	'((nnmaildir . notmuch)
+	'((nnimap . notmuch)
 	  ;; (nntp . gmane) FIXME: Gmane is broken for now
 	  ))
 
@@ -894,7 +894,7 @@ article."
 	      "-divers-news"))
      ((and (stringp group-current) (< 0 (length group-current)))
       (concat (replace-regexp-in-string "[^/]+$" "" group-current) "Sent"))
-     (t "nnmaildir+localhost:bzgfrio/Sent")))
+     (t "nnimap+localhost:bzgfrio/Sent")))
 
   (setq gnus-message-archive-group 'my-gnus-message-archive-group)
 
