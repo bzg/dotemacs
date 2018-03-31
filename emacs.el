@@ -1109,7 +1109,7 @@ the copy in the last group."
   (require 'bbdb-com)
   (require 'bbdb-anniv)
   (require 'bbdb-gnus)
-  (setq bbdb-file "~/Documents/elisp/config/bbdb")
+  (setq bbdb-file "~/Documents/bbdb/bbdb")
   (bbdb-initialize 'message 'gnus)
   (bbdb-mua-auto-update-init 'message 'gnus)
 
