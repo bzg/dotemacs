@@ -970,22 +970,23 @@ article."
 	  ((gnus-seconds-year) . "%b %d")
 	  (t . "%b %d '%y")))
 
+  (setq gnus-topic-indent-level 3)
+
   ;; Add a time-stamp to a group when it is selected
   (add-hook 'gnus-select-group-hook 'gnus-group-set-timestamp)
 
   ;; Format group line
-  (setq gnus-group-line-format "%M\%S\%p\%P %(%-40,40g%)\n")
-
-  (setq gnus-topic-indent-level 3)
+  (setq gnus-group-line-format "%M%S%p%P %(%-30,30G%)\n")
+  (setq gnus-group-line-default-format "%M%S%p%P %(%-40,40G%) %-3y %-3T %-3I\n")
 
   (defun bzg-gnus-toggle-group-line-format ()
     (interactive)
     (if (equal gnus-group-line-format
-	       "%M\%S\%p\%P %(%-50,50g%) %-3y %-3T %-3I\n")
+	       gnus-group-line-default-format)
 	(setq gnus-group-line-format
-	      "%M\%S\%p\%P %(%-50,50g%)\n")
+	      "%M%S%p%P %(%-30,30G%)\n")
       (setq gnus-group-line-format
-	    "%M\%S\%p\%P %(%-50,50g%) %-3y %-3T %-3I\n")))
+	    gnus-group-line-default-format)))
 
   ;; Toggle the group line format
   (define-key gnus-group-mode-map "x"
@@ -1121,7 +1122,6 @@ the copy in the last group."
 
   (add-hook 'mail-setup-hook 'bbdb-mail-aliases)
   (add-hook 'message-setup-hook 'bbdb-mail-aliases)
-  (add-hook 'bbdb-change-hook 'bbdb-timestamp)
   (add-hook 'bbdb-create-hook 'bbdb-creation-date)
   (add-hook 'bbdb-notice-mail-hook 'bbdb-auto-notes)
   ;; (add-hook 'list-diary-entries-hook 'bbdb-include-anniversaries)
