@@ -890,22 +890,15 @@ article."
 			    X-Diary-Hour X-Diary-Minute
 			    To Newsgroups Cc))
 
+
   ;; Sources and methods
   (setq mail-sources nil
-	gnus-select-method '(nnmaildir "Bastien" (directory "~/Maildir"))
+	gnus-select-method '(nnnil "")
 	gnus-secondary-select-methods
-	'(;; (nnml "")
-	  (nnmaildir "bzgfr" (directory "~/Maildir/bzgfr"))
-	  (nnmaildir "bzgfrio" (directory "~/Maildir/bzgfrio"))
-	  (nnmaildir "datagouv" (directory "~/Maildir/datagouv"))
-	  ;; (nnmaildir "free" (directory "~/Maildir/free"))
-	  ;; (nnmaildir "digited" (directory "~/Maildir/digited"))
-	  ;; (nnmaildir "gmail" (directory "~/Maildir/gmail"))
-	  ;; (nnmaildir "hackadon" (directory "~/Maildir/hackadon"))
-	  ;; (nnmaildir "hackadon-contact" (directory "~/Maildir/hackadon-contact"))
-	  ;; (nnmaildir "latelierliban" (directory "~/Maildir/latelierliban"))
-	  ;; (nnmaildir "ceis" (directory "~/Maildir/ceis"))
-	  ;; Serveurs de news :
+	'((nnimap "localhost"
+   		  (nnimap-server-port 143)
+   		  (nnimap-authinfo-file "~/.authinfo")
+   		  (nnimap-stream network))
 	  ;; (nntp "news" (nntp-address "news.gmane.org"))
 	  ;; (nntp "free" (nntp-address "news.free.fr"))
 	  ))
@@ -965,8 +958,8 @@ article."
       (concat "nnfolder+archive:" (format-time-string "%Y-%m")
 	      "-divers-news"))
      ((and (stringp group-current) (< 0 (length group-current)))
-      (concat (replace-regexp-in-string "[^:]+$" "" group-current) "Sent"))
-     (t "nnmaildir+bzgfrio:Sent")))
+      (concat (replace-regexp-in-string "[^/]+$" "" group-current) "Sent"))
+     (t "nnmaildir+localhost:bzgfrio/Sent")))
 
   (setq gnus-message-archive-group 'my-gnus-message-archive-group)
 
