@@ -26,7 +26,6 @@
 ;; Initialize other important modes
 (add-to-list 'load-path "~/install/cvs/emacs-w3m/")
 (add-to-list 'load-path "~/install/git/elscreen/")
-(add-to-list 'load-path "~/install/git/bbdb/lisp/")
 (add-to-list 'load-path "~/install/git/notmuch/emacs/")
 
 ;; Initialize `exec-path' and `load-path'
@@ -730,7 +729,7 @@
     (cond ((string-match "/home/guerry/Maildir/Mail/mail/\\([^/]+\\)/" file)
 	   (format "nnml:mail.%s" (match-string 1 file)))
 	  ((string-match "/home/guerry/Maildir/\\([^/]+\\)/\\([^/]+\\)" file)
-	   (format "nnmaildir+%s:%s" (match-string 1 file) (match-string 2 file)))
+	   (format "nnimap+localhost:%s/%s" (match-string 1 file) (match-string 2 file)))
 	  (t (user-error "Unknown group"))))
 
   (defun bzg-notmuch-goto-message-in-gnus ()
@@ -739,13 +738,10 @@ article."
     (interactive)
     (let ((group (bzg-notmuch-file-to-group (notmuch-show-get-filename)))
 	  (message-id (replace-regexp-in-string
-		       "^id:" "" (notmuch-show-get-message-id))))
-      (setq message-id (replace-regexp-in-string "\"" "" message-id))
+		       "^id:\\|\"" "" (notmuch-show-get-message-id))))
       (if (and group message-id)
-	  (progn
-	    (switch-to-buffer "*Group*")
-	    (org-gnus-follow-link group message-id))
-	(message "Couldn't get relevant infos for switching to Gnus."))))
+	  (progn (org-gnus-follow-link group message-id))
+	  (message "Couldn't get relevant infos for switching to Gnus."))))
 
   (define-key notmuch-show-mode-map
     (kbd "C-c C-c") 'bzg-notmuch-goto-message-in-gnus)
@@ -898,7 +894,7 @@ article."
 	      "-divers-news"))
      ((and (stringp group-current) (< 0 (length group-current)))
       (concat (replace-regexp-in-string "[^/]+$" "" group-current) "Sent"))
-     (t "nnimap+localhost:bzgfrio/Sent")))
+     (t "nnmaildir+localhost:bzgfrio/Sent")))
 
   (setq gnus-message-archive-group 'my-gnus-message-archive-group)
 
@@ -1109,21 +1105,19 @@ the copy in the last group."
 
 (use-package bbdb
   :config
-  (require 'bbdb-loaddefs)
   (require 'bbdb-com)
   (require 'bbdb-anniv)
   (require 'bbdb-gnus)
   (setq bbdb-file "~/Documents/elisp/config/bbdb")
-  ;; (bbdb-mail-aliases)
   (bbdb-initialize 'message 'gnus)
   (bbdb-mua-auto-update-init 'message 'gnus)
 
+  (setq bbdb-mua-pop-up nil)
+  (setq bbdb-allow-duplicates nil)
   (setq bbdb-pop-up-window-size 5)
   (setq bbdb-update-records-p 'create)
-  (setq bbdb-allow-duplicates t)
-  (setq bbdb-mua-pop-up nil)
   (setq bbdb-mua-update-interactive-p '(create . query))
-  (setq bbdb-mua-auto-update-p t)
+  (setq bbdb-mua-auto-update-p 'create)
 
   (add-hook 'mail-setup-hook 'bbdb-mail-aliases)
   (add-hook 'message-setup-hook 'bbdb-mail-aliases)
