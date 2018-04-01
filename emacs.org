@@ -821,6 +821,7 @@ article."
 (use-package ecomplete)
 (use-package gnus
   :config
+  (gnus-delay-initialize)
   (setq nndraft-directory "~/News/drafts/")
   (setq nnmh-directory "~/News/drafts/")
   (setq nnfolder-directory "~/Mail/archive")
@@ -949,8 +950,9 @@ article."
   (defun my-gnus-message-archive-group (group-current)
     "Return prefered archive group."
     (cond
-     ((or (message-news-p)
-	  (string-match "nntp\\+news" group-current 0))
+     ((and (stringp group-current)
+	   (or (message-news-p)
+	       (string-match "nntp\\+news" group-current 0)))
       (concat "nnfolder+archive:" (format-time-string "%Y-%m")
 	      "-divers-news"))
      ((and (stringp group-current) (< 0 (length group-current)))
