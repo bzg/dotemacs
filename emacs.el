@@ -914,6 +914,7 @@ article."
 	  ))
 
   (add-hook 'gnus-summary-exit-hook 'gnus-summary-bubble-group)
+  (add-hook 'gnus-summary-exit-hook 'gnus-group-sort-groups-by-rank)
   (add-hook 'gnus-suspend-gnus-hook 'gnus-group-sort-groups-by-rank)
   (add-hook 'gnus-exit-gnus-hook 'gnus-group-sort-groups-by-rank)
 
@@ -998,7 +999,7 @@ article."
   (define-key gnus-summary-mode-map "$" 'gnus-summary-mark-as-spam)
 
   ;; Scoring
-  (setq gnus-use-adaptive-scoring 'line
+  (setq gnus-use-adaptive-scoring '(line word)
 	;; gnus-score-expiry-days 14
 	gnus-default-adaptive-score-alist
 	'((gnus-dormant-mark (from 20) (subject 100))
@@ -1010,7 +1011,7 @@ article."
 	  (gnus-expirable-mark (from -1000) (subject -1000)))
 	gnus-score-decay-constant 1    ;default = 3
 	gnus-score-decay-scale 0.03    ;default = 0.05
-	gnus-decay-scores t)           ;(gnus-decay-score 1000)
+	gnus-decay-scores nil)           ;(gnus-decay-score 1000)
 
   (setq gnus-summary-line-format
 	(concat "%*%0{%U%R%z%}"
