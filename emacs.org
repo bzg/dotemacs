@@ -1191,7 +1191,6 @@ the copy in the last group."
 
   (add-hook 'mail-setup-hook 'bbdb-mail-aliases)
   (add-hook 'message-setup-hook 'bbdb-mail-aliases)
-  (add-hook 'bbdb-create-hook 'bbdb-creation-date)
   (add-hook 'bbdb-notice-mail-hook 'bbdb-auto-notes)
   ;; (add-hook 'list-diary-entries-hook 'bbdb-include-anniversaries)
 
