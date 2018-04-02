@@ -822,6 +822,7 @@ article."
 (use-package gnus
   :config
   (gnus-delay-initialize)
+  (setq gnus-delay-default-delay "1d")
   (setq nndraft-directory "~/News/drafts/")
   (setq nnmh-directory "~/News/drafts/")
   (setq nnfolder-directory "~/Mail/archive")
