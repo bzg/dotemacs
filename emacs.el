@@ -10,7 +10,7 @@
 	  ("melpa" . "http://melpa.org/packages/"))))
 
 ;; Load custom file
-(setq custom-file "/home/guerry/Documents/elisp/config/emacs-custom.el")
+(setq custom-file "/home/guerry/.emacs.d/emacs-custom.el")
 (load custom-file)
 
 ;; Load theme

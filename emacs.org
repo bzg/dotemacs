@@ -31,7 +31,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 #+BEGIN_SRC emacs-lisp
 ;; Load custom file
-(setq custom-file "/home/guerry/Documents/elisp/config/emacs-custom.el")
+(setq custom-file "/home/guerry/.emacs.d/emacs-custom.el")
 (load custom-file)
 
 ;; Load theme
