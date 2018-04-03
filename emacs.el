@@ -156,7 +156,7 @@
 (use-package cider
   :config
   (add-hook 'cider-repl-mode-hook 'company-mode)
-  (setq cider-repl-pop-to-buffer-on-connect nil)
+  (setq cider-repl-pop-to-buffer-on-connect t)
   (setq nrepl-hide-special-buffers t))
 
 ;; (global-company-mode)
