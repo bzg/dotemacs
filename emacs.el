@@ -564,6 +564,7 @@
 
 	(" " "Work (tout)" agenda "List of rendez-vous and tasks for today"
 	 ((org-agenda-span 1)
+	  (org-agenda-use-time-grid nil)
 	  (org-agenda-files '("~/org/rdv.org" "~/org/eig.org" "~/.eig2/git/agenda-eig2018/index.org" "~/org/bzg.org"))
 	  (org-deadline-warning-days 3)
 	  (org-agenda-sorting-strategy
