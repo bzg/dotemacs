@@ -897,9 +897,7 @@ article."
    		  (nnimap-server-port 143)
    		  (nnimap-authinfo-file "~/.authinfo")
    		  (nnimap-stream network))
-	  ;; (nntp "news" (nntp-address "news.gmane.org"))
-	  ;; (nntp "free" (nntp-address "news.free.fr"))
-	  ))
+	  (nntp "news" (nntp-address "news.gmane.org"))))
 
   (setq gnus-check-new-newsgroups nil)
 
