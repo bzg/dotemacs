@@ -1402,6 +1402,7 @@ the copy in the last group."
 (add-hook 'emacs-lisp-mode-hook 'company-mode)
 (add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
 ;; (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 (add-hook 'emacs-lisp-mode-hook 'origami-mode)
 (add-hook 'clojure-mode-hook 'company-mode)
 (add-hook 'clojure-mode-hook 'origami-mode)
@@ -1409,7 +1410,7 @@ the copy in the last group."
 (add-hook 'clojure-mode-hook 'paredit-mode)
 (add-hook 'clojure-mode-hook 'aggressive-indent-mode)
 (add-hook 'clojure-mode-hook 'clj-refactor-mode)
-(add-hook 'clojure-mode-hook 'yas-minor-mode)
+;; (add-hook 'clojure-mode-hook 'yas-minor-mode)
 (setq clojure-align-forms-automatically t)
 
 (with-eval-after-load 'clj-refactor
