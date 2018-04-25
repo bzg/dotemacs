@@ -83,6 +83,7 @@
 (setq inhibit-startup-message t)
 (setq inhibit-startup-echo-area-message "guerry")
 (setq use-dialog-box nil)
+(setq search-invisible t)
 (setq default-frame-alist initial-frame-alist)
 (set-frame-parameter nil 'fullscreen 'fullboth)
 
@@ -1294,6 +1295,7 @@ the copy in the last group."
   :config
   (add-hook 'eww-mode-hook 'visual-line-mode)
   (setq eww-header-line-format nil
+        shr-width 80
 	shr-use-fonts nil
 	shr-color-visible-distance-min 10
 	shr-color-visible-luminance-min 80))
