@@ -16,7 +16,6 @@
 ;; Load theme
 (add-to-list 'custom-theme-load-path "~/install/git/cyberpunk-theme.el/")
 (load-theme 'cyberpunk)
-;; (load-theme 'paganini)
 
 ;; Initialize Org
 (add-to-list 'load-path "~/install/git/org-mode/lisp/")
@@ -32,10 +31,6 @@
 (add-to-list 'exec-path "~/bin/")
 (let ((default-directory "~/Documents/elisp/"))
   (normal-top-level-add-subdirs-to-load-path))
-;; (let ((default-directory "/usr/share/emacs/site-lisp/"))
-;;   (normal-top-level-add-subdirs-to-load-path))
-;; (let ((default-directory "/usr/local/share/emacs/site-lisp/"))
-;;   (normal-top-level-add-subdirs-to-load-path))
 
 ;; Start server to use emacsclient
 (server-start)
@@ -63,7 +58,6 @@
 (auto-insert-mode 1)
 (display-time-mode 1)
 (tooltip-mode -1)
-;; (electric-pair-mode -1)
 (blink-cursor-mode -1)
 (mouse-avoidance-mode 'cat-and-mouse)
 (setq max-lisp-eval-depth 10000)
@@ -124,7 +118,6 @@
 
 (setq fill-column 72)
 (setq line-move-visual nil)
-;; (setq show-trailing-whitespace t)
 (setq visible-bell t)
 (setq spell-command "aspell")
 (setq tab-always-indent 'always)
@@ -182,7 +175,7 @@
 (global-set-key (quote [f3]) 'bzg-big-fringe-mode)
 (global-set-key (quote [f4]) 'delete-other-windows)
 (global-set-key (quote [f5]) (lambda()(interactive) (dired "~")))
-;; (global-set-key (quote [f6]) 'w3m)
+(global-set-key (quote [f6]) 'find-name-dired)
 (global-set-key (quote [f7]) 'auto-fill-mode)
 (global-set-key (quote [f8]) 'occur)
 (global-set-key (quote [f9]) 'magit-status)
@@ -319,8 +312,6 @@
 	  (lambda ()
 	    (if (eq major-mode 'gnus-summary-mode)
 		(gnus-summary-insert-dormant-articles))))
-
-(add-hook 'org-mode-hook 'electric-quote-local-mode)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -1403,16 +1394,13 @@ the copy in the last group."
 ;; Emacs Lisp and Clojure initialization
 (add-hook 'emacs-lisp-mode-hook 'company-mode)
 (add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
-;; (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 (add-hook 'emacs-lisp-mode-hook 'origami-mode)
 (add-hook 'clojure-mode-hook 'company-mode)
 (add-hook 'clojure-mode-hook 'origami-mode)
-;; (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'clojure-mode-hook 'paredit-mode)
 (add-hook 'clojure-mode-hook 'aggressive-indent-mode)
 (add-hook 'clojure-mode-hook 'clj-refactor-mode)
-;; (add-hook 'clojure-mode-hook 'yas-minor-mode)
 (setq clojure-align-forms-automatically t)
 
 (with-eval-after-load 'clj-refactor
