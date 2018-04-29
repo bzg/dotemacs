@@ -219,9 +219,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (global-set-key (quote [f10]) 'calc)
 (global-set-key (quote [f11]) 'eshell)
 (global-set-key (quote [f12]) 'calendar)
-(global-set-key (kbd "M-+") 'text-scale-increase)
-(global-set-key (kbd "M--") 'text-scale-decrease)
-(global-set-key (kbd "M-0") 'text-scale-adjust)
+(global-set-key (kbd "C-+") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
+(global-set-key (kbd "C-=") 'text-scale-adjust)
 (global-set-key (kbd "C-M-]") 'origami-toggle-all-nodes)
 (global-set-key (kbd "M-]") 'origami-toggle-node)
 (global-set-key (kbd "C-x r L") 'register-list)
@@ -507,7 +507,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-confirm-babel-evaluate nil)
 (setq org-archive-default-command 'org-archive-to-archive-sibling)
 (setq org-id-uuid-program "uuidgen")
-(setq org-modules '(org-bbdb org-bibtex org-docview org-gnus org-protocol org-info org-irc org-learn))
 (setq org-use-speed-commands
       (lambda nil
 	(and (looking-at org-outline-regexp-bol)
@@ -532,7 +531,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-gnus-prefer-web-links nil)
 (setq org-html-head-include-default-style nil)
 (setq org-html-head-include-scripts nil)
-(setq org-clock-display-default-range nil)
+(setq org-clock-display-default-range 'thisweek)
 (setq org-blank-before-new-entry '((heading . t) (plain-list-item . auto)))
 (setq org-crypt-key "Bastien Guerry")
 (setq org-enforce-todo-dependencies t)
@@ -819,6 +818,8 @@ article."
   (setq nnmh-directory "~/News/drafts/")
   (setq nnfolder-directory "~/Mail/archive")
   (setq nnml-directory "~/Maildir/Mail/")
+  (setq gnus-summary-ignore-duplicates t)
+  (setq gnus-suppress-duplicates t)
   (setq gnus-ignored-from-addresses
 	(regexp-opt '("bastien.guerry@ens.fr"
 		      "bastien.guerry@culture.gouv.fr"
