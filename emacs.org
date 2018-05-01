@@ -211,11 +211,15 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (global-set-key (quote [f2]) 'hidden-mode-line-mode)
 (global-set-key (quote [f3]) 'bzg-big-fringe-mode)
 (global-set-key (quote [f4]) 'delete-other-windows)
-(global-set-key (quote [f5]) (lambda()(interactive) (dired "~")))
+(global-set-key (quote [f5]) (lambda() (interactive) (dired "~")))
 (global-set-key (quote [f6]) 'find-name-dired)
+(global-set-key (kbd "C-c f") 'find-name-dired)
 (global-set-key (quote [f7]) 'auto-fill-mode)
 (global-set-key (quote [f8]) 'occur)
-(global-set-key (quote [f9]) 'magit-status)
+(global-set-key (kbd "C-c o") 'occur)
+(global-set-key (quote [f9]) 'magit)
+(global-set-key (quote [f8]) 'occur)
+(global-set-key (kbd "C-c m") 'magit)
 (global-set-key (quote [f10]) 'calc)
 (global-set-key (quote [f11]) 'eshell)
 (global-set-key (quote [f12]) 'calendar)
@@ -225,8 +229,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (global-set-key (kbd "C-M-]") 'origami-toggle-all-nodes)
 (global-set-key (kbd "M-]") 'origami-toggle-node)
 (global-set-key (kbd "C-x r L") 'register-list)
-(global-set-key (kbd "C-x d") 'dired)
 (define-key dired-mode-map "\C-cG" 'grep-find)
+(global-set-key (kbd "C-c t") 'google-translate-query-translate)
 
 (defun unfill-paragraph ()
   "Make a multi-line paragraph into a single line of text."
@@ -1523,7 +1527,9 @@ the copy in the last group."
 	magit-commit-all-when-nothing-staged 'ask
 	magit-auto-revert-mode nil
 	magit-last-seen-setup-instructions "1.4.0"
-	magit-push-always-verify nil))
+	magit-push-always-verify nil)
+  (magit-define-popup-switch 'magit-log-popup
+	?m "Omit merge commits" "--no-merges"))
 
 ;; doc-view and eww/shr configuration
 (setq doc-view-continuous t)
