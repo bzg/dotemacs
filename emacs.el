@@ -1,13 +1,8 @@
-;; (eval-when-compile (require 'use-package))
-
-;; I don't use package a lot but don't want to configure the list of
-;; archives each time I use it.
-
-(use-package package
-  :config
+(eval-when-compile
   (setq package-archives
 	'(("gnu" . "http://elpa.gnu.org/packages/")
-	  ("melpa" . "http://melpa.org/packages/"))))
+	  ("melpa" . "http://melpa.org/packages/")))
+  (require 'use-package))
 
 ;; Load custom file
 (setq custom-file "/home/guerry/.emacs.d/emacs-custom.el")
@@ -77,7 +72,7 @@
 (setq inhibit-startup-message t)
 (setq inhibit-startup-echo-area-message "guerry")
 (setq use-dialog-box nil)
-(setq search-invisible t)
+(setq search-invisible 'open)
 (setq default-frame-alist initial-frame-alist)
 (set-frame-parameter nil 'fullscreen 'fullboth)
 
@@ -142,24 +137,28 @@
   (setq elscreen-tab-display-control nil))
 
 (use-package ibuffer
+  :defer t
   :config
   (global-set-key (kbd "C-x C-b") 'ibuffer))
 
-(use-package dash)
+;; (use-package dash :defer t)
 
 (use-package cider
+  :defer t
   :config
   (add-hook 'cider-repl-mode-hook 'company-mode)
   (setq cider-repl-pop-to-buffer-on-connect t)
   (setq nrepl-hide-special-buffers t))
 
 ;; (global-company-mode)
-;; (setq company-idle-delay nil) ; never start completions automatically
 ;; (global-set-key (kbd "M-TAB") #'company-complete) ; use M-TAB, a.k.a. C-M-i, as manual trigger
-(use-package company)
+;; (setq company-idle-delay nil) ; never start completions automatically
+(use-package company
+  :defer t)
 
 ;; M-x package-install RET register-list RET
-(use-package register-list)
+(use-package register-list
+  :defer t)
 
 ;; `line-spacing' is nil by default, I change it from time to time
 ;; (setq line-spacing 0)
@@ -205,15 +204,17 @@
 (define-key global-map "\M-Q" 'unfill-paragraph)
 
 (use-package helm
-    :config
-    (require 'helm-config)
-    ;; (global-set-key (kbd "M-x") 'helm-M-x)
-    (global-set-key (kbd "C-x c x") #'helm-M-x)
-    ;; (global-set-key (kbd "C-x F") #'helm-find-files)
-    (global-set-key (kbd "C-x c A") #'helm-ag)
-    (define-key dired-mode-map "\C-cg" 'helm-ag))
+  :defer t
+  :config
+  (require 'helm-config)
+  ;; (global-set-key (kbd "M-x") 'helm-M-x)
+  (global-set-key (kbd "C-x c x") #'helm-M-x)
+  ;; (global-set-key (kbd "C-x F") #'helm-find-files)
+  (global-set-key (kbd "C-x c A") #'helm-ag)
+  (define-key dired-mode-map "\C-cg" 'helm-ag))
 
 (use-package dired-x
+  :defer t
   :config
   (define-key dired-mode-map "\C-cd" 'dired-clean-tex)
   (setq dired-guess-shell-alist-user
@@ -467,6 +468,7 @@
 	(and (looking-at org-outline-regexp-bol)
 	     (not (org-in-src-block-p t)))))
 (setq org-src-fontify-natively t)
+(setq org-src-tab-acts-natively t)
 (setq org-todo-keyword-faces '(("STRT" . "yellow3")
 			       ("WAIT" . "grey")
 			       ("CANCELED" . "grey30")))
@@ -746,14 +748,16 @@ article."
   (define-key global-map (kbd "<S-f1>")
     (lambda() (interactive) (notmuch-search "tag:unread"))))
 
-(use-package starttls)
-(use-package epg)
+(use-package starttls :defer t)
+(use-package epg :defer t)
 (use-package epa
+  :defer t
   :config
   (setq epa-popup-info-window nil))
 
-(use-package ecomplete)
+(use-package ecomplete :defer t)
 (use-package gnus
+  :defer t
   :config
   (gnus-delay-initialize)
   (setq gnus-delay-default-delay "1d")
@@ -1057,17 +1061,20 @@ the copy in the last group."
     'bzg-message-send-and-org-gnus-store-link))
 
 (use-package gnus-alias
+  :defer t
   :config
   (define-key message-mode-map (kbd "C-c C-x C-i")
     'gnus-alias-select-identity))
 
 (use-package gnus-art
+  :defer t
   :config
   ;; Highlight my name in messages
   (add-to-list 'gnus-emphasis-alist
 	       '("Bastien\\|bzg" 0 0 gnus-emphasis-highlight-words)))
 
 (use-package gnus-icalendar
+  :defer t
   :config
   (gnus-icalendar-setup)
   ;; To enable optional iCalendar->Org sync functionality
@@ -1078,6 +1085,7 @@ the copy in the last group."
   (gnus-icalendar-org-setup))
 
 (use-package gnus-dired
+  :defer t
   :config
   ;; Make the `gnus-dired-mail-buffers' function also work on
   ;; message-mode derived modes, such as mu4e-compose-mode
@@ -1093,6 +1101,7 @@ the copy in the last group."
       (nreverse buffers))))
 
 (use-package message
+  :defer t
   :config
   ;; Use electric completion in Gnus
   ;; (setq message-mail-alias-type 'abbrev)
@@ -1104,6 +1113,7 @@ the copy in the last group."
   (setq message-alternative-emails gnus-ignored-from-addresses))
 
 (use-package bbdb
+  :defer t
   :config
   (require 'bbdb-com)
   (require 'bbdb-anniv)
@@ -1159,6 +1169,7 @@ the copy in the last group."
 	  ("Face" (".+" face 0 'replace)))))
 
 (use-package erc
+  :defer t
   :config
   (require 'erc-services)
 
@@ -1271,6 +1282,7 @@ the copy in the last group."
 (setq browse-url-firefox-new-window-is-tab t)
 
 (use-package w3m
+  :defer t
   :config
   (setq w3m-accept-languages '("fr;" "q=1.0" "en;"))
   (setq w3m-antenna-sites '(("http://eucd.info" "EUCD.INFO" time)))
@@ -1288,6 +1300,7 @@ the copy in the last group."
   (setq w3m-use-toolbar nil))
 
 (use-package eww
+  :defer t
   :config
   (add-hook 'eww-mode-hook 'visual-line-mode)
   (setq eww-header-line-format nil
@@ -1297,6 +1310,7 @@ the copy in the last group."
 	shr-color-visible-luminance-min 80))
 
 (use-package calendar
+  :defer t
   :config
   (setq french-holiday
 	'((holiday-fixed 1 1 "Jour de l'an")
@@ -1396,19 +1410,34 @@ the copy in the last group."
 
 (add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
 
-;; Emacs Lisp and Clojure initialization
-(add-hook 'emacs-lisp-mode-hook 'company-mode)
-(add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
-(add-hook 'emacs-lisp-mode-hook 'paredit-mode)
-(add-hook 'emacs-lisp-mode-hook 'origami-mode)
-(add-hook 'clojure-mode-hook 'company-mode)
-(add-hook 'clojure-mode-hook 'origami-mode)
-(add-hook 'clojure-mode-hook 'paredit-mode)
-(add-hook 'clojure-mode-hook 'aggressive-indent-mode)
-(add-hook 'clojure-mode-hook 'clj-refactor-mode)
-(setq clojure-align-forms-automatically t)
+(use-package paredit
+  :defer t
+  :config
+  (define-key paredit-mode-map (kbd "C-M-w") 'sp-copy-sexp))
 
-(with-eval-after-load 'clj-refactor
+;; Clojure initialization
+(use-package clojure-mode
+  :defer t
+  :config
+  (add-hook 'clojure-mode-hook 'company-mode)
+  (add-hook 'clojure-mode-hook 'origami-mode)
+  (add-hook 'clojure-mode-hook 'paredit-mode)
+  (add-hook 'clojure-mode-hook 'aggressive-indent-mode)
+  (add-hook 'clojure-mode-hook 'clj-refactor-mode))
+
+;; Emacs Lisp initialization
+(use-package emacs-lisp
+  :defer t
+  :config
+  (setq clojure-align-forms-automatically t)
+  (add-hook 'emacs-lisp-mode-hook 'company-mode)
+  (add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
+  (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+  (add-hook 'emacs-lisp-mode-hook 'origami-mode))
+
+(use-package clj-refactor
+  :defer t
+  :config
   (setq cljr-thread-all-but-last t)
   (cljr-add-keybindings-with-prefix "C-c m")
   (define-key clj-refactor-map "\C-ctf" #'cljr-thread-first-all)
@@ -1417,8 +1446,6 @@ the copy in the last group."
   (define-key clj-refactor-map "\C-cU" #'cljr-unwind-all)
   (add-to-list 'cljr-magic-require-namespaces
                '("s"  . "clojure.string")))
-
-(define-key paredit-mode-map (kbd "C-M-w") 'sp-copy-sexp)
 
 ;; (add-hook 'emacs-lisp-mode-hook 'turn-on-orgstruct)
 ;; (add-hook 'clojure-mode-hook 'turn-on-orgstruct)
@@ -1518,6 +1545,7 @@ the copy in the last group."
   (format "<script type=\"text/javascript\">\n%s\n</script>" body))
 
 (use-package guide-key
+  :defer t
    :config
    (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x c" "C-c @"))
    (guide-key-mode 1)) ; Enable guide-key-mode
