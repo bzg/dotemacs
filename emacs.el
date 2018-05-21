@@ -8,10 +8,6 @@
 (setq custom-file "/home/guerry/.emacs.d/emacs-custom.el")
 (load custom-file)
 
-;; Load theme
-(add-to-list 'custom-theme-load-path "~/install/git/cyberpunk-theme.el/")
-(load-theme 'cyberpunk)
-
 ;; Initialize Org
 (add-to-list 'load-path "~/install/git/org-mode/lisp/")
 (add-to-list 'load-path "~/install/git/org-mode/contrib/lisp/")
@@ -19,13 +15,18 @@
 
 ;; Initialize other important modes
 (add-to-list 'load-path "~/install/cvs/emacs-w3m/")
-(add-to-list 'load-path "~/install/git/elscreen/")
 (add-to-list 'load-path "~/install/git/notmuch/emacs/")
 
 ;; Initialize `exec-path' and `load-path'
 (add-to-list 'exec-path "~/bin/")
 (let ((default-directory "~/Documents/elisp/"))
   (normal-top-level-add-subdirs-to-load-path))
+
+;; Load theme
+;; (add-to-list 'custom-theme-load-path "~/install/git/cyberpunk-theme.el/")
+;; (load-theme 'cyberpunk)
+(add-to-list 'custom-theme-load-path "~/Documents/elisp/hacks/")
+(load-theme 'vxid)
 
 ;; Start server to use emacsclient
 (server-start)
@@ -128,14 +129,6 @@
   (add-to-list 'whitespace-style 'lines-tail)
   (setq whitespace-line-column 80))
 
-;; I'm using an old elscreen but there is more recent activity:
-;; https://github.com/knu/elscreen
-(use-package elscreen
-  :config
-  (elscreen-start)
-  (setq elscreen-display-tab nil)
-  (setq elscreen-tab-display-control nil))
-
 (use-package ibuffer
   :defer t
   :config
@@ -147,6 +140,7 @@
   :defer t
   :config
   (add-hook 'cider-repl-mode-hook 'company-mode)
+  (setq cider-use-fringe-indicators nil)
   (setq cider-repl-pop-to-buffer-on-connect t)
   (setq nrepl-hide-special-buffers t))
 
@@ -158,7 +152,9 @@
 
 ;; M-x package-install RET register-list RET
 (use-package register-list
-  :defer t)
+  :defer t
+  :config
+  (global-set-key (kbd "C-x r L") 'register-list))
 
 ;; `line-spacing' is nil by default, I change it from time to time
 ;; (setq line-spacing 0)
@@ -177,6 +173,7 @@
 (global-set-key (quote [f6]) 'find-name-dired)
 (global-set-key (kbd "C-c f") 'find-name-dired)
 (global-set-key (quote [f7]) 'auto-fill-mode)
+(global-set-key (kbd "C-c F") 'auto-fill-mode)
 (global-set-key (quote [f8]) 'occur)
 (global-set-key (kbd "C-c o") 'occur)
 (global-set-key (quote [f9]) 'magit)
@@ -190,8 +187,6 @@
 (global-set-key (kbd "C-=") 'text-scale-adjust)
 (global-set-key (kbd "C-M-]") 'origami-toggle-all-nodes)
 (global-set-key (kbd "M-]") 'origami-toggle-node)
-(global-set-key (kbd "C-x r L") 'register-list)
-(define-key dired-mode-map "\C-cG" 'grep-find)
 (global-set-key (kbd "C-c t") 'google-translate-query-translate)
 
 (defun unfill-paragraph ()
@@ -204,22 +199,24 @@
 (define-key global-map "\M-Q" 'unfill-paragraph)
 
 (use-package helm
-  :defer t
   :config
   (require 'helm-config)
   ;; (global-set-key (kbd "M-x") 'helm-M-x)
   (global-set-key (kbd "C-x c x") #'helm-M-x)
   ;; (global-set-key (kbd "C-x F") #'helm-find-files)
-  (global-set-key (kbd "C-x c A") #'helm-ag)
-  (define-key dired-mode-map "\C-cg" 'helm-ag))
+  (global-set-key (kbd "C-x c A") #'helm-ag))
+
+(use-package dired
+  :config
+  (define-key dired-mode-map (kbd "C-c g") 'grep-find)
+  (define-key dired-mode-map "a" #'helm-ag))
 
 (use-package dired-x
-  :defer t
   :config
-  (define-key dired-mode-map "\C-cd" 'dired-clean-tex)
+  ;; (define-key dired-mode-map "\C-cd" 'dired-clean-tex)
   (setq dired-guess-shell-alist-user
 	(list
-	 (list "\\.pdf$" "evince &")
+	 (list "\\.pdf$" "zathura &")
 	 (list "\\.docx?$" "libreoffice")
 	 (list "\\.aup?$" "audacity")
 	 (list "\\.pptx?$" "libreoffice")
@@ -390,7 +387,7 @@
 (setq org-html-head-include-default-style nil)
 (setq org-export-with-toc nil)
 (setq org-export-with-priority t)
-(setq org-export-dispatch-use-expert-ui nil)
+(setq org-export-dispatch-use-expert-ui t)
 (setq org-export-babel-evaluate t)
 (setq org-latex-listings t)
 (setq org-latex-pdf-process
@@ -469,9 +466,11 @@
 	     (not (org-in-src-block-p t)))))
 (setq org-src-fontify-natively t)
 (setq org-src-tab-acts-natively t)
-(setq org-todo-keyword-faces '(("STRT" . "yellow3")
-			       ("WAIT" . "grey")
-			       ("CANCELED" . "grey30")))
+(setq org-todo-keyword-faces
+      '(("STRT" . (:foreground "white" :inverse-video t))
+	("NEXT" . (:foreground "white" :weight bold))
+	("WAIT" . (:foreground "#889699" :inverse-video t))
+	("CANCELED" . (:foreground "#889699"))))
 (setq org-footnote-section "Notes")
 (setq org-plantuml-jar-path "~/bin/plantuml.jar")
 (setq org-link-abbrev-alist
@@ -497,7 +496,7 @@
       '((auto-mode . emacs)
 	("\\.mm\\'" . default)
 	("\\.x?html?\\'" . default)
-	("\\.pdf\\'" . "evince %s")))
+	("\\.pdf\\'" . "zathura %s")))
 (setq org-hide-leading-stars t)
 (setq org-global-properties '(("Effort_ALL" . "0:10 0:30 1:00 2:00 3:30 7:00")))
 (setq org-confirm-elisp-link-function nil)
@@ -664,53 +663,60 @@
 	      (in-mode . "gnus-article-mode")
 	      (in-mode . "message-mode")))))
 
+(add-hook 'mail-mode-hook #'orgalist-mode)
+(add-hook 'message-mode-hook #'orgalist-mode)
+
 (defun my-org-html-export-planning (planning-string backend info)
   (when (string-match "<p>.+><\\([0-9]+-[0-9]+-[0-9]+\\)[^>]+><.+</p>" planning-string)
     (concat "<span class=\"planning\">" (match-string 1 planning-string) "</span>")))
 
-;; org caldav
- (require 'org-caldav)
+(require 'org-caldav)
 
- (defun bzg-caldav-sync-perso ()
-   (interactive)
-   (let ((org-caldav-inbox "~/org/rdv.org")
-	 (org-caldav-calendar-id "personnel")
-	 (org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
-	 (org-caldav-files nil))
-     (call-interactively 'org-caldav-sync)))
+(defun bzg--caldav-sync-perso ()
+  (interactive)
+  (let ((org-caldav-inbox "~/org/rdv.org")
+	(org-caldav-calendar-id "personnel")
+	(org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
+	(org-caldav-files nil))
+    (call-interactively 'org-caldav-sync)))
 
- (defun bzg-caldav-sync-eig-perso ()
-   (interactive)
-   (let ((org-caldav-inbox "~/org/eig.org")
-	 (org-caldav-calendar-id "eig-bastien")
-	 ;; https://cloud.eig-forever.org/index.php/apps/calendar/p/N29QNRZV1E19X848/EIG-Bastien
-	 (org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
-	 (org-caldav-files nil))
-     (call-interactively 'org-caldav-sync)))
+(defun bzg--caldav-sync-eig-perso ()
+  (interactive)
+  (let ((org-caldav-inbox "~/org/eig.org")
+	(org-caldav-calendar-id "eig-bastien")
+	;; https://cloud.eig-forever.org/index.php/apps/calendar/p/N29QNRZV1E19X848/EIG-Bastien
+	(org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
+	(org-caldav-files nil))
+    (call-interactively 'org-caldav-sync)))
 
- (defun bzg-caldav-sync-eig2018 ()
-   (interactive)
-   (let ((org-caldav-inbox "~/.eig2/git/agenda-eig2018/index.org")
-	 (org-caldav-calendar-id "eig2018")
-	 ;; https://cloud.eig-forever.org/index.php/apps/calendar/p/5S4DP594PDIVTARU/EIG2018
-	 (org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
-	 (org-caldav-files nil))
-     (call-interactively 'org-caldav-sync)))
+(defun bzg--caldav-sync-eig2018 ()
+  (interactive)
+  (let ((org-caldav-inbox "~/.eig2/git/agenda-eig2018/index.org")
+	(org-caldav-calendar-id "eig2018")
+	;; https://cloud.eig-forever.org/index.php/apps/calendar/p/5S4DP594PDIVTARU/EIG2018
+	(org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
+	(org-caldav-files nil))
+    (call-interactively 'org-caldav-sync)))
 
-(defun bzg-caldav-sync-eig2018-open ()
-   (interactive)
-   (let ((org-caldav-inbox "~/.eig2/git/open-agenda-eig2018/index.org")
-	 (org-caldav-calendar-id "eig2018-open")
-	 ;; https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/eig2018-open/
-	 (org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
-	 (org-caldav-files nil))
-     (call-interactively 'org-caldav-sync)))
+(defun bzg--caldav-sync-eig2018-open ()
+  (interactive)
+  (let ((org-caldav-inbox "~/.eig2/git/open-agenda-eig2018/index.org")
+	(org-caldav-calendar-id "eig2018-open")
+	;; https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/eig2018-open/
+	(org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
+	(org-caldav-files nil))
+    (call-interactively 'org-caldav-sync)))
 
- (defun bzg-eig-caldav-sync ()
-   (interactive)
-   (bzg-caldav-sync-eig2018)
-   (bzg-caldav-sync-eig2018-open)
-   (bzg-caldav-sync-eig-perso))
+(defun bzg-eig-caldav-sync ()
+  (interactive)
+  (bzg-caldav-sync-eig2018)
+  (bzg-caldav-sync-eig2018-open)
+  (bzg-caldav-sync-eig-perso))
+
+(defun bzg-caldav-sync-all ()
+  (interactive)
+  (bzg-eig-caldav-sync)
+  (bzg-caldav-sync-perso))
 
 ;; notmuch configuration
 (use-package notmuch
@@ -837,7 +843,8 @@ article."
    		  (nnimap-server-port 143)
    		  (nnimap-authinfo-file "~/.authinfo")
    		  (nnimap-stream network))
-	  (nntp "news" (nntp-address "news.gmane.org"))))
+	  ;; (nntp "news" (nntp-address "news.gmane.org"))
+	  ))
 
   (setq gnus-check-new-newsgroups nil)
 
@@ -882,9 +889,7 @@ article."
 
   (setq nnir-notmuch-remove-prefix "/home/guerry/Maildir/")
   (setq nnir-method-default-engines
-	'((nnimap . notmuch)
-	  ;; (nntp . gmane) FIXME: Gmane is broken for now
-	  ))
+	'((nnimap . notmuch)))
 
   (defun my-gnus-message-archive-group (group-current)
     "Return prefered archive group."
@@ -1061,7 +1066,6 @@ the copy in the last group."
     'bzg-message-send-and-org-gnus-store-link))
 
 (use-package gnus-alias
-  :defer t
   :config
   (define-key message-mode-map (kbd "C-c C-x C-i")
     'gnus-alias-select-identity))
@@ -1074,7 +1078,6 @@ the copy in the last group."
 	       '("Bastien\\|bzg" 0 0 gnus-emphasis-highlight-words)))
 
 (use-package gnus-icalendar
-  :defer t
   :config
   (gnus-icalendar-setup)
   ;; To enable optional iCalendar->Org sync functionality
@@ -1273,9 +1276,9 @@ the copy in the last group."
 
 ;; Set browser
 (if window-system
-    (setq browse-url-browser-function 'browse-url-firefox)
-  ;; (setq browse-url-browser-function 'browse-url-chromium)
-  ;; (setq browse-url-browser-function 'eww-browse-url)
+    ;; (setq browse-url-browser-function 'browse-url-firefox)
+    ;; (setq browse-url-browser-function 'browse-url-chromium)
+    (setq browse-url-browser-function 'eww-browse-url)
   (setq browse-url-browser-function 'eww-browse-url))
 (setq browse-url-text-browser "w3m")
 (setq browse-url-new-window-flag t)
@@ -1394,9 +1397,9 @@ the copy in the last group."
   :group 'editing-basics
   (if hidden-mode-line-mode
       (setq hide-mode-line mode-line-format
-            mode-line-format nil)
+            mode-line-format "")
     (setq mode-line-format hide-mode-line
-          hide-mode-line nil))
+          hide-mode-line ""))
   (force-mode-line-update)
   ;; Apparently force-mode-line-update is not always enough to
   ;; redisplay the mode-line
@@ -1411,7 +1414,6 @@ the copy in the last group."
 (add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
 
 (use-package paredit
-  :defer t
   :config
   (define-key paredit-mode-map (kbd "C-M-w") 'sp-copy-sexp))
 
@@ -1426,20 +1428,17 @@ the copy in the last group."
   (add-hook 'clojure-mode-hook 'clj-refactor-mode))
 
 ;; Emacs Lisp initialization
-(use-package emacs-lisp
-  :defer t
-  :config
-  (setq clojure-align-forms-automatically t)
-  (add-hook 'emacs-lisp-mode-hook 'company-mode)
-  (add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
-  (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
-  (add-hook 'emacs-lisp-mode-hook 'origami-mode))
+(setq clojure-align-forms-automatically t)
+(add-hook 'emacs-lisp-mode-hook 'company-mode)
+(add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
+(add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+(add-hook 'emacs-lisp-mode-hook 'origami-mode)
 
 (use-package clj-refactor
   :defer t
   :config
   (setq cljr-thread-all-but-last t)
-  (cljr-add-keybindings-with-prefix "C-c m")
+  (cljr-add-keybindings-with-prefix "C-c r")
   (define-key clj-refactor-map "\C-ctf" #'cljr-thread-first-all)
   (define-key clj-refactor-map "\C-ctl" #'cljr-thread-last-all)
   (define-key clj-refactor-map "\C-cu" #'cljr-unwind)
@@ -1473,7 +1472,8 @@ the copy in the last group."
 (when (fboundp 'imagemagick-register-types)
   (imagemagick-register-types))
 
-(add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
+(add-hook 'dired-mode-hook #'turn-on-gnus-dired-mode)
+(add-hook 'dired-mode-hook #'dired-hide-details-mode)
 
 ;; Personal stuff
 (defun bzg-find-bzg nil
@@ -1591,22 +1591,51 @@ Use `winstack-push' and
 
 (global-set-key (kbd "C-M-<backspace>") 'backward-kill-word-noring)
 
-(defun eshell-here ()
-  "Opens up a new shell in the directory associated with the
-current buffer's file. The eshell is renamed to match that
-directory to make multiple eshell windows easier."
+(use-package multi-term
+  :defer t
+  :config
+  (global-set-key (kbd "C-!") 'multi-term)
+  (setq multi-term-program "/bin/zsh"))
+
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+
+;; (xterm-mouse-mode 1)
+
+;; (use-package dired+
+;;   :config
+;;   (define-key dired-mode-map "/" 'dired-narrow))
+
+(use-package dired-subtree
+  :config
+  (setq dired-subtree-use-backgrounds nil)
+  (define-key dired-mode-map (kbd "I") 'dired-subtree-toggle)
+  (define-key dired-mode-map (kbd "TAB") 'dired-subtree-cycle))
+
+(use-package eyebrowse
+  :init
+  (setq eyebrowse-keymap-prefix (kbd "C-z"))
+  :config
+  (define-key eyebrowse-mode-map (kbd "C-z n") 'eyebrowse-next-window-config)
+  (define-key eyebrowse-mode-map (kbd "C-z k") 'eyebrowse-close-window-config)
+  (define-key eyebrowse-mode-map (kbd "C-z p") 'eyebrowse-prev-window-config)
+  ;; (add-hook 'eyebrowse-post-window-switch-hook
+  ;; 	    (lambda ()
+  ;; 	      (switch-to-buffer
+  ;; 	       (get-buffer-create
+  ;; 		(org-trim
+  ;; 		 (shell-command-to-string org-id-uuid-program))))))
+  (eyebrowse-mode 1))
+
+(require 'org-bullets)
+(setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
+(setq read-integer-overflow-as-float t)
+
+(defun find-variable-or-function-at-point ()
   (interactive)
-  (let* ((parent (if (buffer-file-name)
-                     (file-name-directory (buffer-file-name))
-                   default-directory))
-         (height (/ (window-total-height) 3))
-         (name   (car (last (split-string parent "/" t)))))
-    (split-window-vertically (- height))
-    (other-window 1)
-    (eshell "new")
-    (rename-buffer (concat "*eshell: " name "*"))
+  (or (find-variable-at-point)
+      (find-function-at-point)
+      (message "No variable or function at point.")))
 
-    (insert (concat "ls"))
-    (eshell-send-input)))
-
-(global-set-key (kbd "C-!") 'eshell-here)
+(global-set-key (kbd "C-:") 'find-variable-or-function-at-point)
