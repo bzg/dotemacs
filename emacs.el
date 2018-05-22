@@ -672,7 +672,7 @@
 
 (require 'org-caldav)
 
-(defun bzg--caldav-sync-perso ()
+(defun bzg-caldav-sync-perso ()
   (interactive)
   (let ((org-caldav-inbox "~/org/rdv.org")
 	(org-caldav-calendar-id "personnel")
@@ -709,9 +709,9 @@
 
 (defun bzg-eig-caldav-sync ()
   (interactive)
-  (bzg-caldav-sync-eig2018)
-  (bzg-caldav-sync-eig2018-open)
-  (bzg-caldav-sync-eig-perso))
+  (bzg--caldav-sync-eig2018)
+  (bzg--caldav-sync-eig2018-open)
+  (bzg--caldav-sync-eig-perso))
 
 (defun bzg-caldav-sync-all ()
   (interactive)
