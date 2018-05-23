@@ -152,7 +152,6 @@
 
 ;; M-x package-install RET register-list RET
 (use-package register-list
-  :defer t
   :config
   (global-set-key (kbd "C-x r L") 'register-list))
 
@@ -172,12 +171,14 @@
 (global-set-key (quote [f5]) (lambda() (interactive) (dired "~")))
 (global-set-key (quote [f6]) 'find-name-dired)
 (global-set-key (kbd "C-c f") 'find-name-dired)
+(global-set-key (kbd "C-c g") 'grep-find)
+(global-set-key (kbd "C-c A") 'helm-ag)
 (global-set-key (quote [f7]) 'auto-fill-mode)
 (global-set-key (kbd "C-c F") 'auto-fill-mode)
 (global-set-key (quote [f8]) 'occur)
 (global-set-key (kbd "C-c o") 'occur)
+(global-set-key (kbd "C-c O") 'multi-occur)
 (global-set-key (quote [f9]) 'magit)
-(global-set-key (quote [f8]) 'occur)
 (global-set-key (kbd "C-c m") 'magit)
 (global-set-key (quote [f10]) 'calc)
 (global-set-key (quote [f11]) 'eshell)
@@ -208,7 +209,6 @@
 
 (use-package dired
   :config
-  (define-key dired-mode-map (kbd "C-c g") 'grep-find)
   (define-key dired-mode-map "a" #'helm-ag))
 
 (use-package dired-x
@@ -1592,7 +1592,6 @@ Use `winstack-push' and
 (global-set-key (kbd "C-M-<backspace>") 'backward-kill-word-noring)
 
 (use-package multi-term
-  :defer t
   :config
   (global-set-key (kbd "C-!") 'multi-term)
   (setq multi-term-program "/bin/zsh"))
