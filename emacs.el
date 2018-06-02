@@ -785,8 +785,6 @@ article."
 		      "bzg@kickhub.com"
 		      "hackadon@librefunding.org"
 		      "bastien@hackadon.org"
-		      "contact@hackadon.org"
-		      "contact+projet@hackadon.org"
 		      "bzg+emacs@bzg.fr"
 		      "bguerry@ceis-strat.com"
 		      "bzg@bzg.io"
@@ -1003,19 +1001,21 @@ article."
   (define-key gnus-summary-mode-map "$" 'gnus-summary-mark-as-spam)
 
   ;; Scoring
-  (setq gnus-use-adaptive-scoring '(line word)
+  (setq gnus-use-adaptive-scoring '(line)
 	;; gnus-score-expiry-days 14
 	gnus-default-adaptive-score-alist
-	'((gnus-dormant-mark (from 20) (subject 100))
-	  (gnus-ticked-mark (subject 30))
-	  (gnus-read-mark (subject 30))
-	  (gnus-del-mark (subject -150))
+	'((gnus-dormant-mark (from 5) (subject 30))
+	  (gnus-ticked-mark (from 10) (subject 50))
+	  (gnus-unread-mark)
+	  (gnus-read-mark (from 1) (subject 30))
+	  (gnus-del-mark (from -4) (subject -10))
 	  (gnus-catchup-mark (subject -150))
-	  (gnus-killed-mark (subject -1000))
-	  (gnus-expirable-mark (from -1000) (subject -1000)))
-	gnus-score-decay-constant 1    ;default = 3
-	gnus-score-decay-scale 0.03    ;default = 0.05
-	gnus-decay-scores nil)           ;(gnus-decay-score 1000)
+	  (gnus-killed-mark (subject -100))
+	  (gnus-expirable-mark (from -100) (subject -100)))
+	gnus-score-exact-adapt-limit nil
+	gnus-score-decay-constant 1    ; default = 3
+	gnus-score-decay-scale 0.05    ; default = 0.05
+	gnus-decay-scores t)           ; (gnus-decay-score 1000)
 
   (setq gnus-summary-line-format
 	(concat "%*%0{%U%R%z%}"
@@ -1638,3 +1638,10 @@ Use `winstack-push' and
       (message "No variable or function at point.")))
 
 (global-set-key (kbd "C-:") 'find-variable-or-function-at-point)
+
+(pixel-scroll-mode 1)
+
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
