@@ -198,28 +198,22 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (global-set-key "\M- " 'hippie-expand)
 (global-set-key (kbd "C-h /") 'find-function)
 (global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
+(global-set-key (kbd "C-é") 'bzg-find-bzg)
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
 (global-set-key (kbd "<XF86AudioMute>") 'gnus)
-(global-set-key (quote [f1]) 'gnus)
-(global-set-key (quote [f2]) 'hidden-mode-line-mode)
-(global-set-key (quote [f3]) 'bzg-big-fringe-mode)
-(global-set-key (quote [f4]) 'delete-other-windows)
-(global-set-key (quote [f5]) (lambda() (interactive) (dired "~")))
-(global-set-key (quote [f6]) 'find-name-dired)
+(global-set-key (kbd "C-\"") 'hidden-mode-line-mode)
+(global-set-key (kbd "C-è") 'bzg-big-fringe-mode)
+(global-set-key (kbd "C-'") 'delete-other-windows)
+(global-set-key (kbd "C-~") (lambda() (interactive) (dired "~")))
 (global-set-key (kbd "C-c f") 'find-name-dired)
 (global-set-key (kbd "C-c g") 'grep-find)
 (global-set-key (kbd "C-c A") 'helm-ag)
-(global-set-key (quote [f7]) 'auto-fill-mode)
 (global-set-key (kbd "C-c F") 'auto-fill-mode)
-(global-set-key (quote [f8]) 'occur)
 (global-set-key (kbd "C-c o") 'occur)
 (global-set-key (kbd "C-c O") 'multi-occur)
-(global-set-key (quote [f9]) 'magit)
 (global-set-key (kbd "C-c m") 'magit)
-(global-set-key (quote [f10]) 'calc)
-(global-set-key (quote [f11]) 'eshell)
-(global-set-key (quote [f12]) 'calendar)
+(global-set-key (kbd "C-&") 'calendar)
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-=") 'text-scale-adjust)
@@ -1062,7 +1056,7 @@ article."
   (define-key gnus-summary-mode-map "$" 'gnus-summary-mark-as-spam)
 
   ;; Scoring
-  (setq gnus-use-adaptive-scoring '(line)
+  (setq gnus-use-adaptive-scoring nil ; '(line)
 	;; gnus-score-expiry-days 14
 	gnus-default-adaptive-score-alist
 	'((gnus-dormant-mark (from 5) (subject 30))
@@ -1572,7 +1566,8 @@ the copy in the last group."
 (defun bzg-find-bzg nil
   "Find the bzg.org file."
   (interactive)
-  (find-file "~/org/bzg.org"))
+  (find-file "~/org/bzg.org")
+  (delete-other-windows))
 
 (defun uniquify-all-lines-region (start end)
   "Find duplicate lines in region START to END keeping first occurrence."
@@ -1708,7 +1703,7 @@ Use `winstack-push' and
 #+END_SRC
 *** avy
 
-# #+begin_src 
+# #+begin_src
 # (avy-setup-default)
 # (global-set-key (kbd "C-:") 'avy-goto-char)
 # (global-set-key (kbd "C-&") 'avy-goto-char-2)
@@ -1785,4 +1780,3 @@ Use `winstack-push' and
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 #+end_src
-
