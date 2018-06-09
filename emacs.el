@@ -61,11 +61,11 @@
 ;; Default Frame
 (setq initial-frame-alist
       '((alpha . 85)
-        (left-margin-width . 10)
-        (menu-bar-lines . 0)
-        (tool-bar-lines . 0)
-        (horizontal-scroll-bars . nil)
-        (vertical-scroll-bars . nil)))
+	(left-margin-width . 10)
+	(menu-bar-lines . 0)
+	(tool-bar-lines . 0)
+	(horizontal-scroll-bars . nil)
+	(vertical-scroll-bars . nil)))
 
 ;; Don't display initial messages
 (setq initial-scratch-message "")
@@ -164,9 +164,9 @@
 (global-set-key (kbd "C-é") 'bzg-find-bzg)
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
-(global-set-key (kbd "<XF86AudioMute>") 'gnus)
-(global-set-key (kbd "C-\"") 'hidden-mode-line-mode)
-(global-set-key (kbd "C-è") 'bzg-big-fringe-mode)
+(global-set-key (kbd "C-&") 'gnus)
+(global-set-key (kbd "C-è") 'hidden-mode-line-mode)
+(global-set-key (kbd "C-\"") 'bzg-big-fringe-mode)
 (global-set-key (kbd "C-'") 'delete-other-windows)
 (global-set-key (kbd "C-~") (lambda() (interactive) (dired "~")))
 (global-set-key (kbd "C-c f") 'find-name-dired)
@@ -176,7 +176,8 @@
 (global-set-key (kbd "C-c o") 'occur)
 (global-set-key (kbd "C-c O") 'multi-occur)
 (global-set-key (kbd "C-c m") 'magit)
-(global-set-key (kbd "C-&") 'calendar)
+(global-set-key (kbd "C-à") 'calendar)
+(global-set-key (kbd "C-ç") 'calc)
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-=") 'text-scale-adjust)
@@ -510,10 +511,10 @@
 (add-to-list 'org-latex-classes
 	     '("my-letter"
 	       "\\documentclass\{scrlttr2\}
-            \\usepackage[english,frenchb]{babel}
-            \[NO-DEFAULT-PACKAGES]
-            \[NO-PACKAGES]
-            \[EXTRA]"))
+	    \\usepackage[english,frenchb]{babel}
+	    \[NO-DEFAULT-PACKAGES]
+	    \[NO-PACKAGES]
+	    \[EXTRA]"))
 
 (org-agenda-to-appt)
 
@@ -730,23 +731,23 @@
 	  (t (user-error "Unknown group"))))
 
   (defun bzg-notmuch-goto-message-in-gnus ()
-    "Open a summary buffer containing the current notmuch
-article."
+    "Open a summary buffer containing the current notmuch article."
     (interactive)
     (let ((group (bzg-notmuch-file-to-group (notmuch-show-get-filename)))
 	  (message-id (replace-regexp-in-string
 		       "^id:\\|\"" "" (notmuch-show-get-message-id))))
       (if (and group message-id)
 	  (progn (org-gnus-follow-link group message-id))
-	  (message "Couldn't get relevant infos for switching to Gnus."))))
+	(message "Couldn't get relevant infos for switching to Gnus."))))
 
   (define-key notmuch-show-mode-map
-    (kbd "C-c C-c") 'bzg-notmuch-goto-message-in-gnus)
+    (kbd "C-c C-c") #'bzg-notmuch-goto-message-in-gnus)
 
-  (define-key global-map
-    (kbd "<M-f1>") (lambda() (interactive) (notmuch-search "tag:flagged")))
-  (define-key global-map (kbd "<S-f1>")
-    (lambda() (interactive) (notmuch-search "tag:unread"))))
+  (define-key global-map (kbd "C-*")
+    #'(lambda() (interactive) (notmuch-search "tag:flagged")))
+
+  (define-key global-map (kbd "C-$")
+    #'(lambda() (interactive) (notmuch-search "tag:unread"))))
 
 (use-package starttls :defer t)
 (use-package epg :defer t)
@@ -832,9 +833,9 @@ article."
 	gnus-select-method '(nnnil "")
 	gnus-secondary-select-methods
 	'((nnimap "localhost"
-   		  (nnimap-server-port 143)
-   		  (nnimap-authinfo-file "~/.authinfo")
-   		  (nnimap-stream network))
+		  (nnimap-server-port 143)
+		  (nnimap-authinfo-file "~/.authinfo")
+		  (nnimap-stream network))
 	  ;; (nntp "news" (nntp-address "news.gmane.org"))
 	  ))
 
@@ -995,7 +996,7 @@ article."
   (define-key gnus-summary-mode-map "$" 'gnus-summary-mark-as-spam)
 
   ;; Scoring
-  (setq gnus-use-adaptive-scoring nil ; '(line)
+  (setq gnus-use-adaptive-scoring '(line)
 	;; gnus-score-expiry-days 14
 	gnus-default-adaptive-score-alist
 	'((gnus-dormant-mark (from 5) (subject 30))
@@ -1210,10 +1211,10 @@ the copy in the last group."
 	erc-auto-query 'window-noselect
 	erc-server-coding-system '(utf-8 . utf-8)
 	erc-encoding-coding-alist '(("#emacs" . utf-8)
-                                    ;; ("#frlab" . iso-8859-1)
+				    ;; ("#frlab" . iso-8859-1)
 				    ("&bitlbee" . utf-8)))
 
-    (add-hook 'erc-mode-hook
+  (add-hook 'erc-mode-hook
 	    '(lambda ()
 	       (auto-fill-mode -1)
 	       (pcomplete-erc-setup)
@@ -1228,45 +1229,45 @@ the copy in the last group."
 	       (erc-timestamp-mode 1)
 	       (erc-services-mode 1)))
 
-    (defun erc-notify-on-msg (msg)
-      (if (string-match "bz_g:" msg)
-	  (shell-command (concat "notify-send \"" msg "\""))))
+  (defun erc-notify-on-msg (msg)
+    (if (string-match "bz_g:" msg)
+	(shell-command (concat "notify-send \"" msg "\""))))
 
-    (add-hook 'erc-insert-pre-hook 'erc-notify-on-msg)
-    ;; (add-to-list 'erc-networks-alist '(lll "libertelivinglab.irc.slack.com"))
+  (add-hook 'erc-insert-pre-hook 'erc-notify-on-msg)
+  ;; (add-to-list 'erc-networks-alist '(lll "libertelivinglab.irc.slack.com"))
 
-    ;; (defun bzg-erc-connect-bitlbee ()
-    ;;   "Connect to &bitlbee channel with ERC."
-    ;;   (interactive)
-    ;;   (erc-select :server "bzg"
-    ;; 		:port 6667
-    ;; 		:nick "bz_g"
-    ;; 		:full-name "Bastien"))
+  ;; (defun bzg-erc-connect-bitlbee ()
+  ;;   "Connect to &bitlbee channel with ERC."
+  ;;   (interactive)
+  ;;   (erc-select :server "bzg"
+  ;; 		:port 6667
+  ;; 		:nick "bz_g"
+  ;; 		:full-name "Bastien"))
 
-    (defun bzg-erc-connect-freenode ()
-      "Connect to Freenode server with ERC."
-      (interactive)
-      (erc-select :server "irc.freenode.net"
-		  :port 6666
-		  :nick "bzg"
-		  :full-name "Bastien"))
+  (defun bzg-erc-connect-freenode ()
+    "Connect to Freenode server with ERC."
+    (interactive)
+    (erc-select :server "irc.freenode.net"
+		:port 6666
+		:nick "bzg"
+		:full-name "Bastien"))
 
-    (require 'tls)
-    (defun bzg-erc-connect-lll ()
-      "Connect to LLL's slack server with ERC."
-      (interactive)
-      (erc-tls :server "libertelivinglab.irc.slack.com"
-	       :port 6667
-	       :nick "bzg"
-	       :full-name "Bastien"))
+  (require 'tls)
+  (defun bzg-erc-connect-lll ()
+    "Connect to LLL's slack server with ERC."
+    (interactive)
+    (erc-tls :server "libertelivinglab.irc.slack.com"
+	     :port 6667
+	     :nick "bzg"
+	     :full-name "Bastien"))
 
-    (defun bzg-erc-connect-eig ()
-      "Connect to EIG's slack with ERC."
-      (interactive)
-      (erc-tls :server "eig-hq.irc.slack.com"
-	       :port 6667
-	       :nick "bzg"
-	       :full-name "Bastien")))
+  (defun bzg-erc-connect-eig ()
+    "Connect to EIG's slack with ERC."
+    (interactive)
+    (erc-tls :server "eig-hq.irc.slack.com"
+	     :port 6667
+	     :nick "bzg"
+	     :full-name "Bastien")))
 
 ;; Set browser
 (if window-system
@@ -1301,7 +1302,7 @@ the copy in the last group."
   :config
   (add-hook 'eww-mode-hook 'visual-line-mode)
   (setq eww-header-line-format nil
-        shr-width 80
+	shr-width 80
 	shr-use-fonts nil
 	shr-color-visible-distance-min 10
 	shr-color-visible-luminance-min 80))
@@ -1391,19 +1392,19 @@ the copy in the last group."
   :group 'editing-basics
   (if hidden-mode-line-mode
       (setq hide-mode-line mode-line-format
-            mode-line-format "")
+	    mode-line-format "")
     (setq mode-line-format hide-mode-line
-          hide-mode-line ""))
+	  hide-mode-line ""))
   (force-mode-line-update)
   ;; Apparently force-mode-line-update is not always enough to
   ;; redisplay the mode-line
   (redraw-display)
   (when (and (called-interactively-p 'interactive)
-             hidden-mode-line-mode)
+	     hidden-mode-line-mode)
     (run-with-idle-timer
      0 nil 'message
      (concat "Hidden Mode Line Mode enabled.  "
-             "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
+	     "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
 
 (add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
 
@@ -1438,7 +1439,7 @@ the copy in the last group."
   (define-key clj-refactor-map "\C-cu" #'cljr-unwind)
   (define-key clj-refactor-map "\C-cU" #'cljr-unwind-all)
   (add-to-list 'cljr-magic-require-namespaces
-               '("s"  . "clojure.string")))
+	       '("s"  . "clojure.string")))
 
 ;; (add-hook 'emacs-lisp-mode-hook 'turn-on-orgstruct)
 ;; (add-hook 'clojure-mode-hook 'turn-on-orgstruct)
@@ -1456,7 +1457,7 @@ the copy in the last group."
 	magit-last-seen-setup-instructions "1.4.0"
 	magit-push-always-verify nil)
   (magit-define-popup-switch 'magit-log-popup
-	?m "Omit merge commits" "--no-merges"))
+			     ?m "Omit merge commits" "--no-merges"))
 
 ;; doc-view and eww/shr configuration
 (setq doc-view-continuous t)
@@ -1482,10 +1483,10 @@ the copy in the last group."
   (save-excursion
     (let ((end (copy-marker end)))
       (while
-          (progn
-            (goto-char start)
-            (re-search-forward "^\\(.*\\)\n\\(\\(.*\n\\)*\\)\\1\n" end t))
-        (replace-match "\\1\n\\2")))))
+	  (progn
+	    (goto-char start)
+	    (re-search-forward "^\\(.*\\)\n\\(\\(.*\n\\)*\\)\\1\n" end t))
+	(replace-match "\\1\n\\2")))))
 
 (defun uniquify-all-lines-buffer ()
   "Delete duplicate lines in buffer and keep first occurrence."
@@ -1496,20 +1497,20 @@ the copy in the last group."
   "Dynamic block for inserting the cover of a book."
   (interactive)
   (let* ((asin (plist-get params :asin))
-         (tpl "<a style=\"float:right;width:160px;margin:2em;\" href=\"https://www.amazon.fr/gp/product/%s/ref=as_li_qf_sp_asin_il?ie=UTF8&tag=bastguer-21&linkCode=as2&camp=1642&creative=6746&creativeASIN=%s\"><img border=\"0\" src=\"https://images.amazon.com/images/P/%s.jpg\" ></a><img src=\"https://www.assoc-amazon.fr/e/ir?t=bastguer-21&l=as2&o=8&a=%s\" width=\"1\" height=\"1\" border=\"0\" alt=\"\" style=\"border:none !important; margin:0px !important;\" />")
-         (str (format tpl asin asin asin asin)))
+	 (tpl "<a style=\"float:right;width:160px;margin:2em;\" href=\"https://www.amazon.fr/gp/product/%s/ref=as_li_qf_sp_asin_il?ie=UTF8&tag=bastguer-21&linkCode=as2&camp=1642&creative=6746&creativeASIN=%s\"><img border=\"0\" src=\"https://images.amazon.com/images/P/%s.jpg\" ></a><img src=\"https://www.assoc-amazon.fr/e/ir?t=bastguer-21&l=as2&o=8&a=%s\" width=\"1\" height=\"1\" border=\"0\" alt=\"\" style=\"border:none !important; margin:0px !important;\" />")
+	 (str (format tpl asin asin asin asin)))
     (insert "#+begin_export html\n" str "\n#+end_export")))
 
 ;; Fontifying todo items outside of org-mode
 (defface bzg-todo-comment-face
   '((t (:weight bold
-        :bold t)))
+		:bold t)))
   "Face for TODO in code buffers."
   :group 'org-faces)
 
 (defface bzg-headline-face
   '((t (:weight bold
-        :bold t)))
+		:bold t)))
   "Face for headlines."
   :group 'org-faces)
 
@@ -1541,9 +1542,9 @@ the copy in the last group."
 
 (use-package guide-key
   :defer t
-   :config
-   (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x c" "C-c @"))
-   (guide-key-mode 1)) ; Enable guide-key-mode
+  :config
+  (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x c" "C-c @"))
+  (guide-key-mode 1)) ; Enable guide-key-mode
 
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 5) ((control) . nil)))
 (setq mouse-wheel-progressive-speed nil)
@@ -1563,8 +1564,8 @@ Use `winstack-push' and
 	    (current-window-configuration)))
       (message "Current configuration already pushed")
     (progn (push (current-window-configuration) winstack-stack)
-           (message (concat "Pushed " (number-to-string
-                                       (length (window-list (selected-frame))))
+	   (message (concat "Pushed " (number-to-string
+				       (length (window-list (selected-frame))))
 			    " frame configuration")))))
 
 (defun winstack-pop ()
@@ -1572,7 +1573,7 @@ Use `winstack-push' and
   (interactive)
   (if (first winstack-stack)
       (progn (set-window-configuration (pop winstack-stack))
-             (message "Popped last frame configuration"))
+	     (message "Popped last frame configuration"))
     (message "End of window stack")))
 
 (global-set-key (kbd "C-x <up>") 'winstack-push)
