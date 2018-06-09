@@ -1370,6 +1370,9 @@ the copy in the last group."
 	("minimal" . (1 . 1))))
 
 (defvar bzg-big-fringe-mode nil)
+
+(defvar bzg-big-fringe-size 300)
+
 (define-minor-mode bzg-big-fringe-mode
   "Minor mode to hide the mode-line in the current buffer."
   :init-value nil
@@ -1378,7 +1381,7 @@ the copy in the last group."
   :group 'editing-basics
   (if (not bzg-big-fringe-mode)
       (set-fringe-mode 10)
-    (set-fringe-mode 200)))
+    (set-fringe-mode bzg-big-fringe-size)))
 
 ;; See https://bzg.fr/emacs-hide-mode-line.html
 (defvar-local hidden-mode-line-mode nil)
