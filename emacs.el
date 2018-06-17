@@ -55,6 +55,7 @@
 (display-time-mode 1)
 (tooltip-mode -1)
 (blink-cursor-mode -1)
+(pixel-scroll-mode 1)
 (mouse-avoidance-mode 'cat-and-mouse)
 (setq max-lisp-eval-depth 10000)
 
@@ -161,13 +162,13 @@
 (global-set-key "\M- " 'hippie-expand)
 (global-set-key (kbd "C-h /") 'find-function)
 (global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
-(global-set-key (kbd "C-é") 'bzg-find-bzg)
+(global-set-key (kbd "C-é") (lambda () (interactive) (find-file "~/org/bzg.org")))
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
 (global-set-key (kbd "C-&") 'gnus)
 (global-set-key (kbd "C-è") 'hidden-mode-line-mode)
 (global-set-key (kbd "C-\"") 'bzg-big-fringe-mode)
-(global-set-key (kbd "C-'") 'delete-other-windows)
+(global-set-key (kbd "C-(") 'delete-other-windows)
 (global-set-key (kbd "C-~") (lambda() (interactive) (dired "~")))
 (global-set-key (kbd "C-c f") 'find-name-dired)
 (global-set-key (kbd "C-c g") 'grep-find)
@@ -176,14 +177,21 @@
 (global-set-key (kbd "C-c o") 'occur)
 (global-set-key (kbd "C-c O") 'multi-occur)
 (global-set-key (kbd "C-c m") 'magit)
-(global-set-key (kbd "C-à") 'calendar)
+(global-set-key (kbd "C-à") (lambda () (interactive) (if (eq major-mode 'calendar-mode) (calendar-exit) (calendar))))
 (global-set-key (kbd "C-ç") 'calc)
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-=") 'text-scale-adjust)
 (global-set-key (kbd "C-M-]") 'origami-toggle-all-nodes)
 (global-set-key (kbd "M-]") 'origami-toggle-node)
+
+(defun google-translate-word-at-point ()
+  (interactive)
+  (let ((w (thing-at-point 'word)))
+    (google-translate-translate "en" "fr" w)))
+
 (global-set-key (kbd "C-c t") 'google-translate-query-translate)
+(global-set-key (kbd "C-c T") 'google-translate-word-at-point)
 
 (defun unfill-paragraph ()
   "Make a multi-line paragraph into a single line of text."
@@ -628,8 +636,8 @@
 	  (org-agenda-sorting-strategy '(timestamp-up))))))
 
 (setq org-capture-templates
-      '((" " "Misc" entry (file "~/org/bzg.org")
-	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a"
+      '(("C" "Misc" entry (file "~/org/bzg.org")
+	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n"
 	 :prepend t :immediate-finish t)
 
 	("c" "Misc (edit)" entry (file "~/org/bzg.org")
@@ -1111,7 +1119,6 @@ the copy in the last group."
   (setq message-alternative-emails gnus-ignored-from-addresses))
 
 (use-package bbdb
-  :defer t
   :config
   (require 'bbdb-com)
   (require 'bbdb-anniv)
@@ -1383,6 +1390,8 @@ the copy in the last group."
       (set-fringe-mode 10)
     (set-fringe-mode bzg-big-fringe-size)))
 
+(bzg-big-fringe-mode 1)
+
 ;; See https://bzg.fr/emacs-hide-mode-line.html
 (defvar-local hidden-mode-line-mode nil)
 (defvar-local hide-mode-line nil)
@@ -1536,51 +1545,11 @@ the copy in the last group."
 
 ;; (desktop-save-mode)
 
-(add-to-list 'org-src-lang-modes '("inline-js" . javascript))
-(defvar org-babel-default-header-args:inline-js
-  '((:results . "html")
-    (:exports . "results")))
-(defun org-babel-execute:inline-js (body _params)
-  (format "<script type=\"text/javascript\">\n%s\n</script>" body))
-
 (use-package guide-key
   :defer t
   :config
   (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x c" "C-c @"))
   (guide-key-mode 1)) ; Enable guide-key-mode
-
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 5) ((control) . nil)))
-(setq mouse-wheel-progressive-speed nil)
-
-;; http://emacs.stackexchange.com/questions/2710/switching-between-window-layouts
-(defvar winstack-stack '()
-  "A Stack holding window configurations.
-Use `winstack-push' and
-`winstack-pop' to modify it.")
-
-(defun winstack-push ()
-  "Push the current window configuration onto `winstack-stack'."
-  (interactive)
-  (if (and (window-configuration-p (first winstack-stack))
-	   (compare-window-configurations
-	    (first winstack-stack)
-	    (current-window-configuration)))
-      (message "Current configuration already pushed")
-    (progn (push (current-window-configuration) winstack-stack)
-	   (message (concat "Pushed " (number-to-string
-				       (length (window-list (selected-frame))))
-			    " frame configuration")))))
-
-(defun winstack-pop ()
-  "Pop the last window configuration off `winstack-stack' and apply it."
-  (interactive)
-  (if (first winstack-stack)
-      (progn (set-window-configuration (pop winstack-stack))
-	     (message "Popped last frame configuration"))
-    (message "End of window stack")))
-
-(global-set-key (kbd "C-x <up>") 'winstack-push)
-(global-set-key (kbd "C-x <down>") 'winstack-pop)
 
 (defun backward-kill-word-noring (arg)
   (interactive "p")
@@ -1596,12 +1565,6 @@ Use `winstack-push' and
   (setq multi-term-program "/bin/zsh"))
 
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-
-;; (xterm-mouse-mode 1)
-
-;; (use-package dired+
-;;   :config
-;;   (define-key dired-mode-map "/" 'dired-narrow))
 
 (use-package dired-subtree
   :config
@@ -1628,8 +1591,6 @@ Use `winstack-push' and
 (setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
-(setq read-integer-overflow-as-float t)
-
 (defun find-variable-or-function-at-point ()
   (interactive)
   (or (find-variable-at-point)
@@ -1637,8 +1598,6 @@ Use `winstack-push' and
       (message "No variable or function at point.")))
 
 (global-set-key (kbd "C-:") 'find-variable-or-function-at-point)
-
-(pixel-scroll-mode 1)
 
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
