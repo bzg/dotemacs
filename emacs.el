@@ -125,6 +125,8 @@
 (setenv "EDITOR" "emacsclient")
 (setenv "CVS_RSH" "ssh")
 
+(setq recenter-positions '(top bottom center))
+
 (use-package whitespace
   :config
   (add-to-list 'whitespace-style 'lines-tail)
@@ -1174,7 +1176,6 @@ the copy in the last group."
 	  ("Face" (".+" face 0 'replace)))))
 
 (use-package erc
-  :defer t
   :config
   (require 'erc-services)
 
@@ -1603,3 +1604,4 @@ the copy in the last group."
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+(global-set-key (kbd "C-c C->") 'mc/mark-all-dwim)

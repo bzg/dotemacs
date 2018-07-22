@@ -153,6 +153,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
   (setenv "EDITOR" "emacsclient")
   (setenv "CVS_RSH" "ssh")
+
+  (setq recenter-positions '(top bottom center))
   #+END_SRC
 
 * Basic packages
@@ -1243,7 +1245,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
   #+BEGIN_SRC emacs-lisp
   (use-package erc
-    :defer t
     :config
     (require 'erc-services)
 
@@ -1783,4 +1784,5 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
     (global-set-key (kbd "C->") 'mc/mark-next-like-this)
     (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
     (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+    (global-set-key (kbd "C-c C->") 'mc/mark-all-dwim)
     #+end_src
