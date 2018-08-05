@@ -1000,7 +1000,7 @@
 	    gnus-group-line-default-format)))
 
   ;; Toggle the group line format
-  (define-key gnus-group-mode-map "x"
+  (define-key gnus-group-mode-map "("
     (lambda () (interactive) (bzg-gnus-toggle-group-line-format) (gnus)))
 
   (define-key gnus-summary-mode-map "$" 'gnus-summary-mark-as-spam)
@@ -1432,6 +1432,7 @@ the copy in the last group."
   (add-hook 'clojure-mode-hook 'company-mode)
   (add-hook 'clojure-mode-hook 'origami-mode)
   (add-hook 'clojure-mode-hook 'paredit-mode)
+  (add-hook 'clojure-mode-hook 'lispy-mode)
   (add-hook 'clojure-mode-hook 'aggressive-indent-mode)
   (add-hook 'clojure-mode-hook 'clj-refactor-mode))
 
@@ -1440,6 +1441,7 @@ the copy in the last group."
 (add-hook 'emacs-lisp-mode-hook 'company-mode)
 (add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+(add-hook 'emacs-lisp-mode-hook 'lispy-mode)
 (add-hook 'emacs-lisp-mode-hook 'origami-mode)
 
 (use-package clj-refactor
@@ -1562,7 +1564,11 @@ the copy in the last group."
 
 (use-package multi-term
   :config
-  (global-set-key (kbd "C-!") 'multi-term)
+  (global-set-key (kbd "C-!")
+		  (lambda ()
+		    (interactive)
+		    (funcall #'multi-term-dedicated-open)
+		    (funcall #'multi-term-dedicated-select)))
   (setq multi-term-program "/bin/zsh"))
 
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
