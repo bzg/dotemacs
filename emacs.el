@@ -778,6 +778,19 @@
   (setq nnml-directory "~/Maildir/Mail/")
   (setq gnus-summary-ignore-duplicates t)
   (setq gnus-suppress-duplicates t)
+  (setq gnus-alias-identity-alist
+	'(("bzg" "" "bzg@bzg.fr" "bzg"
+	   (("Gcc" . "nnimap+localhost:bzgfrio/Sent"))
+	   "" " Bastien")
+	  ("data" "" "bastien.guerry@data.gouv.fr" "EIG"
+	   (("Gcc" . "nnimap+localhost:datagouv/Sent"))
+	   "" " Bastien")
+	  ("gmail" "" "bastienguerry@gmail.com" "bzg"
+	   (("Gcc" . "nnimap+localhost:bzgfr/Sent"))
+	   "" " Bastien")
+	  ("gnu" "" "bzg@gnu.org" "GNU"
+	   (("Gcc" . "nnimap+localhost:bzgfr/Sent"))
+	   "" " Bastien")))
   (setq gnus-ignored-from-addresses
 	(regexp-opt '("bastien.guerry@ens.fr"
 		      "bastien.guerry@culture.gouv.fr"
