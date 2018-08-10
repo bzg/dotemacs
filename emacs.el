@@ -125,7 +125,7 @@
 (setenv "EDITOR" "emacsclient")
 (setenv "CVS_RSH" "ssh")
 
-(setq recenter-positions '(top bottom center))
+(setq recenter-positions '(top bottom middle))
 
 (use-package whitespace
   :config
@@ -170,8 +170,18 @@
 (global-set-key (kbd "C-&") 'gnus)
 (global-set-key (kbd "C-è") 'hidden-mode-line-mode)
 (global-set-key (kbd "C-\"") 'bzg-big-fringe-mode)
+;; FIXME: overriden in paredit-mode?
 (global-set-key (kbd "C-(") 'delete-other-windows)
-(global-set-key (kbd "C-~") (lambda() (interactive) (dired "~")))
+;; FIXME: overriden in org-mode?
+(global-set-key 
+ (kbd "C-'") 
+ (lambda () 
+   (interactive) 
+   (set-fringe-style 8) 
+   (delete-other-windows) 
+   (split-window-right)
+   (other-window)))
+(global-set-key (kbd "C-~") (lambda () (interactive) (dired "~")))
 (global-set-key (kbd "C-c f") 'find-name-dired)
 (global-set-key (kbd "C-c g") 'grep-find)
 (global-set-key (kbd "C-c A") 'helm-ag)
@@ -801,8 +811,8 @@
 		      "bastienguerry@gmail.com"
 		      "bastien.guerry@data.gouv.fr"
 		      "bzg@kickhub.com"
-		      "hackadon@librefunding.org"
 		      "bastien@hackadon.org"
+		      "contact@hackadon.org"
 		      "bzg+emacs@bzg.fr"
 		      "bguerry@ceis-strat.com"
 		      "bzg@bzg.io"
