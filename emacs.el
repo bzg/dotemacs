@@ -25,7 +25,7 @@
 ;; Load theme
 ;; (add-to-list 'custom-theme-load-path "~/install/git/cyberpunk-theme.el/")
 ;; (load-theme 'cyberpunk)
-(add-to-list 'custom-theme-load-path "~/Documents/elisp/hacks/")
+(add-to-list 'custom-theme-load-path "~/install/git/vxid-theme/")
 (load-theme 'vxid)
 
 ;; Start server to use emacsclient
@@ -231,7 +231,7 @@
   ;; (define-key dired-mode-map "\C-cd" 'dired-clean-tex)
   (setq dired-guess-shell-alist-user
 	(list
-	 (list "\\.pdf$" "zathura &")
+	 (list "\\.pdf$" "evince &")
 	 (list "\\.docx?$" "libreoffice")
 	 (list "\\.aup?$" "audacity")
 	 (list "\\.pptx?$" "libreoffice")
@@ -511,7 +511,7 @@
       '((auto-mode . emacs)
 	("\\.mm\\'" . default)
 	("\\.x?html?\\'" . default)
-	("\\.pdf\\'" . "zathura %s")))
+	("\\.pdf\\'" . "evince %s")))
 (setq org-hide-leading-stars t)
 (setq org-global-properties '(("Effort_ALL" . "0:10 0:30 1:00 2:00 3:30 7:00")))
 (setq org-confirm-elisp-link-function nil)
