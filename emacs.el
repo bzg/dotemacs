@@ -573,14 +573,22 @@
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
-	(" " "Work (tout)" agenda "List of rendez-vous and tasks for today"
+	(" " "Work (tout)" agenda "EIG tasks and rdv for today"
+	 ((org-agenda-span 1)
+	  (org-agenda-files '("~/org/rdv.org" "~/org/eig.org" "~/.eig2/git/agenda-eig2018/index.org" "~/org/bzg.org"))
+	  (org-deadline-warning-days 3)
+	  (org-agenda-category-filter-preset '("+EIG"))
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up time-up priority-down))))
+
+	("$" "Work (tout)" agenda "Work tasks and rdv for today"
 	 ((org-agenda-span 1)
 	  (org-agenda-files '("~/org/rdv.org" "~/org/eig.org" "~/.eig2/git/agenda-eig2018/index.org" "~/org/bzg.org"))
 	  (org-deadline-warning-days 3)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
-	("	" "Libre (tout)" agenda "List of rendez-vous and tasks for today"
+	("	" "Libre (tout)" agenda "Other rdv for today"
 	 ((org-agenda-span 1)
 	  (org-agenda-files '("~/org/libre.org"))
 	  (org-deadline-warning-days 3)
