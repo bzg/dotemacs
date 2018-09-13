@@ -634,6 +634,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	   ((org-agenda-span 1)
 	    (org-agenda-files '("~/org/rdv.org" "~/org/eig.org" "~/.eig2/git/agenda-eig2018/index.org" "~/org/bzg.org"))
 	    (org-deadline-warning-days 3)
+	    (org-agenda-category-filter-preset '("-EIG"))
 	    (org-agenda-sorting-strategy
 	     '(todo-state-up time-up priority-down))))
 
@@ -1507,7 +1508,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	(set-fringe-mode 10)
       (set-fringe-mode bzg-big-fringe-size)))
 
-  (bzg-big-fringe-mode 1)
+  ;; (bzg-big-fringe-mode 1)
 
   ;; See https://bzg.fr/emacs-hide-mode-line.html
   (defvar-local hidden-mode-line-mode nil)
