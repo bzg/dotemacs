@@ -368,7 +368,7 @@
 (setq org-log-into-drawer "LOGBOOK")
 (setq org-agenda-entry-text-maxlines 10)
 (setq org-timer-default-timer 25)
-(setq org-agenda-files '("~/org/rdv.org" "~/org/eig.org" "~/org/bzg.org" "~/.eig2/git/agenda-eig2018/index.org"))
+(setq org-agenda-files '("~/org/rdv.org" "~/org/rdv-eig.org" "~/org/bzg.org" "~/.eig2/git/agenda-eig2018/index.org"))
 (setq org-agenda-prefix-format
       '((agenda . " %i %-12:c%?-14t%s")
 	(timeline . "  % s")
@@ -568,22 +568,27 @@
 	;; Week agenda for rendez-vous and tasks
 	("%" "Rendez-vous" agenda* "Week RDV"
 	 ((org-agenda-span 'week)
-	  (org-agenda-files '("~/org/rdv.org" "~/.eig2/git/agenda-eig2018/index.org" "~/org/eig.org"))
+	  (org-agenda-files '("~/org/rdv.org" "~/.eig2/git/agenda-eig2018/index.org" "~/org/rdv-eig.org"))
 	  ;; (org-deadline-warning-days 3)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
-	(" " "Work (tout)" agenda "EIG tasks and rdv for today"
+	(" " "EIG (tout)" agenda "EIG tasks and rdv for today"
 	 ((org-agenda-span 1)
-	  (org-agenda-files '("~/org/rdv.org" "~/org/eig.org" "~/.eig2/git/agenda-eig2018/index.org" "~/org/bzg.org"))
+	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-eig.org" "~/.eig2/git/agenda-eig2018/index.org" "~/org/bzg.org"))
 	  (org-deadline-warning-days 3)
 	  (org-agenda-category-filter-preset '("+EIG"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
-	("$" "Work (tout)" agenda "Work tasks and rdv for today"
+	("=" "Work (tout)" tags-todo "CATEGORY={EIG\\|Etalab}+SCHEDULED<=\"<today>\""
+	 ((org-agenda-files '("~/org/bzg.org"))
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up time-up priority-down))))
+
+	("$" "Non-work (tout)" agenda "Non-work tasks and rdv for today"
 	 ((org-agenda-span 1)
-	  (org-agenda-files '("~/org/rdv.org" "~/org/eig.org" "~/.eig2/git/agenda-eig2018/index.org" "~/org/bzg.org"))
+	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-eig.org" "~/.eig2/git/agenda-eig2018/index.org" "~/org/bzg.org"))
 	  (org-deadline-warning-days 3)
 	  (org-agenda-category-filter-preset '("-EIG"))
 	  (org-agenda-sorting-strategy
@@ -599,7 +604,7 @@
 	("!" tags-todo "+DEADLINE<=\"<+7d>\"")
 	("@" tags-todo "+SCHEDULED<=\"<now>\"")
 	("n" "NEXT (bzg)" tags-todo "TODO={STRT\\|NEXT}"
-	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/eig.org"))
+	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/rdv-eig.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 	("N" "NEXT (bzg)" tags-todo "TODO={STRT\\|NEXT}"
@@ -607,7 +612,7 @@
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 	("?" "WAIT (bzg)" tags-todo "TODO={WAIT}"
-	 ((org-agenda-files '("~/org/rdv.org" "~/org/eig.org" "~/org/bzg.org"))
+	 ((org-agenda-files '("~/org/rdv.org" "~/org/rdv-eig.org" "~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up priority-down time-up))))
 
@@ -653,7 +658,7 @@
 
 	("#" "DONE/CANCELED"
 	 todo "DONE|CANCELED"
-	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/eig.org" "~/org/libre.org" "~/.eig2/git/agenda-eig2018/index.org"))
+	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/rdv-eig.org" "~/org/libre.org" "~/.eig2/git/agenda-eig2018/index.org"))
 	  (org-agenda-sorting-strategy '(timestamp-up))))))
 
 (setq org-capture-templates
@@ -667,7 +672,7 @@
 	("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
 	 "* RDV avec %:fromname %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
-	("R" "RDV EIG" entry (file+headline "~/org/eig.org" "RDV EIG")
+	("R" "RDV EIG" entry (file+headline "~/org/rdv-eig.org" "RDV EIG")
 	 "* RDV avec %:fromname %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
 	("e" "EIG" entry (file+headline "~/org/bzg.org" "EIG : maintenir le lien entre EIGs")
@@ -706,7 +711,7 @@
 
 (defun bzg--caldav-sync-eig-perso ()
   (interactive)
-  (let ((org-caldav-inbox "~/org/eig.org")
+  (let ((org-caldav-inbox "~/org/rdv-eig.org")
 	(org-caldav-calendar-id "eig-bastien")
 	;; https://cloud.eig-forever.org/index.php/apps/calendar/p/N29QNRZV1E19X848/EIG-Bastien
 	(org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
@@ -1119,7 +1124,7 @@ the copy in the last group."
   (gnus-icalendar-setup)
   ;; To enable optional iCalendar->Org sync functionality
   ;; NOTE: both the capture file and the headline(s) inside must already exist
-  (setq gnus-icalendar-org-capture-file "~/org/eig.org")
+  (setq gnus-icalendar-org-capture-file "~/org/rdv-eig.org")
   (setq gnus-icalendar-org-capture-headline '("RDV EIG"))
   (setq gnus-icalendar-org-template-key "I")
   (gnus-icalendar-org-setup))
@@ -1629,14 +1634,6 @@ the copy in the last group."
 (require 'org-bullets)
 (setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-
-(defun find-variable-or-function-at-point ()
-  (interactive)
-  (or (find-variable-at-point)
-      (find-function-at-point)
-      (message "No variable or function at point.")))
-
-(global-set-key (kbd "C-:") 'find-variable-or-function-at-point)
 
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
