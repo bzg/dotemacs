@@ -1469,7 +1469,7 @@ the copy in the last group."
   (add-hook 'clojure-mode-hook 'company-mode)
   (add-hook 'clojure-mode-hook 'origami-mode)
   (add-hook 'clojure-mode-hook 'paredit-mode)
-  (add-hook 'clojure-mode-hook 'lispy-mode)
+  ;; (add-hook 'clojure-mode-hook 'lispy-mode)
   (add-hook 'clojure-mode-hook 'aggressive-indent-mode)
   (add-hook 'clojure-mode-hook 'clj-refactor-mode))
 
@@ -1478,7 +1478,7 @@ the copy in the last group."
 (add-hook 'emacs-lisp-mode-hook 'company-mode)
 (add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
-(add-hook 'emacs-lisp-mode-hook 'lispy-mode)
+;; (add-hook 'emacs-lisp-mode-hook 'lispy-mode)
 (add-hook 'emacs-lisp-mode-hook 'origami-mode)
 
 (use-package clj-refactor
