@@ -736,10 +736,20 @@
 	(org-caldav-files nil))
     (call-interactively 'org-caldav-sync)))
 
+(defun bzg--caldav-sync-agenda-tech-ext ()
+  (interactive)
+  (let ((org-caldav-inbox "~/.etalab/git/agenda-tech-ext/index.org")
+	(org-caldav-calendar-id "agenda-tech-ext")
+	;; https://owncloud.data.gouv.fr/index.php/apps/calendar/p/YAjeWZjoGFgs2dLp/agenda-tech-ext
+	(org-caldav-url "https://owncloud.data.gouv.fr/remote.php/dav/calendars/bastien.guerry/")
+	(org-caldav-files nil))
+    (call-interactively 'org-caldav-sync)))
+
 (defun bzg-eig-caldav-sync ()
   (interactive)
   (bzg--caldav-sync-eig2018)
   (bzg--caldav-sync-eig2018-open)
+  (bzg--caldav-sync-agenda-tech-ext)
   (bzg--caldav-sync-eig-perso))
 
 (defun bzg-caldav-sync-all ()
