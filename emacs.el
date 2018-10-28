@@ -577,6 +577,13 @@
 	 ((org-agenda-span 1)
 	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-eig.org" "~/.eig2/git/agenda-eig2018/index.org" "~/org/bzg.org"))
 	  (org-deadline-warning-days 3)
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up time-up priority-down))))
+
+	("E" "EIG (tout)" agenda "EIG tasks and rdv for today"
+	 ((org-agenda-span 1)
+	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-eig.org" "~/.eig2/git/agenda-eig2018/index.org" "~/org/bzg.org"))
+	  (org-deadline-warning-days 3)
 	  (org-agenda-category-filter-preset '("+EIG"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
@@ -1194,6 +1201,9 @@ the copy in the last group."
 	bbdb-default-area-code nil
 	bbdb-dwim-net-address-allow-redundancy t
 	bbdb-electric-p nil
+	bbdb-add-aka nil
+	bbdb-add-name nil
+	bbdb-add-mails t
 	bbdb-new-nets-always-primary 'never
 	bbdb-north-american-phone-numbers-p nil
 	bbdb-offer-save 'auto
@@ -1510,6 +1520,11 @@ the copy in the last group."
 ;; (add-hook 'clojure-mode-hook 'bzg-fontify-headline)
 ;; (add-hook 'clojure-mode-hook 'bzg-fontify-todo)
 
+;; Geiser
+(setq geiser-active-implementations '(guile racket))
+(setq geiser-scheme-implementation 'racket)
+(setq geiser-repl-startup-time 20000)
+
 ;; magit configuration
 (use-package magit
   :config
@@ -1519,7 +1534,7 @@ the copy in the last group."
 	magit-last-seen-setup-instructions "1.4.0"
 	magit-push-always-verify nil)
   (magit-define-popup-switch 'magit-log-popup
-			     ?m "Omit merge commits" "--no-merges"))
+    ?m "Omit merge commits" "--no-merges"))
 
 ;; doc-view and eww/shr configuration
 (setq doc-view-continuous t)
