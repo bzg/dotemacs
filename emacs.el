@@ -162,7 +162,6 @@
 ;; (setq line-spacing 0)
 
 (global-set-key "\M- " 'hippie-expand)
-(global-set-key (kbd "C-h /") 'find-function)
 (global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
 (global-set-key (kbd "C-é") (lambda () (interactive) (find-file "~/org/bzg.org")))
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
@@ -173,11 +172,11 @@
 ;; FIXME: overriden in paredit-mode?
 (global-set-key (kbd "C-(") 'delete-other-windows)
 ;; FIXME: overriden in org-mode?
-(global-set-key 
- (kbd "C-'") 
- (lambda () 
-   (interactive) 
-   (set-fringe-style 8) 
+(global-set-key
+ (kbd "C-'")
+ (lambda ()
+   (interactive)
+   (set-fringe-style 8)
    (delete-other-windows)
    (split-window-right)
    (other-window 1)))
@@ -368,7 +367,7 @@
 (setq org-log-into-drawer "LOGBOOK")
 (setq org-agenda-entry-text-maxlines 10)
 (setq org-timer-default-timer 25)
-(setq org-agenda-files '("~/org/rdv.org" "~/org/rdv-eig.org" "~/org/bzg.org" "~/.eig2/git/agenda-eig2018/index.org"))
+(setq org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/bzg.org"))
 (setq org-agenda-prefix-format
       '((agenda . " %i %-12:c%?-14t%s")
 	(timeline . "  % s")
@@ -568,36 +567,31 @@
 	;; Week agenda for rendez-vous and tasks
 	("%" "Rendez-vous" agenda* "Week RDV"
 	 ((org-agenda-span 'week)
-	  (org-agenda-files '("~/org/rdv.org" "~/.eig2/git/agenda-eig2018/index.org" "~/org/rdv-eig.org"))
+	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org"))
 	  ;; (org-deadline-warning-days 3)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
-	(" " "EIG (tout)" agenda "EIG tasks and rdv for today"
+	(" " "Travail (tout)" agenda "Tasks and rdv for today"
 	 ((org-agenda-span 1)
-	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-eig.org" "~/.eig2/git/agenda-eig2018/index.org" "~/org/bzg.org"))
+	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/bzg.org"))
 	  (org-deadline-warning-days 3)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
-	("E" "EIG (tout)" agenda "EIG tasks and rdv for today"
+	("E" "Etalab (tout)" agenda "Etalab tasks and rdv for today"
 	 ((org-agenda-span 1)
-	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-eig.org" "~/.eig2/git/agenda-eig2018/index.org" "~/org/bzg.org"))
+	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/bzg.org"))
 	  (org-deadline-warning-days 3)
-	  (org-agenda-category-filter-preset '("+EIG"))
-	  (org-agenda-sorting-strategy
-	   '(todo-state-up time-up priority-down))))
-
-	("=" "Work (tout)" tags-todo "CATEGORY={EIG\\|Etalab}+SCHEDULED<=\"<today>\""
-	 ((org-agenda-files '("~/org/bzg.org"))
+	  (org-agenda-category-filter-preset '("+ETL"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
 	("$" "Non-work (tout)" agenda "Non-work tasks and rdv for today"
 	 ((org-agenda-span 1)
-	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-eig.org" "~/.eig2/git/agenda-eig2018/index.org" "~/org/bzg.org"))
+	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/bzg.org"))
 	  (org-deadline-warning-days 3)
-	  (org-agenda-category-filter-preset '("-EIG"))
+	  (org-agenda-category-filter-preset '("-ETL"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
@@ -611,7 +605,7 @@
 	("!" tags-todo "+DEADLINE<=\"<+7d>\"")
 	("@" tags-todo "+SCHEDULED<=\"<now>\"")
 	("n" "NEXT (bzg)" tags-todo "TODO={STRT\\|NEXT}"
-	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/rdv-eig.org"))
+	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/rdv-etalab.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 	("N" "NEXT (bzg)" tags-todo "TODO={STRT\\|NEXT}"
@@ -619,7 +613,7 @@
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 	("?" "WAIT (bzg)" tags-todo "TODO={WAIT}"
-	 ((org-agenda-files '("~/org/rdv.org" "~/org/rdv-eig.org" "~/org/bzg.org"))
+	 ((org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up priority-down time-up))))
 
@@ -665,7 +659,7 @@
 
 	("#" "DONE/CANCELED"
 	 todo "DONE|CANCELED"
-	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/rdv-eig.org" "~/org/libre.org" "~/.eig2/git/agenda-eig2018/index.org"))
+	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/libre.org"))
 	  (org-agenda-sorting-strategy '(timestamp-up))))))
 
 (setq org-capture-templates
@@ -679,16 +673,16 @@
 	("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
 	 "* RDV avec %:fromname %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
-	("R" "RDV EIG" entry (file+headline "~/org/rdv-eig.org" "RDV EIG")
+	("R" "RDV Etalab" entry (file+headline "~/org/rdv-etalab.org" "RDV Etalab")
 	 "* RDV avec %:fromname %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
-	("e" "EIG" entry (file+headline "~/org/bzg.org" "EIG : maintenir le lien entre EIGs")
+	("e" "Etalab" entry (file+headline "~/org/bzg.org" "Etalab : ouvrir des codes sources")
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
 
 	("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
 
-	("o" "Org" entry (file+headline "~/org/libre.org" "Org-mode")
+	("o" "Org" entry (file+headline "~/org/bzg.org" "Org-mode : passer la maintenance dans de bonnes conditions")
 	 "* TODO %? :Code:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)))
 
 (setq org-capture-templates-contexts
@@ -718,27 +712,9 @@
 
 (defun bzg--caldav-sync-eig-perso ()
   (interactive)
-  (let ((org-caldav-inbox "~/org/rdv-eig.org")
+  (let ((org-caldav-inbox "~/org/rdv-etalab.org")
 	(org-caldav-calendar-id "eig-bastien")
 	;; https://cloud.eig-forever.org/index.php/apps/calendar/p/N29QNRZV1E19X848/EIG-Bastien
-	(org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
-	(org-caldav-files nil))
-    (call-interactively 'org-caldav-sync)))
-
-(defun bzg--caldav-sync-eig2018 ()
-  (interactive)
-  (let ((org-caldav-inbox "~/.eig2/git/agenda-eig2018/index.org")
-	(org-caldav-calendar-id "eig2018")
-	;; https://cloud.eig-forever.org/index.php/apps/calendar/p/5S4DP594PDIVTARU/EIG2018
-	(org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
-	(org-caldav-files nil))
-    (call-interactively 'org-caldav-sync)))
-
-(defun bzg--caldav-sync-eig2018-open ()
-  (interactive)
-  (let ((org-caldav-inbox "~/.eig2/git/open-agenda-eig2018/index.org")
-	(org-caldav-calendar-id "eig2018-open")
-	;; https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/eig2018-open/
 	(org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
 	(org-caldav-files nil))
     (call-interactively 'org-caldav-sync)))
@@ -754,8 +730,6 @@
 
 (defun bzg-eig-caldav-sync ()
   (interactive)
-  (bzg--caldav-sync-eig2018)
-  (bzg--caldav-sync-eig2018-open)
   (bzg--caldav-sync-agenda-tech-ext)
   (bzg--caldav-sync-eig-perso))
 
@@ -1141,8 +1115,8 @@ the copy in the last group."
   (gnus-icalendar-setup)
   ;; To enable optional iCalendar->Org sync functionality
   ;; NOTE: both the capture file and the headline(s) inside must already exist
-  (setq gnus-icalendar-org-capture-file "~/org/rdv-eig.org")
-  (setq gnus-icalendar-org-capture-headline '("RDV EIG"))
+  (setq gnus-icalendar-org-capture-file "~/org/rdv-etalab.org")
+  (setq gnus-icalendar-org-capture-headline '("RDV Etalab"))
   (setq gnus-icalendar-org-template-key "I")
   (gnus-icalendar-org-setup))
 
@@ -1336,9 +1310,9 @@ the copy in the last group."
 
 ;; Set browser
 (if window-system
-    ;; (setq browse-url-browser-function 'browse-url-firefox)
+    (setq browse-url-browser-function 'browse-url-firefox)
     ;; (setq browse-url-browser-function 'browse-url-chromium)
-    (setq browse-url-browser-function 'eww-browse-url)
+    ;; (setq browse-url-browser-function 'eww-browse-url)
   (setq browse-url-browser-function 'eww-browse-url))
 (setq browse-url-text-browser "w3m")
 (setq browse-url-new-window-flag t)
