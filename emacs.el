@@ -728,14 +728,14 @@
 	(org-caldav-files nil))
     (call-interactively 'org-caldav-sync)))
 
-(defun bzg-eig-caldav-sync ()
+(defun bzg-etalab-caldav-sync ()
   (interactive)
   (bzg--caldav-sync-agenda-tech-ext)
   (bzg--caldav-sync-eig-perso))
 
 (defun bzg-caldav-sync-all ()
   (interactive)
-  (bzg-eig-caldav-sync)
+  (bzg-etalab-caldav-sync)
   (bzg-caldav-sync-perso))
 
 ;; notmuch configuration
@@ -794,16 +794,16 @@
   (setq gnus-summary-ignore-duplicates t)
   (setq gnus-suppress-duplicates t)
   (setq gnus-alias-identity-alist
-	'(("bzg" "" "bzg@bzg.fr" "bzg"
+	'(("bzg" "" "Bastien <bzg@bzg.fr>" "bzg"
 	   (("Gcc" . "nnimap+localhost:bzgfrio/Sent"))
 	   "" " Bastien")
-	  ("data" "" "bastien.guerry@data.gouv.fr" "EIG"
+	  ("data" "" "Bastien <bastien.guerry@data.gouv.fr>" "EIG"
 	   (("Gcc" . "nnimap+localhost:datagouv/Sent"))
 	   "" " Bastien")
-	  ("gmail" "" "bastienguerry@gmail.com" "bzg"
+	  ("gmail" "" "Bastien <bastienguerry@gmail.com>" "bzg"
 	   (("Gcc" . "nnimap+localhost:bzgfr/Sent"))
 	   "" " Bastien")
-	  ("gnu" "" "bzg@gnu.org" "GNU"
+	  ("gnu" "" "Bastien <bzg@gnu.org>" "GNU"
 	   (("Gcc" . "nnimap+localhost:bzgfr/Sent"))
 	   "" " Bastien")))
   (setq gnus-ignored-from-addresses

@@ -753,43 +753,43 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ** org-caldav
 
    #+begin_src emacs-lisp
-   (require 'org-caldav)
+      (require 'org-caldav)
 
-   (defun bzg-caldav-sync-perso ()
-     (interactive)
-     (let ((org-caldav-inbox "~/org/rdv.org")
-	   (org-caldav-calendar-id "personnel")
-	   (org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
-	   (org-caldav-files nil))
-       (call-interactively 'org-caldav-sync)))
+      (defun bzg-caldav-sync-perso ()
+	(interactive)
+	(let ((org-caldav-inbox "~/org/rdv.org")
+	      (org-caldav-calendar-id "personnel")
+	      (org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
+	      (org-caldav-files nil))
+	  (call-interactively 'org-caldav-sync)))
 
-   (defun bzg--caldav-sync-eig-perso ()
-     (interactive)
-     (let ((org-caldav-inbox "~/org/rdv-etalab.org")
-	   (org-caldav-calendar-id "eig-bastien")
-	   ;; https://cloud.eig-forever.org/index.php/apps/calendar/p/N29QNRZV1E19X848/EIG-Bastien
-	   (org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
-	   (org-caldav-files nil))
-       (call-interactively 'org-caldav-sync)))
+      (defun bzg--caldav-sync-eig-perso ()
+	(interactive)
+	(let ((org-caldav-inbox "~/org/rdv-etalab.org")
+	      (org-caldav-calendar-id "eig-bastien")
+	      ;; https://cloud.eig-forever.org/index.php/apps/calendar/p/N29QNRZV1E19X848/EIG-Bastien
+	      (org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
+	      (org-caldav-files nil))
+	  (call-interactively 'org-caldav-sync)))
 
-   (defun bzg--caldav-sync-agenda-tech-ext ()
-     (interactive)
-     (let ((org-caldav-inbox "~/.etalab/git/agenda-tech-ext/index.org")
-	   (org-caldav-calendar-id "agenda-tech-ext")
-	   ;; https://owncloud.data.gouv.fr/index.php/apps/calendar/p/YAjeWZjoGFgs2dLp/agenda-tech-ext
-	   (org-caldav-url "https://owncloud.data.gouv.fr/remote.php/dav/calendars/bastien.guerry/")
-	   (org-caldav-files nil))
-       (call-interactively 'org-caldav-sync)))
+      (defun bzg--caldav-sync-agenda-tech-ext ()
+	(interactive)
+	(let ((org-caldav-inbox "~/.etalab/git/agenda-tech-ext/index.org")
+	      (org-caldav-calendar-id "agenda-tech-ext")
+	      ;; https://owncloud.data.gouv.fr/index.php/apps/calendar/p/YAjeWZjoGFgs2dLp/agenda-tech-ext
+	      (org-caldav-url "https://owncloud.data.gouv.fr/remote.php/dav/calendars/bastien.guerry/")
+	      (org-caldav-files nil))
+	  (call-interactively 'org-caldav-sync)))
 
-   (defun bzg-eig-caldav-sync ()
-     (interactive)
-     (bzg--caldav-sync-agenda-tech-ext)
-     (bzg--caldav-sync-eig-perso))
+      (defun bzg-etalab-caldav-sync ()
+	(interactive)
+	(bzg--caldav-sync-agenda-tech-ext)
+	(bzg--caldav-sync-eig-perso))
 
-   (defun bzg-caldav-sync-all ()
-     (interactive)
-     (bzg-eig-caldav-sync)
-     (bzg-caldav-sync-perso))
+      (defun bzg-caldav-sync-all ()
+	(interactive)
+	(bzg-etalab-caldav-sync)
+	(bzg-caldav-sync-perso))
    #+end_src
 
 * notmuch
@@ -855,16 +855,16 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
     (setq gnus-summary-ignore-duplicates t)
     (setq gnus-suppress-duplicates t)
     (setq gnus-alias-identity-alist
-	  '(("bzg" "" "bzg@bzg.fr" "bzg"
+	  '(("bzg" "" "Bastien <bzg@bzg.fr>" "bzg"
 	     (("Gcc" . "nnimap+localhost:bzgfrio/Sent"))
 	     "" " Bastien")
-	    ("data" "" "bastien.guerry@data.gouv.fr" "EIG"
+	    ("data" "" "Bastien <bastien.guerry@data.gouv.fr>" "EIG"
 	     (("Gcc" . "nnimap+localhost:datagouv/Sent"))
 	     "" " Bastien")
-	    ("gmail" "" "bastienguerry@gmail.com" "bzg"
+	    ("gmail" "" "Bastien <bastienguerry@gmail.com>" "bzg"
 	     (("Gcc" . "nnimap+localhost:bzgfr/Sent"))
 	     "" " Bastien")
-	    ("gnu" "" "bzg@gnu.org" "GNU"
+	    ("gnu" "" "Bastien <bzg@gnu.org>" "GNU"
 	     (("Gcc" . "nnimap+localhost:bzgfr/Sent"))
 	     "" " Bastien")))
     (setq gnus-ignored-from-addresses
