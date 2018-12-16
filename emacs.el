@@ -163,17 +163,17 @@
 
 (global-set-key "\M- " 'hippie-expand)
 (global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
-(global-set-key (kbd "C-é") (lambda () (interactive) (find-file "~/org/bzg.org")))
+(global-set-key (kbd "C-'") (lambda () (interactive) (find-file "~/org/bzg.org")))
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
 (global-set-key (kbd "C-&") 'gnus)
 (global-set-key (kbd "C-è") 'hidden-mode-line-mode)
 (global-set-key (kbd "C-\"") 'bzg-big-fringe-mode)
 ;; FIXME: overriden in paredit-mode?
-(global-set-key (kbd "C-(") 'delete-other-windows)
+(global-set-key (kbd "C-é") 'delete-other-windows)
 ;; FIXME: overriden in org-mode?
 (global-set-key
- (kbd "C-'")
+ (kbd "C-$")
  (lambda ()
    (interactive)
    (set-fringe-style 8)
