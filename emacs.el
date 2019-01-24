@@ -710,7 +710,7 @@
 	(org-caldav-files nil))
     (call-interactively 'org-caldav-sync)))
 
-(defun bzg--caldav-sync-eig-perso ()
+(defun bzg--caldav-sync-etalab-perso ()
   (interactive)
   (let ((org-caldav-inbox "~/org/rdv-etalab.org")
 	(org-caldav-calendar-id "eig-bastien")
@@ -731,7 +731,7 @@
 (defun bzg-etalab-caldav-sync ()
   (interactive)
   (bzg--caldav-sync-agenda-tech-ext)
-  (bzg--caldav-sync-eig-perso))
+  (bzg--caldav-sync-etalab-perso))
 
 (defun bzg-caldav-sync-all ()
   (interactive)
@@ -771,7 +771,7 @@
   (define-key global-map (kbd "C-*")
     #'(lambda() (interactive) (notmuch-search "tag:flagged")))
 
-  (define-key global-map (kbd "C-$")
+  (define-key global-map (kbd "C-ù")
     #'(lambda() (interactive) (notmuch-search "tag:unread"))))
 
 (use-package starttls :defer t)
@@ -787,12 +787,14 @@
   :config
   (gnus-delay-initialize)
   (setq gnus-delay-default-delay "1d")
+  (setq gnus-always-read-dribble-file t)
   (setq nndraft-directory "~/News/drafts/")
   (setq nnmh-directory "~/News/drafts/")
   (setq nnfolder-directory "~/Mail/archive")
   (setq nnml-directory "~/Maildir/Mail/")
   (setq gnus-summary-ignore-duplicates t)
   (setq gnus-suppress-duplicates t)
+  (setq gnus-auto-select-first nil)
   (setq gnus-alias-identity-alist
 	'(("bzg" "" "Bastien <bzg@bzg.fr>" "bzg"
 	   (("Gcc" . "nnimap+localhost:bzgfrio/Sent"))
@@ -878,6 +880,9 @@
 	  ))
 
   (setq gnus-check-new-newsgroups nil)
+
+  (add-hook 'gnus-exit-gnus-hook
+	    (lambda () (with-current-buffer "bbdb" (save-buffer))))
 
   (setq read-mail-command 'gnus
 	gnus-asynchronous t
@@ -1310,9 +1315,9 @@ the copy in the last group."
 
 ;; Set browser
 (if window-system
-    (setq browse-url-browser-function 'browse-url-firefox)
+    ;; (setq browse-url-browser-function 'browse-url-firefox)
     ;; (setq browse-url-browser-function 'browse-url-chromium)
-    ;; (setq browse-url-browser-function 'eww-browse-url)
+    (setq browse-url-browser-function 'eww-browse-url)
   (setq browse-url-browser-function 'eww-browse-url))
 (setq browse-url-text-browser "w3m")
 (setq browse-url-new-window-flag t)
@@ -1406,6 +1411,7 @@ the copy in the last group."
 	("big" . (400 . 400))
 	("300" . (300 . 300))
 	("bzg" . (200 . 200))
+	("100" . (100 . 100))
 	("minimal" . (1 . 1))))
 
 (defvar bzg-big-fringe-mode nil)
