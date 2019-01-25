@@ -713,9 +713,8 @@
 (defun bzg--caldav-sync-etalab-perso ()
   (interactive)
   (let ((org-caldav-inbox "~/org/rdv-etalab.org")
-	(org-caldav-calendar-id "eig-bastien")
-	;; https://cloud.eig-forever.org/index.php/apps/calendar/p/N29QNRZV1E19X848/EIG-Bastien
-	(org-caldav-url "https://cloud.eig-forever.org/remote.php/dav/calendars/bzg/")
+	(org-caldav-calendar-id "personal")
+	(org-caldav-url "https://nextcloud.data.gouv.fr/remote.php/dav/calendars/bastien.guerry")
 	(org-caldav-files nil))
     (call-interactively 'org-caldav-sync)))
 
@@ -723,8 +722,8 @@
   (interactive)
   (let ((org-caldav-inbox "~/.etalab/git/agenda-tech-ext/index.org")
 	(org-caldav-calendar-id "agenda-tech-ext")
-	;; https://owncloud.data.gouv.fr/index.php/apps/calendar/p/YAjeWZjoGFgs2dLp/agenda-tech-ext
-	(org-caldav-url "https://owncloud.data.gouv.fr/remote.php/dav/calendars/bastien.guerry/")
+	;; https://nextcloud.data.gouv.fr/index.php/apps/calendar/p/YAjeWZjoGFgs2dLp/agenda-tech-ext
+	(org-caldav-url "https://nextcloud.data.gouv.fr/remote.php/dav/calendars/bastien.guerry/")
 	(org-caldav-files nil))
     (call-interactively 'org-caldav-sync)))
 
