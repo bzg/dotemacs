@@ -453,7 +453,7 @@
 	(:endgroup)
 	("Print" . ?P) ("Buy" . ?B) ("Patch" . ?p) ("Bug" . ?b)))
 (setq org-tags-column -74)
-(setq org-todo-keywords '((type "STRT" "NEXT" "TODO" "WAIT" "|" "DONE" "CANCELED")))
+(setq org-todo-keywords '((type "STRT" "NEXT" "TODO" "WAIT" "|" "DONE" "DELEGATED" "CANCELED")))
 (setq org-todo-repeat-to-state t)
 (setq org-use-property-inheritance t)
 (setq org-use-sub-superscripts nil)
@@ -657,8 +657,8 @@
 	("C" tags-todo "+Code+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
-	("#" "DONE/CANCELED"
-	 todo "DONE|CANCELED"
+	("#" "DONE/CANCELED/DELEGATED"
+	 todo "DONE|CANCELED|DELEGATED"
 	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/libre.org"))
 	  (org-agenda-sorting-strategy '(timestamp-up))))))
 
@@ -801,9 +801,6 @@
 	  ("data" "" "Bastien <bastien.guerry@data.gouv.fr>" "EIG"
 	   (("Gcc" . "nnimap+localhost:datagouv/Sent"))
 	   "" " Bastien")
-	  ("gmail" "" "Bastien <bastienguerry@gmail.com>" "bzg"
-	   (("Gcc" . "nnimap+localhost:bzgfr/Sent"))
-	   "" " Bastien")
 	  ("gnu" "" "Bastien <bzg@gnu.org>" "GNU"
 	   (("Gcc" . "nnimap+localhost:bzgfr/Sent"))
 	   "" " Bastien")))
@@ -814,7 +811,6 @@
 		      "bastien.guerry@aful.org"
 		      "bastien@olpc-france.org"
 		      "bzg@latelierliban.net"
-		      "bastienguerry@gmail.com"
 		      "bastien.guerry@data.gouv.fr"
 		      "bzg@kickhub.com"
 		      "bastien@hackadon.org"
@@ -1620,20 +1616,20 @@ the copy in the last group."
   (define-key dired-mode-map (kbd "I") 'dired-subtree-toggle)
   (define-key dired-mode-map (kbd "TAB") 'dired-subtree-cycle))
 
-(use-package eyebrowse
-  :init
-  (setq eyebrowse-keymap-prefix (kbd "C-z"))
-  :config
-  (define-key eyebrowse-mode-map (kbd "C-z n") 'eyebrowse-next-window-config)
-  (define-key eyebrowse-mode-map (kbd "C-z k") 'eyebrowse-close-window-config)
-  (define-key eyebrowse-mode-map (kbd "C-z p") 'eyebrowse-prev-window-config)
-  ;; (add-hook 'eyebrowse-post-window-switch-hook
-  ;; 	    (lambda ()
-  ;; 	      (switch-to-buffer
-  ;; 	       (get-buffer-create
-  ;; 		(org-trim
-  ;; 		 (shell-command-to-string org-id-uuid-program))))))
-  (eyebrowse-mode 1))
+;; (use-package eyebrowse
+;;   :init
+;;   (setq eyebrowse-keymap-prefix (kbd "C-z"))
+;;   :config
+;;   (define-key eyebrowse-mode-map (kbd "C-z n") 'eyebrowse-next-window-config)
+;;   (define-key eyebrowse-mode-map (kbd "C-z k") 'eyebrowse-close-window-config)
+;;   (define-key eyebrowse-mode-map (kbd "C-z p") 'eyebrowse-prev-window-config)
+;;   ;; (add-hook 'eyebrowse-post-window-switch-hook
+;;   ;; 	    (lambda ()
+;;   ;; 	      (switch-to-buffer
+;;   ;; 	       (get-buffer-create
+;;   ;; 		(org-trim
+;;   ;; 		 (shell-command-to-string org-id-uuid-program))))))
+;;   (eyebrowse-mode 1))
 
 (require 'org-bullets)
 (setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
