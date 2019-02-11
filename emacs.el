@@ -71,7 +71,7 @@
 ;; Don't display initial messages
 (setq initial-scratch-message "")
 (setq initial-major-mode 'org-mode)
-(setq inhibit-startup-message t)
+(setq inhibit-startup-screen t)
 (setq inhibit-startup-echo-area-message "guerry")
 (setq use-dialog-box nil)
 (setq search-invisible 'open)
@@ -794,16 +794,6 @@
   (setq gnus-summary-ignore-duplicates t)
   (setq gnus-suppress-duplicates t)
   (setq gnus-auto-select-first nil)
-  (setq gnus-alias-identity-alist
-	'(("bzg" "" "Bastien <bzg@bzg.fr>" "bzg"
-	   (("Gcc" . "nnimap+localhost:bzgfrio/Sent"))
-	   "" " Bastien")
-	  ("data" "" "Bastien <bastien.guerry@data.gouv.fr>" "EIG"
-	   (("Gcc" . "nnimap+localhost:datagouv/Sent"))
-	   "" " Bastien")
-	  ("gnu" "" "Bastien <bzg@gnu.org>" "GNU"
-	   (("Gcc" . "nnimap+localhost:bzgfr/Sent"))
-	   "" " Bastien")))
   (setq gnus-ignored-from-addresses
 	(regexp-opt '("bastien.guerry@free.fr"
 		      "bastien.guerry@data.gouv.fr"
@@ -1287,9 +1277,9 @@ the copy in the last group."
 
 ;; Set browser
 (if window-system
-    ;; (setq browse-url-browser-function 'browse-url-firefox)
+    (setq browse-url-browser-function 'browse-url-firefox)
     ;; (setq browse-url-browser-function 'browse-url-chromium)
-    (setq browse-url-browser-function 'eww-browse-url)
+    ;; (setq browse-url-browser-function 'eww-browse-url)
   (setq browse-url-browser-function 'eww-browse-url))
 (setq browse-url-text-browser "w3m")
 (setq browse-url-new-window-flag t)
