@@ -451,7 +451,7 @@
 	(:grouptags)
 	("Read" . ?r) ("View" . ?v) ("Listen" . ?l)
 	(:endgroup)
-	("Mail" . ?@) ("Print" . ?P) ("Buy" . ?B) ("Bug" . ?b)))
+	("Mail" . ?@) ("Print" . ?P) ("Buy" . ?b)))
 (setq org-tags-column -74)
 (setq org-todo-keywords '((type "STRT" "NEXT" "TODO" "WAIT" "|" "DONE" "DELEGATED" "CANCELED")))
 (setq org-todo-repeat-to-state t)
