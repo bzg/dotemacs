@@ -653,8 +653,8 @@
 	("w" tags-todo "+Write+TODO={NEXT\\|STRT}")
 	("W" tags-todo "+Write+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
-	("c" tags-todo "+Code+TODO={NEXT\\|STRT}")
-	("C" tags-todo "+Code+TODO={NEXT\\|STRT}"
+	("=" tags-todo "+Code+TODO={NEXT\\|STRT}")
+	("+" tags-todo "+Code+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("#" "DONE/CANCELED/DELEGATED"
