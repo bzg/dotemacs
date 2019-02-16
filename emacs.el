@@ -187,7 +187,7 @@
 (global-set-key (kbd "C-c F") 'auto-fill-mode)
 (global-set-key (kbd "C-c o") 'occur)
 (global-set-key (kbd "C-c O") 'multi-occur)
-(global-set-key (kbd "C-c m") 'magit)
+(global-set-key (kbd "C-c m") 'magit-status)
 (global-set-key (kbd "C-à") (lambda () (interactive) (if (eq major-mode 'calendar-mode) (calendar-exit) (calendar))))
 (global-set-key (kbd "C-ç") 'calc)
 (global-set-key (kbd "C-+") 'text-scale-increase)
@@ -1470,11 +1470,6 @@ the copy in the last group."
 ;; magit configuration
 (use-package magit
   :config
-  (setq magit-save-some-buffers 'dontask
-	magit-commit-all-when-nothing-staged 'ask
-	magit-auto-revert-mode nil
-	magit-last-seen-setup-instructions "1.4.0"
-	magit-push-always-verify nil)
   (magit-define-popup-switch 'magit-log-popup
     ?m "Omit merge commits" "--no-merges"))
 
