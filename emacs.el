@@ -603,7 +603,7 @@
 	   '(todo-state-up priority-down time-up))))
 
 	("!" tags-todo "+DEADLINE<=\"<+7d>\"")
-	("@" tags-todo "+SCHEDULED<=\"<now>\"")
+	("=" tags-todo "+SCHEDULED<=\"<now>\"")
 	("n" "NEXT (bzg)" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/rdv-etalab.org"))
 	  (org-agenda-sorting-strategy
@@ -653,9 +653,10 @@
 	("w" tags-todo "+Write+TODO={NEXT\\|STRT}")
 	("W" tags-todo "+Write+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
-	("=" tags-todo "+Code+TODO={NEXT\\|STRT}")
-	("+" tags-todo "+Code+TODO={NEXT\\|STRT}"
+	(")" tags-todo "+Code+TODO={NEXT\\|STRT}")
+	("°" tags-todo "+Code+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
+	("@" tags-todo "+Mail+TODO={NEXT\\|STRT}")
 
 	("#" "DONE/CANCELED/DELEGATED"
 	 todo "DONE|CANCELED|DELEGATED"
@@ -1466,12 +1467,6 @@ the copy in the last group."
 (setq geiser-active-implementations '(guile racket))
 (setq geiser-scheme-implementation 'racket)
 (setq geiser-repl-startup-time 20000)
-
-;; magit configuration
-(use-package magit
-  :config
-  (magit-define-popup-switch 'magit-log-popup
-    ?m "Omit merge commits" "--no-merges"))
 
 ;; doc-view and eww/shr configuration
 (setq doc-view-continuous t)
