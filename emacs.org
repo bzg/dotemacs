@@ -699,6 +699,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	    ("v" tags-todo "+View+TODO={NEXT\\|STRT}")
 	    ("V" tags-todo "+View+TODO={NEXT\\|STRT}"
 	     ((org-agenda-files '("~/org/libre.org"))))
+	    ("l" tags-todo "+Listen+TODO={NEXT\\|STRT}")
+	    ("L" tags-todo "+Listen+TODO={NEXT\\|STRT}"
+	     ((org-agenda-files '("~/org/libre.org"))))
 	    ("w" tags-todo "+Write+TODO={NEXT\\|STRT}")
 	    ("W" tags-todo "+Write+TODO={NEXT\\|STRT}"
 	     ((org-agenda-files '("~/org/libre.org"))))
