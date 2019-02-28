@@ -680,7 +680,7 @@
 	("R" "RDV Etalab" entry (file+headline "~/org/rdv-etalab.org" "RDV Etalab")
 	 "* RDV avec %:fromname %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
-	("e" "Etalab" entry (file+headline "~/org/bzg.org" "Etalab : ouvrir des codes sources")
+	("e" "Etalab" entry (file+headline "~/org/bzg.org" "Etalab : impulser dynamique LL via la DINSIC")
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
 
 	("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
@@ -1546,7 +1546,6 @@ the copy in the last group."
 ;; (desktop-save-mode)
 
 (use-package guide-key
-  :defer t
   :config
   (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x c" "C-c @"))
   (guide-key-mode 1)) ; Enable guide-key-mode
@@ -1594,6 +1593,14 @@ the copy in the last group."
 (require 'org-bullets)
 (setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
+(defun find-variable-or-function-at-point ()
+  (interactive)
+  (or (find-variable-at-point)
+      (find-function-at-point)
+      (message "No variable or function at point.")))
+
+(global-set-key (kbd "C-:") 'find-variable-or-function-at-point)
 
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)

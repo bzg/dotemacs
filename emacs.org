@@ -729,7 +729,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	    ("R" "RDV Etalab" entry (file+headline "~/org/rdv-etalab.org" "RDV Etalab")
 	     "* RDV avec %:fromname %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
-	    ("e" "Etalab" entry (file+headline "~/org/bzg.org" "Etalab : ouvrir des codes sources")
+	    ("e" "Etalab" entry (file+headline "~/org/bzg.org" "Etalab : impulser dynamique LL via la DINSIC")
 	     "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
 
 	    ("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
@@ -1711,7 +1711,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
     #+BEGIN_SRC emacs-lisp
     (use-package guide-key
-      :defer t
       :config
       (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x c" "C-c @"))
       (guide-key-mode 1)) ; Enable guide-key-mode
@@ -1768,7 +1767,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
     #+end_src
 
-*** COMMENT find-variable-or-function-at-point
+*** find-variable-or-function-at-point
 
     #+begin_src emacs-lisp
     (defun find-variable-or-function-at-point ()
