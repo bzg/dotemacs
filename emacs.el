@@ -1575,20 +1575,15 @@ the copy in the last group."
   (define-key dired-mode-map (kbd "I") 'dired-subtree-toggle)
   (define-key dired-mode-map (kbd "TAB") 'dired-subtree-cycle))
 
-;; (use-package eyebrowse
-;;   :init
-;;   (setq eyebrowse-keymap-prefix (kbd "C-z"))
-;;   :config
-;;   (define-key eyebrowse-mode-map (kbd "C-z n") 'eyebrowse-next-window-config)
-;;   (define-key eyebrowse-mode-map (kbd "C-z k") 'eyebrowse-close-window-config)
-;;   (define-key eyebrowse-mode-map (kbd "C-z p") 'eyebrowse-prev-window-config)
-;;   ;; (add-hook 'eyebrowse-post-window-switch-hook
-;;   ;; 	    (lambda ()
-;;   ;; 	      (switch-to-buffer
-;;   ;; 	       (get-buffer-create
-;;   ;; 		(org-trim
-;;   ;; 		 (shell-command-to-string org-id-uuid-program))))))
-;;   (eyebrowse-mode 1))
+(use-package eyebrowse
+  :init
+  (setq eyebrowse-keymap-prefix (kbd "C-z"))
+  :config
+  (define-key eyebrowse-mode-map (kbd "C-z n") 'eyebrowse-next-window-config)
+  (define-key eyebrowse-mode-map (kbd "C-z c") 'eyebrowse-create-window-config)
+  (define-key eyebrowse-mode-map (kbd "C-z k") 'eyebrowse-close-window-config)
+  (define-key eyebrowse-mode-map (kbd "C-z p") 'eyebrowse-prev-window-config)
+  (eyebrowse-mode 1))
 
 (require 'org-bullets)
 (setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
