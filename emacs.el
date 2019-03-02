@@ -604,16 +604,21 @@
 
 	("!" tags-todo "+DEADLINE<=\"<+7d>\"")
 	("=" tags-todo "+SCHEDULED<=\"<now>\"")
-	("n" "NEXT (bzg)" tags-todo "TODO={STRT\\|NEXT}"
-	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/rdv-etalab.org"))
+	("e" "Etalab TODO" tags-todo "TODO={STRT\\|NEXT\\|TODO}"
+	 ((org-agenda-files '("~/org/bzg.org"))
+	  (org-agenda-category-filter-preset '("+ETL"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
-	("N" "NEXT (bzg)" tags-todo "TODO={STRT\\|NEXT}"
+	("n" "Etalab NEXT" tags-todo "TODO={STRT\\|NEXT}"
+	 ((org-agenda-files '("~/org/bzg.org"))
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up time-up priority-down))))
+	("N" "Libre NEXT" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 	("?" "WAIT (bzg)" tags-todo "TODO={WAIT}"
-	 ((org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/bzg.org"))
+	 ((org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up priority-down time-up))))
 
