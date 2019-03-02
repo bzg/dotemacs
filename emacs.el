@@ -163,23 +163,13 @@
 
 (global-set-key "\M- " 'hippie-expand)
 (global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
-(global-set-key (kbd "C-'") (lambda () (interactive) (find-file "~/org/bzg.org")))
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
-(global-set-key (kbd "C-&") 'gnus)
+(global-set-key (kbd "C-²") 'gnus)
+(global-set-key (kbd "C-&") 'delete-other-windows)
+(global-set-key (kbd "C-é") (lambda () (interactive) (bzg-big-fringe-mode -1) (split-window-right) (balance-windows)))
+(global-set-key (kbd "C-\"") (lambda () (interactive) (call-interactively 'bzg-big-fringe-mode) (delete-other-windows)))
 (global-set-key (kbd "C-è") 'hidden-mode-line-mode)
-(global-set-key (kbd "C-\"") 'bzg-big-fringe-mode)
-;; FIXME: overriden in paredit-mode?
-(global-set-key (kbd "C-é") 'delete-other-windows)
-;; FIXME: overriden in org-mode?
-(global-set-key
- (kbd "C-$")
- (lambda ()
-   (interactive)
-   (set-fringe-style 8)
-   (delete-other-windows)
-   (split-window-right)
-   (other-window 1)))
 (global-set-key (kbd "C-~") (lambda () (interactive) (dired "~")))
 (global-set-key (kbd "C-c f") 'find-name-dired)
 (global-set-key (kbd "C-c g") 'grep-find)
@@ -853,7 +843,9 @@
   (setq gnus-check-new-newsgroups nil)
 
   (add-hook 'gnus-exit-gnus-hook
-	    (lambda () (with-current-buffer "bbdb" (save-buffer))))
+	    (lambda () 
+	      (if (get-buffer "bbdb")
+		  (with-current-buffer "bbdb" (save-buffer)))))
 
   (setq read-mail-command 'gnus
 	gnus-asynchronous t

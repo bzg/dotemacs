@@ -198,65 +198,55 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 * Keybindings
 
   #+BEGIN_SRC emacs-lisp
-    (global-set-key "\M- " 'hippie-expand)
-    (global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
-    (global-set-key (kbd "C-'") (lambda () (interactive) (find-file "~/org/bzg.org")))
-    (global-set-key (kbd "<home>") 'beginning-of-buffer)
-    (global-set-key (kbd "<end>") 'end-of-buffer)
-    (global-set-key (kbd "C-&") 'gnus)
-    (global-set-key (kbd "C-è") 'hidden-mode-line-mode)
-    (global-set-key (kbd "C-\"") 'bzg-big-fringe-mode)
-    ;; FIXME: overriden in paredit-mode?
-    (global-set-key (kbd "C-é") 'delete-other-windows)
-    ;; FIXME: overriden in org-mode?
-    (global-set-key
-     (kbd "C-$")
-     (lambda ()
-       (interactive)
-       (set-fringe-style 8)
-       (delete-other-windows)
-       (split-window-right)
-       (other-window 1)))
-    (global-set-key (kbd "C-~") (lambda () (interactive) (dired "~")))
-    (global-set-key (kbd "C-c f") 'find-name-dired)
-    (global-set-key (kbd "C-c g") 'grep-find)
-    (global-set-key (kbd "C-c A") 'helm-ag)
-    (global-set-key (kbd "C-c F") 'auto-fill-mode)
-    (global-set-key (kbd "C-c o") 'occur)
-    (global-set-key (kbd "C-c O") 'multi-occur)
-    (global-set-key (kbd "C-c m") 'magit-status)
-    (global-set-key (kbd "C-à") (lambda () (interactive) (if (eq major-mode 'calendar-mode) (calendar-exit) (calendar))))
-    (global-set-key (kbd "C-ç") 'calc)
-    (global-set-key (kbd "C-+") 'text-scale-increase)
-    (global-set-key (kbd "C--") 'text-scale-decrease)
-    (global-set-key (kbd "C-=") 'text-scale-adjust)
-    (global-set-key (kbd "C-M-]") 'origami-toggle-all-nodes)
-    (global-set-key (kbd "M-]") 'origami-toggle-node)
+  (global-set-key "\M- " 'hippie-expand)
+  (global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
+  (global-set-key (kbd "<home>") 'beginning-of-buffer)
+  (global-set-key (kbd "<end>") 'end-of-buffer)
+  (global-set-key (kbd "C-²") 'gnus)
+  (global-set-key (kbd "C-&") 'delete-other-windows)
+  (global-set-key (kbd "C-é") (lambda () (interactive) (bzg-big-fringe-mode -1) (split-window-right) (balance-windows)))
+  (global-set-key (kbd "C-\"") (lambda () (interactive) (call-interactively 'bzg-big-fringe-mode) (delete-other-windows)))
+  (global-set-key (kbd "C-è") 'hidden-mode-line-mode)
+  (global-set-key (kbd "C-~") (lambda () (interactive) (dired "~")))
+  (global-set-key (kbd "C-c f") 'find-name-dired)
+  (global-set-key (kbd "C-c g") 'grep-find)
+  (global-set-key (kbd "C-c A") 'helm-ag)
+  (global-set-key (kbd "C-c F") 'auto-fill-mode)
+  (global-set-key (kbd "C-c o") 'occur)
+  (global-set-key (kbd "C-c O") 'multi-occur)
+  (global-set-key (kbd "C-c m") 'magit-status)
+  (global-set-key (kbd "C-à") (lambda () (interactive) (if (eq major-mode 'calendar-mode) (calendar-exit) (calendar))))
+  (global-set-key (kbd "C-ç") 'calc)
+  (global-set-key (kbd "C-+") 'text-scale-increase)
+  (global-set-key (kbd "C--") 'text-scale-decrease)
+  (global-set-key (kbd "C-=") 'text-scale-adjust)
+  (global-set-key (kbd "C-M-]") 'origami-toggle-all-nodes)
+  (global-set-key (kbd "M-]") 'origami-toggle-node)
 
-    (defun google-translate-word-at-point ()
-      (interactive)
-      (let ((w (thing-at-point 'word)))
-	(google-translate-translate "en" "fr" w)))
+  (defun google-translate-word-at-point ()
+    (interactive)
+    (let ((w (thing-at-point 'word)))
+      (google-translate-translate "en" "fr" w)))
 
-    (global-set-key (kbd "C-c t") 'google-translate-query-translate)
-    (global-set-key (kbd "C-c T") 'google-translate-word-at-point)
+  (global-set-key (kbd "C-c t") 'google-translate-query-translate)
+  (global-set-key (kbd "C-c T") 'google-translate-word-at-point)
 
-    (defun unfill-paragraph ()
-      "Make a multi-line paragraph into a single line of text."
-      (interactive)
-      (let ((fill-column (point-max)))
-	(fill-paragraph nil)))
+  (defun unfill-paragraph ()
+    "Make a multi-line paragraph into a single line of text."
+    (interactive)
+    (let ((fill-column (point-max)))
+      (fill-paragraph nil)))
 
-    ;; Handy key definition
-    (define-key global-map "\M-Q" 'unfill-paragraph)
+  ;; Handy key definition
+  (define-key global-map "\M-Q" 'unfill-paragraph)
 
-    (use-package helm
-      :config
-      (require 'helm-config)
-      ;; (global-set-key (kbd "M-x") 'helm-M-x)
-      (global-set-key (kbd "C-x c x") #'helm-M-x)
-      ;; (global-set-key (kbd "C-x F") #'helm-find-files)
-      (global-set-key (kbd "C-x c A") #'helm-ag))
+  (use-package helm
+    :config
+    (require 'helm-config)
+    ;; (global-set-key (kbd "M-x") 'helm-M-x)
+    (global-set-key (kbd "C-x c x") #'helm-M-x)
+    ;; (global-set-key (kbd "C-x F") #'helm-find-files)
+    (global-set-key (kbd "C-x c A") #'helm-ag))
   #+END_SRC
 
 * Dired
@@ -843,347 +833,349 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 * Gnus
 
   #+BEGIN_SRC emacs-lisp
-  (use-package starttls :defer t)
-  (use-package epg :defer t)
-  (use-package epa
-    :defer t
-    :config
-    (setq epa-popup-info-window nil))
+    (use-package starttls :defer t)
+    (use-package epg :defer t)
+    (use-package epa
+      :defer t
+      :config
+      (setq epa-popup-info-window nil))
 
-  (use-package ecomplete :defer t)
-  (use-package gnus
-    :defer t
-    :config
-    (gnus-delay-initialize)
-    (setq gnus-delay-default-delay "1d")
-    (setq gnus-always-read-dribble-file t)
-    (setq nndraft-directory "~/News/drafts/")
-    (setq nnmh-directory "~/News/drafts/")
-    (setq nnfolder-directory "~/Mail/archive")
-    (setq nnml-directory "~/Maildir/Mail/")
-    (setq gnus-summary-ignore-duplicates t)
-    (setq gnus-suppress-duplicates t)
-    (setq gnus-auto-select-first nil)
-    (setq gnus-ignored-from-addresses
-	  (regexp-opt '("bastien.guerry@free.fr"
-			"bastien.guerry@data.gouv.fr"
-			"bzg@data.gouv.fr"
-			"bzg+emacs@bzg.fr"
-			"bzg@bzg.fr"
-			"bzg@jecode.org"
-			"bzg@altern.org"
-			"bzg@gnu.org"
-			)))
+    (use-package ecomplete :defer t)
+    (use-package gnus
+      :defer t
+      :config
+      (gnus-delay-initialize)
+      (setq gnus-delay-default-delay "1d")
+      (setq gnus-always-read-dribble-file t)
+      (setq nndraft-directory "~/News/drafts/")
+      (setq nnmh-directory "~/News/drafts/")
+      (setq nnfolder-directory "~/Mail/archive")
+      (setq nnml-directory "~/Maildir/Mail/")
+      (setq gnus-summary-ignore-duplicates t)
+      (setq gnus-suppress-duplicates t)
+      (setq gnus-auto-select-first nil)
+      (setq gnus-ignored-from-addresses
+	    (regexp-opt '("bastien.guerry@free.fr"
+			  "bastien.guerry@data.gouv.fr"
+			  "bzg@data.gouv.fr"
+			  "bzg+emacs@bzg.fr"
+			  "bzg@bzg.fr"
+			  "bzg@jecode.org"
+			  "bzg@altern.org"
+			  "bzg@gnu.org"
+			  )))
 
-    (setq send-mail-function 'sendmail-send-it)
+      (setq send-mail-function 'sendmail-send-it)
 
-    ;; (setq mail-header-separator "----")
-    (setq mail-use-rfc822 t)
+      ;; (setq mail-header-separator "----")
+      (setq mail-use-rfc822 t)
 
-    ;; Attachments
-    (setq mm-content-transfer-encoding-defaults
-	  (quote
-	   (("text/x-patch" 8bit)
-	    ("text/.*" 8bit)
-	    ("message/rfc822" 8bit)
-	    ("application/emacs-lisp" 8bit)
-	    ("application/x-emacs-lisp" 8bit)
-	    ("application/x-patch" 8bit)
-	    (".*" base64))))
+      ;; Attachments
+      (setq mm-content-transfer-encoding-defaults
+	    (quote
+	     (("text/x-patch" 8bit)
+	      ("text/.*" 8bit)
+	      ("message/rfc822" 8bit)
+	      ("application/emacs-lisp" 8bit)
+	      ("application/x-emacs-lisp" 8bit)
+	      ("application/x-patch" 8bit)
+	      (".*" base64))))
 
-    (setq mm-url-use-external nil)
+      (setq mm-url-use-external nil)
 
-    (setq nnmail-extra-headers
-	  '(X-Diary-Time-Zone X-Diary-Dow X-Diary-Year
-			      X-Diary-Month X-Diary-Dom
-			      X-Diary-Hour X-Diary-Minute
-			      To Newsgroups Cc))
+      (setq nnmail-extra-headers
+	    '(X-Diary-Time-Zone X-Diary-Dow X-Diary-Year
+				X-Diary-Month X-Diary-Dom
+				X-Diary-Hour X-Diary-Minute
+				To Newsgroups Cc))
 
 
-    ;; Sources and methods
-    (setq mail-sources nil
-	  gnus-select-method '(nnnil "")
-	  gnus-secondary-select-methods
-	  '((nnimap "localhost"
-		    (nnimap-server-port 143)
-		    (nnimap-authinfo-file "~/.authinfo")
-		    (nnimap-stream network))
-	    ;; (nntp "news" (nntp-address "news.gmane.org"))
-	    ))
+      ;; Sources and methods
+      (setq mail-sources nil
+	    gnus-select-method '(nnnil "")
+	    gnus-secondary-select-methods
+	    '((nnimap "localhost"
+		      (nnimap-server-port 143)
+		      (nnimap-authinfo-file "~/.authinfo")
+		      (nnimap-stream network))
+	      ;; (nntp "news" (nntp-address "news.gmane.org"))
+	      ))
 
-    (setq gnus-check-new-newsgroups nil)
+      (setq gnus-check-new-newsgroups nil)
 
-    (add-hook 'gnus-exit-gnus-hook
-	      (lambda () (with-current-buffer "bbdb" (save-buffer))))
+      (add-hook 'gnus-exit-gnus-hook
+		(lambda () 
+		  (if (get-buffer "bbdb")
+		      (with-current-buffer "bbdb" (save-buffer)))))
 
-    (setq read-mail-command 'gnus
-	  gnus-asynchronous t
-	  gnus-directory "~/News/"
-	  gnus-gcc-mark-as-read t
-	  gnus-inhibit-startup-message t
-	  gnus-interactive-catchup nil
-	  gnus-interactive-exit nil
-	  gnus-large-newsgroup 10000
-	  gnus-no-groups-message ""
-	  gnus-novice-user nil
-	  gnus-play-startup-jingle nil
-	  gnus-show-all-headers nil
-	  gnus-use-bbdb t
-	  gnus-use-correct-string-widths nil
-	  gnus-use-cross-reference nil
-	  gnus-verbose 6
-	  mail-specify-envelope-from t
-	  mail-envelope-from 'header
-	  message-sendmail-envelope-from 'header
-	  mail-user-agent 'gnus-user-agent
-	  message-fill-column 70
-	  message-kill-buffer-on-exit t
-	  message-mail-user-agent 'gnus-user-agent
-	  message-use-mail-followup-to nil
-	  nnimap-expiry-wait 'never
-	  nnmail-crosspost nil
-	  nnmail-expiry-target "nnml:expired"
-	  nnmail-expiry-wait 'never
-	  nnmail-split-methods 'nnmail-split-fancy
-	  nnmail-treat-duplicates 'delete)
+      (setq read-mail-command 'gnus
+	    gnus-asynchronous t
+	    gnus-directory "~/News/"
+	    gnus-gcc-mark-as-read t
+	    gnus-inhibit-startup-message t
+	    gnus-interactive-catchup nil
+	    gnus-interactive-exit nil
+	    gnus-large-newsgroup 10000
+	    gnus-no-groups-message ""
+	    gnus-novice-user nil
+	    gnus-play-startup-jingle nil
+	    gnus-show-all-headers nil
+	    gnus-use-bbdb t
+	    gnus-use-correct-string-widths nil
+	    gnus-use-cross-reference nil
+	    gnus-verbose 6
+	    mail-specify-envelope-from t
+	    mail-envelope-from 'header
+	    message-sendmail-envelope-from 'header
+	    mail-user-agent 'gnus-user-agent
+	    message-fill-column 70
+	    message-kill-buffer-on-exit t
+	    message-mail-user-agent 'gnus-user-agent
+	    message-use-mail-followup-to nil
+	    nnimap-expiry-wait 'never
+	    nnmail-crosspost nil
+	    nnmail-expiry-target "nnml:expired"
+	    nnmail-expiry-wait 'never
+	    nnmail-split-methods 'nnmail-split-fancy
+	    nnmail-treat-duplicates 'delete)
 
-    (setq gnus-subscribe-newsgroup-method 'gnus-subscribe-interactively
-	  gnus-group-default-list-level 6 ; 3
-	  gnus-level-default-subscribed 3
-	  gnus-level-default-unsubscribed 7
-	  gnus-level-subscribed 6
-	  gnus-activate-level 6
-	  gnus-level-unsubscribed 7)
+      (setq gnus-subscribe-newsgroup-method 'gnus-subscribe-interactively
+	    gnus-group-default-list-level 6 ; 3
+	    gnus-level-default-subscribed 3
+	    gnus-level-default-unsubscribed 7
+	    gnus-level-subscribed 6
+	    gnus-activate-level 6
+	    gnus-level-unsubscribed 7)
 
-    (setq nnir-notmuch-remove-prefix "/home/guerry/Maildir/")
-    (setq nnir-method-default-engines
-	  '((nnimap . notmuch)))
+      (setq nnir-notmuch-remove-prefix "/home/guerry/Maildir/")
+      (setq nnir-method-default-engines
+	    '((nnimap . notmuch)))
 
-    (defun my-gnus-message-archive-group (group-current)
-      "Return prefered archive group."
-      (cond
-       ((and (stringp group-current)
-	     (or (message-news-p)
-		 (string-match "nntp\\+news" group-current 0)))
-	(concat "nnfolder+archive:" (format-time-string "%Y-%m")
-		"-divers-news"))
-       ((and (stringp group-current) (< 0 (length group-current)))
-	(concat (replace-regexp-in-string "[^/]+$" "" group-current) "Sent"))
-       (t "nnimap+localhost:bzgfrio/Sent")))
+      (defun my-gnus-message-archive-group (group-current)
+	"Return prefered archive group."
+	(cond
+	 ((and (stringp group-current)
+	       (or (message-news-p)
+		   (string-match "nntp\\+news" group-current 0)))
+	  (concat "nnfolder+archive:" (format-time-string "%Y-%m")
+		  "-divers-news"))
+	 ((and (stringp group-current) (< 0 (length group-current)))
+	  (concat (replace-regexp-in-string "[^/]+$" "" group-current) "Sent"))
+	 (t "nnimap+localhost:bzgfrio/Sent")))
 
-    (setq gnus-message-archive-group 'my-gnus-message-archive-group)
+      (setq gnus-message-archive-group 'my-gnus-message-archive-group)
 
-    ;; Delete mail backups older than 1 days
-    (setq mail-source-delete-incoming 1)
+      ;; Delete mail backups older than 1 days
+      (setq mail-source-delete-incoming 1)
 
-    ;; Group sorting
-    (setq gnus-group-sort-function
-	  '(gnus-group-sort-by-unread
-	    gnus-group-sort-by-rank
-	    ;; gnus-group-sort-by-score
-	    ;; gnus-group-sort-by-level
-	    ;; gnus-group-sort-by-alphabet
-	    ))
+      ;; Group sorting
+      (setq gnus-group-sort-function
+	    '(gnus-group-sort-by-unread
+	      gnus-group-sort-by-rank
+	      ;; gnus-group-sort-by-score
+	      ;; gnus-group-sort-by-level
+	      ;; gnus-group-sort-by-alphabet
+	      ))
 
-    (add-hook 'gnus-summary-exit-hook 'gnus-summary-bubble-group)
-    (add-hook 'gnus-summary-exit-hook 'gnus-group-sort-groups-by-rank)
-    (add-hook 'gnus-suspend-gnus-hook 'gnus-group-sort-groups-by-rank)
-    (add-hook 'gnus-exit-gnus-hook 'gnus-group-sort-groups-by-rank)
+      (add-hook 'gnus-summary-exit-hook 'gnus-summary-bubble-group)
+      (add-hook 'gnus-summary-exit-hook 'gnus-group-sort-groups-by-rank)
+      (add-hook 'gnus-suspend-gnus-hook 'gnus-group-sort-groups-by-rank)
+      (add-hook 'gnus-exit-gnus-hook 'gnus-group-sort-groups-by-rank)
 
-    ;; Headers we wanna see:
-    (setq gnus-visible-headers
-	  "^From:\\|^Subject:\\|^X-Mailer:\\|^X-Newsreader:\\|^Date:\\|^To:\\|^Cc:\\|^User-agent:\\|^Newsgroups:\\|^Comments:")
+      ;; Headers we wanna see:
+      (setq gnus-visible-headers
+	    "^From:\\|^Subject:\\|^X-Mailer:\\|^X-Newsreader:\\|^Date:\\|^To:\\|^Cc:\\|^User-agent:\\|^Newsgroups:\\|^Comments:")
 
-    ;; Sort mails
-    (setq nnmail-split-abbrev-alist
-	  '((any . "From\\|To\\|Cc\\|Sender\\|Apparently-To\\|Delivered-To\\|X-Apparently-To\\|Resent-From\\|Resent-To\\|Resent-Cc")
-	    (mail . "Mailer-Daemon\\|Postmaster\\|Uucp")
-	    (to . "To\\|Cc\\|Apparently-To\\|Resent-To\\|Resent-Cc\\|Delivered-To\\|X-Apparently-To")
-	    (from . "From\\|Sender\\|Resent-From")
-	    (nato . "To\\|Cc\\|Resent-To\\|Resent-Cc\\|Delivered-To\\|X-Apparently-To")
-	    (naany . "From\\|To\\|Cc\\|Sender\\|Resent-From\\|Resent-To\\|Delivered-To\\|X-Apparently-To\\|Resent-Cc")))
+      ;; Sort mails
+      (setq nnmail-split-abbrev-alist
+	    '((any . "From\\|To\\|Cc\\|Sender\\|Apparently-To\\|Delivered-To\\|X-Apparently-To\\|Resent-From\\|Resent-To\\|Resent-Cc")
+	      (mail . "Mailer-Daemon\\|Postmaster\\|Uucp")
+	      (to . "To\\|Cc\\|Apparently-To\\|Resent-To\\|Resent-Cc\\|Delivered-To\\|X-Apparently-To")
+	      (from . "From\\|Sender\\|Resent-From")
+	      (nato . "To\\|Cc\\|Resent-To\\|Resent-Cc\\|Delivered-To\\|X-Apparently-To")
+	      (naany . "From\\|To\\|Cc\\|Sender\\|Resent-From\\|Resent-To\\|Delivered-To\\|X-Apparently-To\\|Resent-Cc")))
 
-    ;; Simplify the subject lines
-    (setq gnus-simplify-subject-functions
-	  '(gnus-simplify-subject-re
-	    gnus-simplify-whitespace))
+      ;; Simplify the subject lines
+      (setq gnus-simplify-subject-functions
+	    '(gnus-simplify-subject-re
+	      gnus-simplify-whitespace))
 
-    ;; Display faces
-    (setq gnus-treat-display-face 'head)
+      ;; Display faces
+      (setq gnus-treat-display-face 'head)
 
-    ;; Thread by Xref, not by subject
-    (setq gnus-thread-ignore-subject t)
-    (setq gnus-thread-hide-subtree nil)
-    (setq gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references
-	  gnus-thread-sort-functions '(gnus-thread-sort-by-date)
-	  gnus-sum-thread-tree-false-root ""
-	  gnus-sum-thread-tree-indent " "
-	  gnus-sum-thread-tree-leaf-with-other "├► "
-	  gnus-sum-thread-tree-root ""
-	  gnus-sum-thread-tree-single-leaf "╰► "
-	  gnus-sum-thread-tree-vertical "│")
+      ;; Thread by Xref, not by subject
+      (setq gnus-thread-ignore-subject t)
+      (setq gnus-thread-hide-subtree nil)
+      (setq gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references
+	    gnus-thread-sort-functions '(gnus-thread-sort-by-date)
+	    gnus-sum-thread-tree-false-root ""
+	    gnus-sum-thread-tree-indent " "
+	    gnus-sum-thread-tree-leaf-with-other "├► "
+	    gnus-sum-thread-tree-root ""
+	    gnus-sum-thread-tree-single-leaf "╰► "
+	    gnus-sum-thread-tree-vertical "│")
 
-    ;; Dispkay a button for MIME parts
-    (setq gnus-buttonized-mime-types '("multipart/alternative"))
+      ;; Dispkay a button for MIME parts
+      (setq gnus-buttonized-mime-types '("multipart/alternative"))
 
-    ;; Use w3m to display HTML mails
-    (setq mm-text-html-renderer 'gnus-w3m
-	  mm-inline-text-html-with-images t
-	  mm-inline-large-images nil
-	  mm-attachment-file-modes 420)
+      ;; Use w3m to display HTML mails
+      (setq mm-text-html-renderer 'gnus-w3m
+	    mm-inline-text-html-with-images t
+	    mm-inline-large-images nil
+	    mm-attachment-file-modes 420)
 
-    ;; Avoid spaces when saving attachments
-    (setq mm-file-name-rewrite-functions
-	  '(mm-file-name-trim-whitespace
-	    mm-file-name-collapse-whitespace
-	    mm-file-name-replace-whitespace))
+      ;; Avoid spaces when saving attachments
+      (setq mm-file-name-rewrite-functions
+	    '(mm-file-name-trim-whitespace
+	      mm-file-name-collapse-whitespace
+	      mm-file-name-replace-whitespace))
 
-    (setq gnus-user-date-format-alist
-	  '(((gnus-seconds-today) . "     %k:%M")
-	    ((+ 86400 (gnus-seconds-today)) . "hier %k:%M")
-	    ((+ 604800 (gnus-seconds-today)) . "%a  %k:%M")
-	    ((gnus-seconds-month) . "%a  %d")
-	    ((gnus-seconds-year) . "%b %d")
-	    (t . "%b %d '%y")))
+      (setq gnus-user-date-format-alist
+	    '(((gnus-seconds-today) . "     %k:%M")
+	      ((+ 86400 (gnus-seconds-today)) . "hier %k:%M")
+	      ((+ 604800 (gnus-seconds-today)) . "%a  %k:%M")
+	      ((gnus-seconds-month) . "%a  %d")
+	      ((gnus-seconds-year) . "%b %d")
+	      (t . "%b %d '%y")))
 
-    (setq gnus-topic-indent-level 3)
+      (setq gnus-topic-indent-level 3)
 
-    ;; Add a time-stamp to a group when it is selected
-    (add-hook 'gnus-select-group-hook 'gnus-group-set-timestamp)
+      ;; Add a time-stamp to a group when it is selected
+      (add-hook 'gnus-select-group-hook 'gnus-group-set-timestamp)
 
-    ;; Format group line
-    (setq gnus-group-line-format "%M%S%p%P %(%-30,30G%)\n")
-    (setq gnus-group-line-default-format "%M%S%p%P %(%-40,40G%) %-3y %-3T %-3I\n")
+      ;; Format group line
+      (setq gnus-group-line-format "%M%S%p%P %(%-30,30G%)\n")
+      (setq gnus-group-line-default-format "%M%S%p%P %(%-40,40G%) %-3y %-3T %-3I\n")
 
-    (defun bzg-gnus-toggle-group-line-format ()
-      (interactive)
-      (if (equal gnus-group-line-format
-		 gnus-group-line-default-format)
+      (defun bzg-gnus-toggle-group-line-format ()
+	(interactive)
+	(if (equal gnus-group-line-format
+		   gnus-group-line-default-format)
+	    (setq gnus-group-line-format
+		  "%M%S%p%P %(%-30,30G%)\n")
 	  (setq gnus-group-line-format
-		"%M%S%p%P %(%-30,30G%)\n")
-	(setq gnus-group-line-format
-	      gnus-group-line-default-format)))
+		gnus-group-line-default-format)))
 
-    ;; Toggle the group line format
-    (define-key gnus-group-mode-map "("
-      (lambda () (interactive) (bzg-gnus-toggle-group-line-format) (gnus)))
+      ;; Toggle the group line format
+      (define-key gnus-group-mode-map "("
+	(lambda () (interactive) (bzg-gnus-toggle-group-line-format) (gnus)))
 
-    (define-key gnus-summary-mode-map "$" 'gnus-summary-mark-as-spam)
+      (define-key gnus-summary-mode-map "$" 'gnus-summary-mark-as-spam)
 
-    ;; Scoring
-    (setq gnus-use-adaptive-scoring '(line)
-	  ;; gnus-score-expiry-days 14
-	  gnus-default-adaptive-score-alist
-	  '((gnus-dormant-mark (from 5) (subject 30))
-	    (gnus-ticked-mark (from 10) (subject 50))
-	    (gnus-unread-mark)
-	    (gnus-read-mark (from 1) (subject 30))
-	    (gnus-del-mark (from -4) (subject -10))
-	    (gnus-catchup-mark (subject -150))
-	    (gnus-killed-mark (subject -100))
-	    (gnus-expirable-mark (from -100) (subject -100)))
-	  gnus-score-exact-adapt-limit nil
-	  gnus-score-decay-constant 1    ; default = 3
-	  gnus-score-decay-scale 0.05    ; default = 0.05
-	  gnus-decay-scores t)           ; (gnus-decay-score 1000)
+      ;; Scoring
+      (setq gnus-use-adaptive-scoring '(line)
+	    ;; gnus-score-expiry-days 14
+	    gnus-default-adaptive-score-alist
+	    '((gnus-dormant-mark (from 5) (subject 30))
+	      (gnus-ticked-mark (from 10) (subject 50))
+	      (gnus-unread-mark)
+	      (gnus-read-mark (from 1) (subject 30))
+	      (gnus-del-mark (from -4) (subject -10))
+	      (gnus-catchup-mark (subject -150))
+	      (gnus-killed-mark (subject -100))
+	      (gnus-expirable-mark (from -100) (subject -100)))
+	    gnus-score-exact-adapt-limit nil
+	    gnus-score-decay-constant 1    ; default = 3
+	    gnus-score-decay-scale 0.05    ; default = 0.05
+	    gnus-decay-scores t)           ; (gnus-decay-score 1000)
 
-    (setq gnus-summary-line-format
-	  (concat "%*%0{%U%R%z%}"
-		  "%0{ %}(%2t)"
-		  "%2{ %}%-23,23n"
-		  "%1{ %}%1{%B%}%2{%-102,102s%}%-140="
-		  "\n"))
+      (setq gnus-summary-line-format
+	    (concat "%*%0{%U%R%z%}"
+		    "%0{ %}(%2t)"
+		    "%2{ %}%-23,23n"
+		    "%1{ %}%1{%B%}%2{%-102,102s%}%-140="
+		    "\n"))
 
-    ;; Hack to store Org links upon sending Gnus messages
+      ;; Hack to store Org links upon sending Gnus messages
 
-    (defun bzg-message-send-and-org-gnus-store-link (&optional arg)
-      "Send message with `message-send-and-exit' and store org link to message copy.
-  If multiple groups appear in the Gcc header, the link refers to
-  the copy in the last group."
-      (interactive "P")
-      (save-excursion
-	(save-restriction
-	  (message-narrow-to-headers)
-	  (let ((gcc (car (last
-			   (message-unquote-tokens
-			    (message-tokenize-header
-			     (mail-fetch-field "gcc" nil t) " ,")))))
-		(buf (current-buffer))
-		(message-kill-buffer-on-exit nil)
-		id to from subject desc link newsgroup xarchive)
-	    (message-send-and-exit arg)
-	    (or
-	     ;; gcc group found ...
-	     (and gcc
-		  (save-current-buffer
-		    (progn (set-buffer buf)
-			   (setq id (org-remove-angle-brackets
-				     (mail-fetch-field "Message-ID")))
-			   (setq to (mail-fetch-field "To"))
-			   (setq from (mail-fetch-field "From"))
-			   (setq subject (mail-fetch-field "Subject"))))
-		  (org-store-link-props :type "gnus" :from from :subject subject
-					:message-id id :group gcc :to to)
-		  (setq desc (org-email-link-description))
-		  (setq link (org-gnus-article-link
-			      gcc newsgroup id xarchive))
-		  (setq org-stored-links
-			(cons (list link desc) org-stored-links)))
-	     ;; no gcc group found ...
-	     (message "Can not create Org link: No Gcc header found."))))))
+      (defun bzg-message-send-and-org-gnus-store-link (&optional arg)
+	"Send message with `message-send-and-exit' and store org link to message copy.
+    If multiple groups appear in the Gcc header, the link refers to
+    the copy in the last group."
+	(interactive "P")
+	(save-excursion
+	  (save-restriction
+	    (message-narrow-to-headers)
+	    (let ((gcc (car (last
+			     (message-unquote-tokens
+			      (message-tokenize-header
+			       (mail-fetch-field "gcc" nil t) " ,")))))
+		  (buf (current-buffer))
+		  (message-kill-buffer-on-exit nil)
+		  id to from subject desc link newsgroup xarchive)
+	      (message-send-and-exit arg)
+	      (or
+	       ;; gcc group found ...
+	       (and gcc
+		    (save-current-buffer
+		      (progn (set-buffer buf)
+			     (setq id (org-remove-angle-brackets
+				       (mail-fetch-field "Message-ID")))
+			     (setq to (mail-fetch-field "To"))
+			     (setq from (mail-fetch-field "From"))
+			     (setq subject (mail-fetch-field "Subject"))))
+		    (org-store-link-props :type "gnus" :from from :subject subject
+					  :message-id id :group gcc :to to)
+		    (setq desc (org-email-link-description))
+		    (setq link (org-gnus-article-link
+				gcc newsgroup id xarchive))
+		    (setq org-stored-links
+			  (cons (list link desc) org-stored-links)))
+	       ;; no gcc group found ...
+	       (message "Can not create Org link: No Gcc header found."))))))
 
-    (define-key message-mode-map [(control c) (control meta c)]
-      'bzg-message-send-and-org-gnus-store-link))
+      (define-key message-mode-map [(control c) (control meta c)]
+	'bzg-message-send-and-org-gnus-store-link))
 
-  (use-package gnus-alias
-    :config
-    (define-key message-mode-map (kbd "C-c C-x C-i")
-      'gnus-alias-select-identity))
+    (use-package gnus-alias
+      :config
+      (define-key message-mode-map (kbd "C-c C-x C-i")
+	'gnus-alias-select-identity))
 
-  (use-package gnus-art
-    :defer t
-    :config
-    ;; Highlight my name in messages
-    (add-to-list 'gnus-emphasis-alist
-		 '("Bastien\\|bzg" 0 0 gnus-emphasis-highlight-words)))
+    (use-package gnus-art
+      :defer t
+      :config
+      ;; Highlight my name in messages
+      (add-to-list 'gnus-emphasis-alist
+		   '("Bastien\\|bzg" 0 0 gnus-emphasis-highlight-words)))
 
-  (use-package gnus-icalendar
-    :config
-    (gnus-icalendar-setup)
-    ;; To enable optional iCalendar->Org sync functionality
-    ;; NOTE: both the capture file and the headline(s) inside must already exist
-    (setq gnus-icalendar-org-capture-file "~/org/rdv-etalab.org")
-    (setq gnus-icalendar-org-capture-headline '("RDV Etalab"))
-    (setq gnus-icalendar-org-template-key "I")
-    (gnus-icalendar-org-setup))
+    (use-package gnus-icalendar
+      :config
+      (gnus-icalendar-setup)
+      ;; To enable optional iCalendar->Org sync functionality
+      ;; NOTE: both the capture file and the headline(s) inside must already exist
+      (setq gnus-icalendar-org-capture-file "~/org/rdv-etalab.org")
+      (setq gnus-icalendar-org-capture-headline '("RDV Etalab"))
+      (setq gnus-icalendar-org-template-key "I")
+      (gnus-icalendar-org-setup))
 
-  (use-package gnus-dired
-    :defer t
-    :config
-    ;; Make the `gnus-dired-mail-buffers' function also work on
-    ;; message-mode derived modes, such as mu4e-compose-mode
-    (defun gnus-dired-mail-buffers ()
-      "Return a list of active message buffers."
-      (let (buffers)
-	(save-current-buffer
-	  (dolist (buffer (buffer-list t))
-	    (set-buffer buffer)
-	    (when (and (derived-mode-p 'message-mode)
-		       (null message-sent-message-via))
-	      (push (buffer-name buffer) buffers))))
-	(nreverse buffers))))
+    (use-package gnus-dired
+      :defer t
+      :config
+      ;; Make the `gnus-dired-mail-buffers' function also work on
+      ;; message-mode derived modes, such as mu4e-compose-mode
+      (defun gnus-dired-mail-buffers ()
+	"Return a list of active message buffers."
+	(let (buffers)
+	  (save-current-buffer
+	    (dolist (buffer (buffer-list t))
+	      (set-buffer buffer)
+	      (when (and (derived-mode-p 'message-mode)
+			 (null message-sent-message-via))
+		(push (buffer-name buffer) buffers))))
+	  (nreverse buffers))))
 
-  (use-package message
-    :defer t
-    :config
-    ;; Use electric completion in Gnus
-    ;; (setq message-mail-alias-type 'abbrev)
-    (setq message-directory "~/Mail/")
-    (setq message-mail-alias-type 'ecomplete)
-    (setq message-send-mail-function 'message-send-mail-with-sendmail)
-    (setq message-cite-function 'message-cite-original-without-signature)
-    (setq message-dont-reply-to-names gnus-ignored-from-addresses)
-    (setq message-alternative-emails gnus-ignored-from-addresses))
+    (use-package message
+      :defer t
+      :config
+      ;; Use electric completion in Gnus
+      ;; (setq message-mail-alias-type 'abbrev)
+      (setq message-directory "~/Mail/")
+      (setq message-mail-alias-type 'ecomplete)
+      (setq message-send-mail-function 'message-send-mail-with-sendmail)
+      (setq message-cite-function 'message-cite-original-without-signature)
+      (setq message-dont-reply-to-names gnus-ignored-from-addresses)
+      (setq message-alternative-emails gnus-ignored-from-addresses))
   #+END_SRC
 
 * BBDB
