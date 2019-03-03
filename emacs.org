@@ -205,8 +205,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (global-set-key (kbd "²") 'gnus)
   (global-set-key (kbd "C-²") 'gnus)
   (global-set-key (kbd "C-&") 'delete-other-windows)
-  (global-set-key (kbd "C-é") (lambda () (interactive) (bzg-big-fringe-mode -1) (delete-other-windows) (split-window-right) (other-window 1) (balance-windows)))
-  (global-set-key (kbd "C-\"") (lambda () (interactive) (call-interactively 'bzg-big-fringe-mode) (delete-other-windows)))
+  (global-set-key (kbd "C-\"") (lambda () (interactive) (bzg-big-fringe-mode -1) (delete-other-windows) (split-window-right) (other-window 1) (balance-windows)))
+  (global-set-key (kbd "C-é") (lambda () (interactive) (call-interactively 'bzg-big-fringe-mode) (delete-other-windows)))
   (global-set-key (kbd "C-è") 'hidden-mode-line-mode)
   (global-set-key (kbd "C-~") (lambda () (interactive) (dired "~")))
   (global-set-key (kbd "C-c f") 'find-name-dired)
@@ -357,6 +357,10 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   ;; I keep those here to change it on the fly
   ;; (setq org-element-use-cache nil)
   ;; (setq org-adapt-indentation t)
+
+  ;; Hook to display the agenda in a single window
+  (add-hook 'org-agenda-finalize-hook
+	    'delete-other-windows)
 
   ;; Hook to update all blocks before saving
   (add-hook 'org-mode-hook
