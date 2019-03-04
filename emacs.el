@@ -161,17 +161,16 @@
 ;; `line-spacing' is nil by default, I change it from time to time
 ;; (setq line-spacing 0)
 
-(global-set-key "\M- " 'hippie-expand)
 (global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
-(global-set-key (kbd "²") 'gnus)
-(global-set-key (kbd "C-²") 'gnus)
-(global-set-key (kbd "C-&") 'delete-other-windows)
-(global-set-key (kbd "C-\"") (lambda () (interactive) (bzg-big-fringe-mode -1) (delete-other-windows) (split-window-right) (other-window 1) (balance-windows)))
-(global-set-key (kbd "C-é") (lambda () (interactive) (call-interactively 'bzg-big-fringe-mode) (delete-other-windows)))
-(global-set-key (kbd "C-è") 'hidden-mode-line-mode)
-(global-set-key (kbd "C-~") (lambda () (interactive) (dired "~")))
+(global-set-key (kbd "C-²") (lambda () (interactive) (org-agenda nil " ")))
+(global-set-key (kbd "C-&") 'gnus)
+(global-set-key (kbd "C-é") 'bzg-cycle-view)
+;; (global-set-key (kbd "C-\"") (lambda () (interactive) (bzg-big-fringe-mode -1) (delete-other-windows) (split-window-right) (other-window 1) (balance-windows)))
+;; (global-set-key (kbd "C-é") (lambda () (interactive) (call-interactively 'bzg-big-fringe-mode) (delete-other-windows)))
+;; (global-set-key (kbd "C-è") 'hidden-mode-line-mode)
+(global-set-key (kbd "C-\"") (lambda () (interactive) (dired "~")))
 (global-set-key (kbd "C-c f") 'find-name-dired)
 (global-set-key (kbd "C-c g") 'grep-find)
 (global-set-key (kbd "C-c A") 'helm-ag)
@@ -186,6 +185,7 @@
 (global-set-key (kbd "C-=") 'text-scale-adjust)
 (global-set-key (kbd "C-M-]") 'origami-toggle-all-nodes)
 (global-set-key (kbd "M-]") 'origami-toggle-node)
+(global-set-key "\M- " 'hippie-expand)
 
 (defun google-translate-word-at-point ()
   (interactive)
@@ -211,6 +211,26 @@
   (global-set-key (kbd "C-x c x") #'helm-M-x)
   ;; (global-set-key (kbd "C-x F") #'helm-find-files)
   (global-set-key (kbd "C-x c A") #'helm-ag))
+
+(setq bzg-cycle-view-current nil)
+(defun bzg-cycle-view ()
+  (interactive)
+  (cond ((or (eq bzg-cycle-view-current nil)
+	     (and bzg-big-fringe-mode
+		  (eq bzg-cycle-view-current 'one-window-with-fringe)))
+	 (bzg-big-fringe-mode -1)
+	 (delete-other-windows)
+	 (setq bzg-cycle-view-current 'one-window-no-fringe))
+	((eq bzg-cycle-view-current 'one-window-no-fringe)
+	 (split-window-right)
+	 (bzg-big-fringe-mode -1)
+	 (other-window 1)
+	 (balance-windows)
+	 (setq bzg-cycle-view-current 'two-windows-balanced))
+	((eq bzg-cycle-view-current 'two-windows-balanced)
+	 (delete-other-windows)
+	 (bzg-big-fringe-mode 1)
+	 (setq bzg-cycle-view-current 'one-window-with-fringe))))
 
 (use-package dired
   :config
@@ -1488,7 +1508,7 @@ the copy in the last group."
 (defun bzg-find-bzg nil
   "Find the bzg.org file."
   (interactive)
-  (find-file "~/org/bzg.org")
+  (call-interactively (lambda () (interactive) (find-file "~/org/bzg.org")))
   (delete-other-windows))
 
 (defun uniquify-all-lines-region (start end)
@@ -1589,7 +1609,7 @@ the copy in the last group."
 
 (require 'org-bullets)
 (setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1) (hidden-mode-line-mode 1)))
 
 (defun find-variable-or-function-at-point ()
   (interactive)
