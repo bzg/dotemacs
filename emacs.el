@@ -211,12 +211,17 @@
 
 (setq bzg-cycle-view-current nil)
 (defun bzg-cycle-view ()
-  "Cycle through three views.
-One window no fringe, one window big fringe, two balanced windows
-no fringe."
+  "Cycle through my favorite views."
   (interactive)
-  (delete-other-windows)
-  (cond ((eq bzg-cycle-view-current nil)
+  (cond ((eq major-mode 'gnus-summary-mode)
+	 (if bzg-big-fringe-mode
+	     (bzg-big-fringe-mode -1)
+	   (bzg-big-fringe-mode 1)))
+	((or (< (window-height) (1- (frame-height)))
+	     (< (window-width) (frame-width)))
+	 (delete-other-windows))
+	((eq bzg-cycle-view-current nil)
+	 (delete-other-windows)
 	 (if bzg-big-fringe-mode
 	     (progn (bzg-big-fringe-mode)
 		    (setq bzg-cycle-view-current 'one-window-no-fringe))
@@ -232,6 +237,7 @@ no fringe."
 	 (balance-windows)
 	 (setq bzg-cycle-view-current 'two-windows-balanced))
 	((eq bzg-cycle-view-current 'two-windows-balanced)
+	 (delete-other-windows)
 	 (bzg-big-fringe-mode 1)
 	 (setq bzg-cycle-view-current 'one-window-with-fringe))))
 
