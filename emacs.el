@@ -144,7 +144,7 @@
   :config
   (add-hook 'cider-repl-mode-hook 'company-mode)
   (setq cider-use-fringe-indicators nil)
-  (setq cider-repl-pop-to-buffer-on-connect t)
+  (setq cider-repl-pop-to-buffer-on-connect nil)
   (setq nrepl-hide-special-buffers t))
 
 ;; (global-company-mode)
@@ -719,7 +719,7 @@
 	("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
 
-	("o" "Org" entry (file+headline "~/org/bzg.org" "Org-mode : passer la maintenance dans de bonnes conditions")
+	("o" "Org" entry (file+headline "~/org/bzg.org" "Org-mode : passer la maintenance fin 2019")
 	 "* TODO %? :Code:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)))
 
 (setq org-capture-templates-contexts
