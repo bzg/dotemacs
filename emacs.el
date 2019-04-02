@@ -216,11 +216,7 @@
   (let ((splitted-frame
 	 (or (< (window-height) (1- (frame-height)))
 	     (< (window-width) (frame-width)))))
-    (cond ((eq major-mode 'gnus-summary-mode)
-	   (if bzg-big-fringe-mode
-	       (bzg-big-fringe-mode -1)
-	     (bzg-big-fringe-mode 1)))
-	  ((and (not bzg-cycle-view-current) splitted-frame)
+    (cond ((and (not bzg-cycle-view-current) splitted-frame)
 	   (delete-other-windows))
 	  ((eq bzg-cycle-view-current nil)
 	   (delete-other-windows)
