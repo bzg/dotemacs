@@ -23,8 +23,6 @@
   (normal-top-level-add-subdirs-to-load-path))
 
 ;; Load theme
-;; (add-to-list 'custom-theme-load-path "~/install/git/cyberpunk-theme.el/")
-;; (load-theme 'cyberpunk)
 (add-to-list 'custom-theme-load-path "~/install/git/vxid-theme/")
 (load-theme 'vxid)
 
