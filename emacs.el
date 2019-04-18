@@ -1220,7 +1220,7 @@ the copy in the last group."
 			       notify pcomplete completion ring services stamp
 			       track truncate)
 	erc-keywords nil
-	erc-prompt-for-nickserv-password nil
+	erc-prompt-for-nickserv-password t
 	erc-prompt-for-password nil
 	erc-timestamp-format "%s "
 	erc-hide-timestamps t
@@ -1240,17 +1240,15 @@ the copy in the last group."
 	erc-echo-notice-always-hook '(erc-echo-notice-in-minibuffer)
 	erc-auto-set-away nil
 	erc-autoaway-message "%i seconds out..."
-	erc-away-nickname "bz_g"
+	erc-away-nickname "bzg"
 	erc-kill-queries-on-quit nil
 	erc-kill-server-buffer-on-quit t
 	erc-log-channels-directory "~/.erc_log"
-	;; erc-enable-logging 'erc-log-all-but-server-buffers
 	erc-enable-logging t
 	erc-query-on-unjoined-chan-privmsg t
 	erc-auto-query 'window-noselect
 	erc-server-coding-system '(utf-8 . utf-8)
 	erc-encoding-coding-alist '(("#emacs" . utf-8)
-				    ;; ("#frlab" . iso-8859-1)
 				    ("&bitlbee" . utf-8)))
 
   (add-hook 'erc-mode-hook
@@ -1269,19 +1267,10 @@ the copy in the last group."
 	       (erc-services-mode 1)))
 
   (defun erc-notify-on-msg (msg)
-    (if (string-match "bz_g:" msg)
+    (if (string-match "bzg:" msg)
 	(shell-command (concat "notify-send \"" msg "\""))))
 
   (add-hook 'erc-insert-pre-hook 'erc-notify-on-msg)
-  ;; (add-to-list 'erc-networks-alist '(lll "libertelivinglab.irc.slack.com"))
-
-  ;; (defun bzg-erc-connect-bitlbee ()
-  ;;   "Connect to &bitlbee channel with ERC."
-  ;;   (interactive)
-  ;;   (erc-select :server "bzg"
-  ;; 		:port 6667
-  ;; 		:nick "bz_g"
-  ;; 		:full-name "Bastien"))
 
   (defun bzg-erc-connect-freenode ()
     "Connect to Freenode server with ERC."
@@ -1291,22 +1280,7 @@ the copy in the last group."
 		:nick "bzg"
 		:full-name "Bastien"))
 
-  (require 'tls)
-  (defun bzg-erc-connect-lll ()
-    "Connect to LLL's slack server with ERC."
-    (interactive)
-    (erc-tls :server "libertelivinglab.irc.slack.com"
-	     :port 6667
-	     :nick "bzg"
-	     :full-name "Bastien"))
-
-  (defun bzg-erc-connect-eig ()
-    "Connect to EIG's slack with ERC."
-    (interactive)
-    (erc-tls :server "eig-hq.irc.slack.com"
-	     :port 6667
-	     :nick "bzg"
-	     :full-name "Bastien")))
+  (require 'tls))
 
 ;; Set browser
 (if window-system
@@ -1544,35 +1518,13 @@ the copy in the last group."
 
 ;; Fontifying todo items outside of org-mode
 (defface bzg-todo-comment-face
-  '((t (:weight bold
-		:bold t)))
+  '((t (:weight bold :bold t)))
   "Face for TODO in code buffers."
   :group 'org-faces)
 
-(defface bzg-headline-face
-  '((t (:weight bold
-		:bold t)))
-  "Face for headlines."
-  :group 'org-faces)
-
 (defvar bzg-todo-comment-face 'bzg-todo-comment-face)
-(defvar bzg-headline-face 'bzg-headline-face)
-
-;; (defun bzg-fontify-todo ()
-;;   (font-lock-add-keywords
-;;    nil '((";;.*\\(TODO\\|FIXME\\)"
-;;           (1 todo-comment-face t)))))
-
-;; (defun bzg-fontify-headline ()
-;;   (font-lock-add-keywords
-;;    nil '(("^;;;;* ?\\(.*\\)\\>"
-;;           (1 headline-face t)))))
-
-;; (defun insert-xo () (interactive) (insert "⨰"))
 
 (pdf-tools-install)
-
-;; (desktop-save-mode)
 
 (use-package guide-key
   :config
