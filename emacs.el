@@ -875,7 +875,7 @@
   (setq gnus-check-new-newsgroups nil)
 
   (add-hook 'gnus-exit-gnus-hook
-	    (lambda () 
+	    (lambda ()
 	      (if (get-buffer "bbdb")
 		  (with-current-buffer "bbdb" (save-buffer)))))
 
@@ -1519,11 +1519,14 @@ the copy in the last group."
 
 (pdf-tools-install)
 
-(setq persp-mode-prefix-key (kbd "C-z"))
+(use-package perspective
+      :config
+      (setq persp-mode-prefix-key "C-z")
+      (persp-mode 1))
 
 (use-package guide-key
   :config
-  (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x c" "C-c @"))
+  (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x c" "C-c @" "C-z"))
   (guide-key-mode 1)) ; Enable guide-key-mode
 
 (defun backward-kill-word-noring (arg)
@@ -1550,16 +1553,6 @@ the copy in the last group."
   (setq dired-subtree-use-backgrounds nil)
   (define-key dired-mode-map (kbd "I") 'dired-subtree-toggle)
   (define-key dired-mode-map (kbd "TAB") 'dired-subtree-cycle))
-
-;; (use-package eyebrowse
-;;   :init
-;;   (setq eyebrowse-keymap-prefix (kbd "C-z"))
-;;   :config
-;;   (define-key eyebrowse-mode-map (kbd "C-z n") 'eyebrowse-next-window-config)
-;;   (define-key eyebrowse-mode-map (kbd "C-z c") 'eyebrowse-create-window-config)
-;;   (define-key eyebrowse-mode-map (kbd "C-z k") 'eyebrowse-close-window-config)
-;;   (define-key eyebrowse-mode-map (kbd "C-z p") 'eyebrowse-prev-window-config)
-;;   (eyebrowse-mode 1))
 
 (require 'org-bullets)
 (setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
