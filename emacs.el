@@ -1462,13 +1462,6 @@ the copy in the last group."
   (add-to-list 'cljr-magic-require-namespaces
 	       '("s"  . "clojure.string")))
 
-;; (add-hook 'emacs-lisp-mode-hook 'turn-on-orgstruct)
-;; (add-hook 'clojure-mode-hook 'turn-on-orgstruct)
-;; (add-hook 'emacs-lisp-mode-hook 'bzg-fontify-headline)
-;; (add-hook 'emacs-lisp-mode-hook 'bzg-fontify-todo)
-;; (add-hook 'clojure-mode-hook 'bzg-fontify-headline)
-;; (add-hook 'clojure-mode-hook 'bzg-fontify-todo)
-
 ;; Geiser
 (setq geiser-active-implementations '(guile racket))
 (setq geiser-scheme-implementation 'racket)
@@ -1526,6 +1519,8 @@ the copy in the last group."
 
 (pdf-tools-install)
 
+(setq persp-mode-prefix-key (kbd "C-z"))
+
 (use-package guide-key
   :config
   (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x c" "C-c @"))
@@ -1556,15 +1551,15 @@ the copy in the last group."
   (define-key dired-mode-map (kbd "I") 'dired-subtree-toggle)
   (define-key dired-mode-map (kbd "TAB") 'dired-subtree-cycle))
 
-(use-package eyebrowse
-  :init
-  (setq eyebrowse-keymap-prefix (kbd "C-z"))
-  :config
-  (define-key eyebrowse-mode-map (kbd "C-z n") 'eyebrowse-next-window-config)
-  (define-key eyebrowse-mode-map (kbd "C-z c") 'eyebrowse-create-window-config)
-  (define-key eyebrowse-mode-map (kbd "C-z k") 'eyebrowse-close-window-config)
-  (define-key eyebrowse-mode-map (kbd "C-z p") 'eyebrowse-prev-window-config)
-  (eyebrowse-mode 1))
+;; (use-package eyebrowse
+;;   :init
+;;   (setq eyebrowse-keymap-prefix (kbd "C-z"))
+;;   :config
+;;   (define-key eyebrowse-mode-map (kbd "C-z n") 'eyebrowse-next-window-config)
+;;   (define-key eyebrowse-mode-map (kbd "C-z c") 'eyebrowse-create-window-config)
+;;   (define-key eyebrowse-mode-map (kbd "C-z k") 'eyebrowse-close-window-config)
+;;   (define-key eyebrowse-mode-map (kbd "C-z p") 'eyebrowse-prev-window-config)
+;;   (eyebrowse-mode 1))
 
 (require 'org-bullets)
 (setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
