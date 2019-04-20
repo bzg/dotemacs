@@ -1681,24 +1681,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
     (setq read-integer-overflow-as-float t)
     #+END_SRC
 
-*** persp-mode
-
-   #+begin_src emacs-lisp
-   (use-package perspective
-	 :config
-	 (setq persp-mode-prefix-key "C-z")
-	 (persp-mode 1))
-   #+end_src
-
-*** guide-key
-
-    #+BEGIN_SRC emacs-lisp
-    (use-package guide-key
-      :config
-      (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x c" "C-c @" "C-z"))
-      (guide-key-mode 1)) ; Enable guide-key-mode
-    #+END_SRC
-
 *** backward-kill-word-noring
 
     #+BEGIN_SRC emacs-lisp
@@ -1710,6 +1692,24 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
     (global-set-key (kbd "C-M-<backspace>") 'backward-kill-word-noring)
     #+END_SRC
+*** perspective
+
+   #+begin_src emacs-lisp
+   (use-package perspective
+	 :config
+	 (setq persp-mode-prefix-key (kbd "C-z"))
+	 (persp-mode 1))
+   #+end_src
+
+*** guide-key
+
+    #+BEGIN_SRC emacs-lisp
+    (use-package guide-key
+      :config
+      (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x c" "C-z"))
+      (guide-key-mode 1)) ; Enable guide-key-mode
+    #+END_SRC
+
 *** multi-term, ediff, dired
 
     #+begin_src emacs-lisp

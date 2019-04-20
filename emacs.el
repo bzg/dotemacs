@@ -1521,12 +1521,12 @@ the copy in the last group."
 
 (use-package perspective
       :config
-      (setq persp-mode-prefix-key "C-z")
+      (setq persp-mode-prefix-key (kbd "C-z"))
       (persp-mode 1))
 
 (use-package guide-key
   :config
-  (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x c" "C-c @" "C-z"))
+  (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x c" "C-z"))
   (guide-key-mode 1)) ; Enable guide-key-mode
 
 (defun backward-kill-word-noring (arg)
