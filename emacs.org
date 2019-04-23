@@ -25,6 +25,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 * General defaults
 
   #+BEGIN_SRC emacs-lisp
+  ;; Unset C-z
+  (global-unset-key (kbd "C-z"))
+
   ;; Load custom file
   (setq custom-file "/home/guerry/.emacs.d/emacs-custom.el")
   (load custom-file)
@@ -1697,7 +1700,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
    #+begin_src emacs-lisp
    (use-package perspective
 	 :config
-	 (setq persp-mode-prefix-key (kbd "C-z"))
+	 ;; (setq persp-mode-prefix-key (kbd "C-z"))
 	 (persp-mode 1))
    #+end_src
 

@@ -4,6 +4,9 @@
 	  ("melpa" . "http://melpa.org/packages/")))
   (require 'use-package))
 
+;; Unset C-z
+(global-unset-key (kbd "C-z"))
+
 ;; Load custom file
 (setq custom-file "/home/guerry/.emacs.d/emacs-custom.el")
 (load custom-file)
@@ -1519,16 +1522,6 @@ the copy in the last group."
 
 (pdf-tools-install)
 
-(use-package perspective
-      :config
-      (setq persp-mode-prefix-key (kbd "C-z"))
-      (persp-mode 1))
-
-(use-package guide-key
-  :config
-  (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x c" "C-z"))
-  (guide-key-mode 1)) ; Enable guide-key-mode
-
 (defun backward-kill-word-noring (arg)
   (interactive "p")
   (let ((kr kill-ring))
@@ -1536,6 +1529,16 @@ the copy in the last group."
     (setq kill-ring (reverse kr))))
 
 (global-set-key (kbd "C-M-<backspace>") 'backward-kill-word-noring)
+
+(use-package perspective
+      :config
+      ;; (setq persp-mode-prefix-key (kbd "C-z"))
+      (persp-mode 1))
+
+(use-package guide-key
+  :config
+  (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x c" "C-z"))
+  (guide-key-mode 1)) ; Enable guide-key-mode
 
 (use-package multi-term
   :config
