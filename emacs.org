@@ -776,8 +776,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 		(in-mode . "gnus-article-mode")
 		(in-mode . "message-mode")))))
 
-  (add-hook 'mail-mode-hook #'orgalist-mode)
-  (add-hook 'message-mode-hook #'orgalist-mode)
+  ;; (add-hook 'mail-mode-hook #'orgalist-mode)
+  ;; (add-hook 'message-mode-hook #'orgalist-mode)
 
   (defun my-org-html-export-planning (planning-string backend info)
     (when (string-match "<p>.+><\\([0-9]+-[0-9]+-[0-9]+\\)[^>]+><.+</p>" planning-string)
