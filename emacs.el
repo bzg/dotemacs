@@ -752,18 +752,8 @@
 	(org-caldav-files nil))
     (call-interactively 'org-caldav-sync)))
 
-(defun bzg--caldav-sync-agenda-tech-ext ()
-  (interactive)
-  (let ((org-caldav-inbox "~/.etalab/git/agenda-tech-ext/index.org")
-	(org-caldav-calendar-id "agenda-tech-ext")
-	;; https://nextcloud.data.gouv.fr/index.php/apps/calendar/p/YAjeWZjoGFgs2dLp/agenda-tech-ext
-	(org-caldav-url "https://nextcloud.data.gouv.fr/remote.php/dav/calendars/bastien.guerry/")
-	(org-caldav-files nil))
-    (call-interactively 'org-caldav-sync)))
-
 (defun bzg-etalab-caldav-sync ()
   (interactive)
-  (bzg--caldav-sync-agenda-tech-ext)
   (bzg--caldav-sync-etalab-perso))
 
 (defun bzg-caldav-sync-all ()
@@ -1574,3 +1564,6 @@ the copy in the last group."
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 (global-set-key (kbd "C-c C->") 'mc/mark-all-dwim)
+
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
