@@ -202,7 +202,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
   (global-set-key (kbd "<home>") 'beginning-of-buffer)
   (global-set-key (kbd "<end>") 'end-of-buffer)
-  (global-set-key (kbd "C-²") (lambda () (interactive) (org-agenda nil " ")))
+  (global-set-key (kbd "C-²") (lambda () (interactive) (org-agenda nil "  ")))
   (global-set-key (kbd "C-&") 'gnus)
   (global-set-key (kbd "C-é") 'bzg-cycle-view)
   (global-set-key (kbd "C-\"") (lambda () (interactive) (dired "~") (revert-buffer)))
@@ -646,104 +646,93 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	    (org-agenda-sorting-strategy
 	     '(todo-state-up time-up priority-down))))
 
-	  (" " "Travail (tout)" agenda "Tasks and rdv for today"
-	   ((org-agenda-span 1)
-	    (org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/bzg.org"))
-	    (org-deadline-warning-days 3)
-	    (org-agenda-sorting-strategy
-	     '(todo-state-up time-up priority-down))))
-
-	  ("E" "Etalab (tout)" agenda "Etalab tasks and rdv for today"
-	   ((org-agenda-span 1)
-	    (org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/bzg.org"))
-	    (org-deadline-warning-days 3)
-	    (org-agenda-category-filter-preset '("+ETL"))
-	    (org-agenda-sorting-strategy
-	     '(todo-state-up time-up priority-down))))
-
-	  ("$" "Non-work (tout)" agenda "Non-work tasks and rdv for today"
-	   ((org-agenda-span 1)
-	    (org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/bzg.org"))
-	    (org-deadline-warning-days 3)
-	    (org-agenda-category-filter-preset '("-ETL"))
-	    (org-agenda-sorting-strategy
-	     '(todo-state-up time-up priority-down))))
-
-	  ("	" "Libre (tout)" agenda "Other rdv for today"
-	   ((org-agenda-span 1)
-	    (org-agenda-files '("~/org/libre.org"))
-	    (org-deadline-warning-days 3)
-	    (org-agenda-sorting-strategy
-	     '(todo-state-up priority-down time-up))))
-
 	  ("!" tags-todo "+DEADLINE<=\"<+7d>\"")
 	  ("=" tags-todo "+SCHEDULED<=\"<now>\"")
-	  ("e" "Etalab TODO" tags-todo "TODO={STRT\\|NEXT\\|TODO}"
-	   ((org-agenda-files '("~/org/bzg.org"))
-	    (org-agenda-category-filter-preset '("+ETL"))
-	    (org-agenda-sorting-strategy
-	     '(todo-state-up time-up priority-down))))
-	  ("n" "Etalab NEXT" tags-todo "TODO={STRT\\|NEXT}"
-	   ((org-agenda-files '("~/org/bzg.org"))
-	    (org-agenda-sorting-strategy
-	     '(todo-state-up time-up priority-down))))
-	  ("N" "Libre NEXT" tags-todo "TODO={STRT\\|NEXT}"
-	   ((org-agenda-files '("~/org/libre.org"))
-	    (org-agenda-sorting-strategy
-	     '(todo-state-up time-up priority-down))))
 	  ("?" "WAIT (bzg)" tags-todo "TODO={WAIT}"
 	   ((org-agenda-files '("~/org/bzg.org"))
 	    (org-agenda-sorting-strategy
 	     '(todo-state-up priority-down time-up))))
-
-	  ("x" "Agenda work" agenda "Work scheduled for today"
-	   ((org-agenda-span 1)
-	    (org-deadline-warning-days 3)
-	    (org-agenda-entry-types '(:timestamp :scheduled))
-	    (org-agenda-sorting-strategy
-	     '(todo-state-up priority-down time-up))))
-	  ("X" "Agenda libre" agenda "Libre scheduled for today"
-	   ((org-agenda-span 1)
-	    (org-deadline-warning-days 3)
-	    (org-agenda-files '("~/org/libre.org"))
-	    (org-agenda-entry-types '(:timestamp :scheduled))
-	    (org-agenda-sorting-strategy
-	     '(todo-state-up priority-down time-up))))
-	  ("z" "Work deadlines" agenda "Past/upcoming work deadlines"
-	   ((org-agenda-span 1)
-	    (org-deadline-warning-days 15)
-	    (org-agenda-entry-types '(:deadline))
-	    (org-agenda-sorting-strategy
-	     '(todo-state-up priority-down time-up))))
-	  ("Z" "Libre deadlines" agenda "Past/upcoming leisure deadlines"
-	   ((org-agenda-span 1)
-	    (org-deadline-warning-days 15)
-	    (org-agenda-files '("~/org/libre.org"))
-	    (org-agenda-entry-types '(:deadline))
-	    (org-agenda-sorting-strategy
-	     '(todo-state-up priority-down time-up))))
-
-	  ("r" tags-todo "+Read+TODO={NEXT\\|STRT}")
-	  ("R" tags-todo "+Read+TODO={NEXT\\|STRT}"
-	   ((org-agenda-files '("~/org/libre.org"))))
-	  ("v" tags-todo "+View+TODO={NEXT\\|STRT}")
-	  ("V" tags-todo "+View+TODO={NEXT\\|STRT}"
-	   ((org-agenda-files '("~/org/libre.org"))))
-	  ("l" tags-todo "+Listen+TODO={NEXT\\|STRT}")
-	  ("L" tags-todo "+Listen+TODO={NEXT\\|STRT}"
-	   ((org-agenda-files '("~/org/libre.org"))))
-	  ("w" tags-todo "+Write+TODO={NEXT\\|STRT}")
-	  ("W" tags-todo "+Write+TODO={NEXT\\|STRT}"
-	   ((org-agenda-files '("~/org/libre.org"))))
-	  (")" tags-todo "+Code+TODO={NEXT\\|STRT}")
-	  ("°" tags-todo "+Code+TODO={NEXT\\|STRT}"
-	   ((org-agenda-files '("~/org/libre.org"))))
 	  ("@" tags-todo "+Mail+TODO={NEXT\\|STRT}")
-
 	  ("#" "DONE/CANCELED/DELEGATED"
 	   todo "DONE|CANCELED|DELEGATED"
 	   ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/libre.org"))
-	    (org-agenda-sorting-strategy '(timestamp-up))))))
+	    (org-agenda-sorting-strategy '(timestamp-up))))
+
+	  (" " . "Task and rendez-vous for today")
+	  ("  " "Travail (tout)" agenda "Tasks and rdv for today"
+	   ((org-agenda-span 1)
+	    (org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/bzg.org"))
+	    (org-deadline-warning-days 3)
+	    (org-agenda-sorting-strategy
+	     '(todo-state-up time-up priority-down))))
+	  (" 	" "Libre (tout)" agenda "Other rdv for today"
+	   ((org-agenda-span 1)
+	    (org-agenda-files '("~/org/libre.org"))
+	    (org-deadline-warning-days 3)
+	    (org-agenda-sorting-strategy
+	     '(todo-state-up priority-down time-up))))
+
+	  ("n" . "What's next?")
+	  ("nn" "Etalab NEXT" tags-todo "TODO={STRT\\|NEXT}"
+	   ((org-agenda-files '("~/org/bzg.org"))
+	    (org-agenda-sorting-strategy
+	     '(todo-state-up time-up priority-down))))
+	  ("nN" "Libre NEXT" tags-todo "TODO={STRT\\|NEXT}"
+	   ((org-agenda-files '("~/org/libre.org"))
+	    (org-agenda-sorting-strategy
+	     '(todo-state-up time-up priority-down))))
+
+	  ("x" . "Scheduled for today")
+	  ("xx" "Agenda work" agenda "Work scheduled for today"
+	   ((org-agenda-span 1)
+	    (org-deadline-warning-days 3)
+	    (org-agenda-entry-types '(:timestamp :scheduled))
+	    (org-agenda-sorting-strategy
+	     '(todo-state-up priority-down time-up))))
+	  ("xX" "Agenda libre" agenda "Libre scheduled for today"
+	   ((org-agenda-span 1)
+	    (org-deadline-warning-days 3)
+	    (org-agenda-files '("~/org/libre.org"))
+	    (org-agenda-entry-types '(:timestamp :scheduled))
+	    (org-agenda-sorting-strategy
+	     '(todo-state-up priority-down time-up))))
+
+	  ("z" . "Deadlines for today")
+	  ("zz" "Work deadlines" agenda "Past/upcoming work deadlines"
+	   ((org-agenda-span 1)
+	    (org-deadline-warning-days 15)
+	    (org-agenda-entry-types '(:deadline))
+	    (org-agenda-sorting-strategy
+	     '(todo-state-up priority-down time-up))))
+	  ("zZ" "Libre deadlines" agenda "Past/upcoming leisure deadlines"
+	   ((org-agenda-span 1)
+	    (org-deadline-warning-days 15)
+	    (org-agenda-files '("~/org/libre.org"))
+	    (org-agenda-entry-types '(:deadline))
+	    (org-agenda-sorting-strategy
+	     '(todo-state-up priority-down time-up))))
+
+	  ("r" . "To read")
+	  ("rr" tags-todo "+Read+TODO={NEXT\\|STRT}")
+	  ("rR" tags-todo "+Read+TODO={NEXT\\|STRT}"
+	   ((org-agenda-files '("~/org/libre.org"))))
+	  ("r" . "To view")
+	  ("vv" tags-todo "+View+TODO={NEXT\\|STRT}")
+	  ("vV" tags-todo "+View+TODO={NEXT\\|STRT}"
+	   ((org-agenda-files '("~/org/libre.org"))))
+	  ("l" . "To listen")
+	  ("ll" tags-todo "+Listen+TODO={NEXT\\|STRT}")
+	  ("lL" tags-todo "+Listen+TODO={NEXT\\|STRT}"
+	   ((org-agenda-files '("~/org/libre.org"))))
+          ("w" . "To write")
+	  ("ww" tags-todo "+Write+TODO={NEXT\\|STRT}")
+	  ("wW" tags-todo "+Write+TODO={NEXT\\|STRT}"
+	   ((org-agenda-files '("~/org/libre.org"))))
+          ("c" . "To code")
+	  ("cc" tags-todo "+Code+TODO={NEXT\\|STRT}")
+	  ("cC" tags-todo "+Code+TODO={NEXT\\|STRT}"
+	   ((org-agenda-files '("~/org/libre.org"))))
+	  ))
 
   (setq org-capture-templates
 	'(("C" "Misc" entry (file "~/org/bzg.org")
