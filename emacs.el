@@ -590,7 +590,7 @@
 (setq org-agenda-custom-commands
       `(
 	;; Week agenda for rendez-vous and tasks
-	("%" "Rendez-vous" agenda* "Week RDV"
+	("%" "Rendez-vous" agenda* "Week planning"
 	 ((org-agenda-span 'week)
 	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org"))
 	  ;; (org-deadline-warning-days 3)
