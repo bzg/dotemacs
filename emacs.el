@@ -603,7 +603,7 @@
 	 ((org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up priority-down time-up))))
-	("@" tags-todo "+Mail+TODO={NEXT\\|STRT}")
+	("@" tags-todo "+Mail+TODO={NEXT\\|STRT\\|WAIT}")
 	("#" "DONE/CANCELED/DELEGATED"
 	 todo "DONE|CANCELED|DELEGATED"
 	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/libre.org"))
