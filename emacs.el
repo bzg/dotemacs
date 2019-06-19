@@ -616,7 +616,7 @@
 	  (org-deadline-warning-days 3)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
-	(" 	" "Libre (tout)" agenda "Other rdv for today"
+	(" 	" "Libre (tout)" agenda "Tasks and rdv for today"
 	 ((org-agenda-span 1)
 	  (org-agenda-files '("~/org/libre.org"))
 	  (org-deadline-warning-days 3)
@@ -663,23 +663,23 @@
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up priority-down time-up))))
 
-	("r" . "To read")
+	("r" . "Read")
 	("rr" tags-todo "+Read+TODO={NEXT\\|STRT}")
 	("rR" tags-todo "+Read+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
-	("r" . "To view")
+	("v" . "View")
 	("vv" tags-todo "+View+TODO={NEXT\\|STRT}")
 	("vV" tags-todo "+View+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
-	("l" . "To listen")
+	("l" . "Listen")
 	("ll" tags-todo "+Listen+TODO={NEXT\\|STRT}")
 	("lL" tags-todo "+Listen+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
-        ("w" . "To write")
+        ("w" . "Write")
 	("ww" tags-todo "+Write+TODO={NEXT\\|STRT}")
 	("wW" tags-todo "+Write+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
-        ("c" . "To code")
+        ("c" . "Code")
 	("cc" tags-todo "+Code+TODO={NEXT\\|STRT}")
 	("cC" tags-todo "+Code+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
