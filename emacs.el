@@ -522,7 +522,6 @@
 (setq org-loop-over-headlines-in-active-region t)
 (setq org-create-formula-image-program 'dvipng) ;; imagemagick
 (setq org-allow-promoting-top-level-subtree t)
-(setq org-list-description-max-indent 5)
 (setq org-gnus-prefer-web-links nil)
 (setq org-html-head-include-default-style nil)
 (setq org-html-head-include-scripts nil)
@@ -622,6 +621,11 @@
 	  (org-deadline-warning-days 3)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up priority-down time-up))))
+	("e" "Etalab TODO" tags-todo "TODO={STRT\\|NEXT\\|TODO}"
+	 ((org-agenda-files '("~/org/bzg.org"))
+	  (org-agenda-category-filter-preset '("+ETL"))
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up time-up priority-down))))
 
 	("n" . "What's next?")
 	("nn" "Etalab NEXT" tags-todo "TODO={STRT\\|NEXT}"
@@ -675,11 +679,11 @@
 	("ll" tags-todo "+Listen+TODO={NEXT\\|STRT}")
 	("lL" tags-todo "+Listen+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
-        ("w" . "Write")
+	("w" . "Write")
 	("ww" tags-todo "+Write+TODO={NEXT\\|STRT}")
 	("wW" tags-todo "+Write+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
-        ("c" . "Code")
+	("c" . "Code")
 	("cc" tags-todo "+Code+TODO={NEXT\\|STRT}")
 	("cC" tags-todo "+Code+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
