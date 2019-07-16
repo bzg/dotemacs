@@ -1276,7 +1276,7 @@ the copy in the last group."
   (setq browse-url-browser-function 'eww-browse-url))
 (setq browse-url-text-browser "w3m")
 (setq browse-url-new-window-flag t)
-(setq browse-url-generic-program "firefox")
+(setq browse-url-generic-program "firefox" t)
 (setq browse-url-firefox-new-window-is-tab t)
 
 (use-package w3m
@@ -1512,17 +1512,14 @@ the copy in the last group."
     (backward-kill-word arg)
     (setq kill-ring (reverse kr))))
 
-(global-set-key (kbd "C-M-<backspace>") 'backward-kill-word-noring)
+(global-set-key (kbd "C-<backspace>") 'backward-kill-word-noring)
 
 (use-package perspective
       :config
       ;; (setq persp-mode-prefix-key (kbd "C-z"))
       (persp-mode 1))
 
-(use-package guide-key
-  :config
-  (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x c" "C-z"))
-  (guide-key-mode 1)) ; Enable guide-key-mode
+(require 'which-key)
 
 (use-package multi-term
   :config

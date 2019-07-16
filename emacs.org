@@ -1349,7 +1349,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
     (setq browse-url-browser-function 'eww-browse-url))
   (setq browse-url-text-browser "w3m")
   (setq browse-url-new-window-flag t)
-  (setq browse-url-generic-program "firefox")
+  (setq browse-url-generic-program "firefox" t)
   (setq browse-url-firefox-new-window-is-tab t)
 
   (use-package w3m
@@ -1677,7 +1677,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	(backward-kill-word arg)
 	(setq kill-ring (reverse kr))))
 
-    (global-set-key (kbd "C-M-<backspace>") 'backward-kill-word-noring)
+    (global-set-key (kbd "C-<backspace>") 'backward-kill-word-noring)
     #+END_SRC
 *** perspective
 
@@ -1688,7 +1688,13 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	 (persp-mode 1))
    #+end_src
 
-*** guide-key
+*** which-key
+
+    #+begin_src emacs-lisp
+    (require 'which-key)
+    #+end_src
+
+*** COMMENT guide-key
 
     #+BEGIN_SRC emacs-lisp
     (use-package guide-key
