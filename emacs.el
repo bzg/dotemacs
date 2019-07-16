@@ -1276,7 +1276,7 @@ the copy in the last group."
   (setq browse-url-browser-function 'eww-browse-url))
 (setq browse-url-text-browser "w3m")
 (setq browse-url-new-window-flag t)
-(setq browse-url-generic-program "firefox" t)
+(setq browse-url-generic-program "firefox")
 (setq browse-url-firefox-new-window-is-tab t)
 
 (use-package w3m
