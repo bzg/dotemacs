@@ -1677,7 +1677,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	(backward-kill-word arg)
 	(setq kill-ring (reverse kr))))
 
-    (global-set-key (kbd "C-<backspace>") 'backward-kill-word-noring)
+    (global-set-key (kbd "C-M-<backspace>") 'backward-kill-word-noring)
     #+END_SRC
 *** perspective
 
@@ -1692,6 +1692,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
     #+begin_src emacs-lisp
     (require 'which-key)
+    (which-key-mode)
     #+end_src
 
 *** COMMENT guide-key

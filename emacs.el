@@ -1512,7 +1512,7 @@ the copy in the last group."
     (backward-kill-word arg)
     (setq kill-ring (reverse kr))))
 
-(global-set-key (kbd "C-<backspace>") 'backward-kill-word-noring)
+(global-set-key (kbd "C-M-<backspace>") 'backward-kill-word-noring)
 
 (use-package perspective
       :config
@@ -1520,6 +1520,7 @@ the copy in the last group."
       (persp-mode 1))
 
 (require 'which-key)
+(which-key-mode)
 
 (use-package multi-term
   :config
