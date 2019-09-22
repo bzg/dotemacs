@@ -190,8 +190,16 @@
   (let ((w (thing-at-point 'word)))
     (google-translate-translate "en" "fr" w)))
 
-(global-set-key (kbd "C-c t") 'google-translate-query-translate)
+(defun google-translate-word-at-point ()
+  (interactive)
+  (let ((w (thing-at-point 'word)))
+    (google-translate-translate "de" "fr" w)))
+
+(global-set-key (kbd "C-c t") (lambda (s) (interactive "sTranslate: ") (google-translate-translate "en" "fr" s)))
+(global-set-key (kbd "C-c d") (lambda (s) (interactive "sTraduire : ") (google-translate-translate "fr" "de" s)))
+
 (global-set-key (kbd "C-c T") 'google-translate-word-at-point)
+(global-set-key (kbd "C-c D") 'google-translate-word-at-point-de)
 
 (defun unfill-paragraph ()
   "Make a multi-line paragraph into a single line of text."
