@@ -811,6 +811,7 @@
   :config
   (gnus-delay-initialize)
   (setq gnus-delay-default-delay "1d")
+  (setq gnus-use-atomic-windows nil)
   (setq gnus-always-read-dribble-file t)
   (setq nndraft-directory "~/News/drafts/")
   (setq nnmh-directory "~/News/drafts/")
