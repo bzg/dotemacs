@@ -222,6 +222,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (global-set-key (kbd "M-]") 'origami-toggle-node)
   (global-set-key "\M- " 'hippie-expand)
 
+  (require 'google-translate)
+
   (defun google-translate-word-at-point ()
     (interactive)
     (let ((w (thing-at-point 'word)))
@@ -1544,8 +1546,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
     (define-key clj-refactor-map "\C-ctl" #'cljr-thread-last-all)
     (define-key clj-refactor-map "\C-cu" #'cljr-unwind)
     (define-key clj-refactor-map "\C-cU" #'cljr-unwind-all)
-    (add-to-list 'cljr-magic-require-namespaces
-		 '("s"  . "clojure.string")))
+    (add-to-list 'cljr-magic-require-namespaces '("s"  . "clojure.string")))
   #+END_SRC
 
 * Misc
@@ -1765,3 +1766,25 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
     (when (memq window-system '(mac ns x))
       (exec-path-from-shell-initialize))
     #+end_src
+*** COMMENT lsp-mode
+
+#+begin_src emacs-lisp
+(use-package lsp-mode
+  :ensure t
+  :commands lsp
+  :config
+  (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure-mode"))
+  :init
+  (setq lsp-enable-indentation nil)
+  (add-hook 'clojure-mode-hook #'lsp)
+  (add-hook 'clojurec-mode-hook #'lsp)
+  (add-hook 'clojurescript-mode-hook #'lsp))
+
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode)
+
+(use-package company-lsp
+  :ensure t
+  :commands company-lsp)
+#+end_src

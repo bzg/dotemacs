@@ -185,6 +185,8 @@
 (global-set-key (kbd "M-]") 'origami-toggle-node)
 (global-set-key "\M- " 'hippie-expand)
 
+(require 'google-translate)
+
 (defun google-translate-word-at-point ()
   (interactive)
   (let ((w (thing-at-point 'word)))
@@ -1455,8 +1457,7 @@ the copy in the last group."
   (define-key clj-refactor-map "\C-ctl" #'cljr-thread-last-all)
   (define-key clj-refactor-map "\C-cu" #'cljr-unwind)
   (define-key clj-refactor-map "\C-cU" #'cljr-unwind-all)
-  (add-to-list 'cljr-magic-require-namespaces
-	       '("s"  . "clojure.string")))
+  (add-to-list 'cljr-magic-require-namespaces '("s"  . "clojure.string")))
 
 ;; Geiser
 (setq geiser-active-implementations '(guile racket))
