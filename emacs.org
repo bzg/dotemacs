@@ -667,14 +667,14 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	   ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/libre.org"))
 	    (org-agenda-sorting-strategy '(timestamp-up))))
 
-	  (" " . "Task and rendez-vous for today")
-	  ("  " "Travail (tout)" agenda "Tasks and rdv for today"
+	  ("" . "Task and rendez-vous for today")
+	  ("" "Travail (tout)" agenda "Tasks and rdv for today"
 	   ((org-agenda-span 1)
 	    (org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/bzg.org"))
 	    (org-deadline-warning-days 3)
 	    (org-agenda-sorting-strategy
 	     '(todo-state-up time-up priority-down))))
-	  (" 	" "Libre (tout)" agenda "Tasks and rdv for today"
+	  (" " "Libre (tout)" agenda "Tasks and rdv for today"
 	   ((org-agenda-span 1)
 	    (org-agenda-files '("~/org/libre.org"))
 	    (org-deadline-warning-days 3)
