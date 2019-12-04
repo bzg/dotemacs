@@ -334,7 +334,7 @@
 (require 'org-capture)
 (require 'ox-latex)
 (require 'ox-odt)
-(require 'org-gnus)
+(require 'ol-gnus)
 (require 'ox-koma-letter)
 (setq org-koma-letter-use-email t)
 (setq org-koma-letter-use-foldmarks nil)
