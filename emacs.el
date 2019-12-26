@@ -1524,11 +1524,6 @@ the copy in the last group."
 
 (global-set-key (kbd "C-M-<backspace>") 'backward-kill-word-noring)
 
-(use-package perspective
-      :config
-      ;; (setq persp-mode-prefix-key (kbd "C-z"))
-      (persp-mode 1))
-
 (require 'which-key)
 (which-key-mode)
 
@@ -1569,3 +1564,5 @@ the copy in the last group."
 
 (when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize))
+
+(setq tab-bar-show nil)

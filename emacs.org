@@ -1689,7 +1689,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
     (global-set-key (kbd "C-M-<backspace>") 'backward-kill-word-noring)
     #+END_SRC
-*** perspective
+*** COMMENT perspective
 
    #+begin_src emacs-lisp
    (use-package perspective
@@ -1788,3 +1788,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   :ensure t
   :commands company-lsp)
 #+end_src
+*** For Emacs 27.1
+
+    #+begin_src emacs-lisp
+    (setq tab-bar-show nil)
+    #+end_src
