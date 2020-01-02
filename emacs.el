@@ -221,15 +221,19 @@
   (global-set-key (kbd "C-x c A") #'helm-ag))
 
 (setq bzg-cycle-view-current nil)
+
 (defun bzg-cycle-view ()
   "Cycle through my favorite views."
   (interactive)
   (let ((splitted-frame
 	 (or (< (window-height) (1- (frame-height)))
 	     (< (window-width) (frame-width)))))
-    (cond ((and (not bzg-cycle-view-current) splitted-frame)
+    (cond ((and (not (eq last-command 'bzg-cycle-view)) splitted-frame)
+	   (delete-other-windows)
+	   (bzg-big-fringe-mode))
+	  ((and (not bzg-cycle-view-current) splitted-frame)
 	   (delete-other-windows))
-	  ((eq bzg-cycle-view-current nil)
+	  ((not bzg-cycle-view-current)
 	   (delete-other-windows)
 	   (if bzg-big-fringe-mode
 	       (progn (bzg-big-fringe-mode)
@@ -251,6 +255,9 @@
 	   (delete-other-windows)
 	   (bzg-big-fringe-mode 1)
 	   (setq bzg-cycle-view-current 'one-window-with-fringe)))))
+
+(advice-add 'split-window-horizontally :before (lambda () (interactive) (bzg-big-fringe-mode 0)))
+(advice-add 'split-window-right :before (lambda () (interactive) (bzg-big-fringe-mode 0)))
 
 (use-package dired
   :config
@@ -761,7 +768,7 @@
 
 (defun bzg-caldav-sync-all ()
   (interactive)
-  (bzg-etalab-caldav-sync)
+  ;; (bzg-etalab-caldav-sync)
   (bzg-caldav-sync-perso))
 
 ;; notmuch configuration
