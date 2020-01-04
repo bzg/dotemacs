@@ -613,12 +613,6 @@
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
-	("!" tags-todo "+DEADLINE<=\"<+7d>\"")
-	("=" tags-todo "+SCHEDULED<=\"<now>\"")
-	("?" "WAIT (bzg)" tags-todo "TODO={WAIT}"
-	 ((org-agenda-files '("~/org/bzg.org"))
-	  (org-agenda-sorting-strategy
-	   '(todo-state-up priority-down time-up))))
 	("@" tags-todo "+Mail+TODO={NEXT\\|STRT\\|WAIT}")
 	("#" "DONE/CANCELED/DELEGATED"
 	 todo "DONE|CANCELED|DELEGATED"
@@ -638,7 +632,7 @@
 	  (org-deadline-warning-days 3)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up priority-down time-up))))
-	("e" "Etalab TODO" tags-todo "TODO={STRT\\|NEXT\\|TODO}"
+	("E" "Etalab TODO" tags-todo "TODO={STRT\\|NEXT\\|TODO}"
 	 ((org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-category-filter-preset '("+ETL"))
 	  (org-agenda-sorting-strategy
@@ -724,10 +718,7 @@
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
 
 	("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
-	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
-
-	("o" "Org" entry (file+headline "~/org/bzg.org" "Org-mode : passer la maintenance fin 2019")
-	 "* TODO %? :Code:\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)))
+	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)))
 
 (setq org-capture-templates-contexts
       '(("r" ((in-mode . "gnus-summary-mode")
