@@ -228,7 +228,7 @@
   (let ((splitted-frame
 	 (or (< (window-height) (1- (frame-height)))
 	     (< (window-width) (frame-width)))))
-    (cond ((and (not (eq last-command 'bzg-cycle-view)) splitted-frame)
+    (cond ((not (eq last-command 'bzg-cycle-view))
 	   (delete-other-windows)
 	   (bzg-big-fringe-mode))
 	  ((and (not bzg-cycle-view-current) splitted-frame)
