@@ -637,8 +637,8 @@
 	
 	("E" "Etalab (today)" agenda "Etalab tasks and rdv for today"
 	 ((org-agenda-span 1)
-	  (org-agenda-category-filter-preset '("+ETL" "+RTL"))
-	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/bzg.org"))
+	  (org-agenda-category-filter-preset '("+RTL"))
+	  (org-agenda-files '("~/org/rdv-etalab.org" "~/org/bzg.org"))
 	  (org-deadline-warning-days 3)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
@@ -869,7 +869,7 @@
 		  (nnimap-server-port 143)
 		  (nnimap-authinfo-file "~/.authinfo")
 		  (nnimap-stream network))
-	  ;; (nntp "news" (nntp-address "news.gmane.org"))
+	  ;; (nntp "news" (nntp-address "news.gmane.io"))
 	  ))
 
   (setq gnus-check-new-newsgroups nil)

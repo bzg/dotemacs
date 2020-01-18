@@ -930,7 +930,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 		  (nnimap-server-port 143)
 		  (nnimap-authinfo-file "~/.authinfo")
 		  (nnimap-stream network))
-	  ;; (nntp "news" (nntp-address "news.gmane.org"))
+	  ;; (nntp "news" (nntp-address "news.gmane.io"))
 	  ))
 
   (setq gnus-check-new-newsgroups nil)
