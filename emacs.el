@@ -624,17 +624,22 @@
 	 ((org-agenda-span 1)
 	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/bzg.org"))
 	  (org-deadline-warning-days 3)
+	  (org-agenda-max-entries 12)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
-	(" " "Libre (tout)" agenda "Tasks and rdv for today"
+	("	" "Libre (tout)" agenda "Tasks and rdv for today"
 	 ((org-agenda-span 1)
 	  (org-agenda-files '("~/org/libre.org"))
 	  (org-deadline-warning-days 3)
+	  (org-agenda-max-entries 24)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up priority-down time-up))))
-	("E" "Etalab TODO" tags-todo "TODO={STRT\\|NEXT\\|TODO}"
-	 ((org-agenda-files '("~/org/bzg.org"))
-	  (org-agenda-category-filter-preset '("+ETL"))
+	
+	("E" "Etalab (today)" agenda "Etalab tasks and rdv for today"
+	 ((org-agenda-span 1)
+	  (org-agenda-category-filter-preset '("+ETL" "+RTL"))
+	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/bzg.org"))
+	  (org-deadline-warning-days 3)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
@@ -1050,48 +1055,7 @@
 		"%0{ %}(%2t)"
 		"%2{ %}%-23,23n"
 		"%1{ %}%1{%B%}%2{%-102,102s%}%-140="
-		"\n"))
-
-  ;; Hack to store Org links upon sending Gnus messages
-
-  (defun bzg-message-send-and-org-gnus-store-link (&optional arg)
-    "Send message with `message-send-and-exit' and store org link to message copy.
-If multiple groups appear in the Gcc header, the link refers to
-the copy in the last group."
-    (interactive "P")
-    (save-excursion
-      (save-restriction
-	(message-narrow-to-headers)
-	(let ((gcc (car (last
-			 (message-unquote-tokens
-			  (message-tokenize-header
-			   (mail-fetch-field "gcc" nil t) " ,")))))
-	      (buf (current-buffer))
-	      (message-kill-buffer-on-exit nil)
-	      id to from subject desc link newsgroup xarchive)
-	  (message-send-and-exit arg)
-	  (or
-	   ;; gcc group found ...
-	   (and gcc
-		(save-current-buffer
-		  (progn (set-buffer buf)
-			 (setq id (org-remove-angle-brackets
-				   (mail-fetch-field "Message-ID")))
-			 (setq to (mail-fetch-field "To"))
-			 (setq from (mail-fetch-field "From"))
-			 (setq subject (mail-fetch-field "Subject"))))
-		(org-store-link-props :type "gnus" :from from :subject subject
-				      :message-id id :group gcc :to to)
-		(setq desc (org-email-link-description))
-		(setq link (org-gnus-article-link
-			    gcc newsgroup id xarchive))
-		(setq org-stored-links
-		      (cons (list link desc) org-stored-links)))
-	   ;; no gcc group found ...
-	   (message "Can not create Org link: No Gcc header found."))))))
-
-  (define-key message-mode-map [(control c) (control meta c)]
-    'bzg-message-send-and-org-gnus-store-link))
+		"\n")))
 
 (use-package gnus-alias
   :config
