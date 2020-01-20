@@ -609,7 +609,6 @@
 	("%" "Rendez-vous" agenda* "Week planning"
 	 ((org-agenda-span 'week)
 	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org"))
-	  ;; (org-deadline-warning-days 3)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
@@ -637,7 +636,7 @@
 	
 	("E" "Etalab (today)" agenda "Etalab tasks and rdv for today"
 	 ((org-agenda-span 1)
-	  (org-agenda-category-filter-preset '("+RTL"))
+	  (org-agenda-category-filter-preset '("+ETL" "+RTL"))
 	  (org-agenda-files '("~/org/rdv-etalab.org" "~/org/bzg.org"))
 	  (org-deadline-warning-days 3)
 	  (org-agenda-sorting-strategy
@@ -657,14 +656,12 @@
 	("xx" "Agenda work" agenda "Work scheduled for today"
 	 ((org-agenda-span 1)
 	  (org-deadline-warning-days 3)
-	  (org-agenda-entry-types '(:timestamp :scheduled))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up priority-down time-up))))
 	("xX" "Agenda libre" agenda "Libre scheduled for today"
 	 ((org-agenda-span 1)
 	  (org-deadline-warning-days 3)
 	  (org-agenda-files '("~/org/libre.org"))
-	  (org-agenda-entry-types '(:timestamp :scheduled))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up priority-down time-up))))
 
