@@ -192,7 +192,7 @@
   (let ((w (thing-at-point 'word)))
     (google-translate-translate "en" "fr" w)))
 
-(defun google-translate-word-at-point ()
+(defun google-translate-word-at-point-de ()
   (interactive)
   (let ((w (thing-at-point 'word)))
     (google-translate-translate "de" "fr" w)))
@@ -632,7 +632,7 @@
 	  (org-deadline-warning-days 3)
 	  (org-agenda-max-entries 24)
 	  (org-agenda-sorting-strategy
-	   '(todo-state-up priority-down time-up))))
+	   '(todo-state-up time-up priority-down))))
 	
 	("E" "Etalab (today)" agenda "Etalab tasks and rdv for today"
 	 ((org-agenda-span 1)
@@ -657,13 +657,13 @@
 	 ((org-agenda-span 1)
 	  (org-deadline-warning-days 3)
 	  (org-agenda-sorting-strategy
-	   '(todo-state-up priority-down time-up))))
+	   '(todo-state-up time-up priority-down))))
 	("xX" "Agenda libre" agenda "Libre scheduled for today"
 	 ((org-agenda-span 1)
 	  (org-deadline-warning-days 3)
 	  (org-agenda-files '("~/org/libre.org"))
 	  (org-agenda-sorting-strategy
-	   '(todo-state-up priority-down time-up))))
+	   '(todo-state-up time-up priority-down))))
 
 	("z" . "Deadlines for today")
 	("zz" "Work deadlines" agenda "Past/upcoming work deadlines"
@@ -671,14 +671,14 @@
 	  (org-deadline-warning-days 15)
 	  (org-agenda-entry-types '(:deadline))
 	  (org-agenda-sorting-strategy
-	   '(todo-state-up priority-down time-up))))
+	   '(todo-state-up time-up priority-down))))
 	("zZ" "Libre deadlines" agenda "Past/upcoming leisure deadlines"
 	 ((org-agenda-span 1)
 	  (org-deadline-warning-days 15)
 	  (org-agenda-files '("~/org/libre.org"))
 	  (org-agenda-entry-types '(:deadline))
 	  (org-agenda-sorting-strategy
-	   '(todo-state-up priority-down time-up))))
+	   '(todo-state-up time-up priority-down))))
 
 	("r" . "Read")
 	("rr" tags-todo "+Read+TODO={NEXT\\|STRT}")
