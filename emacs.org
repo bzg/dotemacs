@@ -227,18 +227,11 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (defun google-translate-word-at-point ()
   (interactive)
   (let ((w (thing-at-point 'word)))
-    (google-translate-translate "en" "fr" w)))
+    (google-translate-translate "auto" "fr" w)))
 
-(defun google-translate-word-at-point-de ()
-  (interactive)
-  (let ((w (thing-at-point 'word)))
-    (google-translate-translate "de" "fr" w)))
-
-(global-set-key (kbd "C-c t") (lambda (s) (interactive "sTranslate: ") (google-translate-translate "en" "fr" s)))
-(global-set-key (kbd "C-c d") (lambda (s) (interactive "sTraduire : ") (google-translate-translate "fr" "de" s)))
-
+(global-set-key (kbd "C-c t") (lambda (s) (interactive "sTranslate: ")
+				(google-translate-translate "auto" "fr" s)))
 (global-set-key (kbd "C-c T") 'google-translate-word-at-point)
-(global-set-key (kbd "C-c D") 'google-translate-word-at-point-de)
 
 (defun unfill-paragraph ()
   "Make a multi-line paragraph into a single line of text."
@@ -670,16 +663,16 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	("" . "Task and rendez-vous for today")
 	("" "Travail (tout)" agenda "Tasks and rdv for today"
 	 ((org-agenda-span 1)
-	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/bzg.org"))
+	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-deadline-warning-days 3)
-	  (org-agenda-max-entries 12)
+	  (org-agenda-max-entries 7)
 	  (org-agenda-sorting-strategy
-	   '(todo-state-up time-up priority-down))))
+	   '(time-up todo-state-up priority-down))))
 	("	" "Libre (tout)" agenda "Tasks and rdv for today"
 	 ((org-agenda-span 1)
 	  (org-agenda-files '("~/org/libre.org"))
 	  (org-deadline-warning-days 3)
-	  (org-agenda-max-entries 24)
+	  (org-agenda-max-entries 12)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 	
