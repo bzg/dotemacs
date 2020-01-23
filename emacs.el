@@ -59,6 +59,7 @@
 (pixel-scroll-mode 1)
 (mouse-avoidance-mode 'cat-and-mouse)
 (setq max-lisp-eval-depth 10000)
+(electric-quote-mode 1)
 
 ;; Default Frame
 (setq initial-frame-alist
