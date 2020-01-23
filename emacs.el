@@ -402,7 +402,7 @@
 (setq org-log-into-drawer "LOGBOOK")
 (setq org-agenda-entry-text-maxlines 10)
 (setq org-timer-default-timer 25)
-(setq org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/bzg.org"))
+(setq org-agenda-files '("~/org/rdv.org" "~/org/bzg.org"))
 (setq org-agenda-prefix-format
       '((agenda . " %i %-12:c%?-14t%s")
 	(timeline . "  % s")
@@ -601,14 +601,14 @@
 	;; Week agenda for rendez-vous and tasks
 	("%" "Rendez-vous" agenda* "Week planning"
 	 ((org-agenda-span 'week)
-	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org"))
+	  (org-agenda-files '("~/org/rdv.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
 	("@" tags-todo "+Mail+TODO={NEXT\\|STRT\\|WAIT}")
 	("#" "DONE/CANCELED/DELEGATED"
 	 todo "DONE|CANCELED|DELEGATED"
-	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/libre.org"))
+	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/libre.org"))
 	  (org-agenda-sorting-strategy '(timestamp-up))))
 
 	("" . "Task and rendez-vous for today")
@@ -630,7 +630,7 @@
 	("E" "Etalab (today)" agenda "Etalab tasks and rdv for today"
 	 ((org-agenda-span 1)
 	  (org-agenda-category-filter-preset '("+ETL" "+RTL"))
-	  (org-agenda-files '("~/org/rdv-etalab.org" "~/org/bzg.org"))
+	  (org-agenda-files '("~/org/rdv.org" "~/org/bzg.org"))
 	  (org-deadline-warning-days 3)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
@@ -673,6 +673,9 @@
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
+	("A" "Read, Listen, View (work)" tags-todo
+         "+TAGS={Read\\|Listen\\|View}+TODO={NEXT\\|STRT}")
+
 	("r" . "Read")
 	("rr" tags-todo "+Read+TODO={NEXT\\|STRT}")
 	("rR" tags-todo "+Read+TODO={NEXT\\|STRT}"
@@ -706,7 +709,7 @@
 	("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
 	 "* RDV avec %:fromname %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
-	("R" "RDV Etalab" entry (file+headline "~/org/rdv-etalab.org" "RDV Etalab")
+	("R" "RDV Etalab" entry (file+headline "~/org/rdv.org" "RDV Etalab")
 	 "* RDV avec %:fromname %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
 	("e" "Etalab" entry (file+headline "~/org/bzg.org" "Etalab : impulser dynamique LL via la DINSIC")
@@ -739,23 +742,6 @@
 	(org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
 	(org-caldav-files nil))
     (call-interactively 'org-caldav-sync)))
-
-(defun bzg--caldav-sync-etalab-perso ()
-  (interactive)
-  (let ((org-caldav-inbox "~/org/rdv-etalab.org")
-	(org-caldav-calendar-id "personal")
-	(org-caldav-url "https://nextcloud.data.gouv.fr/remote.php/dav/calendars/bastien.guerry")
-	(org-caldav-files nil))
-    (call-interactively 'org-caldav-sync)))
-
-(defun bzg-etalab-caldav-sync ()
-  (interactive)
-  (bzg--caldav-sync-etalab-perso))
-
-(defun bzg-caldav-sync-all ()
-  (interactive)
-  ;; (bzg-etalab-caldav-sync)
-  (bzg-caldav-sync-perso))
 
 ;; notmuch configuration
 (use-package notmuch
@@ -1064,7 +1050,7 @@
   (gnus-icalendar-setup)
   ;; To enable optional iCalendar->Org sync functionality
   ;; NOTE: both the capture file and the headline(s) inside must already exist
-  (setq gnus-icalendar-org-capture-file "~/org/rdv-etalab.org")
+  (setq gnus-icalendar-org-capture-file "~/org/rdv.org")
   (setq gnus-icalendar-org-capture-headline '("RDV Etalab"))
   (setq gnus-icalendar-org-template-key "I")
   (gnus-icalendar-org-setup))
