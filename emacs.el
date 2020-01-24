@@ -26,8 +26,9 @@
   (normal-top-level-add-subdirs-to-load-path))
 
 ;; Load theme
-(add-to-list 'custom-theme-load-path "~/install/git/vxid-theme/")
-(load-theme 'vxid)
+;; (add-to-list 'custom-theme-load-path "~/install/git/vxid-theme/")
+;; (load-theme 'vxid)
+(load-theme 'doom-nord)
 
 ;; Start server to use emacsclient
 (server-start)
@@ -59,7 +60,6 @@
 (pixel-scroll-mode 1)
 (mouse-avoidance-mode 'cat-and-mouse)
 (setq max-lisp-eval-depth 10000)
-(electric-quote-mode 1)
 
 ;; Default Frame
 (setq initial-frame-alist
@@ -1348,9 +1348,9 @@
   :group 'editing-basics
   (if hidden-mode-line-mode
       (setq hide-mode-line mode-line-format
-	    mode-line-format "")
+	    mode-line-format nil)
     (setq mode-line-format hide-mode-line
-	  hide-mode-line ""))
+	  hide-mode-line nil))
   (force-mode-line-update)
   ;; Apparently force-mode-line-update is not always enough to
   ;; redisplay the mode-line
