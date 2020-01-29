@@ -544,6 +544,7 @@
 (setq org-fontify-whole-heading-line t)
 (setq org-file-apps
       '((auto-mode . emacs)
+	(directory . emacs)
 	("\\.mm\\'" . default)
 	("\\.x?html?\\'" . default)
 	("\\.pdf\\'" . "evince %s")))
