@@ -36,6 +36,7 @@
 ;; Initialize `Info-directory-list' to include org-mode
 (setq Info-refill-paragraphs t)
 (add-to-list 'Info-directory-list "~/install/git/org-mode/doc/")
+(add-to-list 'Info-directory-list "~/install/git/emacs/info/")
 
 ;; Don't ask for confirmation for "dangerous" commands
 (put 'erase-buffer 'disabled nil)
