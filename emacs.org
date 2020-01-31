@@ -765,7 +765,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	("R" "RDV Etalab" entry (file+headline "~/org/rdv.org" "RDV Etalab")
 	 "* RDV avec %:fromname %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
-	("e" "Etalab" entry (file+headline "~/org/bzg.org" "Etalab : impulser dynamique LL via la DINSIC")
+	("e" "Etalab" entry (file+headline "~/org/bzg.org" "Etalab : impulser dynamique LL via la DINUM")
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
 
 	("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
