@@ -1367,6 +1367,7 @@
 	     "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
 
 (add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
+(add-hook 'org-mode-hook 'hidden-mode-line-mode)
 
 (use-package paredit
   :config
@@ -1489,7 +1490,7 @@
 
 (require 'org-bullets)
 (setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1) (hidden-mode-line-mode 1)))
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
 (defun find-variable-or-function-at-point ()
   (interactive)
