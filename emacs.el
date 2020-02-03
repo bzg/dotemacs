@@ -59,6 +59,7 @@
 (tooltip-mode -1)
 (blink-cursor-mode -1)
 (pixel-scroll-mode 1)
+(hl-line-mode 1)
 (mouse-avoidance-mode 'cat-and-mouse)
 (setq max-lisp-eval-depth 10000)
 
