@@ -44,12 +44,9 @@
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
-(put 'scroll-left 'disabled nil)
-(put 'scroll-right 'disabled nil)
 (put 'set-goal-column 'disabled nil)
 
 ;; We expect local variables to be known
-(setq enable-local-variables t)
 (setq enable-local-eval t)
 
 ;; Enabling and disabling some modes
@@ -58,8 +55,8 @@
 (display-time-mode 1)
 (tooltip-mode -1)
 (blink-cursor-mode -1)
+(scroll-bar-mode -1)
 (pixel-scroll-mode 1)
-(hl-line-mode 1)
 (mouse-avoidance-mode 'cat-and-mouse)
 (setq max-lisp-eval-depth 10000)
 
