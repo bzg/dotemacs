@@ -332,7 +332,6 @@
 (require 'ox-rss)
 (require 'ox-md)
 (require 'ox-beamer)
-(require 'org-capture)
 (require 'ox-latex)
 (require 'ox-odt)
 (require 'ol-gnus)
