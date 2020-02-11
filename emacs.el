@@ -347,11 +347,10 @@
 
 ;; I keep those here to change it on the fly
 ;; (setq org-element-use-cache nil)
-;; (setq org-adapt-indentation t)
+(setq org-adapt-indentation 'headline-data)
 
 ;; Hook to display the agenda in a single window
-(add-hook 'org-agenda-finalize-hook
-	  'delete-other-windows)
+(add-hook 'org-agenda-finalize-hook 'delete-other-windows)
 
 ;; Hook to update all blocks before saving
 (add-hook 'org-mode-hook
@@ -397,6 +396,7 @@
 (setq org-edit-src-content-indentation 0)
 (setq org-babel-clojure-backend 'cider)
 (setq org-agenda-bulk-mark-char "*")
+(setq org-agenda-inhibit-startup t)
 (setq org-agenda-diary-file "/home/guerry/org/rdv.org")
 (setq org-agenda-dim-blocked-tasks nil)
 (setq org-log-into-drawer "LOGBOOK")
@@ -1419,7 +1419,7 @@
 (defun bzg-find-bzg nil
   "Find the bzg.org file."
   (interactive)
-  (call-interactively (lambda () (interactive) (find-file "~/org/bzg.org")))
+  (find-file "~/org/bzg.org")
   (delete-other-windows))
 
 (defun uniquify-all-lines-region (start end)
