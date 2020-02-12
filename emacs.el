@@ -612,15 +612,15 @@
 	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/libre.org"))
 	  (org-agenda-sorting-strategy '(timestamp-up))))
 
-	("" . "Task and rendez-vous for today")
-	("" "Travail (tout)" agenda "Tasks and rdv for today"
+	(" " . "Task and rendez-vous for today")
+	("  " "Travail (tout)" agenda "Tasks and rdv for today"
 	 ((org-agenda-span 1)
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-deadline-warning-days 3)
 	  (org-agenda-max-entries 7)
 	  (org-agenda-sorting-strategy
 	   '(time-up todo-state-up priority-down))))
-	("	" "Libre (tout)" agenda "Tasks and rdv for today"
+	(" 	" "Libre (tout)" agenda "Tasks and rdv for today"
 	 ((org-agenda-span 1)
 	  (org-agenda-files '("~/org/libre.org"))
 	  (org-deadline-warning-days 3)
@@ -712,6 +712,9 @@
 
 	("R" "RDV Etalab" entry (file+headline "~/org/rdv.org" "RDV Etalab")
 	 "* RDV avec %:fromname %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
+
+	("o" "Org" entry (file+headline "~/org/bzg.org" "Org-mode : passer la maintenance fin 2020")
+	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n" :prepend t)
 
 	("e" "Etalab" entry (file+headline "~/org/bzg.org" "Etalab : impulser dynamique LL via la DINUM")
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
