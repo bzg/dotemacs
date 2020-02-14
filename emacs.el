@@ -398,7 +398,7 @@
 (setq org-agenda-bulk-mark-char "*")
 (setq org-agenda-inhibit-startup t)
 (setq org-agenda-diary-file "/home/guerry/org/rdv.org")
-(setq org-agenda-dim-blocked-tasks nil)
+(setq org-agenda-dim-blocked-tasks t)
 (setq org-log-into-drawer "LOGBOOK")
 (setq org-agenda-entry-text-maxlines 10)
 (setq org-timer-default-timer 25)
