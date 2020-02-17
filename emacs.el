@@ -394,7 +394,8 @@
 (add-hook 'org-clock-in-hook (lambda() (org-todo "STRT")))
 
 (setq org-edit-src-content-indentation 0)
-(setq org-babel-clojure-backend 'cider)
+(setq org-babel-clojure-backend 'inf-clojure)
+(setq inf-clojure-generic-cmd "clojure")
 (setq org-agenda-bulk-mark-char "*")
 (setq org-agenda-inhibit-startup t)
 (setq org-agenda-diary-file "/home/guerry/org/rdv.org")
