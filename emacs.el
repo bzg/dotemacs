@@ -345,10 +345,6 @@
 (define-key global-map "\C-cc" 'org-capture)
 (define-key global-map "\C-cL" 'org-occur-link-in-agenda-files)
 
-;; I keep those here to change it on the fly
-;; (setq org-element-use-cache nil)
-(setq org-adapt-indentation 'headline-data)
-
 ;; Hook to display the agenda in a single window
 (add-hook 'org-agenda-finalize-hook 'delete-other-windows)
 
@@ -393,10 +389,10 @@
 ;; Set headlines to STRT when clocking in
 (add-hook 'org-clock-in-hook (lambda() (org-todo "STRT")))
 
+(setq org-adapt-indentation 'headline-data)
 (setq org-edit-src-content-indentation 0)
 (setq org-babel-clojure-backend 'inf-clojure)
 (setq inf-clojure-generic-cmd "clojure")
-(setq org-agenda-bulk-mark-char "*")
 (setq org-agenda-inhibit-startup t)
 (setq org-agenda-diary-file "/home/guerry/org/rdv.org")
 (setq org-agenda-dim-blocked-tasks t)
@@ -463,7 +459,6 @@
 (setq org-link-mailto-program '(browse-url-mail "mailto:%a?subject=%s"))
 (setq org-log-note-headings
       '((done . "CLOSING NOTE %t") (state . "State %-12s %t") (clock-out . "")))
-(setq org-priority-start-cycle-with-default nil)
 (setq org-refile-targets '((org-agenda-files . (:maxlevel . 3))
 			   (("~/org/libre.org") . (:maxlevel . 1))))
 (setq org-refile-use-outline-path t)
@@ -492,7 +487,7 @@
 (setq org-todo-keywords '((type "STRT" "NEXT" "TODO" "WAIT" "|" "DONE" "DELEGATED" "CANCELED")))
 (setq org-todo-repeat-to-state t)
 (setq org-use-property-inheritance t)
-(setq org-use-sub-superscripts nil)
+(setq org-use-sub-superscripts '{})
 (setq org-clock-persist t)
 (setq org-clock-idle-time 60)
 (setq org-clock-history-length 35)
@@ -514,7 +509,6 @@
       (lambda nil
 	(and (looking-at org-outline-regexp-bol)
 	     (not (org-in-src-block-p t)))))
-(setq org-src-fontify-natively t)
 (setq org-src-tab-acts-natively t)
 (setq org-todo-keyword-faces
       '(("STRT" . (:foreground "white" :inverse-video t))
@@ -529,11 +523,10 @@
 	("omap" . "http://nominatim.openstreetmap.org/search?q=%s&polygon=1")))
 
 (setq org-attach-directory "~/org/data/")
-(setq org-link-display-descriptive nil)
 (setq org-loop-over-headlines-in-active-region t)
+(setq org-agenda-loop-over-headlines-in-active-region t)
 (setq org-create-formula-image-program 'dvipng) ;; imagemagick
 (setq org-allow-promoting-top-level-subtree t)
-(setq org-gnus-prefer-web-links nil)
 (setq org-html-head-include-default-style nil)
 (setq org-html-head-include-scripts nil)
 (setq org-clock-display-default-range 'thisweek)
@@ -555,7 +548,6 @@
 (setq org-deadline-warning-days 7)
 (setq org-default-notes-file "~/org/notes.org")
 (setq org-directory "~/org/")
-(setq org-ellipsis nil)
 (setq org-email-link-description-format "%c: %.50s")
 (setq org-support-shift-select t)
 (setq org-export-filter-planning-functions
@@ -730,9 +722,6 @@
 	("R" ((in-mode . "gnus-summary-mode")
 	      (in-mode . "gnus-article-mode")
 	      (in-mode . "message-mode")))))
-
-;; (add-hook 'mail-mode-hook #'orgalist-mode)
-;; (add-hook 'message-mode-hook #'orgalist-mode)
 
 (defun my-org-html-export-planning (planning-string backend info)
   (when (string-match "<p>.+><\\([0-9]+-[0-9]+-[0-9]+\\)[^>]+><.+</p>" planning-string)
