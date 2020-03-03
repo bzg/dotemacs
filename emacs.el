@@ -395,6 +395,7 @@
 (setq inf-clojure-generic-cmd "clojure")
 (setq org-agenda-inhibit-startup t)
 (setq org-agenda-diary-file "/home/guerry/org/rdv.org")
+(setq org-priority-start-cycle-with-default nil)
 (setq org-agenda-dim-blocked-tasks t)
 (setq org-log-into-drawer "LOGBOOK")
 (setq org-agenda-entry-text-maxlines 10)
@@ -839,7 +840,7 @@
 		  (nnimap-server-port 143)
 		  (nnimap-authinfo-file "~/.authinfo")
 		  (nnimap-stream network))
-	  ;; (nntp "news" (nntp-address "news.gmane.io"))
+	  (nntp "news" (nntp-address "news.gmane.io"))
 	  ))
 
   (setq gnus-check-new-newsgroups nil)
