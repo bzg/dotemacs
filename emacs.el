@@ -181,8 +181,8 @@
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-=") 'text-scale-adjust)
-(global-set-key (kbd "C-M-]") 'origami-toggle-all-nodes)
-(global-set-key (kbd "M-]") 'origami-toggle-node)
+;; (global-set-key (kbd "C-M-]") 'origami-toggle-all-nodes)
+;; (global-set-key (kbd "M-]") 'origami-toggle-node)
 (global-set-key "\M- " 'hippie-expand)
 
 (require 'google-translate)
@@ -329,6 +329,10 @@
       appt-message-warning-time 120)
 (setq diary-file "~/.diary")
 
+(require 'org-tempo)
+(require 'org-bullets)
+(setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 (require 'ox-rss)
 (require 'ox-md)
 (require 'ox-beamer)
@@ -837,10 +841,10 @@
 	gnus-select-method '(nnnil "")
 	gnus-secondary-select-methods
 	'((nnimap "localhost"
-		  (nnimap-server-port 143)
+		  (nnimap-server-port "imaps")
 		  (nnimap-authinfo-file "~/.authinfo")
-		  (nnimap-stream network))
-	  (nntp "news" (nntp-address "news.gmane.io"))
+		  (nnimap-stream ssl))
+	  ;; (nntp "news" (nntp-address "news.gmane.io"))
 	  ))
 
   (setq gnus-check-new-newsgroups nil)
@@ -1368,7 +1372,7 @@
   :defer t
   :config
   (add-hook 'clojure-mode-hook 'company-mode)
-  (add-hook 'clojure-mode-hook 'origami-mode)
+  ;; (add-hook 'clojure-mode-hook 'origami-mode)
   (add-hook 'clojure-mode-hook 'paredit-mode)
   ;; (add-hook 'clojure-mode-hook 'lispy-mode)
   (add-hook 'clojure-mode-hook 'aggressive-indent-mode)
@@ -1380,7 +1384,7 @@
 (add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 ;; (add-hook 'emacs-lisp-mode-hook 'lispy-mode)
-(add-hook 'emacs-lisp-mode-hook 'origami-mode)
+;; (add-hook 'emacs-lisp-mode-hook 'origami-mode)
 
 (use-package clj-refactor
   :defer t
@@ -1477,10 +1481,6 @@
   (setq dired-subtree-use-backgrounds nil)
   (define-key dired-mode-map (kbd "I") 'dired-subtree-toggle)
   (define-key dired-mode-map (kbd "TAB") 'dired-subtree-cycle))
-
-(require 'org-bullets)
-(setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
 (defun find-variable-or-function-at-point ()
   (interactive)

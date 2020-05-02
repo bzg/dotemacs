@@ -218,8 +218,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-=") 'text-scale-adjust)
-(global-set-key (kbd "C-M-]") 'origami-toggle-all-nodes)
-(global-set-key (kbd "M-]") 'origami-toggle-node)
+;; (global-set-key (kbd "C-M-]") 'origami-toggle-all-nodes)
+;; (global-set-key (kbd "M-]") 'origami-toggle-node)
 (global-set-key "\M- " 'hippie-expand)
 
 (require 'google-translate)
@@ -378,6 +378,10 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 * Org
 
 #+begin_src emacs-lisp
+(require 'org-tempo)
+(require 'org-bullets)
+(setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 (require 'ox-rss)
 (require 'ox-md)
 (require 'ox-beamer)
@@ -776,11 +780,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (defun my-org-html-export-planning (planning-string backend info)
   (when (string-match "<p>.+><\\([0-9]+-[0-9]+-[0-9]+\\)[^>]+><.+</p>" planning-string)
     (concat "<span class=\"planning\">" (match-string 1 planning-string) "</span>")))
-#+end_src
 
-** org-caldav
-
-#+begin_src emacs-lisp
 (require 'org-caldav)
 
 (defun bzg-caldav-sync-perso ()
@@ -898,9 +898,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	gnus-select-method '(nnnil "")
 	gnus-secondary-select-methods
 	'((nnimap "localhost"
-		  (nnimap-server-port 143)
+		  (nnimap-server-port "imaps")
 		  (nnimap-authinfo-file "~/.authinfo")
-		  (nnimap-stream network))
+		  (nnimap-stream ssl))
 	  ;; (nntp "news" (nntp-address "news.gmane.io"))
 	  ))
 
@@ -1457,7 +1457,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   :defer t
   :config
   (add-hook 'clojure-mode-hook 'company-mode)
-  (add-hook 'clojure-mode-hook 'origami-mode)
+  ;; (add-hook 'clojure-mode-hook 'origami-mode)
   (add-hook 'clojure-mode-hook 'paredit-mode)
   ;; (add-hook 'clojure-mode-hook 'lispy-mode)
   (add-hook 'clojure-mode-hook 'aggressive-indent-mode)
@@ -1469,7 +1469,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 ;; (add-hook 'emacs-lisp-mode-hook 'lispy-mode)
-(add-hook 'emacs-lisp-mode-hook 'origami-mode)
+;; (add-hook 'emacs-lisp-mode-hook 'origami-mode)
 
 (use-package clj-refactor
   :defer t
@@ -1667,10 +1667,6 @@ Use `winstack-push' and
   (setq dired-subtree-use-backgrounds nil)
   (define-key dired-mode-map (kbd "I") 'dired-subtree-toggle)
   (define-key dired-mode-map (kbd "TAB") 'dired-subtree-cycle))
-
-(require 'org-bullets)
-(setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 #+end_src
 
 *** find-variable-or-function-at-point
@@ -1727,3 +1723,25 @@ Use `winstack-push' and
 #+begin_src emacs-lisp
 (setq tab-bar-show nil)
 #+end_src
+
+*** Misc
+
+#+begin_src 
+;; First install the package:
+(use-package flycheck-clj-kondo :ensure t)
+
+;; then install the checker as soon as `clojure-mode' is loaded
+(use-package clojure-mode
+  :ensure t
+  :config
+  (require 'flycheck-clj-kondo))
+
+(add-to-list 'auto-mode-alist '("\\.arc\\'" . lisp-mode))
+
+(setq org-plantuml-jar-path (expand-file-name "/home/guerry/bin/plantuml.jar"))
+(add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+
+(org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
+(add-to-list 'org-latex-packages-alist '("AUTO" "babel" t ("pdflatex")))
+#+end_src
+
