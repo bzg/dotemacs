@@ -1154,7 +1154,7 @@
 			       notify pcomplete completion ring services stamp
 			       track truncate)
 	erc-keywords nil
-	erc-prompt-for-nickserv-password t
+	erc-prompt-for-nickserv-password nil
 	erc-prompt-for-password nil
 	erc-timestamp-format "%s "
 	erc-hide-timestamps t
@@ -1211,7 +1211,7 @@
     (interactive)
     (erc-select :server "irc.freenode.net"
 		:port 6666
-		:nick "bzg"
+		:nick "bzg`"
 		:full-name "Bastien"))
 
   (require 'tls))
