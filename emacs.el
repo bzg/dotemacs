@@ -166,7 +166,7 @@
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
 (global-set-key (kbd "C-²") (lambda () (interactive) (org-agenda nil "E")))
-(global-set-key (kbd "C-'") (lambda () (interactive) (org-agenda nil "  ")))
+(global-set-key (kbd "C-c ²") (lambda () (interactive) (org-agenda nil "  ")))
 (global-set-key (kbd "C-&") 'gnus)
 (global-set-key (kbd "C-é") 'bzg-cycle-view)
 (global-set-key (kbd "C-\"") (lambda () (interactive) (dired "~") (revert-buffer)))
@@ -791,6 +791,7 @@
   :defer t
   :config
   (gnus-delay-initialize)
+  (setq gnus-refer-thread-limit t)
   (setq gnus-delay-default-delay "1d")
   (setq gnus-use-atomic-windows nil)
   (setq gnus-always-read-dribble-file t)
@@ -1363,6 +1364,7 @@
 
 (add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
 (add-hook 'org-mode-hook 'hidden-mode-line-mode)
+(add-hook 'org-mode-hook (lambda () (electric-indent-mode 0)))
 
 (use-package paredit
   :config
