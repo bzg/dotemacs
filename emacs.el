@@ -605,6 +605,13 @@
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
+	("ù" "Rendez-vous" agenda "Month planning"
+	 ((org-agenda-span 'month)
+	  (org-agenda-files '("~/org/rdv.org"))
+	  (org-agenda-category-filter-preset '("-ETL" "-RTL"))
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up time-up priority-down))))
+
 	("@" tags-todo "+Mail+TODO={NEXT\\|STRT\\|WAIT}")
 	("#" "DONE/CANCELED/DELEGATED"
 	 todo "DONE|CANCELED|DELEGATED"
