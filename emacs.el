@@ -665,6 +665,12 @@
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
+	("$" "Agenda work" agenda "Work scheduled for today"
+	 ((org-agenda-span 1)
+	  (org-deadline-warning-days 3)
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up time-up priority-down))))
+
 	("z" . "Deadlines for today")
 	("zz" "Work deadlines" agenda "Past/upcoming work deadlines"
 	 ((org-agenda-span 1)
