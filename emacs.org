@@ -682,7 +682,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	  (org-agenda-max-entries 12)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
-	
+
 	("E" "Etalab (today)" agenda "Etalab tasks and rdv for today"
 	 ((org-agenda-span 1)
 	  (org-agenda-category-filter-preset '("+ETL" "+RTL"))
@@ -1742,7 +1742,7 @@ Use `winstack-push' and
 
 *** Misc
 
-#+begin_src 
+#+begin_src
 ;; First install the package:
 (use-package flycheck-clj-kondo :ensure t)
 
@@ -1761,3 +1761,8 @@ Use `winstack-push' and
 (add-to-list 'org-latex-packages-alist '("AUTO" "babel" t ("pdflatex")))
 #+end_src
 
+** envrc
+
+#+begin_src emacs-lisp
+(envrc-global-mode)
+#+end_src

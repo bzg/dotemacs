@@ -633,7 +633,7 @@
 	  (org-agenda-max-entries 12)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
-	
+
 	("E" "Etalab (today)" agenda "Etalab tasks and rdv for today"
 	 ((org-agenda-span 1)
 	  (org-agenda-category-filter-preset '("+ETL" "+RTL"))
@@ -1516,3 +1516,5 @@
   (exec-path-from-shell-initialize))
 
 (setq tab-bar-show nil)
+
+(envrc-global-mode)
