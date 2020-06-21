@@ -767,9 +767,9 @@
 
   (defun bzg-notmuch-file-to-group (file)
     "Calculate the Gnus group name from the given file name."
-    (cond ((string-match "/home/guerry/Maildir/Mail/mail/\\([^/]+\\)/" file)
+    (cond ((string-match "/home/guerry/Mail/old/Mail/mail/\\([^/]+\\)/" file)
 	   (format "nnml:mail.%s" (match-string 1 file)))
-	  ((string-match "/home/guerry/Maildir/\\([^/]+\\)/\\([^/]+\\)" file)
+	  ((string-match "/home/guerry/Mail/Maildir/\\([^/]+\\)/\\([^/]+\\)" file)
 	   (format "nnimap+localhost:%s/%s" (match-string 1 file) (match-string 2 file)))
 	  (t (user-error "Unknown group"))))
 
@@ -811,7 +811,7 @@
   (setq nndraft-directory "~/News/drafts/")
   (setq nnmh-directory "~/News/drafts/")
   (setq nnfolder-directory "~/Mail/archive")
-  (setq nnml-directory "~/Maildir/Mail/")
+  (setq nnml-directory "~/Mail/old/Mail/")
   (setq gnus-summary-ignore-duplicates t)
   (setq gnus-suppress-duplicates t)
   (setq gnus-auto-select-first nil)
@@ -908,7 +908,7 @@
 	gnus-activate-level 6
 	gnus-level-unsubscribed 7)
 
-  (setq nnir-notmuch-remove-prefix "/home/guerry/Maildir/")
+  (setq nnir-notmuch-remove-prefix "/home/guerry/Mail/Maildir")
   (setq nnir-method-default-engines
 	'((nnimap . notmuch)))
 
