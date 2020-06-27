@@ -648,7 +648,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-agenda-custom-commands
       `(
 	;; Week agenda for rendez-vous and tasks
-	("ù" "Rendez-vous" agenda* "Week planning"
+	("$" "Rendez-vous" agenda* "Week planning"
 	 ((org-agenda-span 'week)
 	  (org-agenda-files '("~/org/rdv.org"))
 	  (org-agenda-sorting-strategy
@@ -711,12 +711,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	 ((org-agenda-span 1)
 	  (org-deadline-warning-days 3)
 	  (org-agenda-files '("~/org/libre.org"))
-	  (org-agenda-sorting-strategy
-	   '(todo-state-up time-up priority-down))))
-
-	("$" "Agenda work" agenda "Work scheduled for today"
-	 ((org-agenda-span 1)
-	  (org-deadline-warning-days 3)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
