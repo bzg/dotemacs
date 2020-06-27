@@ -634,6 +634,14 @@
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
+	("E" "Etalab (today)" agenda "Etalab tasks and rdv for today"
+	 ((org-agenda-span 1)
+	  (org-agenda-category-filter-preset '("+ETL" "+RTL"))
+	  (org-agenda-files '("~/org/rdv.org" "~/org/bzg.org"))
+	  (org-deadline-warning-days 3)
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up time-up priority-down))))
+
 	("n" . "What's next?")
 	("nn" "Etalab NEXT" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/bzg.org"))
@@ -657,6 +665,12 @@
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
+	("$" "Agenda work" agenda "Work scheduled for today"
+	 ((org-agenda-span 1)
+	  (org-deadline-warning-days 3)
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up time-up priority-down))))
+
 	("z" . "Deadlines for today")
 	("zz" "Work deadlines" agenda "Past/upcoming work deadlines"
 	 ((org-agenda-span 1)
@@ -672,7 +686,7 @@
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
-	("$" "Read, Listen, View (work)" tags-todo
+	("A" "Read, Listen, View (work)" tags-todo
          "+TAGS={Read\\|Listen\\|View}+TODO={NEXT\\|STRT}")
 
 	("r" . "Read")
