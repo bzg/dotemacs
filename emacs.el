@@ -165,8 +165,9 @@
 (global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
-(global-set-key (kbd "C-²") (lambda () (interactive) (org-agenda nil "E")))
-(global-set-key (kbd "C-c ²") (lambda () (interactive) (org-agenda nil "  ")))
+(global-set-key (kbd "C-²") (lambda () (interactive) (org-agenda nil "  ")))
+(global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "E")))
+(global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "xx")))
 (global-set-key (kbd "C-&") 'gnus)
 (global-set-key (kbd "C-é") 'bzg-cycle-view)
 (global-set-key (kbd "C-\"") (lambda () (interactive) (dired "~") (revert-buffer)))
@@ -780,10 +781,10 @@
   (define-key notmuch-show-mode-map
     (kbd "C-c C-c") #'bzg-notmuch-goto-message-in-gnus)
 
-  (define-key global-map (kbd "C-*")
+  (define-key global-map (kbd "C-ù")
     #'(lambda() (interactive) (notmuch-search "tag:flagged")))
 
-  (define-key global-map (kbd "C-ù")
+  (define-key global-map (kbd "C-c ù")
     #'(lambda() (interactive) (notmuch-search "tag:unread"))))
 
 (use-package starttls :defer t)
