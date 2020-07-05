@@ -681,7 +681,10 @@
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
-	("A" "Read, Listen, View (work)" tags-todo
+	("A" "Write, Code, Mail (work)" tags-todo
+         "+TAGS={Write\\|Code\\|Mail}+TODO={NEXT\\|STRT}")
+
+	("Z" "Read, Listen, View (work)" tags-todo
          "+TAGS={Read\\|Listen\\|View}+TODO={NEXT\\|STRT}")
 
 	("r" . "Read")
