@@ -20,6 +20,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	'(("gnu" . "http://elpa.gnu.org/packages/")
 	  ("melpa" . "http://melpa.org/packages/")))
   (require 'use-package))
+
+(setq package-quickstart t)
 #+end_src
 
 * General defaults
@@ -69,6 +71,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 ;; We expect local variables to be known
 (setq enable-local-eval t)
+
+;; Use flex as a completion style
+(add-to-list 'completion-styles 'flex)
 #+end_src
 
 * Enable/Disable some minor modes
@@ -915,6 +920,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 		  (nnimap-authinfo-file "~/.authinfo")
 		  (nnimap-stream ssl))
 	  ;; (nntp "news" (nntp-address "news.gmane.io"))
+	  (nntp "yhetil" (nntp-address "news.yhetil.org"))
 	  ))
 
   (setq gnus-check-new-newsgroups nil)

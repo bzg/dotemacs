@@ -4,6 +4,8 @@
 	  ("melpa" . "http://melpa.org/packages/")))
   (require 'use-package))
 
+(setq package-quickstart t)
+
 ;; Unset C-z
 (global-unset-key (kbd "C-z"))
 
@@ -48,6 +50,9 @@
 
 ;; We expect local variables to be known
 (setq enable-local-eval t)
+
+;; Use flex as a completion style
+(add-to-list 'completion-styles 'flex)
 
 ;; Enabling and disabling some modes
 (show-paren-mode 1)
@@ -858,6 +863,7 @@
 		  (nnimap-authinfo-file "~/.authinfo")
 		  (nnimap-stream ssl))
 	  ;; (nntp "news" (nntp-address "news.gmane.io"))
+	  (nntp "yhetil" (nntp-address "news.yhetil.org"))
 	  ))
 
   (setq gnus-check-new-newsgroups nil)
