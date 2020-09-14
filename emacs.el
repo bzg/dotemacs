@@ -51,9 +51,6 @@
 ;; We expect local variables to be known
 (setq enable-local-eval t)
 
-;; Use flex as a completion style
-(add-to-list 'completion-styles 'flex)
-
 ;; Enabling and disabling some modes
 (show-paren-mode 1)
 (auto-insert-mode 1)
@@ -801,6 +798,11 @@
   :defer t
   :config
   (setq epa-popup-info-window nil))
+
+(use-package epg
+  :defer t
+  :config
+  (setq epg-pinentry-mode 'loopback))
 
 (use-package ecomplete :defer t)
 (use-package gnus

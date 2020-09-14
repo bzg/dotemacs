@@ -71,9 +71,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 ;; We expect local variables to be known
 (setq enable-local-eval t)
-
-;; Use flex as a completion style
-(add-to-list 'completion-styles 'flex)
 #+end_src
 
 * Enable/Disable some minor modes
@@ -858,6 +855,11 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   :defer t
   :config
   (setq epa-popup-info-window nil))
+
+(use-package epg
+  :defer t
+  :config
+  (setq epg-pinentry-mode 'loopback))
 
 (use-package ecomplete :defer t)
 (use-package gnus
