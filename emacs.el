@@ -616,6 +616,7 @@
 	   '(todo-state-up time-up priority-down))))
 
 	("@" tags-todo "+Mail+TODO={NEXT\\|STRT\\|WAIT}")
+	("?" tags-todo "+TODO={WAIT}")
 	("#" "DONE/CANCELED/DELEGATED"
 	 todo "DONE|CANCELED|DELEGATED"
 	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/libre.org"))
@@ -865,7 +866,7 @@
 		  (nnimap-authinfo-file "~/.authinfo")
 		  (nnimap-stream ssl))
 	  ;; (nntp "news" (nntp-address "news.gmane.io"))
-	  (nntp "yhetil" (nntp-address "news.yhetil.org"))
+	  ;; (nntp "yhetil" (nntp-address "news.yhetil.org"))
 	  ))
 
   (setq gnus-check-new-newsgroups nil)
