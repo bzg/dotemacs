@@ -174,8 +174,7 @@
 (global-set-key (kbd "C-é") 'bzg-cycle-view)
 (global-set-key (kbd "C-\"") (lambda () (interactive) (dired "~") (revert-buffer)))
 (global-set-key (kbd "C-c f") 'find-name-dired)
-(global-set-key (kbd "C-c g") 'grep-find)
-(global-set-key (kbd "C-c A") 'helm-ag)
+(global-set-key (kbd "C-c g") 'deadgrep)
 (global-set-key (kbd "C-c F") 'auto-fill-mode)
 (global-set-key (kbd "C-c o") 'occur)
 (global-set-key (kbd "C-c O") 'multi-occur)
@@ -208,14 +207,6 @@
 
 ;; Handy key definition
 (define-key global-map "\M-Q" 'unfill-paragraph)
-
-(use-package helm
-  :config
-  (require 'helm-config)
-  ;; (global-set-key (kbd "M-x") 'helm-M-x)
-  (global-set-key (kbd "C-x c x") #'helm-M-x)
-  ;; (global-set-key (kbd "C-x F") #'helm-find-files)
-  (global-set-key (kbd "C-x c A") #'helm-ag))
 
 (setq bzg-cycle-view-current nil)
 
@@ -256,10 +247,6 @@
 
 (advice-add 'split-window-horizontally :before (lambda () (interactive) (bzg-big-fringe-mode 0)))
 (advice-add 'split-window-right :before (lambda () (interactive) (bzg-big-fringe-mode 0)))
-
-(use-package dired
-  :config
-  (define-key dired-mode-map "a" #'helm-ag))
 
 (use-package dired-x
   :config
