@@ -170,6 +170,7 @@
 (global-set-key (kbd "C-²") (lambda () (interactive) (org-agenda nil "  ")))
 (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "E")))
 (global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "xx")))
+(global-set-key (kbd "C-%") (lambda () (interactive) (org-agenda nil "$")))
 (global-set-key (kbd "C-&") 'gnus)
 (global-set-key (kbd "C-é") 'bzg-cycle-view)
 (global-set-key (kbd "C-\"") (lambda () (interactive) (dired "~") (revert-buffer)))
