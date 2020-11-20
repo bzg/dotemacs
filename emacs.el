@@ -629,7 +629,7 @@
 	("E" "Etalab (today)" agenda "Etalab tasks and rdv for today"
 	 ((org-agenda-span 1)
 	  (org-agenda-category-filter-preset '("+ETL" "+RTL"))
-	  (org-agenda-files '("~/org/rdv.org" "~/org/bzg.org"))
+	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-bluehats.org" "~/org/bzg.org"))
 	  (org-deadline-warning-days 3)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
@@ -741,6 +741,15 @@
   (interactive)
   (let ((org-caldav-inbox "~/org/rdv.org")
 	(org-caldav-calendar-id "personnel")
+	(org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
+	(org-caldav-files nil))
+    (call-interactively 'org-caldav-sync)))
+
+;; https://box.bzg.io/cloud/index.php/apps/calendar/p/Lt2cGqsFS82mjkWL
+(defun bzg-caldav-sync-bluehats ()
+  (interactive)
+  (let ((org-caldav-inbox "~/org/rdv-bluehats.org")
+	(org-caldav-calendar-id "bluehats")
 	(org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
 	(org-caldav-files nil))
     (call-interactively 'org-caldav-sync)))
