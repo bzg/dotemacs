@@ -592,13 +592,13 @@
 	;; Week agenda for rendez-vous and tasks
 	("$" "Rendez-vous" agenda* "Week planning"
 	 ((org-agenda-span 'week)
-	  (org-agenda-files '("~/org/rdv.org"))
+	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-bluehats.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
 	("%" "Rendez-vous" agenda "Month planning"
 	 ((org-agenda-span 'month)
-	  (org-agenda-files '("~/org/rdv.org"))
+	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-bluehats.org"))
 	  (org-agenda-category-filter-preset '("-ETL" "-RTL"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
@@ -607,7 +607,7 @@
 	("?" tags-todo "+TODO={WAIT}")
 	("#" "DONE/CANCELED/DELEGATED"
 	 todo "DONE|CANCELED|DELEGATED"
-	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/libre.org"))
+	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/rdv-bluehats.org" "~/org/libre.org"))
 	  (org-agenda-sorting-strategy '(timestamp-up))))
 
 	(" " . "Task and rendez-vous for today")
@@ -629,7 +629,7 @@
 	("E" "Etalab (today)" agenda "Etalab tasks and rdv for today"
 	 ((org-agenda-span 1)
 	  (org-agenda-category-filter-preset '("+ETL" "+RTL"))
-	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-bluehats.org" "~/org/bzg.org"))
+	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-bluehats.org" "~/org/rdv-emacs.org" "~/org/bzg.org"))
 	  (org-deadline-warning-days 3)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
@@ -753,6 +753,21 @@
 	(org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
 	(org-caldav-files nil))
     (call-interactively 'org-caldav-sync)))
+
+;; https://box.bzg.io/cloud/index.php/apps/calendar/p/nMfMJskKXDm4edzw
+(defun bzg-caldav-sync-emacs ()
+  (interactive)
+  (let ((org-caldav-inbox "~/org/rdv-emacs.org")
+	(org-caldav-calendar-id "emacs")
+	(org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
+	(org-caldav-files nil))
+    (call-interactively 'org-caldav-sync)))
+
+(defun bzg-caldav-sync-all ()
+  (interactive)
+  (bzg-caldav-sync-perso)
+  (bzg-caldav-sync-bluehats)
+  (bzg-caldav-sync-emacs))
 
 ;; notmuch configuration
 (use-package notmuch
