@@ -592,13 +592,13 @@
 	;; Week agenda for rendez-vous and tasks
 	("$" "Rendez-vous" agenda* "Week planning"
 	 ((org-agenda-span 'week)
-	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-bluehats.org"))
+	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-bluehats.org" "~/org/rdv-emacs.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
 	("%" "Rendez-vous" agenda "Month planning"
 	 ((org-agenda-span 'month)
-	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-bluehats.org"))
+	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-bluehats.org" "~/org/rdv-emacs.org"))
 	  (org-agenda-category-filter-preset '("-ETL" "-RTL"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
@@ -607,7 +607,7 @@
 	("?" tags-todo "+TODO={WAIT}")
 	("#" "DONE/CANCELED/DELEGATED"
 	 todo "DONE|CANCELED|DELEGATED"
-	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/rdv-bluehats.org" "~/org/libre.org"))
+	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/rdv-bluehats.org" "~/org/rdv-emacs.org" "~/org/libre.org"))
 	  (org-agenda-sorting-strategy '(timestamp-up))))
 
 	(" " . "Task and rendez-vous for today")
