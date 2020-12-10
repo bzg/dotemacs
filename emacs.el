@@ -630,7 +630,7 @@
 	 ((org-agenda-span 1)
 	  (org-agenda-category-filter-preset '("+ETL" "+RTL"))
 	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-bluehats.org" "~/org/rdv-emacs.org" "~/org/bzg.org"))
-	  (org-deadline-warning-days 3)
+	  (org-deadline-warning-days 1)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
