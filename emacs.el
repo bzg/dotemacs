@@ -599,7 +599,7 @@
 	("%" "Rendez-vous" agenda "Month planning"
 	 ((org-agenda-span 'month)
 	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-bluehats.org" "~/org/rdv-emacs.org"))
-	  (org-agenda-category-filter-preset '("-ETL" "-RTL"))
+	  (org-agenda-category-filter-preset '("-ETL" "-RTL" "-BLH"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
@@ -628,7 +628,7 @@
 
 	("E" "Etalab (today)" agenda "Etalab tasks and rdv for today"
 	 ((org-agenda-span 1)
-	  (org-agenda-category-filter-preset '("+ETL" "+RTL"))
+	  (org-agenda-category-filter-preset '("+ETL" "+RTL" "+BLH"))
 	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-bluehats.org" "~/org/rdv-emacs.org" "~/org/bzg.org"))
 	  (org-deadline-warning-days 3)
 	  (org-agenda-sorting-strategy
