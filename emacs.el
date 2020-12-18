@@ -614,14 +614,14 @@
 	("  " "Travail (tout)" agenda "Tasks and rdv for today"
 	 ((org-agenda-span 1)
 	  (org-agenda-files '("~/org/bzg.org"))
-	  (org-deadline-warning-days 3)
+	  (org-deadline-warning-days 0)
 	  (org-agenda-max-entries 7)
 	  (org-agenda-sorting-strategy
 	   '(time-up todo-state-up priority-down))))
 	(" 	" "Libre (tout)" agenda "Tasks and rdv for today"
 	 ((org-agenda-span 1)
 	  (org-agenda-files '("~/org/libre.org"))
-	  (org-deadline-warning-days 3)
+	  (org-deadline-warning-days 0)
 	  (org-agenda-max-entries 12)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
@@ -630,7 +630,7 @@
 	 ((org-agenda-span 1)
 	  (org-agenda-category-filter-preset '("+ETL" "+RTL"))
 	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-bluehats.org" "~/org/rdv-emacs.org" "~/org/bzg.org"))
-	  (org-deadline-warning-days 1)
+	  (org-deadline-warning-days 3)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
@@ -647,12 +647,12 @@
 	("x" . "Scheduled for today")
 	("xx" "Agenda work" agenda "Work scheduled for today"
 	 ((org-agenda-span 1)
-	  (org-deadline-warning-days 3)
+	  (org-deadline-warning-days 0)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 	("xX" "Agenda libre" agenda "Libre scheduled for today"
 	 ((org-agenda-span 1)
-	  (org-deadline-warning-days 3)
+	  (org-deadline-warning-days 0)
 	  (org-agenda-files '("~/org/libre.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
