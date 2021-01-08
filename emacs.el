@@ -396,7 +396,7 @@
 (setq org-log-into-drawer "LOGBOOK")
 (setq org-agenda-entry-text-maxlines 10)
 (setq org-timer-default-timer 25)
-(setq org-agenda-files '("~/org/rdv.org" "~/org/bzg.org"))
+(setq org-agenda-files '("~/org/rdv.org" "~/org/rdv-emacs.org" "~/org/rdv-bluehats.org" "~/org/bzg.org"))
 (setq org-agenda-prefix-format
       '((agenda . " %i %-12:c%?-14t%s")
 	(timeline . "  % s")
