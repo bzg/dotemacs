@@ -396,7 +396,7 @@
 (setq org-log-into-drawer "LOGBOOK")
 (setq org-agenda-entry-text-maxlines 10)
 (setq org-timer-default-timer 25)
-(setq org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/rdv-emacs.org" "~/org/bzg.org"))
+(setq org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/rdv-bluehats.org" "~/org/rdv-emacs.org" "~/org/bzg.org"))
 (setq org-agenda-prefix-format
       '((agenda . " %i %-12:c%?-14t%s")
 	(timeline . "  % s")
@@ -647,6 +647,7 @@
 	("x" . "Scheduled for today")
 	("xx" "Agenda work" agenda "Work scheduled for today"
 	 ((org-agenda-span 1)
+	  (org-agenda-category-filter-preset '("-ETL"))
 	  (org-deadline-warning-days 0)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
