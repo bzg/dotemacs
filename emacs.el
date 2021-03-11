@@ -168,9 +168,8 @@
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
 (global-set-key (kbd "C-²") 'follow-delete-other-windows-and-split)
-(global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "E")))
-(global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "xx")))
-(global-set-key (kbd "C-?") (lambda () (interactive) (org-agenda nil "$")))
+(global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "E")))
+(global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "xx")))
 (global-set-key (kbd "C-%") (lambda () (interactive) (org-agenda nil "$")))
 (global-set-key (kbd "C-&") 'gnus)
 (global-set-key (kbd "C-é") 'bzg-cycle-view)
@@ -599,8 +598,7 @@
 
 	("%" "Rendez-vous" agenda "Month planning"
 	 ((org-agenda-span 'month)
-	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/rdv-bluehats.org" "~/org/rdv-emacs.org"))
-	  (org-agenda-category-filter-preset '("-ETL" "-RTL" "-BLH"))
+	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-emacs.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
@@ -629,7 +627,7 @@
 
 	("E" "Etalab (today)" agenda "Etalab tasks and rdv for today"
 	 ((org-agenda-span 1)
-	  (org-agenda-category-filter-preset '("+ETL" "+RTL" "+BLH"))
+	  (org-agenda-category-filter-preset '("+ETL" "+RTL" "+RDV" "+BLH"))
 	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/rdv-bluehats.org" "~/org/rdv-emacs.org" "~/org/bzg.org"))
 	  (org-deadline-warning-days 3)
 	  (org-agenda-sorting-strategy
