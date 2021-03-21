@@ -170,6 +170,7 @@
 (global-set-key (kbd "C-²") 'follow-delete-other-windows-and-split)
 (global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "E")))
 (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "xx")))
+(global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "nn")))
 (global-set-key (kbd "C-%") (lambda () (interactive) (org-agenda nil "$")))
 (global-set-key (kbd "C-&") 'gnus)
 (global-set-key (kbd "C-é") 'bzg-cycle-view)
@@ -1171,7 +1172,7 @@
 	bbdb/gnus-summary-mark-known-posters t
 	bbdb-ignore-message-alist '(("Newsgroup" . ".*")))
 
-  (defalias 'bbdb-y-or-n-p '(lambda (prompt) t))
+  (defalias 'bbdb-y-or-n-p #'(lambda (prompt) t))
 
   (setq bbdb-auto-notes-alist
 	`(("Newsgroups" ("[^,]+" newsgroups 0))
@@ -1229,19 +1230,19 @@
 				    ("&bitlbee" . utf-8)))
 
   (add-hook 'erc-mode-hook
-	    '(lambda ()
-	       (auto-fill-mode -1)
-	       (pcomplete-erc-setup)
-	       (erc-completion-mode 1)
-	       (erc-ring-mode 1)
-	       (erc-log-mode 1)
-	       (erc-netsplit-mode 1)
-	       (erc-button-mode -1)
-	       (erc-match-mode 1)
-	       (erc-autojoin-mode 1)
-	       (erc-nickserv-mode 1)
-	       (erc-timestamp-mode 1)
-	       (erc-services-mode 1)))
+	    #'(lambda ()
+		(auto-fill-mode -1)
+		(pcomplete-erc-setup)
+		(erc-completion-mode 1)
+		(erc-ring-mode 1)
+		(erc-log-mode 1)
+		(erc-netsplit-mode 1)
+		(erc-button-mode -1)
+		(erc-match-mode 1)
+		(erc-autojoin-mode 1)
+		(erc-nickserv-mode 1)
+		(erc-timestamp-mode 1)
+		(erc-services-mode 1)))
 
   (defun erc-notify-on-msg (msg)
     (if (string-match "bzg:" msg)
