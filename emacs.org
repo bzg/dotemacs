@@ -205,6 +205,10 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
 (global-set-key (kbd "C-²") 'follow-delete-other-windows-and-split)
+(global-set-key (kbd "<f5>") (lambda () (interactive) (org-agenda nil "nn")))
+(global-set-key (kbd "<f6>") (lambda () (interactive) (org-agenda nil "cc")))
+(global-set-key (kbd "<f7>") (lambda () (interactive) (org-agenda nil "rr")))
+(global-set-key (kbd "<f8>") (lambda () (interactive) (org-agenda nil "ww")))
 (global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "E")))
 (global-set-key (kbd "C-%") (lambda () (interactive) (org-agenda nil "$")))
 (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "xx")))
@@ -228,6 +232,10 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (global-set-key "\M- " 'hippie-expand)
 
 (require 'google-translate)
+
+(defun google-translate--search-tkk ()
+  "Search TKK."
+  (list 430675 2721866130))
 
 (defun google-translate-word-at-point ()
   (interactive)
