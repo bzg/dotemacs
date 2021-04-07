@@ -194,6 +194,7 @@
 ;; (global-set-key (kbd "M-]") 'origami-toggle-node)
 (global-set-key "\M- " 'hippie-expand)
 
+(require 'facemenu)
 (require 'google-translate)
 
 (defun google-translate--search-tkk ()
@@ -983,7 +984,12 @@
 
   ;; Headers we wanna see:
   (setq gnus-visible-headers
-	"^From:\\|^Subject:\\|^X-Mailer:\\|^X-Newsreader:\\|^Date:\\|^To:\\|^Cc:\\|^User-agent:\\|^Newsgroups:\\|^Comments:")
+	"^From:\\|^Subject:\\|^X-Mailer:\\|^X-Newsreader:\\|^Date:\\|^To:\\|^Cc:\\|^User-agent:\\|^Newsgroups:\\|^Comments:"
+	message-draft-headers '(References From In-Reply-To)
+	message-generate-headers-first t
+	message-hidden-headers
+   '("^References:" "^Face:" "^X-Face:" "^X-Draft-From:" "^In-Reply-To:" "^Message-ID:")
+	)
 
   ;; Sort mails
   (setq nnmail-split-abbrev-alist
@@ -1270,14 +1276,11 @@
   (require 'tls))
 
 ;; Set browser
-(if window-system
-    (setq browse-url-browser-function 'browse-url-firefox)
-    ;; (setq browse-url-browser-function 'browse-url-chromium)
-    ;; (setq browse-url-browser-function 'eww-browse-url)
+(unless window-system
   (setq browse-url-browser-function 'eww-browse-url))
 (setq browse-url-text-browser "w3m")
 (setq browse-url-new-window-flag t)
-(setq browse-url-generic-program "firefox")
+;; (setq browse-url-generic-program "firefox")
 (setq browse-url-firefox-new-window-is-tab t)
 
 (use-package w3m
