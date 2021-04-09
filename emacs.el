@@ -730,8 +730,9 @@
 	("e" "Etalab" entry (file+headline "~/org/bzg.org" "Etalab : impulser dynamique LL via la DINUM")
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
 
-	("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
-	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)))
+	;; ("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
+	;;  "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
+	))
 
 (setq org-capture-templates-contexts
       '(("r" ((in-mode . "gnus-summary-mode")
