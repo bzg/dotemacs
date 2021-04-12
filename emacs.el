@@ -317,9 +317,7 @@
 	 (list "\\.rar$" "unrar x")
 	 ))
   (setq dired-tex-unclean-extensions
-	'(".toc" ".log" ".aux" ".dvi" ".out" ".nav" ".snm"))
-
-  (add-hook 'dired-mode-hook 'bzg-big-fringe-mode))
+	'(".toc" ".log" ".aux" ".dvi" ".out" ".nav" ".snm")))
 
 (setq directory-free-space-args "-Pkh")
 (setq list-directory-verbose-switches "-al")
@@ -872,11 +870,11 @@
 		      "bzg@gnu.org"
 		      )))
 
-  (add-hook 'gnus-summary-mode-hook (lambda () (bzg-big-fringe-mode 1)))
-  (add-hook 'gnus-message-mode-hook (lambda () (bzg-big-fringe-mode 1)))
-  (add-hook 'message-mode-hook (lambda () (bzg-big-fringe-mode 1)))
-  (add-hook 'gnus-article-mode-hook (lambda () (bzg-big-fringe-mode 1)))
-  (add-hook 'gnus-group-mode-hook (lambda () (bzg-big-fringe-mode 1)))
+  (add-hook 'gnus-summary-mode-hook 'bzg-big-fringe-mode)
+  (add-hook 'gnus-message-mode-hook 'bzg-big-fringe-mode)
+  (add-hook 'message-mode-hook 'bzg-big-fringe-mode)
+  (add-hook 'gnus-article-mode-hook 'bzg-big-fringe-mode)
+  (add-hook 'gnus-group-mode-hook 'bzg-big-fringe-mode)
 
   (setq send-mail-function 'sendmail-send-it)
 
@@ -1398,11 +1396,9 @@
   :variable bzg-big-fringe-mode
   :group 'editing-basics
   (if bzg-big-fringe-mode
-      (unless
-	  (> (- (frame-width) (window-width)) 50)
-	(setq left-fringe-width bzg-big-fringe-size
-	      right-fringe-width bzg-big-fringe-size)
-	(set-window-buffer (get-buffer-window) (buffer-name)))
+      (progn (setq left-fringe-width bzg-big-fringe-size
+		   right-fringe-width bzg-big-fringe-size)
+	     (set-window-buffer (get-buffer-window) (buffer-name)))
     (setq left-fringe-width 0
           right-fringe-width 0)
     (set-window-buffer (get-buffer-window) (buffer-name))))
@@ -1434,11 +1430,8 @@
 	     "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
 
 (add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
-(add-hook 'org-mode-hook
-	  (lambda ()
-	    (electric-indent-mode 0)
-	    (hidden-mode-line-mode 0)
-	    (bzg-big-fringe-mode 1)))
+;; (add-hook 'org-mode-hook 'hidden-mode-line-mode)
+(add-hook 'org-mode-hook (lambda () (electric-indent-mode 0) (hidden-mode-line-mode 0)))
 
 (use-package paredit
   :config
@@ -1577,24 +1570,5 @@
   (exec-path-from-shell-initialize))
 
 (setq tab-bar-show nil)
-
-;; First install the package:
-(use-package flycheck-clj-kondo :ensure t)
-
-;; then install the checker as soon as `clojure-mode' is loaded
-(use-package clojure-mode
-  :ensure t
-  :config
-  (require 'flycheck-clj-kondo))
-
-(add-to-list 'auto-mode-alist '("\\.arc\\'" . lisp-mode))
-
-(setq org-plantuml-jar-path (expand-file-name "/home/guerry/bin/plantuml.jar"))
-(add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
-
-(org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
-(add-to-list 'org-latex-packages-alist '("AUTO" "babel" t ("pdflatex")))
-
-(add-hook 'magit-mode-hook (lambda () (bzg-big-fringe-mode 1)))
 
 (envrc-global-mode)
