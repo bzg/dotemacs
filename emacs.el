@@ -1384,9 +1384,13 @@
   :global nil
   :variable bzg-big-fringe-mode
   :group 'editing-basics
-  (if (not bzg-big-fringe-mode)
-      (set-fringe-mode 10)
-    (set-fringe-mode bzg-big-fringe-size)))
+  (if bzg-big-fringe-mode
+      (progn (setq left-fringe-width bzg-big-fringe-size
+		   right-fringe-width bzg-big-fringe-size)
+	     (set-window-buffer (get-buffer-window) (buffer-name)))
+    (setq left-fringe-width 0
+          right-fringe-width 0)
+    (set-window-buffer (get-buffer-window) (buffer-name))))
 
 ;; (bzg-big-fringe-mode 1)
 
