@@ -227,23 +227,18 @@
   (let ((splitted-frame
 	 (or (< (window-height) (1- (frame-height)))
 	     (< (window-width) (frame-width)))))
-    (cond  ((and (not (eq last-command 'bzg-cycle-view))
-		 splitted-frame)
-	    (delete-other-windows)
-	    (bzg-big-fringe-mode -1)
-	    (setq bzg-cycle-view-current 'one-window-no-fringe))
-	   ((not (eq last-command 'bzg-cycle-view))
-	    (delete-other-windows)
-	    (bzg-big-fringe-mode)
-	    (setq bzg-cycle-view-current 'one-window-with-fringe))
-	   ((and (not bzg-cycle-view-current) splitted-frame)
-	    (delete-other-windows))
-	   ((not bzg-cycle-view-current)
-	    (delete-other-windows)
-	    (if bzg-big-fringe-mode
-		(progn (bzg-big-fringe-mode)
-		       (setq bzg-cycle-view-current 'one-window-no-fringe))
-	      (bzg-big-fringe-mode)
+    (cond ((not (eq last-command 'bzg-cycle-view))
+	   (delete-other-windows)
+	   (bzg-big-fringe-mode)
+	   (setq bzg-cycle-view-current 'one-window-with-fringe))
+	  ((and (not bzg-cycle-view-current) splitted-frame)
+	   (delete-other-windows))
+	  ((not bzg-cycle-view-current)
+	   (delete-other-windows)
+	   (if bzg-big-fringe-mode
+	       (progn (bzg-big-fringe-mode)
+		      (setq bzg-cycle-view-current 'one-window-no-fringe))
+	     (bzg-big-fringe-mode)
 	     (setq bzg-cycle-view-current 'one-window-with-fringe)))
 	  ((eq bzg-cycle-view-current 'one-window-with-fringe)
 	   (delete-other-windows)
@@ -870,12 +865,6 @@
 		      "bzg@gnu.org"
 		      )))
 
-  (add-hook 'gnus-summary-mode-hook 'bzg-big-fringe-mode)
-  (add-hook 'gnus-message-mode-hook 'bzg-big-fringe-mode)
-  (add-hook 'message-mode-hook 'bzg-big-fringe-mode)
-  (add-hook 'gnus-article-mode-hook 'bzg-big-fringe-mode)
-  (add-hook 'gnus-group-mode-hook 'bzg-big-fringe-mode)
-
   (setq send-mail-function 'sendmail-send-it)
 
   ;; (setq mail-header-separator "----")
@@ -1385,7 +1374,7 @@
 	("100" . (100 . 100))
 	("minimal" . (1 . 1))))
 
-(defvar-local bzg-big-fringe-mode t)
+(defvar bzg-big-fringe-mode nil)
 
 (defvar bzg-big-fringe-size 300)
 
@@ -1402,6 +1391,8 @@
     (setq left-fringe-width 0
           right-fringe-width 0)
     (set-window-buffer (get-buffer-window) (buffer-name))))
+
+;; (bzg-big-fringe-mode 1)
 
 ;; See https://bzg.fr/emacs-hide-mode-line.html
 (defvar-local hidden-mode-line-mode nil)
