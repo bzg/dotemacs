@@ -1308,10 +1308,8 @@
   (add-hook 'eww-mode-hook 'visual-line-mode)
   (setq eww-header-line-format nil
 	shr-width 80
-	shr-use-colors
-	shr-use-fonts nil
-	shr-color-visible-distance-min 10
-	shr-color-visible-luminance-min 80))
+	shr-use-colors nil
+	shr-use-fonts nil))
 
 (use-package calendar
   :defer t
