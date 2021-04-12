@@ -1308,8 +1308,10 @@
   (add-hook 'eww-mode-hook 'visual-line-mode)
   (setq eww-header-line-format nil
 	shr-width 80
-	shr-use-colors nil
-	shr-use-fonts nil))
+	shr-use-colors
+	shr-use-fonts nil
+	shr-color-visible-distance-min 10
+	shr-color-visible-luminance-min 80))
 
 (use-package calendar
   :defer t
@@ -1381,7 +1383,7 @@
 (define-minor-mode bzg-big-fringe-mode
   "Minor mode to hide the mode-line in the current buffer."
   :init-value nil
-  :global nil
+  :global t
   :variable bzg-big-fringe-mode
   :group 'editing-basics
   (if (not bzg-big-fringe-mode)
