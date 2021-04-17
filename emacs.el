@@ -194,7 +194,6 @@
 ;; (global-set-key (kbd "M-]") 'origami-toggle-node)
 (global-set-key "\M- " 'hippie-expand)
 
-(require 'facemenu)
 (require 'google-translate)
 
 (defun google-translate--search-tkk ()
