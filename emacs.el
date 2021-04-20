@@ -718,10 +718,10 @@
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
 	("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
-	 "* RDV avec %:fromname %?\n  %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
+	 "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
 	("R" "RDV Etalab" entry (file+headline "~/org/rdv-etalab.org" "RDV Etalab")
-	 "* RDV avec %:fromname %?\n  %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
+	 "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
 	("o" "Org" entry (file+headline "~/org/bzg.org" "Org-mode : passer la maintenance fin 2020")
 	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n" :prepend t)
