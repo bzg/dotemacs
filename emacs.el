@@ -1,3 +1,9 @@
+;; This is bzg's GNU Emacs configuration, refined over the years.
+;; For more Emacs-related stuff, see https://bzg.fr/en/tags/emacs/
+;;
+;; Code in this file is licensed under the GNU GPLv3 or any later
+;; version.
+
 ;; First set the packageè-archives URLs
 (eval-when-compile
   (setq package-archives
