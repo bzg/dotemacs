@@ -1627,9 +1627,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (pdf-tools-install)
 #+end_src
 
-* Experimental or unused
+* COMMENT Experimental or unused
 
-*** COMMENT winstack
+*** winstack
 
 #+begin_src emacs-lisp
 ;; http://emacs.stackexchange.com/questions/2710/switching-between-window-layouts
@@ -1663,7 +1663,7 @@ Use `winstack-push' and
 (global-set-key (kbd "C-x <down>") 'winstack-pop)
 #+end_src
 
-*** COMMENT avy
+*** avy
 
 #+begin_src emacs-lisp
 (avy-setup-default)
@@ -1671,7 +1671,7 @@ Use `winstack-push' and
 (global-set-key (kbd "C-&") 'avy-goto-char-2)
 #+end_src
 
-*** COMMENT perspective
+*** perspective
 
 #+begin_src emacs-lisp
 (use-package perspective
@@ -1680,7 +1680,7 @@ Use `winstack-push' and
       (persp-mode 1))
 #+end_src
 
-*** COMMENT guide-key
+*** guide-key
 
 #+begin_src emacs-lisp
 (use-package guide-key
@@ -1689,7 +1689,7 @@ Use `winstack-push' and
   (guide-key-mode 1)) ; Enable guide-key-mode
 #+end_src
 
-*** COMMENT Multiple cursors
+*** Multiple cursors
 
 #+begin_src emacs-lisp
 ;; I very seldomly use this
@@ -1699,13 +1699,13 @@ Use `winstack-push' and
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 (global-set-key (kbd "C-c C->") 'mc/mark-all-dwim)
 #+end_src
-*** COMMENT exec-path-from-shell
+*** exec-path-from-shell
 
 #+begin_src emacs-lisp
 (when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize))
 #+end_src
-*** COMMENT lsp-mode
+*** lsp-mode
 
 #+begin_src emacs-lisp
 (use-package lsp-mode
