@@ -174,7 +174,8 @@
 (global-set-key (kbd "<f8>") (lambda () (interactive) (org-agenda nil "ww")))
 (global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "ne")))
 (global-set-key (kbd "C-%") (lambda () (interactive) (org-agenda nil "$")))
-(global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "  ")))
+(global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil " ")))
+(global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "z")))
 (global-set-key (kbd "C-&") 'gnus)
 (global-set-key (kbd "C-é") 'bzg-cycle-view)
 (global-set-key (kbd "C-\"") (lambda () (interactive) (dired "~") (revert-buffer)))
@@ -598,96 +599,85 @@
 (setq org-agenda-custom-commands
       `(
 	;; Week agenda for rendez-vous and tasks
-	("$" "Rendez-vous" agenda* "Week planning"
+	("$" "All appointments" agenda* "Week planning"
 	 ((org-agenda-span 'week)
 	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/rdv-bluehats.org" "~/org/rdv-emacs.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
-	("%" "Rendez-vous" agenda "Month planning"
+	("%" "Personal appointments" agenda* "Month planning"
 	 ((org-agenda-span 'month)
 	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-emacs.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
-	("@" tags-todo "+Mail+TODO={NEXT\\|STRT\\|WAIT}")
-	("?" tags-todo "+TODO={WAIT}")
-	("#" "DONE/CANCELED/DELEGATED"
+	("@" "Mail" tags-todo "+Mail+TODO={NEXT\\|STRT\\|WAIT}")
+	("?" "Waiting" tags-todo "+TODO={WAIT}")
+	("#" "To archive"
 	 todo "DONE|CANCELED|DELEGATED"
 	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/rdv-emacs.org" "~/org/libre.org"))
 	  (org-agenda-sorting-strategy '(timestamp-up))))
 
-	(" " . "Task and rendez-vous for today")
-	("  " "Travail (tout)" agenda "Tasks and rdv for today"
+	(" " "Work (agenda)" agenda "Tasks and rdv for today"
 	 ((org-agenda-span 1)
 	  (org-agenda-files '("~/org/bzg.org"))
-	  (org-deadline-warning-days 3)
+	  (org-deadline-warning-days 0)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up deadline-up priority-down))))
-	(" 	" "Libre (tout)" agenda "Tasks and rdv for today"
-	 ((org-agenda-span 1)
-	  (org-agenda-files '("~/org/libre.org"))
-	  (org-agenda-sorting-strategy
-	   '(todo-state-up time-up priority-down))))
 
 	("n" . "What's next?")
-	("nn" "All" tags-todo "TODO={STRT\\|NEXT}"
+	("nn" "Main" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("-ETL"))
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
-	("ne" "Work (Etalab)" tags-todo "TODO={STRT\\|NEXT}"
+	("ne" "Etalab" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("+ETL"))
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
-	("nl" "Started/next (libre)" tags-todo "TODO={STRT\\|NEXT}"
+	("nl" "Libre" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
-	("z" . "Deadlines for today")
-	("zz" "Work deadlines" agenda "Past/upcoming work deadlines"
+	("z" "Etalab deadlines" agenda "Past/upcoming work deadlines"
 	 ((org-agenda-span 1)
-	  (org-deadline-warning-days 15)
+	  (org-agenda-category-filter-preset '("+ETL"))
+	  (org-deadline-warning-days 100)
 	  (org-agenda-entry-types '(:deadline))
 	  (org-agenda-sorting-strategy
-	   '(todo-state-up time-up priority-down))))
-	("zZ" "Libre deadlines" agenda "Past/upcoming leisure deadlines"
-	 ((org-agenda-span 1)
-	  (org-deadline-warning-days 15)
-	  (org-agenda-files '("~/org/libre.org"))
-	  (org-agenda-entry-types '(:deadline))
-	  (org-agenda-sorting-strategy
-	   '(todo-state-up time-up priority-down))))
-	("A" "Write, Code, Mail (work)" tags-todo
-         "+TAGS={Write\\|Code\\|Mail}+TODO={NEXT\\|STRT}")
-	("Z" "Read, Listen, View (work)" tags-todo
-         "+TAGS={Read\\|Listen\\|View}+TODO={NEXT\\|STRT}")
+	   '(deadline-up todo-state-up priority-down))))
+	("A" "Write, Code, Mail (no work)" tags-todo
+         "+TAGS={Write\\|Code\\|Mail}+TODO={NEXT\\|STRT}"
+	 ((org-agenda-category-filter-preset '("-ETL"))))
+	("Z" "Read, Listen, View (no work)" tags-todo
+         "+TAGS={Read\\|Listen\\|View}+TODO={NEXT\\|STRT}"
+	 ((org-agenda-category-filter-preset '("-ETL"))))
 	("r" . "Read")
-	("rr" tags-todo "+Read+TODO={NEXT\\|STRT}"
+	("rr" "Main (no work)" tags-todo "+Read+TODO={NEXT\\|STRT}"
          ((org-agenda-category-filter-preset '("-ETL"))))
-	("rR" tags-todo "+Read+TODO={NEXT\\|STRT}"
+	("rR" "Libre" tags-todo "+Read+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 	("v" . "View")
-	("vv" tags-todo "+View+TODO={NEXT\\|STRT}"
+	("vv" "Main (no work)" tags-todo "+View+TODO={NEXT\\|STRT}"
 	 ((org-agenda-category-filter-preset '("-ETL"))))
-	("vV" tags-todo "+View+TODO={NEXT\\|STRT}"
+	("vV" "Libre" tags-todo "+View+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 	("l" . "Listen")
-	("ll" tags-todo "+Listen+TODO={NEXT\\|STRT}"
+	("ll" "Main (no work)" tags-todo "+Listen+TODO={NEXT\\|STRT}"
 	 ((org-agenda-category-filter-preset '("-ETL"))))
-	("lL" tags-todo "+Listen+TODO={NEXT\\|STRT}"
+	("lL" "Libre" tags-todo "+Listen+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 	("w" . "Write")
-	("ww" tags-todo "+Write+TODO={NEXT\\|STRT}"
+	("ww" "Main (no work)" tags-todo "+Write+TODO={NEXT\\|STRT}"
 	 ((org-agenda-category-filter-preset '("-ETL"))))
-	("wW" tags-todo "+Write+TODO={NEXT\\|STRT}"
+	("wW" "Libre" tags-todo "+Write+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 	("c" . "Code")
-	("cc" tags-todo "+Code+TODO={NEXT\\|STRT}"
+	("cc" "Main (no work)" tags-todo "+Code+TODO={NEXT\\|STRT}"
 	 ((org-agenda-category-filter-preset '("-ETL"))))
-	("cC" tags-todo "+Code+TODO={NEXT\\|STRT}"
+	("cC" "Libre" tags-todo "+Code+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 	))
 
