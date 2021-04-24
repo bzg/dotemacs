@@ -1,19 +1,22 @@
+;; First set the packageè-archives URLs
 (eval-when-compile
   (setq package-archives
 	'(("gnu" . "http://elpa.gnu.org/packages/")
 	  ("melpa" . "http://melpa.org/packages/")))
   (require 'use-package))
 
+;; Precompute activation actions to speed up startup
 (setq package-quickstart t)
 
-;; Unset C-z
+;; Unset C-z which is bound to `suspend-frame' by default
 (global-unset-key (kbd "C-z"))
 
-;; Load custom file
+;; Load my customization file
 (setq custom-file "/home/guerry/.emacs.d/emacs-custom.el")
 (load custom-file)
 
-;; Initialize Org
+;; Initialize Org from sources
+;; See https://orgmode.org/manual/Installation.html
 (add-to-list 'load-path "~/install/git/org-mode/lisp/")
 (add-to-list 'load-path "~/install/git/org-mode/contrib/lisp/")
 (add-to-list 'load-path "~/install/git/org-caldav/")
@@ -22,21 +25,19 @@
 (add-to-list 'load-path "~/install/cvs/emacs-w3m/")
 (add-to-list 'load-path "~/install/git/notmuch/emacs/")
 
-;; Initialize `exec-path' and `load-path'
+;; Initialize my `exec-path' and `load-path' with custom paths
 (add-to-list 'exec-path "~/bin/")
 (let ((default-directory "~/Documents/elisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
-;; Load theme
-;; (add-to-list 'custom-theme-load-path "~/install/git/vxid-theme/")
-;; (load-theme 'vxid)
+;; Load my favorite theme
 (load-theme 'doom-nord)
 
 ;; Start server to use emacsclient
 (server-start)
 
-;; Initialize `Info-directory-list' to include org-mode
 (setq Info-refill-paragraphs t)
+;; Include org-mode and emacs local paths into Info
 (add-to-list 'Info-directory-list "~/install/git/org-mode/doc/")
 (add-to-list 'Info-directory-list "~/install/git/emacs/info/")
 
@@ -48,38 +49,8 @@
 (put 'downcase-region 'disabled nil)
 (put 'set-goal-column 'disabled nil)
 
-;; We expect local variables to be known
+;; Expect local variables to be known
 (setq enable-local-eval t)
-
-;; Enabling and disabling some modes
-(show-paren-mode 1)
-(auto-insert-mode 1)
-(display-time-mode 1)
-(tooltip-mode -1)
-(blink-cursor-mode -1)
-(scroll-bar-mode -1)
-(pixel-scroll-mode 1)
-(mouse-avoidance-mode 'cat-and-mouse)
-(setq max-lisp-eval-depth 10000)
-
-;; Default Frame
-(setq initial-frame-alist
-      '((alpha . 85)
-	(left-margin-width . 10)
-	(menu-bar-lines . 0)
-	(tool-bar-lines . 0)
-	(horizontal-scroll-bars . nil)
-	(vertical-scroll-bars . nil)))
-
-;; Don't display initial messages
-(setq initial-scratch-message "")
-(setq initial-major-mode 'org-mode)
-(setq inhibit-startup-screen t)
-(setq inhibit-startup-echo-area-message "guerry")
-(setq use-dialog-box nil)
-(setq search-invisible 'open)
-(setq default-frame-alist initial-frame-alist)
-(set-frame-parameter nil 'fullscreen 'fullboth)
 
 ;; Who I am
 (setq user-full-name "Bastien")
@@ -106,6 +77,8 @@
 
 ;; Scrolling done right
 (setq scroll-error-top-bottom t)
+(setq focus-follows-mouse t)
+(setq recenter-positions '(top bottom middle))
 
 ;; Number of lines of continuity when scrolling by screenfulls
 (setq next-screen-context-lines 0)
@@ -113,56 +86,47 @@
 ;; Always use "y" for "yes"
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; elp.el is the Emacs Lisp profiler, sort by average time
-(setq elp-sort-by-function 'elp-sort-by-average-time)
-
 (setq fill-column 72)
-(setq line-move-visual nil)
-(setq visible-bell t)
 (setq spell-command "aspell")
 (setq tab-always-indent 'always)
 (setq display-time-mail-string "#")
-(setq focus-follows-mouse t)
 (setq text-mode-hook '(turn-on-auto-fill text-mode-hook-identify))
+(setq max-lisp-eval-depth 10000)
 
 (setenv "EDITOR" "emacsclient")
 (setenv "CVS_RSH" "ssh")
 
-(setq recenter-positions '(top bottom middle))
+;; Enabling and disabling some modes
+;; Less is more - see https://bzg.fr/en/emacs-strip-tease/
+(show-paren-mode 1)
+(auto-insert-mode 1)
+(display-time-mode 1)
+(tooltip-mode -1)
+(blink-cursor-mode -1)
+(scroll-bar-mode -1)
+(pixel-scroll-mode 1)
+(mouse-avoidance-mode 'cat-and-mouse)
 
-(use-package whitespace
-  :config
-  (add-to-list 'whitespace-style 'lines-tail)
-  (setq whitespace-line-column 80))
+;; Default Frame
+(setq initial-frame-alist
+      '((alpha . 85)
+	(left-margin-width . 10)
+	(menu-bar-lines . 0)
+	(tool-bar-lines . 0)
+	(horizontal-scroll-bars . nil)
+	(vertical-scroll-bars . nil)))
 
-(use-package ibuffer
-  :defer t
-  :config
-  (global-set-key (kbd "C-x C-b") 'ibuffer))
-
-;; (use-package dash :defer t)
-
-(use-package cider
-  :defer t
-  :config
-  (add-hook 'cider-repl-mode-hook 'company-mode)
-  (setq cider-use-fringe-indicators nil)
-  (setq cider-repl-pop-to-buffer-on-connect nil)
-  (setq nrepl-hide-special-buffers t))
-
-;; (global-company-mode)
-;; (global-set-key (kbd "M-TAB") #'company-complete) ; use M-TAB, a.k.a. C-M-i, as manual trigger
-;; (setq company-idle-delay nil) ; never start completions automatically
-(use-package company
-  :defer t)
-
-;; M-x package-install RET register-list RET
-(use-package register-list
-  :config
-  (global-set-key (kbd "C-x r L") 'register-list))
-
-;; `line-spacing' is nil by default, I change it from time to time
-;; (setq line-spacing 0)
+;; Don't display initial messages
+(setq initial-scratch-message "")
+(setq initial-major-mode 'org-mode)
+(setq inhibit-startup-screen t)
+(setq inhibit-startup-echo-area-message "guerry")
+(setq use-dialog-box nil)
+(setq default-frame-alist initial-frame-alist)
+(setq line-move-visual nil)
+(setq visible-bell t)
+(setq tab-bar-show nil)
+(set-frame-parameter nil 'fullscreen 'fullboth)
 
 (global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
@@ -193,165 +157,33 @@
 ;; (global-set-key (kbd "C-M-]") 'origami-toggle-all-nodes)
 ;; (global-set-key (kbd "M-]") 'origami-toggle-node)
 (global-set-key "\M- " 'hippie-expand)
+(define-key global-map "\M-Q" 'unfill-paragraph)
 
-(require 'google-translate)
-
-(defun google-translate--search-tkk ()
-  "Search TKK."
-  (list 430675 2721866130))
-
-(defun google-translate-word-at-point ()
+;; Easily jump to my main org file
+(defun bzg-find-bzg nil
+  "Find the bzg.org file."
   (interactive)
-  (let ((w (thing-at-point 'word)))
-    (google-translate-translate "auto" "fr" w)))
+  (find-file "~/org/bzg.org")
+  (delete-other-windows))
 
-(global-set-key (kbd "C-c t") (lambda (s) (interactive "sTranslate: ")
-				(google-translate-translate "auto" "fr" s)))
-(global-set-key (kbd "C-c T") 'google-translate-word-at-point)
-
+;; Easily unfill paragraphs
 (defun unfill-paragraph ()
   "Make a multi-line paragraph into a single line of text."
   (interactive)
   (let ((fill-column (point-max)))
     (fill-paragraph nil)))
 
-;; Handy key definition
-(define-key global-map "\M-Q" 'unfill-paragraph)
-
-(setq bzg-cycle-view-current nil)
-
-(defun bzg-cycle-view ()
-  "Cycle through my favorite views."
-  (interactive)
-  (let ((splitted-frame
-	 (or (< (window-height) (1- (frame-height)))
-	     (< (window-width) (frame-width)))))
-    (cond ((not (eq last-command 'bzg-cycle-view))
-	   (delete-other-windows)
-	   (bzg-big-fringe-mode)
-	   (setq bzg-cycle-view-current 'one-window-with-fringe))
-	  ((and (not bzg-cycle-view-current) splitted-frame)
-	   (delete-other-windows))
-	  ((not bzg-cycle-view-current)
-	   (delete-other-windows)
-	   (if bzg-big-fringe-mode
-	       (progn (bzg-big-fringe-mode)
-		      (setq bzg-cycle-view-current 'one-window-no-fringe))
-	     (bzg-big-fringe-mode)
-	     (setq bzg-cycle-view-current 'one-window-with-fringe)))
-	  ((eq bzg-cycle-view-current 'one-window-with-fringe)
-	   (delete-other-windows)
-	   (bzg-big-fringe-mode -1)
-	   (setq bzg-cycle-view-current 'one-window-no-fringe))
-	  ((eq bzg-cycle-view-current 'one-window-no-fringe)
-	   (delete-other-windows)
-	   (split-window-right)
-	   (bzg-big-fringe-mode -1)
-	   (other-window 1)
-	   (balance-windows)
-	   (setq bzg-cycle-view-current 'two-windows-balanced))
-	  ((eq bzg-cycle-view-current 'two-windows-balanced)
-	   (delete-other-windows)
-	   (bzg-big-fringe-mode 1)
-	   (setq bzg-cycle-view-current 'one-window-with-fringe)))))
-
-(advice-add 'split-window-horizontally :before (lambda () (interactive) (bzg-big-fringe-mode 0)))
-(advice-add 'split-window-right :before (lambda () (interactive) (bzg-big-fringe-mode 0)))
-
-(use-package dired-x
-  :config
-  ;; (define-key dired-mode-map "\C-cd" 'dired-clean-tex)
-  (setq dired-guess-shell-alist-user
-	(list
-	 (list "\\.pdf$" "evince &")
-	 (list "\\.docx?$" "libreoffice")
-	 (list "\\.aup?$" "audacity")
-	 (list "\\.pptx?$" "libreoffice")
-	 (list "\\.odf$" "libreoffice")
-	 (list "\\.odt$" "libreoffice")
-	 (list "\\.odt$" "libreoffice")
-	 (list "\\.kdenlive$" "kdenlive")
-	 (list "\\.svg$" "gimp")
-	 (list "\\.csv$" "libreoffice")
-	 (list "\\.sla$" "scribus")
-	 (list "\\.od[sgpt]$" "libreoffice")
-	 (list "\\.xls$" "libreoffice")
-	 (list "\\.xlsx$" "libreoffice")
-	 (list "\\.txt$" "gedit")
-	 (list "\\.sql$" "gedit")
-	 (list "\\.css$" "gedit")
-	 (list "\\.jpe?g$" "sxiv")
-	 (list "\\.png$" "sxiv")
-	 (list "\\.gif$" "sxiv")
-	 (list "\\.psd$" "gimp")
-	 (list "\\.xcf" "gimp")
-	 (list "\\.xo$" "unzip")
-	 (list "\\.3gp$" "vlc")
-	 (list "\\.mp3$" "vlc")
-	 (list "\\.flac$" "vlc")
-	 (list "\\.avi$" "vlc")
-	 ;; (list "\\.og[av]$" "vlc")
-	 (list "\\.wm[va]$" "vlc")
-	 (list "\\.flv$" "vlc")
-	 (list "\\.mov$" "vlc")
-	 (list "\\.divx$" "vlc")
-	 (list "\\.mp4$" "vlc")
-	 (list "\\.webm$" "vlc")
-	 (list "\\.mkv$" "vlc")
-	 (list "\\.mpe?g$" "vlc")
-	 (list "\\.m4[av]$" "vlc")
-	 (list "\\.mp2$" "vlc")
-	 (list "\\.pp[st]$" "libreoffice")
-	 (list "\\.ogg$" "vlc")
-	 (list "\\.ogv$" "vlc")
-	 (list "\\.rtf$" "libreoffice")
-	 (list "\\.ps$" "gv")
-	 (list "\\.mp3$" "play")
-	 (list "\\.wav$" "vlc")
-	 (list "\\.rar$" "unrar x")
-	 ))
-  (setq dired-tex-unclean-extensions
-	'(".toc" ".log" ".aux" ".dvi" ".out" ".nav" ".snm")))
-
-(setq directory-free-space-args "-Pkh")
-(setq list-directory-verbose-switches "-al")
-(setq dired-listing-switches "-l")
-(setq dired-dwim-target t)
-(setq dired-omit-mode nil)
-(setq dired-recursive-copies 'always)
-(setq dired-recursive-deletes 'always)
-(setq delete-old-versions t)
-
-(appt-activate t)
-(setq display-time-24hr-format t
-      display-time-day-and-date t
-      appt-audible nil
-      appt-display-interval 10
-      appt-message-warning-time 120)
-(setq diary-file "~/.diary")
-
 (require 'org-tempo)
 (require 'org-bullets)
 (setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-(require 'ox-rss)
-(require 'ox-md)
-(require 'ox-beamer)
-(require 'ox-latex)
-(require 'ox-odt)
 (require 'ol-gnus)
-(require 'ox-koma-letter)
-(setq org-koma-letter-use-email t)
-(setq org-koma-letter-use-foldmarks nil)
 
 ;; org-mode global keybindings
 (define-key global-map "\C-cl" 'org-store-link)
 (define-key global-map "\C-ca" 'org-agenda)
 (define-key global-map "\C-cc" 'org-capture)
 (define-key global-map "\C-cL" 'org-occur-link-in-agenda-files)
-
-;; Hook to display the agenda in a single window
-(add-hook 'org-agenda-finalize-hook 'delete-other-windows)
 
 ;; Hook to update all blocks before saving
 (add-hook 'org-mode-hook
@@ -364,95 +196,9 @@
 	    (if (eq major-mode 'gnus-summary-mode)
 		(gnus-summary-insert-dormant-articles))))
 
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((emacs-lisp . t)
-   (shell . t)
-   (dot . t)
-   (clojure . t)
-   (org . t)
-   (ditaa . t)
-   (org . t)
-   (ledger . t)
-   (scheme . t)
-   (plantuml . t)
-   (R . t)
-   (gnuplot . t)))
-
-(setq org-babel-default-header-args
-      '((:session . "none")
-	(:results . "replace")
-	(:exports . "code")
-	(:cache . "no")
-	(:noweb . "yes")
-	(:hlines . "no")
-	(:tangle . "no")
-	(:padnewline . "yes")))
-
-(org-clock-persistence-insinuate)
-
-;; Set headlines to STRT when clocking in
-(add-hook 'org-clock-in-hook (lambda() (org-todo "STRT")))
-
 (setq org-adapt-indentation 'headline-data)
-(setq org-edit-src-content-indentation 0)
-(setq org-babel-clojure-backend 'inf-clojure)
-(setq inf-clojure-generic-cmd "clojure")
-(setq org-agenda-inhibit-startup t)
-(setq org-agenda-diary-file "/home/guerry/org/rdv.org")
 (setq org-priority-start-cycle-with-default nil)
-(setq org-agenda-dim-blocked-tasks t)
 (setq org-log-into-drawer "LOGBOOK")
-(setq org-agenda-entry-text-maxlines 10)
-(setq org-timer-default-timer 25)
-(setq org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/rdv-bluehats.org" "~/org/rdv-emacs.org" "~/org/bzg.org"))
-(setq org-agenda-prefix-format
-      '((agenda . " %i %-12:c%?-14t%s")
-	(timeline . "  % s")
-	(todo . " %i %-14:c")
-	(tags . " %i %-14:c")
-	(search . " %i %-14:c")))
-(setq org-agenda-remove-tags t)
-(setq org-agenda-restore-windows-after-quit t)
-(setq org-agenda-show-inherited-tags nil)
-(setq org-agenda-skip-deadline-if-done t)
-(setq org-agenda-skip-deadline-prewarning-if-scheduled t)
-(setq org-agenda-skip-scheduled-if-done t)
-(setq org-agenda-skip-timestamp-if-done t)
-(setq org-agenda-sorting-strategy
-      '((agenda time-up) (todo time-up) (tags time-up) (search time-up)))
-(setq org-agenda-tags-todo-honor-ignore-options t)
-(setq org-agenda-use-tag-inheritance nil)
-(setq org-agenda-window-frame-fractions '(0.0 . 0.5))
-(setq org-agenda-deadline-faces
-      '((1.0001 . org-warning)              ; due yesterday or before
-	(0.0    . org-upcoming-deadline)))  ; due today or later
-(setq org-export-default-language "fr")
-(setq org-export-backends '(latex odt icalendar html ascii rss koma-letter))
-(setq org-export-with-archived-trees nil)
-(setq org-export-with-drawers '("HIDE"))
-(setq org-export-with-section-numbers nil)
-(setq org-export-with-sub-superscripts nil)
-(setq org-export-with-tags 'not-in-toc)
-(setq org-export-with-timestamps t)
-(setq org-html-head "")
-(setq org-html-head-include-default-style nil)
-(setq org-export-with-toc nil)
-(setq org-export-with-priority t)
-(setq org-export-dispatch-use-expert-ui t)
-(setq org-export-babel-evaluate t)
-(setq org-latex-listings t)
-(setq org-latex-pdf-process
-      '("pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f" "pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f" "pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f"))
-(setq org-export-allow-bind-keywords t)
-(setq org-publish-list-skipped-files nil)
-(setq org-html-table-row-tags
-      (cons '(cond (top-row-p "<tr class=\"tr-top\">")
-		   (bottom-row-p "<tr class=\"tr-bottom\">")
-		   (t (if (= (mod row-number 2) 1)
-			  "<tr class=\"tr-odd\">"
-			"<tr class=\"tr-even\">")))
-	    "</tr>"))
 (setq org-pretty-entities t)
 (setq org-fast-tag-selection-single-key 'expert)
 (setq org-fontify-done-headline t)
@@ -494,20 +240,9 @@
 (setq org-todo-repeat-to-state t)
 (setq org-use-property-inheritance t)
 (setq org-use-sub-superscripts '{})
-(setq org-clock-persist t)
-(setq org-clock-idle-time 60)
-(setq org-clock-history-length 35)
-(setq org-clock-in-resume t)
-(setq org-clock-out-remove-zero-time-clocks t)
-(setq org-clock-sound "~/Music/clock.wav")
 (setq org-insert-heading-respect-content t)
 (setq org-id-method 'uuidgen)
 (setq org-combined-agenda-icalendar-file "~/org/bzg.ics")
-(setq org-icalendar-combined-name "Bastien Guerry ORG")
-(setq org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo))
-(setq org-icalendar-use-deadline '(todo-due event-if-todo event-if-not-todo))
-(setq org-icalendar-timezone "Europe/Paris")
-(setq org-icalendar-store-UID t)
 (setq org-confirm-babel-evaluate nil)
 (setq org-archive-default-command 'org-archive-to-archive-sibling)
 (setq org-id-uuid-program "uuidgen")
@@ -515,14 +250,12 @@
       (lambda nil
 	(and (looking-at org-outline-regexp-bol)
 	     (not (org-in-src-block-p t)))))
-(setq org-src-tab-acts-natively t)
 (setq org-todo-keyword-faces
       '(("STRT" . (:foreground "white" :inverse-video t))
 	("NEXT" . (:foreground "white" :weight bold))
 	("WAIT" . (:foreground "#889699" :inverse-video t))
 	("CANCELED" . (:foreground "#889699"))))
 (setq org-footnote-section "Notes")
-(setq org-plantuml-jar-path "~/bin/plantuml.jar")
 (setq org-link-abbrev-alist
       '(("ggle" . "http://www.google.com/search?q=%s")
 	("gmap" . "http://maps.google.com/maps?q=%s")
@@ -530,12 +263,8 @@
 
 (setq org-attach-directory "~/org/data/")
 (setq org-loop-over-headlines-in-active-region t)
-(setq org-agenda-loop-over-headlines-in-active-region t)
 (setq org-create-formula-image-program 'dvipng) ;; imagemagick
 (setq org-allow-promoting-top-level-subtree t)
-(setq org-html-head-include-default-style nil)
-(setq org-html-head-include-scripts nil)
-(setq org-clock-display-default-range 'thisweek)
 (setq org-blank-before-new-entry '((heading . t) (plain-list-item . auto)))
 (setq org-crypt-key "Bastien Guerry")
 (setq org-enforce-todo-dependencies t)
@@ -548,28 +277,26 @@
 	("\\.pdf\\'" . "evince %s")))
 (setq org-hide-leading-stars t)
 (setq org-global-properties '(("Effort_ALL" . "0:10 0:30 1:00 2:00 3:30 7:00")))
-(setq org-confirm-elisp-link-function nil)
-(setq org-confirm-shell-link-function nil)
 (setq org-cycle-include-plain-lists nil)
-(setq org-deadline-warning-days 7)
 (setq org-default-notes-file "~/org/notes.org")
 (setq org-directory "~/org/")
 (setq org-email-link-description-format "%c: %.50s")
 (setq org-support-shift-select t)
-(setq org-export-filter-planning-functions
-      '(my-org-html-export-planning))
-(setq org-export-with-broken-links t)
 (setq org-ellipsis "…")
 
-(add-to-list 'org-latex-classes
-	     '("my-letter"
-	       "\\documentclass\{scrlttr2\}
-	    \\usepackage[english,frenchb]{babel}
-	    \[NO-DEFAULT-PACKAGES]
-	    \[NO-PACKAGES]
-	    \[EXTRA]"))
+(org-clock-persistence-insinuate)
 
-(org-agenda-to-appt)
+(setq org-timer-default-timer 25)
+(setq org-clock-display-default-range 'thisweek)
+(setq org-clock-persist t)
+(setq org-clock-idle-time 60)
+(setq org-clock-history-length 35)
+(setq org-clock-in-resume t)
+(setq org-clock-out-remove-zero-time-clocks t)
+(setq org-clock-sound "~/Music/clock.wav")
+
+;; Set headlines to STRT when clocking in
+(add-hook 'org-clock-in-hook (lambda() (org-todo "STRT")))
 
 ;; Set headlines to STRT and clock-in when running a countdown
 (add-hook 'org-timer-set-hook
@@ -595,6 +322,164 @@
 		(if (eq major-mode 'org-agenda-mode)
 		    (call-interactively 'org-agenda-clock-out)
 		  (call-interactively 'org-clock-out)))))
+
+(setq org-capture-templates
+      '(("C" "Misc" entry (file "~/org/bzg.org")
+	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n"
+	 :prepend t :immediate-finish t)
+
+	("c" "Misc (edit)" entry (file "~/org/bzg.org")
+	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
+
+	("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
+	 "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
+
+	("R" "RDV Etalab" entry (file+headline "~/org/rdv-etalab.org" "RDV Etalab")
+	 "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
+
+	("o" "Org" entry (file+headline "~/org/bzg.org" "Org-mode : passer la maintenance fin 2020")
+	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n" :prepend t)
+
+	("e" "Etalab" entry (file+headline "~/org/bzg.org" "Etalab : impulser dynamique LL via la DINUM")
+	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
+
+	;; ("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
+	;;  "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
+	))
+
+(setq org-capture-templates-contexts
+      '(("r" ((in-mode . "gnus-summary-mode")
+	      (in-mode . "gnus-article-mode")
+	      (in-mode . "message-mode")))
+	("R" ((in-mode . "gnus-summary-mode")
+	      (in-mode . "gnus-article-mode")
+	      (in-mode . "message-mode")))))
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (shell . t)
+   (dot . t)
+   (clojure . t)
+   (org . t)
+   (ditaa . t)
+   (org . t)
+   (ledger . t)
+   (scheme . t)
+   (plantuml . t)
+   (R . t)
+   (gnuplot . t)))
+
+(setq org-babel-default-header-args
+      '((:session . "none")
+	(:results . "replace")
+	(:exports . "code")
+	(:cache . "no")
+	(:noweb . "yes")
+	(:hlines . "no")
+	(:tangle . "no")
+	(:padnewline . "yes")))
+
+(setq org-src-tab-acts-natively t)
+(setq org-edit-src-content-indentation 0)
+(setq org-babel-clojure-backend 'inf-clojure)
+(setq org-confirm-elisp-link-function nil)
+(setq org-confirm-shell-link-function nil)
+(setq org-plantuml-jar-path "~/bin/plantuml.jar")
+(setq org-plantuml-jar-path (expand-file-name "/home/guerry/bin/plantuml.jar"))
+(add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+(org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
+
+(require 'ox-rss)
+(require 'ox-md)
+(require 'ox-beamer)
+(require 'ox-latex)
+(require 'ox-odt)
+(require 'ox-koma-letter)
+(setq org-koma-letter-use-email t)
+(setq org-koma-letter-use-foldmarks nil)
+
+(add-to-list 'org-latex-classes
+	     '("my-letter"
+	       "\\documentclass\{scrlttr2\}
+	    \\usepackage[english,frenchb]{babel}
+	    \[NO-DEFAULT-PACKAGES]
+	    \[NO-PACKAGES]
+	    \[EXTRA]"))
+
+(setq org-export-with-broken-links t)
+(setq org-export-default-language "fr")
+(setq org-export-backends '(latex odt icalendar html ascii rss koma-letter))
+(setq org-export-with-archived-trees nil)
+(setq org-export-with-drawers '("HIDE"))
+(setq org-export-with-section-numbers nil)
+(setq org-export-with-sub-superscripts nil)
+(setq org-export-with-tags 'not-in-toc)
+(setq org-export-with-timestamps t)
+(setq org-html-head "")
+(setq org-html-head-include-default-style nil)
+(setq org-export-with-toc nil)
+(setq org-export-with-priority t)
+(setq org-export-dispatch-use-expert-ui t)
+(setq org-export-babel-evaluate t)
+(setq org-latex-listings t)
+(setq org-latex-pdf-process
+      '("pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f" "pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f" "pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f"))
+(setq org-export-allow-bind-keywords t)
+(setq org-publish-list-skipped-files nil)
+(setq org-html-table-row-tags
+      (cons '(cond (top-row-p "<tr class=\"tr-top\">")
+		   (bottom-row-p "<tr class=\"tr-bottom\">")
+		   (t (if (= (mod row-number 2) 1)
+			  "<tr class=\"tr-odd\">"
+			"<tr class=\"tr-even\">")))
+	    "</tr>"))
+
+(setq org-html-head-include-default-style nil)
+(setq org-html-head-include-scripts nil)
+
+(add-to-list 'org-latex-packages-alist '("AUTO" "babel" t ("pdflatex")))
+
+(org-agenda-to-appt)
+
+;; Hook to display the agenda in a single window
+(add-hook 'org-agenda-finalize-hook 'delete-other-windows)
+
+(setq org-deadline-warning-days 7)
+(setq org-agenda-inhibit-startup t)
+(setq org-agenda-diary-file "/home/guerry/org/rdv.org")
+(setq org-agenda-dim-blocked-tasks t)
+(setq org-agenda-entry-text-maxlines 10)
+(setq org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/rdv-bluehats.org" "~/org/rdv-emacs.org" "~/org/bzg.org"))
+(setq org-agenda-prefix-format
+      '((agenda . " %i %-12:c%?-14t%s")
+	(timeline . "  % s")
+	(todo . " %i %-14:c")
+	(tags . " %i %-14:c")
+	(search . " %i %-14:c")))
+(setq org-agenda-remove-tags t)
+(setq org-agenda-restore-windows-after-quit t)
+(setq org-agenda-show-inherited-tags nil)
+(setq org-agenda-skip-deadline-if-done t)
+(setq org-agenda-skip-deadline-prewarning-if-scheduled t)
+(setq org-agenda-skip-scheduled-if-done t)
+(setq org-agenda-skip-timestamp-if-done t)
+(setq org-agenda-sorting-strategy
+      '((agenda time-up) (todo time-up) (tags time-up) (search time-up)))
+(setq org-agenda-tags-todo-honor-ignore-options t)
+(setq org-agenda-use-tag-inheritance nil)
+(setq org-agenda-window-frame-fractions '(0.0 . 0.5))
+(setq org-agenda-deadline-faces
+      '((1.0001 . org-warning)              ; due yesterday or before
+	(0.0    . org-upcoming-deadline)))  ; due today or later
+(setq org-agenda-loop-over-headlines-in-active-region t)
+
+;; icalendar stuff
+(setq org-icalendar-combined-name "Bastien Guerry ORG")
+(setq org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo))
+(setq org-icalendar-use-deadline '(todo-due event-if-todo event-if-not-todo))
+(setq org-icalendar-timezone "Europe/Paris")
+(setq org-icalendar-store-UID t)
 
 (setq org-agenda-custom-commands
       `(
@@ -681,42 +566,6 @@
 	 ((org-agenda-files '("~/org/libre.org"))))
 	))
 
-(setq org-capture-templates
-      '(("C" "Misc" entry (file "~/org/bzg.org")
-	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n"
-	 :prepend t :immediate-finish t)
-
-	("c" "Misc (edit)" entry (file "~/org/bzg.org")
-	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
-
-	("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
-	 "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
-
-	("R" "RDV Etalab" entry (file+headline "~/org/rdv-etalab.org" "RDV Etalab")
-	 "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
-
-	("o" "Org" entry (file+headline "~/org/bzg.org" "Org-mode : passer la maintenance fin 2020")
-	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n" :prepend t)
-
-	("e" "Etalab" entry (file+headline "~/org/bzg.org" "Etalab : impulser dynamique LL via la DINUM")
-	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
-
-	;; ("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
-	;;  "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
-	))
-
-(setq org-capture-templates-contexts
-      '(("r" ((in-mode . "gnus-summary-mode")
-	      (in-mode . "gnus-article-mode")
-	      (in-mode . "message-mode")))
-	("R" ((in-mode . "gnus-summary-mode")
-	      (in-mode . "gnus-article-mode")
-	      (in-mode . "message-mode")))))
-
-(defun my-org-html-export-planning (planning-string backend info)
-  (when (string-match "<p>.+><\\([0-9]+-[0-9]+-[0-9]+\\)[^>]+><.+</p>" planning-string)
-    (concat "<span class=\"planning\">" (match-string 1 planning-string) "</span>")))
-
 (require 'org-caldav)
 
 (defun bzg-caldav-sync-perso ()
@@ -759,43 +608,6 @@
   (bzg-caldav-sync-etalab)
   (bzg-caldav-sync-bluehats)
   (bzg-caldav-sync-emacs))
-
-;; notmuch configuration
-(use-package notmuch
-  :config
-  (setq notmuch-fcc-dirs nil)
-  (add-hook 'gnus-group-mode-hook 'bzg-notmuch-shortcut)
-
-  (defun bzg-notmuch-shortcut ()
-    (define-key gnus-group-mode-map "GG" 'notmuch-search))
-
-  (defun bzg-notmuch-file-to-group (file)
-    "Calculate the Gnus group name from the given file name."
-    (cond ((string-match "/home/guerry/Mail/old/Mail/mail/\\([^/]+\\)/" file)
-	   (format "nnml:mail.%s" (match-string 1 file)))
-	  ((string-match "/home/guerry/Mail/Maildir/\\([^/]+\\)/\\([^/]+\\)" file)
-	   (format "nnimap+localhost:%s/%s" (match-string 1 file) (match-string 2 file)))
-	  (t (user-error "Unknown group"))))
-
-  (defun bzg-notmuch-goto-message-in-gnus ()
-    "Open a summary buffer containing the current notmuch article."
-    (interactive)
-    (let ((group (bzg-notmuch-file-to-group (notmuch-show-get-filename)))
-	  (message-id (replace-regexp-in-string
-		       "^id:\\|\"" "" (notmuch-show-get-message-id))))
-      (if (and group message-id)
-	  (progn (org-gnus-follow-link group message-id))
-	(message "Couldn't get relevant infos for switching to Gnus."))))
-
-  (define-key notmuch-show-mode-map
-    (kbd "C-c C-c") #'bzg-notmuch-goto-message-in-gnus)
-
-  ;; (define-key global-map (kbd "C-ù")
-  ;;   #'(lambda() (interactive) (notmuch-search "tag:flagged")))
-
-  ;; (define-key global-map (kbd "C-c ù")
-  ;;   #'(lambda() (interactive) (notmuch-search "tag:unread")))
-  )
 
 (use-package starttls :defer t)
 (use-package epg :defer t)
@@ -1171,6 +983,231 @@
 	  ("X-Face" (".+" face 0 'replace))
 	  ("Face" (".+" face 0 'replace)))))
 
+(appt-activate t)
+(setq display-time-24hr-format t
+      display-time-day-and-date t
+      appt-audible nil
+      appt-display-interval 10
+      appt-message-warning-time 120)
+(setq diary-file "~/.diary")
+
+(use-package calendar
+  :defer t
+  :config
+  (setq french-holiday
+	'((holiday-fixed 1 1 "Jour de l'an")
+	  (holiday-fixed 5 8 "Victoire 45")
+	  (holiday-fixed 7 14 "Fête nationale")
+	  (holiday-fixed 8 15 "Assomption")
+	  (holiday-fixed 11 1 "Toussaint")
+	  (holiday-fixed 11 11 "Armistice 18")
+	  (holiday-easter-etc 1 "Lundi de Pâques")
+	  (holiday-easter-etc 39 "Ascension")
+	  (holiday-easter-etc 50 "Lundi de Pentecôte")
+	  (holiday-fixed 1 6 "Épiphanie")
+	  (holiday-fixed 2 2 "Chandeleur")
+	  (holiday-fixed 2 14 "Saint Valentin")
+	  (holiday-fixed 5 1 "Fête du travail")
+	  (holiday-fixed 5 8 "Commémoration de la capitulation de l'Allemagne en 1945")
+	  (holiday-fixed 6 21 "Fête de la musique")
+	  (holiday-fixed 11 2 "Commémoration des fidèles défunts")
+	  (holiday-fixed 12 25 "Noël")
+	  ;; fêtes à date variable
+	  (holiday-easter-etc 0 "Pâques")
+	  (holiday-easter-etc 49 "Pentecôte")
+	  (holiday-easter-etc -47 "Mardi gras")
+	  (holiday-float 6 0 3 "Fête des pères") ;; troisième dimanche de juin
+	  ;; Fête des mères
+	  (holiday-sexp
+	   '(if (equal
+		 ;; Pentecôte
+		 (holiday-easter-etc 49)
+		 ;; Dernier dimanche de mai
+		 (holiday-float 5 0 -1 nil))
+		;; -> Premier dimanche de juin si coïncidence
+		(car (car (holiday-float 6 0 1 nil)))
+	      ;; -> Dernier dimanche de mai sinon
+	      (car (car (holiday-float 5 0 -1 nil))))
+	   "Fête des mères")))
+
+  (setq calendar-date-style 'european
+	calendar-holidays (append french-holiday)
+	calendar-mark-holidays-flag t
+	calendar-week-start-day 1
+	calendar-mark-diary-entries-flag nil))
+
+;; notmuch configuration
+(use-package notmuch
+  :config
+  (setq notmuch-fcc-dirs nil)
+  (add-hook 'gnus-group-mode-hook 'bzg-notmuch-shortcut)
+
+  (defun bzg-notmuch-shortcut ()
+    (define-key gnus-group-mode-map "GG" 'notmuch-search))
+
+  (defun bzg-notmuch-file-to-group (file)
+    "Calculate the Gnus group name from the given file name."
+    (cond ((string-match "/home/guerry/Mail/old/Mail/mail/\\([^/]+\\)/" file)
+	   (format "nnml:mail.%s" (match-string 1 file)))
+	  ((string-match "/home/guerry/Mail/Maildir/\\([^/]+\\)/\\([^/]+\\)" file)
+	   (format "nnimap+localhost:%s/%s" (match-string 1 file) (match-string 2 file)))
+	  (t (user-error "Unknown group"))))
+
+  (defun bzg-notmuch-goto-message-in-gnus ()
+    "Open a summary buffer containing the current notmuch article."
+    (interactive)
+    (let ((group (bzg-notmuch-file-to-group (notmuch-show-get-filename)))
+	  (message-id (replace-regexp-in-string
+		       "^id:\\|\"" "" (notmuch-show-get-message-id))))
+      (if (and group message-id)
+	  (progn (org-gnus-follow-link group message-id))
+	(message "Couldn't get relevant infos for switching to Gnus."))))
+
+  (define-key notmuch-show-mode-map
+    (kbd "C-c C-c") #'bzg-notmuch-goto-message-in-gnus))
+
+(use-package dired-x
+  :config
+  ;; (define-key dired-mode-map "\C-cd" 'dired-clean-tex)
+  (setq dired-guess-shell-alist-user
+	(list
+	 (list "\\.pdf$" "evince &")
+	 (list "\\.docx?$" "libreoffice")
+	 (list "\\.aup?$" "audacity")
+	 (list "\\.pptx?$" "libreoffice")
+	 (list "\\.odf$" "libreoffice")
+	 (list "\\.odt$" "libreoffice")
+	 (list "\\.odt$" "libreoffice")
+	 (list "\\.kdenlive$" "kdenlive")
+	 (list "\\.svg$" "gimp")
+	 (list "\\.csv$" "libreoffice")
+	 (list "\\.sla$" "scribus")
+	 (list "\\.od[sgpt]$" "libreoffice")
+	 (list "\\.xls$" "libreoffice")
+	 (list "\\.xlsx$" "libreoffice")
+	 (list "\\.txt$" "gedit")
+	 (list "\\.sql$" "gedit")
+	 (list "\\.css$" "gedit")
+	 (list "\\.jpe?g$" "sxiv")
+	 (list "\\.png$" "sxiv")
+	 (list "\\.gif$" "sxiv")
+	 (list "\\.psd$" "gimp")
+	 (list "\\.xcf" "gimp")
+	 (list "\\.xo$" "unzip")
+	 (list "\\.3gp$" "vlc")
+	 (list "\\.mp3$" "vlc")
+	 (list "\\.flac$" "vlc")
+	 (list "\\.avi$" "vlc")
+	 ;; (list "\\.og[av]$" "vlc")
+	 (list "\\.wm[va]$" "vlc")
+	 (list "\\.flv$" "vlc")
+	 (list "\\.mov$" "vlc")
+	 (list "\\.divx$" "vlc")
+	 (list "\\.mp4$" "vlc")
+	 (list "\\.webm$" "vlc")
+	 (list "\\.mkv$" "vlc")
+	 (list "\\.mpe?g$" "vlc")
+	 (list "\\.m4[av]$" "vlc")
+	 (list "\\.mp2$" "vlc")
+	 (list "\\.pp[st]$" "libreoffice")
+	 (list "\\.ogg$" "vlc")
+	 (list "\\.ogv$" "vlc")
+	 (list "\\.rtf$" "libreoffice")
+	 (list "\\.ps$" "gv")
+	 (list "\\.mp3$" "play")
+	 (list "\\.wav$" "vlc")
+	 (list "\\.rar$" "unrar x")
+	 ))
+  (setq dired-tex-unclean-extensions
+	'(".toc" ".log" ".aux" ".dvi" ".out" ".nav" ".snm")))
+
+(setq directory-free-space-args "-Pkh")
+(setq list-directory-verbose-switches "-al")
+(setq dired-listing-switches "-l")
+(setq dired-dwim-target t)
+(setq dired-omit-mode nil)
+(setq dired-recursive-copies 'always)
+(setq dired-recursive-deletes 'always)
+(setq delete-old-versions t)
+
+(use-package whitespace
+  :defer t
+  :config
+  (add-to-list 'whitespace-style 'lines-tail)
+  (setq whitespace-line-column 80))
+
+(use-package ibuffer
+  :defer t
+  :config
+  (global-set-key (kbd "C-x C-b") 'ibuffer))
+
+;; M-x package-install RET register-list RET
+(use-package register-list
+  :config
+  (global-set-key (kbd "C-x r L") 'register-list))
+
+;; Hide fringe indicators
+(mapcar (lambda (fb) (set-fringe-bitmap-face fb 'org-hide))
+	fringe-bitmaps)
+
+(setq fringe-styles
+      '(("default" . nil)
+	("no-fringes" . 0)
+	("right-only" . (0 . nil))
+	("left-only" . (nil . 0))
+	("half-width" . (4 . 4))
+	("big" . (400 . 400))
+	("300" . (300 . 300))
+	("bzg" . (200 . 200))
+	("100" . (100 . 100))
+	("minimal" . (1 . 1))))
+
+(defvar bzg-big-fringe-mode nil)
+
+(defvar bzg-big-fringe-size 300)
+
+(define-minor-mode bzg-big-fringe-mode
+  "Minor mode to hide the mode-line in the current buffer."
+  :init-value nil
+  :global t
+  :variable bzg-big-fringe-mode
+  :group 'editing-basics
+  (if (not bzg-big-fringe-mode)
+      (set-fringe-mode 10)
+    (set-fringe-mode bzg-big-fringe-size)))
+
+;; (bzg-big-fringe-mode 1)
+
+;; See https://bzg.fr/emacs-hide-mode-line.html
+(defvar-local hidden-mode-line-mode nil)
+(defvar-local hide-mode-line nil)
+
+(define-minor-mode hidden-mode-line-mode
+  "Minor mode to hide the mode-line in the current buffer."
+  :init-value nil
+  :global nil
+  :variable hidden-mode-line-mode
+  :group 'editing-basics
+  (if hidden-mode-line-mode
+      (setq hide-mode-line mode-line-format
+	    mode-line-format nil)
+    (setq mode-line-format hide-mode-line
+	  hide-mode-line nil))
+  (force-mode-line-update)
+  ;; Apparently force-mode-line-update is not always enough to
+  ;; redisplay the mode-line
+  (redraw-display)
+  (when (and (called-interactively-p 'interactive)
+	     hidden-mode-line-mode)
+    (run-with-idle-timer
+     0 nil 'message
+     (concat "Hidden Mode Line Mode enabled.  "
+	     "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
+
+(add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
+;; (add-hook 'org-mode-hook 'hidden-mode-line-mode)
+(add-hook 'org-mode-hook (lambda () (electric-indent-mode 0) (hidden-mode-line-mode 0)))
+
 (use-package erc
   :config
   (require 'erc-services)
@@ -1247,32 +1284,6 @@
 
   (require 'tls))
 
-;; Set browser
-(unless window-system
-  (setq browse-url-browser-function 'eww-browse-url))
-(setq browse-url-text-browser "w3m")
-(setq browse-url-new-window-flag t)
-;; (setq browse-url-generic-program "firefox")
-(setq browse-url-firefox-new-window-is-tab t)
-
-(use-package w3m
-  :defer t
-  :config
-  (setq w3m-accept-languages '("fr;" "q=1.0" "en;"))
-  (setq w3m-antenna-sites '(("http://eucd.info" "EUCD.INFO" time)))
-  (setq w3m-broken-proxy-cache t)
-  (setq w3m-confirm-leaving-secure-page nil)
-  (setq w3m-cookie-accept-bad-cookies nil)
-  (setq w3m-cookie-accept-domains nil)
-  (setq w3m-cookie-file "/home/guerry/.w3m/cookie")
-  (setq w3m-fill-column 70)
-  (setq w3m-form-textarea-edit-mode 'org-mode)
-  (setq w3m-icon-directory nil)
-  (setq w3m-key-binding 'info)
-  (setq w3m-use-cookies t)
-  (setq w3m-use-tab t)
-  (setq w3m-use-toolbar nil))
-
 (use-package eww
   :defer t
   :config
@@ -1282,114 +1293,96 @@
 	shr-use-colors nil
 	shr-use-fonts nil))
 
-(use-package calendar
+;; Google translate
+(require 'google-translate)
+
+(defun google-translate--search-tkk ()
+  "Search TKK."
+  (list 430675 2721866130))
+
+(defun google-translate-word-at-point ()
+  (interactive)
+  (let ((w (thing-at-point 'word)))
+    (google-translate-translate "auto" "fr" w)))
+
+(global-set-key (kbd "C-c t") (lambda (s) (interactive "sTranslate: ")
+				(google-translate-translate "auto" "fr" s)))
+(global-set-key (kbd "C-c T") 'google-translate-word-at-point)
+
+(defun uniquify-all-lines-region (start end)
+  "Find duplicate lines in region START to END keeping first occurrence."
+  (interactive "*r")
+  (save-excursion
+    (let ((end (copy-marker end)))
+      (while
+	  (progn
+	    (goto-char start)
+	    (re-search-forward "^\\(.*\\)\n\\(\\(.*\n\\)*\\)\\1\n" end t))
+	(replace-match "\\1\n\\2")))))
+
+(defun uniquify-all-lines-buffer ()
+  "Delete duplicate lines in buffer and keep first occurrence."
+  (interactive "*")
+  (uniquify-all-lines-region (point-min) (point-max)))
+
+(setq bzg-cycle-view-current nil)
+
+(defun bzg-cycle-view ()
+  "Cycle through my favorite views."
+  (interactive)
+  (let ((splitted-frame
+	 (or (< (window-height) (1- (frame-height)))
+	     (< (window-width) (frame-width)))))
+    (cond ((not (eq last-command 'bzg-cycle-view))
+	   (delete-other-windows)
+	   (bzg-big-fringe-mode)
+	   (setq bzg-cycle-view-current 'one-window-with-fringe))
+	  ((and (not bzg-cycle-view-current) splitted-frame)
+	   (delete-other-windows))
+	  ((not bzg-cycle-view-current)
+	   (delete-other-windows)
+	   (if bzg-big-fringe-mode
+	       (progn (bzg-big-fringe-mode)
+		      (setq bzg-cycle-view-current 'one-window-no-fringe))
+	     (bzg-big-fringe-mode)
+	     (setq bzg-cycle-view-current 'one-window-with-fringe)))
+	  ((eq bzg-cycle-view-current 'one-window-with-fringe)
+	   (delete-other-windows)
+	   (bzg-big-fringe-mode -1)
+	   (setq bzg-cycle-view-current 'one-window-no-fringe))
+	  ((eq bzg-cycle-view-current 'one-window-no-fringe)
+	   (delete-other-windows)
+	   (split-window-right)
+	   (bzg-big-fringe-mode -1)
+	   (other-window 1)
+	   (balance-windows)
+	   (setq bzg-cycle-view-current 'two-windows-balanced))
+	  ((eq bzg-cycle-view-current 'two-windows-balanced)
+	   (delete-other-windows)
+	   (bzg-big-fringe-mode 1)
+	   (setq bzg-cycle-view-current 'one-window-with-fringe)))))
+
+(advice-add 'split-window-horizontally :before (lambda () (interactive) (bzg-big-fringe-mode 0)))
+(advice-add 'split-window-right :before (lambda () (interactive) (bzg-big-fringe-mode 0)))
+
+(setq inf-clojure-generic-cmd "clojure")
+
+(use-package cider
   :defer t
   :config
-  (setq french-holiday
-	'((holiday-fixed 1 1 "Jour de l'an")
-	  (holiday-fixed 5 8 "Victoire 45")
-	  (holiday-fixed 7 14 "Fête nationale")
-	  (holiday-fixed 8 15 "Assomption")
-	  (holiday-fixed 11 1 "Toussaint")
-	  (holiday-fixed 11 11 "Armistice 18")
-	  (holiday-easter-etc 1 "Lundi de Pâques")
-	  (holiday-easter-etc 39 "Ascension")
-	  (holiday-easter-etc 50 "Lundi de Pentecôte")
-	  (holiday-fixed 1 6 "Épiphanie")
-	  (holiday-fixed 2 2 "Chandeleur")
-	  (holiday-fixed 2 14 "Saint Valentin")
-	  (holiday-fixed 5 1 "Fête du travail")
-	  (holiday-fixed 5 8 "Commémoration de la capitulation de l'Allemagne en 1945")
-	  (holiday-fixed 6 21 "Fête de la musique")
-	  (holiday-fixed 11 2 "Commémoration des fidèles défunts")
-	  (holiday-fixed 12 25 "Noël")
-	  ;; fêtes à date variable
-	  (holiday-easter-etc 0 "Pâques")
-	  (holiday-easter-etc 49 "Pentecôte")
-	  (holiday-easter-etc -47 "Mardi gras")
-	  (holiday-float 6 0 3 "Fête des pères") ;; troisième dimanche de juin
-	  ;; Fête des mères
-	  (holiday-sexp
-	   '(if (equal
-		 ;; Pentecôte
-		 (holiday-easter-etc 49)
-		 ;; Dernier dimanche de mai
-		 (holiday-float 5 0 -1 nil))
-		;; -> Premier dimanche de juin si coïncidence
-		(car (car (holiday-float 6 0 1 nil)))
-	      ;; -> Dernier dimanche de mai sinon
-	      (car (car (holiday-float 5 0 -1 nil))))
-	   "Fête des mères")))
+  (add-hook 'cider-repl-mode-hook 'company-mode)
+  (setq cider-use-fringe-indicators nil)
+  (setq cider-repl-pop-to-buffer-on-connect nil)
+  (setq nrepl-hide-special-buffers t))
 
-  (setq calendar-date-style 'european
-	calendar-holidays (append french-holiday)
-	calendar-mark-holidays-flag t
-	calendar-week-start-day 1
-	calendar-mark-diary-entries-flag nil))
+;; Jump to this variable or function at point
+(defun find-variable-or-function-at-point ()
+  (interactive)
+  (or (find-variable-at-point)
+      (find-function-at-point)
+      (message "No variable or function at point.")))
 
-;; (setq TeX-master 'dwim)
-
-;; Hide fringe indicators
-(mapcar (lambda (fb) (set-fringe-bitmap-face fb 'org-hide))
-	fringe-bitmaps)
-
-(setq fringe-styles
-      '(("default" . nil)
-	("no-fringes" . 0)
-	("right-only" . (0 . nil))
-	("left-only" . (nil . 0))
-	("half-width" . (4 . 4))
-	("big" . (400 . 400))
-	("300" . (300 . 300))
-	("bzg" . (200 . 200))
-	("100" . (100 . 100))
-	("minimal" . (1 . 1))))
-
-(defvar bzg-big-fringe-mode nil)
-
-(defvar bzg-big-fringe-size 300)
-
-(define-minor-mode bzg-big-fringe-mode
-  "Minor mode to hide the mode-line in the current buffer."
-  :init-value nil
-  :global t
-  :variable bzg-big-fringe-mode
-  :group 'editing-basics
-  (if (not bzg-big-fringe-mode)
-      (set-fringe-mode 10)
-    (set-fringe-mode bzg-big-fringe-size)))
-
-;; (bzg-big-fringe-mode 1)
-
-;; See https://bzg.fr/emacs-hide-mode-line.html
-(defvar-local hidden-mode-line-mode nil)
-(defvar-local hide-mode-line nil)
-
-(define-minor-mode hidden-mode-line-mode
-  "Minor mode to hide the mode-line in the current buffer."
-  :init-value nil
-  :global nil
-  :variable hidden-mode-line-mode
-  :group 'editing-basics
-  (if hidden-mode-line-mode
-      (setq hide-mode-line mode-line-format
-	    mode-line-format nil)
-    (setq mode-line-format hide-mode-line
-	  hide-mode-line nil))
-  (force-mode-line-update)
-  ;; Apparently force-mode-line-update is not always enough to
-  ;; redisplay the mode-line
-  (redraw-display)
-  (when (and (called-interactively-p 'interactive)
-	     hidden-mode-line-mode)
-    (run-with-idle-timer
-     0 nil 'message
-     (concat "Hidden Mode Line Mode enabled.  "
-	     "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
-
-(add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
-;; (add-hook 'org-mode-hook 'hidden-mode-line-mode)
-(add-hook 'org-mode-hook (lambda () (electric-indent-mode 0) (hidden-mode-line-mode 0)))
+(global-set-key (kbd "C-:") 'find-variable-or-function-at-point)
 
 (use-package paredit
   :config
@@ -1425,63 +1418,18 @@
   (define-key clj-refactor-map "\C-cU" #'cljr-unwind-all)
   (add-to-list 'cljr-magic-require-namespaces '("s"  . "clojure.string")))
 
-;; Geiser
-(setq geiser-active-implementations '(guile racket))
-(setq geiser-scheme-implementation 'racket)
-(setq geiser-repl-startup-time 20000)
+;; First install the package:
+(use-package flycheck-clj-kondo :ensure t)
 
-;; doc-view and eww/shr configuration
-(setq doc-view-continuous t)
-(setq doc-view-scale-internally nil)
+;; then install the checker as soon as `clojure-mode' is loaded
+(use-package clojure-mode
+  :ensure t
+  :config
+  (require 'flycheck-clj-kondo))
 
-;; Use imagemagick, if available
-(when (fboundp 'imagemagick-register-types)
-  (imagemagick-register-types))
+(add-to-list 'auto-mode-alist '("\\.arc\\'" . lisp-mode))
 
-(add-hook 'dired-mode-hook #'turn-on-gnus-dired-mode)
-(add-hook 'dired-mode-hook #'dired-hide-details-mode)
-
-;; Personal stuff
-(defun bzg-find-bzg nil
-  "Find the bzg.org file."
-  (interactive)
-  (find-file "~/org/bzg.org")
-  (delete-other-windows))
-
-(defun uniquify-all-lines-region (start end)
-  "Find duplicate lines in region START to END keeping first occurrence."
-  (interactive "*r")
-  (save-excursion
-    (let ((end (copy-marker end)))
-      (while
-	  (progn
-	    (goto-char start)
-	    (re-search-forward "^\\(.*\\)\n\\(\\(.*\n\\)*\\)\\1\n" end t))
-	(replace-match "\\1\n\\2")))))
-
-(defun uniquify-all-lines-buffer ()
-  "Delete duplicate lines in buffer and keep first occurrence."
-  (interactive "*")
-  (uniquify-all-lines-region (point-min) (point-max)))
-
-(defun org-dblock-write:amazon (params)
-  "Dynamic block for inserting the cover of a book."
-  (interactive)
-  (let* ((asin (plist-get params :asin))
-	 (tpl "<a style=\"float:right;width:160px;margin:2em;\" href=\"https://www.amazon.fr/gp/product/%s/ref=as_li_qf_sp_asin_il?ie=UTF8&tag=bastguer-21&linkCode=as2&camp=1642&creative=6746&creativeASIN=%s\"><img border=\"0\" src=\"https://images.amazon.com/images/P/%s.jpg\" ></a><img src=\"https://www.assoc-amazon.fr/e/ir?t=bastguer-21&l=as2&o=8&a=%s\" width=\"1\" height=\"1\" border=\"0\" alt=\"\" style=\"border:none !important; margin:0px !important;\" />")
-	 (str (format tpl asin asin asin asin)))
-    (insert "#+begin_export html\n" str "\n#+end_export")))
-
-;; Fontifying todo items outside of org-mode
-(defface bzg-todo-comment-face
-  '((t (:weight bold :bold t)))
-  "Face for TODO in code buffers."
-  :group 'org-faces)
-
-(defvar bzg-todo-comment-face 'bzg-todo-comment-face)
-
-(pdf-tools-install)
-
+;; By default, killing a word backward will put it in the ring, I don't want this
 (defun backward-kill-word-noring (arg)
   (interactive "p")
   (let ((kr kill-ring))
@@ -1490,6 +1438,7 @@
 
 (global-set-key (kbd "C-M-<backspace>") 'backward-kill-word-noring)
 
+;; Displays a helper about the current available keybindings
 (require 'which-key)
 (which-key-mode)
 
@@ -1510,23 +1459,33 @@
   (define-key dired-mode-map (kbd "I") 'dired-subtree-toggle)
   (define-key dired-mode-map (kbd "TAB") 'dired-subtree-cycle))
 
-(defun find-variable-or-function-at-point ()
-  (interactive)
-  (or (find-variable-at-point)
-      (find-function-at-point)
-      (message "No variable or function at point.")))
-
-(global-set-key (kbd "C-:") 'find-variable-or-function-at-point)
-
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-(global-set-key (kbd "C-c C->") 'mc/mark-all-dwim)
-
-(when (memq window-system '(mac ns x))
-  (exec-path-from-shell-initialize))
-
-(setq tab-bar-show nil)
-
 (envrc-global-mode)
+
+;; elp.el is the Emacs Lisp profiler, sort by average time
+(setq elp-sort-by-function 'elp-sort-by-average-time)
+
+;; Geiser
+(setq geiser-active-implementations '(guile racket))
+(setq geiser-scheme-implementation 'racket)
+(setq geiser-repl-startup-time 20000)
+
+;; doc-view and eww/shr configuration
+(setq doc-view-continuous t)
+(setq doc-view-scale-internally nil)
+
+;; Use imagemagick, if available
+(when (fboundp 'imagemagick-register-types)
+  (imagemagick-register-types))
+
+(add-hook 'dired-mode-hook #'turn-on-gnus-dired-mode)
+(add-hook 'dired-mode-hook #'dired-hide-details-mode)
+
+;; Fontifying todo items outside of org-mode
+(defface bzg-todo-comment-face
+  '((t (:weight bold :bold t)))
+  "Face for TODO in code buffers."
+  :group 'org-faces)
+
+(defvar bzg-todo-comment-face 'bzg-todo-comment-face)
+
+(pdf-tools-install)
