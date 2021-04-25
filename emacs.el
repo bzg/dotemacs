@@ -924,6 +924,7 @@
   :config
   ;; Use electric completion in Gnus
   ;; (setq message-mail-alias-type 'abbrev)
+  (setq message-signature nil)
   (setq message-directory "~/Mail/")
   (setq message-mail-alias-type 'ecomplete)
   (setq message-send-mail-function 'message-send-mail-with-sendmail)
