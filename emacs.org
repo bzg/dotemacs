@@ -1220,6 +1220,14 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 * Misc
 
+*** Browser settings
+
+#+begin_src emacs-lisp
+(setq browse-url-browser-function 'eww-browse-url)
+(setq browse-url-generic-program "firefox")
+(setq browse-url-firefox-new-window-is-tab t)
+#+end_src
+
 *** whitespace/ibuffer/register-alist
 
 #+begin_src emacs-lisp
