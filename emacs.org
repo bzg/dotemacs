@@ -866,7 +866,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (setq gnus-thread-ignore-subject t)
   (setq gnus-thread-hide-subtree nil)
   (setq gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references
-	gnus-thread-sort-functions '(gnus-thread-sort-by-date)
+	gnus-thread-sort-functions '(gnus-thread-sort-by-number
+				     gnus-thread-sort-by-date)
 	gnus-sum-thread-tree-false-root ""
 	gnus-sum-thread-tree-indent " "
 	gnus-sum-thread-tree-leaf-with-other "├► "

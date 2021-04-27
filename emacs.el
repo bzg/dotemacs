@@ -802,7 +802,8 @@
   (setq gnus-thread-ignore-subject t)
   (setq gnus-thread-hide-subtree nil)
   (setq gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references
-	gnus-thread-sort-functions '(gnus-thread-sort-by-date)
+	gnus-thread-sort-functions '(gnus-thread-sort-by-number
+				     gnus-thread-sort-by-date)
 	gnus-sum-thread-tree-false-root ""
 	gnus-sum-thread-tree-indent " "
 	gnus-sum-thread-tree-leaf-with-other "├► "
@@ -1137,7 +1138,8 @@
 (setq dired-recursive-deletes 'always)
 (setq delete-old-versions t)
 
-(setq browse-url-browser-function 'eww-browse-url)
+;; (setq browse-url-browser-function 'eww-browse-url)
+(setq browse-url-browser-function 'browse-url-default-browser)
 (setq browse-url-generic-program "firefox")
 (setq browse-url-firefox-new-window-is-tab t)
 
