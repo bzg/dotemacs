@@ -688,7 +688,6 @@
 		  (nnimap-authinfo-file "~/.authinfo")
 		  (nnimap-stream ssl))
 	  ;; (nntp "news" (nntp-address "news.gmane.io"))
-	  ;; (nntp "yhetil" (nntp-address "news.yhetil.org"))
 	  ))
 
   (setq gnus-check-new-newsgroups nil)
