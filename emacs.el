@@ -204,7 +204,6 @@
 
 (setq org-adapt-indentation 'headline-data)
 (setq org-priority-start-cycle-with-default nil)
-(setq org-log-into-drawer "LOGBOOK")
 (setq org-pretty-entities t)
 (setq org-fast-tag-selection-single-key 'expert)
 (setq org-fontify-done-headline t)
@@ -215,6 +214,7 @@
 (setq org-icalendar-include-todo 'all)
 (setq org-link-frame-setup '((gnus . gnus) (file . find-file-other-window)))
 (setq org-link-mailto-program '(browse-url-mail "mailto:%a?subject=%s"))
+(setq org-log-into-drawer "LOGBOOK")
 (setq org-log-note-headings
       '((done . "CLOSING NOTE %t") (state . "State %-12s %t") (clock-out . "")))
 (setq org-refile-targets '((org-agenda-files . (:maxlevel . 3))
@@ -925,7 +925,6 @@
   :config
   ;; Use electric completion in Gnus
   ;; (setq message-mail-alias-type 'abbrev)
-  (setq message-signature nil)
   (setq message-directory "~/Mail/")
   (setq message-mail-alias-type 'ecomplete)
   (setq message-send-mail-function 'message-send-mail-with-sendmail)
@@ -1139,7 +1138,6 @@
 (setq delete-old-versions t)
 
 ;; (setq browse-url-browser-function 'eww-browse-url)
-(setq browse-url-browser-function 'browse-url-default-browser)
 (setq browse-url-generic-program "firefox")
 (setq browse-url-firefox-new-window-is-tab t)
 
