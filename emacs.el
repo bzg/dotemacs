@@ -678,7 +678,6 @@
 			    X-Diary-Hour X-Diary-Minute
 			    To Newsgroups Cc))
 
-
   ;; Sources and methods
   (setq mail-sources nil
 	gnus-select-method '(nnnil "")
@@ -777,7 +776,7 @@
 	message-draft-headers '(References From In-Reply-To)
 	message-generate-headers-first t
 	message-hidden-headers
-   '("^References:" "^Face:" "^X-Face:" "^X-Draft-From:" "^In-Reply-To:" "^Message-ID:")
+	'("^References:" "^Face:" "^X-Face:" "^X-Draft-From:" "^In-Reply-To:" "^Message-ID:")
 	)
 
   ;; Sort mails
@@ -802,6 +801,7 @@
   (setq gnus-thread-hide-subtree nil)
   (setq gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references
 	gnus-thread-sort-functions '(gnus-thread-sort-by-number
+				     gnus-thread-sort-by-total-score
 				     gnus-thread-sort-by-date)
 	gnus-sum-thread-tree-false-root ""
 	gnus-sum-thread-tree-indent " "
@@ -858,21 +858,37 @@
   (define-key gnus-summary-mode-map "$" 'gnus-summary-mark-as-spam)
 
   ;; Scoring
-  (setq gnus-use-adaptive-scoring '(line)
+  (setq gnus-use-adaptive-scoring '(word line)
+	gnus-adaptive-pretty-print t
+        gnus-adaptive-word-length-limit 5
 	;; gnus-score-expiry-days 14
 	gnus-default-adaptive-score-alist
-	'((gnus-dormant-mark (from 5) (subject 30))
+	'((gnus-replied-mark (from 50) (subject 10))
+          (gnus-read-mark (from 30) (subject 10))
+          (gnus-cached-mark (from 30) (subject 10))
+          (gnus-forwarded-mark (from 10) (subject 5))
+          (gnus-saved-mark (from 10) (subject 5))
+          (gnus-expirable-mark (from 0) (subject 0))
+          (gnus-catchup-mark (from -5) (subject -30))
+	  (gnus-del-mark (from -10) (subject -50))
+	  (gnus-killed-mark (from -10 (subject -50)))
+          (gnus-dormant-mark (from 10) (subject 30))
 	  (gnus-ticked-mark (from 10) (subject 50))
-	  (gnus-unread-mark)
-	  (gnus-read-mark (from 1) (subject 30))
-	  (gnus-del-mark (from -4) (subject -10))
-	  (gnus-catchup-mark (subject -150))
-	  (gnus-killed-mark (subject -100))
-	  (gnus-expirable-mark (from -100) (subject -100)))
+	  (gnus-unread-mark))
 	gnus-score-exact-adapt-limit nil
-	gnus-score-decay-constant 1    ; default = 3
-	gnus-score-decay-scale 0.05    ; default = 0.05
-	gnus-decay-scores t)           ; (gnus-decay-score 1000)
+	gnus-default-adaptive-word-score-alist
+	'((42 . 3) ;cached
+          (65 . 2) ;replied
+          (70 . 1) ;forwarded
+          (82 . 1) ;read
+          (67 . -1) ;catchup
+          (69 . 0) ;expired
+          (75 . -3) ;killed
+          (114 . -3))
+	;; gnus-score-decay-constant 1
+	;; gnus-decay-scores t
+	;; gnus-decay-score 1000
+	)
 
   (setq gnus-summary-line-format
 	(concat "%*%0{%U%R%z%}"
@@ -1499,3 +1515,18 @@
 (defvar bzg-todo-comment-face 'bzg-todo-comment-face)
 
 (pdf-tools-install)
+
+(defun bzg-gnus-toggle-nntp ()
+  (interactive)
+  (if (= (length gnus-secondary-select-methods) 1)
+      (progn (add-to-list
+	      'gnus-secondary-select-methods
+	      '(nntp "news" (nntp-address "news.gmane.io")))
+	     (message "nntp server ON"))
+    (progn
+      (setq gnus-secondary-select-methods
+	    (remove '(nntp "news" (nntp-address "news.gmane.io"))
+		    gnus-secondary-select-methods))
+      (message "nntp server OFF"))))
+
+(define-key gnus-group-mode-map (kbd "T") #'bzg-gnus-toggle-nntp)
