@@ -1529,4 +1529,4 @@
 		    gnus-secondary-select-methods))
       (message "nntp server OFF"))))
 
-(define-key gnus-group-mode-map (kbd "T") #'bzg-gnus-toggle-nntp)
+(define-key gnus-group-mode-map (kbd "%") #'bzg-gnus-toggle-nntp)
