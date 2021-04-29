@@ -1231,7 +1231,7 @@
 	     "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
 
 (add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
-;; (add-hook 'org-mode-hook 'hidden-mode-line-mode)
+(add-hook 'org-mode-hook 'hidden-mode-line-mode)
 (add-hook 'org-mode-hook (lambda () (electric-indent-mode 0) (hidden-mode-line-mode 0)))
 
 (use-package erc
