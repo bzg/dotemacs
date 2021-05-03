@@ -24,7 +24,6 @@
 ;; Initialize Org from sources
 ;; See https://orgmode.org/manual/Installation.html
 (add-to-list 'load-path "~/install/git/org-mode/lisp/")
-(add-to-list 'load-path "~/install/git/org-mode/contrib/lisp/")
 (add-to-list 'load-path "~/install/git/org-caldav/")
 
 ;; Initialize other important modes
@@ -183,6 +182,7 @@
 (require 'org-bullets)
 (setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+;; (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
 (require 'ol-gnus)
 
 ;; org-mode global keybindings
@@ -396,7 +396,6 @@
 (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
 (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
 
-(require 'ox-rss)
 (require 'ox-md)
 (require 'ox-beamer)
 (require 'ox-latex)
@@ -627,7 +626,6 @@
   :config
   (setq epg-pinentry-mode 'loopback))
 
-(use-package ecomplete :defer t)
 (use-package gnus
   :defer t
   :config
@@ -939,7 +937,6 @@
   :defer t
   :config
   ;; Use electric completion in Gnus
-  ;; (setq message-mail-alias-type 'abbrev)
   (setq message-directory "~/Mail/")
   (setq message-mail-alias-type 'ecomplete)
   (setq message-send-mail-function 'message-send-mail-with-sendmail)

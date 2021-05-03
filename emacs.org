@@ -45,7 +45,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ;; Initialize Org from sources
 ;; See https://orgmode.org/manual/Installation.html
 (add-to-list 'load-path "~/install/git/org-mode/lisp/")
-(add-to-list 'load-path "~/install/git/org-mode/contrib/lisp/")
 (add-to-list 'load-path "~/install/git/org-caldav/")
 
 ;; Initialize other important modes
@@ -218,6 +217,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (require 'org-bullets)
 (setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+;; (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
 (require 'ol-gnus)
 
 ;; org-mode global keybindings
@@ -447,7 +447,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ** Org export
 
 #+begin_src emacs-lisp
-(require 'ox-rss)
 (require 'ox-md)
 (require 'ox-beamer)
 (require 'ox-latex)
@@ -691,7 +690,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   :config
   (setq epg-pinentry-mode 'loopback))
 
-(use-package ecomplete :defer t)
 (use-package gnus
   :defer t
   :config
@@ -1003,7 +1001,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   :defer t
   :config
   ;; Use electric completion in Gnus
-  ;; (setq message-mail-alias-type 'abbrev)
   (setq message-directory "~/Mail/")
   (setq message-mail-alias-type 'ecomplete)
   (setq message-send-mail-function 'message-send-mail-with-sendmail)
