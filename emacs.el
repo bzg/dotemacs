@@ -4,7 +4,7 @@
 ;; Code in this file is licensed under the GNU GPLv3 or any later
 ;; version.
 
-;; First set the packageè-archives URLs
+;; First set the package-archives URLs
 (eval-when-compile
   (setq package-archives
 	'(("gnu" . "http://elpa.gnu.org/packages/")
