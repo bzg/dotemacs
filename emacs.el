@@ -24,6 +24,7 @@
 ;; Initialize Org from sources
 ;; See https://orgmode.org/manual/Installation.html
 (add-to-list 'load-path "~/install/git/org-mode/lisp/")
+(add-to-list 'load-path "~/install/git/org-contrib/lisp/")
 (add-to-list 'load-path "~/install/git/org-caldav/")
 
 ;; Initialize other important modes
