@@ -130,6 +130,7 @@
 (setq use-dialog-box nil)
 (setq default-frame-alist initial-frame-alist)
 (setq line-move-visual nil)
+(setq line-spacing 0.05)
 (setq visible-bell t)
 (setq tab-bar-show nil)
 (set-frame-parameter nil 'fullscreen 'fullboth)
