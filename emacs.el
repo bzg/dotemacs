@@ -143,6 +143,7 @@
 (global-set-key (kbd "<f6>") (lambda () (interactive) (org-agenda nil "rr")))
 (global-set-key (kbd "<f7>") (lambda () (interactive) (org-agenda nil "ww")))
 (global-set-key (kbd "<f8>") (lambda () (interactive) (org-agenda nil "cc")))
+(global-set-key (kbd "<f12>") #'hl-line-mode)
 (global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "ne")))
 (global-set-key (kbd "C-%") (lambda () (interactive) (org-agenda nil "$")))
 (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil " ")))
