@@ -707,6 +707,8 @@
 	gnus-large-newsgroup 10000
 	gnus-no-groups-message ""
 	gnus-novice-user nil
+	nntp-nov-is-evil t
+	gnus-nov-is-evil t
 	gnus-play-startup-jingle nil
 	gnus-show-all-headers nil
 	gnus-use-bbdb t
@@ -1306,6 +1308,14 @@
     (erc-select :server "irc.freenode.net"
 		:port 6666
 		:nick "bzg`"
+		:full-name "Bastien"))
+
+  (defun bzg-erc-connect-libera ()
+    "Connect to Libera server with ERC."
+    (interactive)
+    (erc-select :server "irc.libera.chat"
+		:port 6667
+		:nick "bzg"
 		:full-name "Bastien"))
 
   (require 'tls))
