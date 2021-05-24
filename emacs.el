@@ -18,7 +18,7 @@
 (global-unset-key (kbd "C-z"))
 
 ;; Load my customization file
-(setq custom-file "/home/guerry/.emacs.d/emacs-custom.el")
+(setq custom-file "/home/bzg/.emacs.d/emacs-custom.el")
 (load custom-file)
 
 ;; Initialize Org from sources
@@ -395,7 +395,7 @@
 (setq org-confirm-elisp-link-function nil)
 (setq org-confirm-shell-link-function nil)
 (setq org-plantuml-jar-path "~/bin/plantuml.jar")
-(setq org-plantuml-jar-path (expand-file-name "/home/guerry/bin/plantuml.jar"))
+(setq org-plantuml-jar-path (expand-file-name "/home/bzg/bin/plantuml.jar"))
 (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
 (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
 
@@ -455,7 +455,7 @@
 
 (setq org-deadline-warning-days 7)
 (setq org-agenda-inhibit-startup t)
-(setq org-agenda-diary-file "/home/guerry/org/rdv.org")
+(setq org-agenda-diary-file "/home/bzg/org/rdv.org")
 (setq org-agenda-dim-blocked-tasks t)
 (setq org-agenda-entry-text-maxlines 10)
 (setq org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/rdv-bluehats.org" "~/org/rdv-emacs.org" "~/org/bzg.org"))
@@ -738,7 +738,7 @@
 	gnus-activate-level 6
 	gnus-level-unsubscribed 7)
 
-  (setq nnir-notmuch-remove-prefix "/home/guerry/Mail/Maildir")
+  (setq nnir-notmuch-remove-prefix "/home/bzg/Mail/Maildir")
   (setq nnir-method-default-engines
 	'((nnimap . notmuch)))
 
@@ -1071,9 +1071,9 @@
 
   (defun bzg-notmuch-file-to-group (file)
     "Calculate the Gnus group name from the given file name."
-    (cond ((string-match "/home/guerry/Mail/old/Mail/mail/\\([^/]+\\)/" file)
+    (cond ((string-match "/home/bzg/Mail/old/Mail/mail/\\([^/]+\\)/" file)
 	   (format "nnml:mail.%s" (match-string 1 file)))
-	  ((string-match "/home/guerry/Mail/Maildir/\\([^/]+\\)/\\([^/]+\\)" file)
+	  ((string-match "/home/bzg/Mail/Maildir/\\([^/]+\\)/\\([^/]+\\)" file)
 	   (format "nnimap+localhost:%s/%s" (match-string 1 file) (match-string 2 file)))
 	  (t (user-error "Unknown group"))))
 
@@ -1314,7 +1314,7 @@
     "Connect to Libera server with ERC."
     (interactive)
     (erc-select :server "irc.libera.chat"
-		:port 6667
+		:port 6697
 		:nick "bzg"
 		:full-name "Bastien"))
 
