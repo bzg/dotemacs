@@ -1240,7 +1240,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 *** Browser settings
 
 #+begin_src emacs-lisp
-;; (setq browse-url-browser-function 'eww-browse-url)
+(setq browse-url-browser-function 'browse-url-generic)
 (setq browse-url-generic-program "firefox-trunk")
 (setq browse-url-firefox-new-window-is-tab t)
 #+end_src
