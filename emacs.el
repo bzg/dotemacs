@@ -687,8 +687,8 @@
 		  (nnimap-server-port "imaps")
 		  (nnimap-authinfo-file "~/.authinfo")
 		  (nnimap-stream ssl))
-	  ;; (nntp "news" (nntp-address "news.gmane.io"))
-	  ))
+	  (nnmaildir "datagouv"
+		     (directory "~/Mail/Maildir/datagouv"))))
 
   (setq gnus-check-new-newsgroups nil)
 
@@ -1528,7 +1528,7 @@
 
 (defun bzg-gnus-toggle-nntp ()
   (interactive)
-  (if (= (length gnus-secondary-select-methods) 1)
+  (if (= (length gnus-secondary-select-methods) 2)
       (progn (add-to-list
 	      'gnus-secondary-select-methods
 	      '(nntp "news" (nntp-address "news.gmane.io")))
