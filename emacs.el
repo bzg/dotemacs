@@ -8,6 +8,7 @@
 (eval-when-compile
   (setq package-archives
 	'(("gnu" . "http://elpa.gnu.org/packages/")
+	  ("nongnu" . "http://elpa.nongnu.org/nongnu/")
 	  ("melpa" . "http://melpa.org/packages/")))
   (require 'use-package))
 
