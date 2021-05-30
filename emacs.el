@@ -752,7 +752,7 @@
       (concat "nnfolder+archive:" (format-time-string "%Y-%m")
 	      "-divers-news"))
      ((and (stringp group-current) (< 0 (length group-current)))
-      (concat (replace-regexp-in-string "[^/]+$" "" group-current) "Sent"))
+      (concat (replace-regexp-in-string "[^:]+$" "" group-current) "Sent"))
      (t "nnimap+localhost:bzgfrio/Sent")))
 
   (setq gnus-message-archive-group 'my-gnus-message-archive-group)
@@ -794,8 +794,7 @@
 
   ;; Simplify the subject lines
   (setq gnus-simplify-subject-functions
-	'(gnus-simplify-subject-re
-	  gnus-simplify-whitespace))
+	'(gnus-simplify-subject-re gnus-simplify-whitespace))
 
   ;; Display faces
   (setq gnus-treat-display-face 'head)
@@ -1097,19 +1096,19 @@
   (setq dired-guess-shell-alist-user
 	(list
 	 (list "\\.pdf$" "evince &")
-	 (list "\\.docx?$" "libreoffice")
+	 (list "\\.docx?$" "libreoffice &")
 	 (list "\\.aup?$" "audacity")
-	 (list "\\.pptx?$" "libreoffice")
-	 (list "\\.odf$" "libreoffice")
-	 (list "\\.odt$" "libreoffice")
-	 (list "\\.odt$" "libreoffice")
+	 (list "\\.pptx?$" "libreoffice &")
+	 (list "\\.odf$" "libreoffice &")
+	 (list "\\.odt$" "libreoffice &")
+	 (list "\\.odt$" "libreoffice &")
 	 (list "\\.kdenlive$" "kdenlive")
 	 (list "\\.svg$" "gimp")
-	 (list "\\.csv$" "libreoffice")
+	 (list "\\.csv$" "libreoffice &")
 	 (list "\\.sla$" "scribus")
-	 (list "\\.od[sgpt]$" "libreoffice")
-	 (list "\\.xls$" "libreoffice")
-	 (list "\\.xlsx$" "libreoffice")
+	 (list "\\.od[sgpt]$" "libreoffice &")
+	 (list "\\.xls$" "libreoffice &")
+	 (list "\\.xlsx$" "libreoffice &")
 	 (list "\\.txt$" "gedit")
 	 (list "\\.sql$" "gedit")
 	 (list "\\.css$" "gedit")
@@ -1134,10 +1133,10 @@
 	 (list "\\.mpe?g$" "vlc")
 	 (list "\\.m4[av]$" "vlc")
 	 (list "\\.mp2$" "vlc")
-	 (list "\\.pp[st]$" "libreoffice")
+	 (list "\\.pp[st]$" "libreoffice &")
 	 (list "\\.ogg$" "vlc")
 	 (list "\\.ogv$" "vlc")
-	 (list "\\.rtf$" "libreoffice")
+	 (list "\\.rtf$" "libreoffice &")
 	 (list "\\.ps$" "gv")
 	 (list "\\.mp3$" "play")
 	 (list "\\.wav$" "vlc")
