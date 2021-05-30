@@ -1315,8 +1315,8 @@
     "Connect to Libera server with ERC."
     (interactive)
     (erc-select :server "irc.libera.chat"
-		:port 6697
-		:nick "bzg"
+		:port 6667
+		:nick "bzg`"
 		:full-name "Bastien"))
 
   (require 'tls))
