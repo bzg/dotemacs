@@ -687,9 +687,8 @@
 	'((nnimap "localhost"
 		  (nnimap-server-port "imaps")
 		  (nnimap-authinfo-file "~/.authinfo")
-		  (nnimap-stream ssl))
-	  (nnmaildir "datagouv"
-		     (directory "~/Mail/Maildir/datagouv"))))
+		  (nnimap-stream ssl)
+		  (nnimap-expunge t))))
 
   (setq gnus-check-new-newsgroups nil)
 
@@ -752,7 +751,7 @@
       (concat "nnfolder+archive:" (format-time-string "%Y-%m")
 	      "-divers-news"))
      ((and (stringp group-current) (< 0 (length group-current)))
-      (concat (replace-regexp-in-string "[^:]+$" "" group-current) "Sent"))
+      (concat (replace-regexp-in-string "[^/]+$" "" group-current) "Sent"))
      (t "nnimap+localhost:bzgfrio/Sent")))
 
   (setq gnus-message-archive-group 'my-gnus-message-archive-group)
@@ -842,7 +841,7 @@
   (add-hook 'gnus-select-group-hook 'gnus-group-set-timestamp)
 
   ;; Format group line
-  (setq gnus-group-line-format "%M%S%p%P %(%-30,30G%)\n")
+  (setq gnus-group-line-format "%M%S%p%P %(%-40,40G%)\n")
   (setq gnus-group-line-default-format "%M%S%p%P %(%-40,40G%) %-3y %-3T %-3I\n")
 
   (defun bzg-gnus-toggle-group-line-format ()
@@ -850,15 +849,13 @@
     (if (equal gnus-group-line-format
 	       gnus-group-line-default-format)
 	(setq gnus-group-line-format
-	      "%M%S%p%P %(%-30,30G%)\n")
+	      "%M%S%p%P %(%-40,40G%)\n")
       (setq gnus-group-line-format
 	    gnus-group-line-default-format)))
 
   ;; Toggle the group line format
   (define-key gnus-group-mode-map "("
     (lambda () (interactive) (bzg-gnus-toggle-group-line-format) (gnus)))
-
-  (define-key gnus-summary-mode-map "$" 'gnus-summary-mark-as-spam)
 
   ;; Scoring
   (setq gnus-use-adaptive-scoring '(word line)
@@ -1528,7 +1525,7 @@
 
 (defun bzg-gnus-toggle-nntp ()
   (interactive)
-  (if (= (length gnus-secondary-select-methods) 2)
+  (if (= (length gnus-secondary-select-methods) 1)
       (progn (add-to-list
 	      'gnus-secondary-select-methods
 	      '(nntp "news" (nntp-address "news.gmane.io")))
