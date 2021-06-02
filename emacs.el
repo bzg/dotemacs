@@ -60,7 +60,7 @@
 (setq enable-local-eval t)
 
 ;; Who I am
-(setq user-full-name "Bastien")
+(setq user-full-name "Bastien Guerry")
 (setq user-mail-address "bzg@bzg.fr")
 
 ;; Let's get a backtrace when errors are
