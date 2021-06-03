@@ -5,12 +5,13 @@
 ;; version.
 
 ;; First set the package-archives URLs
-(eval-when-compile
-  (setq package-archives
+(eval-when-compile (require 'use-package))
+
+;; Set `package-archives' to the ones I use
+(setq package-archives
 	'(("gnu" . "http://elpa.gnu.org/packages/")
 	  ("nongnu" . "http://elpa.nongnu.org/nongnu/")
 	  ("melpa" . "http://melpa.org/packages/")))
-  (require 'use-package))
 
 ;; Precompute activation actions to speed up startup
 (setq package-quickstart t)
