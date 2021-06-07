@@ -145,11 +145,12 @@
 (global-set-key (kbd "<f6>") (lambda () (interactive) (org-agenda nil "rr")))
 (global-set-key (kbd "<f7>") (lambda () (interactive) (org-agenda nil "ww")))
 (global-set-key (kbd "<f8>") (lambda () (interactive) (org-agenda nil "cc")))
-(global-set-key (kbd "<f12>") #'hl-line-mode)
+(global-set-key (kbd "<f9>") #'hl-line-mode)
+(global-set-key (kbd "<f10>") #'bzg-browse-url-toggle)
 (global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "ne")))
 (global-set-key (kbd "C-%") (lambda () (interactive) (org-agenda nil "$")))
 (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil " ")))
-(global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "z")))
+(global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "!")))
 (global-set-key (kbd "C-&") 'gnus)
 (global-set-key (kbd "C-é") 'bzg-cycle-view)
 (global-set-key (kbd "C-\"") (lambda () (interactive) (dired "~") (revert-buffer)))
@@ -536,7 +537,7 @@
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
-	("z" "Etalab deadlines" agenda "Past/upcoming work deadlines"
+	("!" "Etalab deadlines" agenda "Past/upcoming work deadlines"
 	 ((org-agenda-span 1)
 	  (org-agenda-category-filter-preset '("+ETL"))
 	  (org-deadline-warning-days 100)
@@ -619,6 +620,7 @@
   (bzg-caldav-sync-bluehats)
   (bzg-caldav-sync-emacs))
 
+(require 'boxquote)
 (use-package starttls :defer t)
 (use-package epg :defer t)
 (use-package epa
@@ -1152,6 +1154,14 @@
 (setq dired-recursive-deletes 'always)
 (setq delete-old-versions t)
 
+(defun bzg-browse-url-toggle ()
+  (interactive)
+  (if (eq browse-url-browser-function 'browse-url-generic)
+      (progn (setq browse-url-browser-function 'eww-browse-url)
+	     (message "Browser set to eww"))
+    (setq browse-url-browser-function 'browse-url-generic)
+    (message "Browser set to generic")))
+  
 (setq browse-url-browser-function 'browse-url-generic)
 (setq browse-url-generic-program "firefox-trunk")
 (setq browse-url-firefox-new-window-is-tab t)
