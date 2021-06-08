@@ -507,7 +507,7 @@
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
-	("@" "Mail" tags-todo "+Mail+TODO={NEXT\\|STRT\\|WAIT}")
+	("@" "Mail" tags-todo "+Mail+TODO={NEXT\\|STRT\\|TODO\\|WAIT}")
 	("?" "Waiting" tags-todo "+TODO={WAIT}")
 	("#" "To archive"
 	 todo "DONE|CANCELED|DELEGATED"
@@ -540,6 +540,13 @@
 	("!" "Etalab deadlines" agenda "Past/upcoming work deadlines"
 	 ((org-agenda-span 1)
 	  (org-agenda-category-filter-preset '("+ETL"))
+	  (org-deadline-warning-days 100)
+	  (org-agenda-entry-types '(:deadline))
+	  (org-agenda-sorting-strategy
+	   '(deadline-up todo-state-up priority-down))))
+	(":" "Other deadlines" agenda "Past/upcoming work deadlines"
+	 ((org-agenda-span 1)
+	  (org-agenda-category-filter-preset '("-ETL"))
 	  (org-deadline-warning-days 100)
 	  (org-agenda-entry-types '(:deadline))
 	  (org-agenda-sorting-strategy
