@@ -507,7 +507,9 @@
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
-	("@" "Mail" tags-todo "+Mail+TODO={NEXT\\|STRT\\|TODO\\|WAIT}")
+	("@" "Mail" tags-todo "+Mail+TODO={NEXT\\|STRT\\|TODO\\|WAIT}"
+	 ((org-agenda-sorting-strategy
+	   '(todo-state-up priority-down))))
 	("?" "Waiting" tags-todo "+TODO={WAIT}")
 	("#" "To archive"
 	 todo "DONE|CANCELED|DELEGATED"
