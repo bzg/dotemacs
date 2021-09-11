@@ -828,7 +828,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	      "-divers-news"))
      ((and (stringp group-current) (< 0 (length group-current)))
       (concat (replace-regexp-in-string "[^/]+$" "" group-current) "Sent"))
-     (t "nnimap+localhost:bzgfrio/Sent")))
+     (t "nnimap+localhost:box.bzg.io/Sent")))
 
   (setq gnus-message-archive-group 'my-gnus-message-archive-group)
 
