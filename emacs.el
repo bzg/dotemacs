@@ -351,7 +351,7 @@
 	("R" "RDV Etalab" entry (file+headline "~/org/rdv-etalab.org" "RDV Etalab")
 	 "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
-	("o" "Org" entry (file+headline "~/org/bzg.org" "Org-mode : passer la maintenance fin 2020")
+	("o" "Org" entry (file+headline "~/org/bzg.org" "Org-mode : passer la maintenance fin 2021")
 	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n" :prepend t)
 
 	("e" "Etalab" entry (file+headline "~/org/bzg.org" "Etalab : impulser dynamique LL via la DINUM")
