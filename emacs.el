@@ -1519,6 +1519,9 @@
 ;; elp.el is the Emacs Lisp profiler, sort by average time
 (setq elp-sort-by-function 'elp-sort-by-average-time)
 
+;; Don't show bookmark line in the margin
+(setq bookmark-set-fringe-mark nil)
+
 ;; Geiser
 (setq geiser-active-implementations '(guile racket))
 (setq geiser-scheme-implementation 'racket)
