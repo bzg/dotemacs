@@ -4,9 +4,6 @@
 ;; Code in this file is licensed under the GNU GPLv3 or any later
 ;; version.
 
-;; First set the package-archives URLs
-(eval-when-compile (require 'use-package))
-
 ;; Set `package-archives' to the ones I use
 (setq package-archives
 	'(("gnu" . "http://elpa.gnu.org/packages/")
@@ -15,6 +12,9 @@
 
 ;; Precompute activation actions to speed up startup
 (setq package-quickstart t)
+
+;; Require `use-package' when compiling
+(eval-when-compile (require 'use-package))
 
 ;; Unset C-z which is bound to `suspend-frame' by default
 (global-unset-key (kbd "C-z"))

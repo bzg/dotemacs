@@ -21,9 +21,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ;; Code in this file is licensed under the GNU GPLv3 or any later
 ;; version.
 
-;; First set the package-archives URLs
-(eval-when-compile (require 'use-package))
-
 ;; Set `package-archives' to the ones I use
 (setq package-archives
 	'(("gnu" . "http://elpa.gnu.org/packages/")
@@ -32,6 +29,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 ;; Precompute activation actions to speed up startup
 (setq package-quickstart t)
+
+;; Require `use-package' when compiling
+(eval-when-compile (require 'use-package))
 #+end_src
 
 * General defaults
