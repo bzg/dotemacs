@@ -737,6 +737,7 @@
 	message-kill-buffer-on-exit t
 	message-mail-user-agent 'gnus-user-agent
 	message-use-mail-followup-to nil
+	message-forward-as-mime t
 	nnimap-expiry-wait 'never
 	nnmail-crosspost nil
 	nnmail-expiry-target "nnml:expired"
