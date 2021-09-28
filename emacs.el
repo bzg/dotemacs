@@ -275,7 +275,7 @@
 	("gmap" . "http://maps.google.com/maps?q=%s")
 	("omap" . "http://nominatim.openstreetmap.org/search?q=%s&polygon=1")))
 
-(setq org-attach-directory "~/org/data/")
+(setq org-attach-id-dir "~/org/data/")
 (setq org-loop-over-headlines-in-active-region t)
 (setq org-create-formula-image-program 'dvipng) ;; imagemagick
 (setq org-allow-promoting-top-level-subtree t)
@@ -294,7 +294,7 @@
 (setq org-cycle-include-plain-lists nil)
 (setq org-default-notes-file "~/org/notes.org")
 (setq org-directory "~/org/")
-(setq org-email-link-description-format "%c: %.50s")
+(setq org-link-email-description-format "%c: %.50s")
 (setq org-support-shift-select t)
 (setq org-ellipsis "…")
 
@@ -397,8 +397,8 @@
 (setq org-src-tab-acts-natively t)
 (setq org-edit-src-content-indentation 0)
 (setq org-babel-clojure-backend 'inf-clojure)
-(setq org-confirm-elisp-link-function nil)
-(setq org-confirm-shell-link-function nil)
+(setq org-link-elisp-confirm-function nil)
+(setq org-link-shell-confirm-function nil)
 (setq org-plantuml-jar-path "~/bin/plantuml.jar")
 (setq org-plantuml-jar-path (expand-file-name "/home/bzg/bin/plantuml.jar"))
 (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
@@ -434,7 +434,7 @@
 (setq org-export-with-toc nil)
 (setq org-export-with-priority t)
 (setq org-export-dispatch-use-expert-ui t)
-(setq org-export-babel-evaluate t)
+(setq org-export-use-babel t)
 (setq org-latex-listings t)
 (setq org-latex-pdf-process
       '("pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f" "pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f" "pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f"))
@@ -632,7 +632,6 @@
   (bzg-caldav-sync-emacs))
 
 (require 'boxquote)
-(use-package starttls :defer t)
 (use-package epg :defer t)
 (use-package epa
   :defer t
@@ -754,7 +753,7 @@
 	gnus-level-unsubscribed 7)
 
   (setq nnir-notmuch-remove-prefix "/home/bzg/Mail/Maildir")
-  (setq nnir-method-default-engines
+  (setq gnus-search-default-engines
 	'((nnimap . notmuch)))
 
   (defun my-gnus-message-archive-group (group-current)
@@ -1157,7 +1156,6 @@
   (setq dired-tex-unclean-extensions
 	'(".toc" ".log" ".aux" ".dvi" ".out" ".nav" ".snm")))
 
-(setq directory-free-space-args "-Pkh")
 (setq list-directory-verbose-switches "-al")
 (setq dired-listing-switches "-l")
 (setq dired-dwim-target t)
@@ -1195,8 +1193,8 @@
   (global-set-key (kbd "C-x r L") 'register-list))
 
 ;; Hide fringe indicators
-(mapcar (lambda (fb) (set-fringe-bitmap-face fb 'org-hide))
-	fringe-bitmaps)
+(mapc (lambda (fb) (set-fringe-bitmap-face fb 'org-hide))
+      fringe-bitmaps)
 
 (setq fringe-styles
       '(("default" . nil)
@@ -1304,7 +1302,6 @@
   (add-hook 'erc-mode-hook
 	    #'(lambda ()
 		(auto-fill-mode -1)
-		(pcomplete-erc-setup)
 		(erc-completion-mode 1)
 		(erc-ring-mode 1)
 		(erc-log-mode 1)
@@ -1466,13 +1463,11 @@
 (use-package clj-refactor
   :defer t
   :config
-  (setq cljr-thread-all-but-last t)
-  (cljr-add-keybindings-with-prefix "C-c r")
-  (define-key clj-refactor-map "\C-ctf" #'cljr-thread-first-all)
-  (define-key clj-refactor-map "\C-ctl" #'cljr-thread-last-all)
-  (define-key clj-refactor-map "\C-cu" #'cljr-unwind)
-  (define-key clj-refactor-map "\C-cU" #'cljr-unwind-all)
-  (add-to-list 'cljr-magic-require-namespaces '("s"  . "clojure.string")))
+  (setq clojure-thread-all-but-last t)
+  (define-key clj-refactor-map "\C-ctf" #'clojure-thread-first-all)
+  (define-key clj-refactor-map "\C-ctl" #'clojure-thread-last-all)
+  (define-key clj-refactor-map "\C-cu" #'clojure-unwind)
+  (define-key clj-refactor-map "\C-cU" #'clojure-unwind-all))
 
 ;; First install the package:
 (use-package flycheck-clj-kondo :ensure t)
