@@ -167,6 +167,8 @@
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-=") 'text-scale-adjust)
+(global-set-key (kbd "C-x C-<left>") 'tab-previous)
+(global-set-key (kbd "C-x C-<right>") 'tab-next)
 ;; (global-set-key (kbd "C-M-]") 'origami-toggle-all-nodes)
 ;; (global-set-key (kbd "M-]") 'origami-toggle-node)
 (global-set-key "\M- " 'hippie-expand)
