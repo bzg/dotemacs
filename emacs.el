@@ -1161,6 +1161,7 @@
 (setq list-directory-verbose-switches "-al")
 (setq dired-listing-switches "-l")
 (setq dired-dwim-target t)
+(setq dired-maybe-use-globstar t)
 (setq dired-omit-mode nil)
 (setq dired-recursive-copies 'always)
 (setq dired-recursive-deletes 'always)
