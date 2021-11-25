@@ -87,6 +87,7 @@
 (setq scroll-error-top-bottom t)
 (setq focus-follows-mouse t)
 (setq recenter-positions '(top bottom middle))
+(setq view-read-only t)
 
 ;; Number of lines of continuity when scrolling by screenfulls
 (setq next-screen-context-lines 0)
