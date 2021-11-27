@@ -1,5 +1,5 @@
 This is my =.emacs.el= file, you can [[file:emacs.org][browse it]] here or [[https://git.sr.ht/~bzg/dotemacs/blob/master/emacs.el][download it]] here.
 
-Comments and suggestions are welcome: =bzg AT gnu DOT org=
+Comments and suggestions are welcome at =~bzg/dev@lists.sr.ht=
 
 This files are licensed under the [[file:LICENSE][GPLv3 license]].
