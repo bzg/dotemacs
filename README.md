@@ -1,4 +1,4 @@
-This is my `.emacs.el` file, you can [browse it](emacs.md) here or [download it](https://raw.githubusercontent.com/bzg/dotemacs/master/emacs.el) here.
+This is my `.emacs.el` file, you can [browse it](emacs.md) here or [download it](https://git.sr.ht/~bzg/dotemacs/blob/master/emacs.el) here.
 
 Comments and suggestions are welcome: `bzg AT gnu DOT org`
 
