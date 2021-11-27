@@ -1323,20 +1323,12 @@
 
   (add-hook 'erc-insert-pre-hook 'erc-notify-on-msg)
 
-  (defun bzg-erc-connect-freenode ()
-    "Connect to Freenode server with ERC."
-    (interactive)
-    (erc-select :server "irc.freenode.net"
-		:port 6666
-		:nick "bzg`"
-		:full-name "Bastien"))
-
   (defun bzg-erc-connect-libera ()
     "Connect to Libera server with ERC."
     (interactive)
     (erc-select :server "irc.libera.chat"
 		:port 6667
-		:nick "bzg`"
+		:nick "bzg"
 		:full-name "Bastien"))
 
   (require 'tls))
