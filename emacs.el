@@ -300,6 +300,7 @@
 (setq org-link-email-description-format "%c: %.50s")
 (setq org-support-shift-select t)
 (setq org-ellipsis "…")
+(setq org-element-use-cache nil) ;; Temporary
 
 (org-clock-persistence-insinuate)
 
@@ -1326,10 +1327,18 @@
   (defun bzg-erc-connect-libera ()
     "Connect to Libera server with ERC."
     (interactive)
-    (erc-select :server "irc.libera.chat"
-		:port 6667
-		:nick "bzg"
-		:full-name "Bastien"))
+    (erc-ssl :server "irc.libera.chat"
+	     :port 6697
+	     :nick "bzg"
+	     :full-name "Bastien"))
+
+  (defun bzg-erc-connect-libera ()
+    "Connect to Libera server with ERC."
+    (interactive)
+    (erc-ssl :server "chat.sr.ht"
+	     :port 6697
+	     :nick "bzg"
+	     :full-name "Bastien"))
 
   (require 'tls))
 
