@@ -1332,14 +1332,6 @@
 	     :nick "bzg"
 	     :full-name "Bastien"))
 
-  (defun bzg-erc-connect-sourcehut ()
-    "Connect to Libera server with ERC."
-    (interactive)
-    (erc-ssl :server "chat.sr.ht"
-	     :port 6697
-	     :nick "bzg"
-	     :full-name "Bastien"))
-
   (require 'tls))
 
 (use-package eww
