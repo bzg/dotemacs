@@ -39,7 +39,7 @@
   (normal-top-level-add-subdirs-to-load-path))
 
 ;; Load my favorite theme
-(load-theme 'doom-nord)
+;; (load-theme 'doom-nord)
 
 ;; Start server to use emacsclient
 (server-start)
@@ -268,10 +268,10 @@
 	(and (looking-at org-outline-regexp-bol)
 	     (not (org-in-src-block-p t)))))
 (setq org-todo-keyword-faces
-      '(("STRT" . (:foreground "white" :inverse-video t))
-	("NEXT" . (:foreground "white" :weight bold))
-	("WAIT" . (:foreground "#889699" :inverse-video t))
-	("CANCELED" . (:foreground "#889699"))))
+      '(("STRT" . (:inverse-video t))
+	("NEXT" . (:weight bold))
+	("WAIT" . (:inverse-video t))
+	("CANCELED" . (:inverse-video t))))
 (setq org-footnote-section "Notes")
 (setq org-link-abbrev-alist
       '(("ggle" . "http://www.google.com/search?q=%s")
@@ -1200,6 +1200,9 @@
 ;; Hide fringe indicators
 (mapc (lambda (fb) (set-fringe-bitmap-face fb 'org-hide))
       fringe-bitmaps)
+
+;; Hide fringe background
+(set-face-attribute 'fringe nil :background nil)
 
 (setq fringe-styles
       '(("default" . nil)
