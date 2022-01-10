@@ -142,7 +142,7 @@
 
 (defun bzg-toggle-default-font-size ()
   (interactive)
-  (if (= (face-attribute 'default :height) bzg-bigger-font-size)
+  (if (< (abs (- (face-attribute 'default :height) bzg-bigger-font-size)) 10)
       (custom-set-faces
        `(default ((t (:height ,bzg-default-font-size :family "Roboto Mono")))))
     (custom-set-faces
