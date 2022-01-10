@@ -38,9 +38,6 @@
 (let ((default-directory "~/Documents/elisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
-;; Load my favorite theme
-;; (load-theme 'doom-nord)
-
 ;; Start server to use emacsclient
 (server-start)
 
@@ -72,6 +69,9 @@
 
 ;; The default is to wait 1 second, which I find a bit long
 (setq echo-keystrokes 0.1)
+
+;; ;; Let search for "e" match e.g. "é":
+(setq search-default-mode 'char-fold-to-regexp)
 
 ;; Stop polluting the directory with auto-saved files and backup
 (setq auto-save-default nil)
@@ -137,10 +137,22 @@
 (setq tab-bar-show nil)
 (set-frame-parameter nil 'fullscreen 'fullboth)
 
+(setq bzg-default-font-size 143)
+(setq bzg-bigger-font-size 188)
+
+(defun bzg-toggle-default-font-size ()
+  (interactive)
+  (if (= (face-attribute 'default :height) bzg-bigger-font-size)
+      (custom-set-faces
+       `(default ((t (:height ,bzg-default-font-size :family "Roboto Mono")))))
+    (custom-set-faces
+     `(default ((t (:height ,bzg-bigger-font-size :family "Roboto Mono")))))))
+
 (global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
 (global-set-key (kbd "C-²") 'follow-delete-other-windows-and-split)
+(global-set-key (kbd "C-<dead-circumflex>") (lambda () (interactive) (load-theme 'doom-nord)))
 (global-set-key (kbd "<f5>") (lambda () (interactive) (org-agenda nil "nn")))
 (global-set-key (kbd "<f6>") (lambda () (interactive) (org-agenda nil "rr")))
 (global-set-key (kbd "<f7>") (lambda () (interactive) (org-agenda nil "ww")))
@@ -167,7 +179,7 @@
 (global-set-key (kbd "C-ç") 'calc)
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
-(global-set-key (kbd "C-=") 'text-scale-adjust)
+(global-set-key (kbd "C-=") 'bzg-toggle-default-font-size)
 (global-set-key (kbd "C-x C-<left>") 'tab-previous)
 (global-set-key (kbd "C-x C-<right>") 'tab-next)
 ;; (global-set-key (kbd "C-M-]") 'origami-toggle-all-nodes)
@@ -268,8 +280,8 @@
 	(and (looking-at org-outline-regexp-bol)
 	     (not (org-in-src-block-p t)))))
 (setq org-todo-keyword-faces
-      '(("STRT" . (:inverse-video t))
-	("NEXT" . (:weight bold))
+      '(("STRT" . (:inverse-video t :foreground (face-foreground 'default)))
+	("NEXT" . (:weight bold :foreground (face-foreground 'default)))
 	("WAIT" . (:inverse-video t))
 	("CANCELED" . (:inverse-video t))))
 (setq org-footnote-section "Notes")
