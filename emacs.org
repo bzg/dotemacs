@@ -166,8 +166,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 * Keybindings
 
 #+begin_src emacs-lisp
-(setq bzg-default-font-size 143)
-(setq bzg-bigger-font-size 188)
+(setq bzg-default-font-size 148)
+(setq bzg-bigger-font-size 192)
 
 (defun bzg-toggle-default-font-size ()
   (interactive)
