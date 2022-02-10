@@ -515,7 +515,6 @@
 	;; Week agenda for rendez-vous and tasks
 	("$" "All appointments" agenda* "Week planning"
 	 ((org-agenda-span 'week)
-	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/rdv-bluehats.org" "~/org/rdv-emacs.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up time-up priority-down))))
 
@@ -531,8 +530,7 @@
 	("?" "Waiting" tags-todo "+TODO={WAIT}")
 	("#" "To archive"
 	 todo "DONE|CANCELED|DELEGATED"
-	 ((org-agenda-files '("~/org/bzg.org" "~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/rdv-emacs.org" "~/org/libre.org"))
-	  (org-agenda-sorting-strategy '(timestamp-up))))
+	 ((org-agenda-sorting-strategy '(timestamp-up))))
 
 	(" " "Work (agenda)" agenda "Tasks and rdv for today"
 	 ((org-agenda-span 1)
