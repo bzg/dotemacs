@@ -138,7 +138,7 @@
 (set-frame-parameter nil 'fullscreen 'fullboth)
 
 (setq bzg-default-font-size 148)
-(setq bzg-bigger-font-size 192)
+(setq bzg-bigger-font-size 196)
 
 (defun bzg-toggle-default-font-size ()
   (interactive)
@@ -530,7 +530,8 @@
 	("?" "Waiting" tags-todo "+TODO={WAIT}")
 	("#" "To archive"
 	 todo "DONE|CANCELED|DELEGATED"
-	 ((org-agenda-sorting-strategy '(timestamp-up))))
+	 ((org-agenda-files '("~/org/rdv.org" "~/org/rdv-emacs.org" "~/org/rdv-etalab.org" "~/org/rdv-conseil-logiciels-libres.org" "~/org/rdv-gtt-ll.org"))
+	  (org-agenda-sorting-strategy '(timestamp-up))))
 
 	(" " "Work (agenda)" agenda "Tasks and rdv for today"
 	 ((org-agenda-span 1)
