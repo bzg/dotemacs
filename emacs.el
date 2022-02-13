@@ -530,7 +530,7 @@
 	("?" "Waiting" tags-todo "+TODO={WAIT}")
 	("#" "To archive"
 	 todo "DONE|CANCELED|DELEGATED"
-	 ((org-agenda-files '("~/org/rdv.org" "~/org/rdv-emacs.org" "~/org/rdv-etalab.org" "~/org/rdv-conseil-logiciels-libres.org" "~/org/rdv-gtt-ll.org"))
+	 ((org-agenda-files '("~/org/rdv.org" "~/org/bzg.org" "~/org/libre.org" "~/org/rdv-emacs.org" "~/org/rdv-etalab.org" "~/org/rdv-conseil-logiciels-libres.org" "~/org/rdv-gtt-ll.org"))
 	  (org-agenda-sorting-strategy '(timestamp-up))))
 
 	(" " "Work (agenda)" agenda "Tasks and rdv for today"
