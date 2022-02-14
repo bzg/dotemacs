@@ -160,6 +160,7 @@
 (global-set-key (kbd "<f9>") #'hl-line-mode)
 (global-set-key (kbd "<f10>") #'bzg-browse-url-toggle)
 (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil " ")))
+(global-set-key (kbd "C-)") (lambda () (interactive) (org-agenda nil ")")))
 (global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "ne")))
 (global-set-key (kbd "<f12>") (lambda () (interactive) (org-agenda nil "ne")))
 (global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "$")))
@@ -479,7 +480,7 @@
 (setq org-agenda-diary-file "/home/bzg/org/rdv.org")
 (setq org-agenda-dim-blocked-tasks t)
 (setq org-agenda-entry-text-maxlines 10)
-(setq org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/rdv-bluehats.org" "~/org/rdv-conseil-logiciels-libres.org" "~/org/rdv-gtt-ll.org" "~/org/rdv-emacs.org" "~/org/bzg.org"))
+(setq org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/rdv-bluehats.org" "~/org/rdv-conseil-logiciels-libres.org" "~/org/rdv-gtt-ll.org" "~/org/rdv-bsoc.org" "~/org/rdv-emacs.org" "~/org/bzg.org"))
 (setq org-agenda-prefix-format
       '((agenda . " %i %-12:c%?-14t%s")
 	(timeline . "  % s")
@@ -536,6 +537,15 @@
 	(" " "Work (agenda)" agenda "Tasks and rdv for today"
 	 ((org-agenda-span 1)
 	  (org-agenda-files '("~/org/bzg.org"))
+	  (org-agenda-category-filter-preset '("+ETL"))
+	  (org-deadline-warning-days 0)
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up deadline-up priority-down))))
+
+	(")" "Work (agenda)" agenda "Tasks and rdv for today"
+	 ((org-agenda-span 1)
+	  (org-agenda-files '("~/org/bzg.org"))
+	  (org-agenda-category-filter-preset '("-ETL"))
 	  (org-deadline-warning-days 0)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up deadline-up priority-down))))
