@@ -536,7 +536,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-agenda-diary-file "/home/bzg/org/rdv.org")
 (setq org-agenda-dim-blocked-tasks t)
 (setq org-agenda-entry-text-maxlines 10)
-(setq org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/rdv-bluehats.org" "~/org/rdv-conseil-logiciels-libres.org" "~/org/rdv-gtt-ll.org" "~/org/rdv-bsoc.org" "~/org/rdv-emacs.org" "~/org/bzg.org"))
+(setq org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/rdv-bluehats.org" "~/org/rdv-emacs.org" "~/org/bzg.org"))
 (setq org-agenda-prefix-format
       '((agenda . " %i %-12:c%?-14t%s")
 	(timeline . "  % s")
@@ -587,7 +587,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	("?" "Waiting" tags-todo "+TODO={WAIT}")
 	("#" "To archive"
 	 todo "DONE|CANCELED|DELEGATED"
-	 ((org-agenda-files '("~/org/rdv.org" "~/org/bzg.org" "~/org/libre.org" "~/org/rdv-emacs.org" "~/org/rdv-etalab.org" "~/org/rdv-conseil-logiciels-libres.org" "~/org/rdv-gtt-ll.org"))
+	 ((org-agenda-files '("~/org/rdv.org" "~/org/bzg.org" "~/org/libre.org" "~/org/rdv-emacs.org" "~/org/rdv-etalab.org"))
 	  (org-agenda-sorting-strategy '(timestamp-up))))
 
 	(" " "Work (agenda)" agenda "Tasks and rdv for today"
