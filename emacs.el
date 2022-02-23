@@ -362,6 +362,9 @@
 	("c" "Misc (edit)" entry (file "~/org/bzg.org")
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
+        ("m" "Mail reminder" entry (file+headline "~/org/bzg.org" "Etalab : impulser dynamique LL via la DINUM")
+	 "* WAIT Relancer %:to: [[%L][%:subject]] :Mail:\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n")
+
 	("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
 	 "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
@@ -383,6 +386,9 @@
 	      (in-mode . "gnus-article-mode")
 	      (in-mode . "message-mode")))
 	("R" ((in-mode . "gnus-summary-mode")
+	      (in-mode . "gnus-article-mode")
+	      (in-mode . "message-mode")))
+	("m" ((in-mode . "gnus-summary-mode")
 	      (in-mode . "gnus-article-mode")
 	      (in-mode . "message-mode")))))
 
