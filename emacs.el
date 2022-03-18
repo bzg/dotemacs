@@ -160,7 +160,6 @@
 (global-set-key (kbd "<f9>") #'hl-line-mode)
 (global-set-key (kbd "<f10>") #'bzg-browse-url-toggle)
 (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil " ")))
-(global-set-key (kbd "C-)") (lambda () (interactive) (org-agenda nil ")")))
 (global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "ne")))
 (global-set-key (kbd "<f12>") (lambda () (interactive) (org-agenda nil "ne")))
 (global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "$")))
@@ -543,15 +542,6 @@
 	(" " "Work (agenda)" agenda "Tasks and rdv for today"
 	 ((org-agenda-span 1)
 	  (org-agenda-files '("~/org/bzg.org"))
-	  (org-agenda-category-filter-preset '("+ETL"))
-	  (org-deadline-warning-days 0)
-	  (org-agenda-sorting-strategy
-	   '(todo-state-up deadline-up priority-down))))
-
-	(")" "Work (agenda)" agenda "Tasks and rdv for today"
-	 ((org-agenda-span 1)
-	  (org-agenda-files '("~/org/bzg.org"))
-	  (org-agenda-category-filter-preset '("-ETL"))
 	  (org-deadline-warning-days 0)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up deadline-up priority-down))))
