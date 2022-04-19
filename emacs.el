@@ -137,7 +137,7 @@
 (setq tab-bar-show nil)
 (set-frame-parameter nil 'fullscreen 'fullboth)
 
-(setq bzg-default-font-size 148)
+(setq bzg-default-font-size 140)
 (setq bzg-bigger-font-size 196)
 
 (defun bzg-toggle-default-font-size ()
@@ -1542,7 +1542,6 @@
 
 ;; doc-view and eww/shr configuration
 (setq doc-view-continuous t)
-(setq doc-view-scale-internally nil)
 
 ;; Use imagemagick, if available
 (when (fboundp 'imagemagick-register-types)
