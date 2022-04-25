@@ -35,7 +35,7 @@
 
 ;; Initialize my `exec-path' and `load-path' with custom paths
 (add-to-list 'exec-path "~/bin/")
-(let ((default-directory "~/Documents/elisp/stable/"))
+(let ((default-directory "~/Documents/elisp/"))
   (normal-top-level-add-subdirs-to-load-path))
 
 ;; Start server to use emacsclient
