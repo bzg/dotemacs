@@ -152,7 +152,7 @@
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
 (global-set-key (kbd "C-²") 'follow-delete-other-windows-and-split)
-(global-set-key (kbd "C-<dead-circumflex>") (lambda () (interactive) (load-theme 'doom-nord)))
+(global-set-key (kbd "C-<dead-circumflex>") (lambda () (interactive) (load-theme 'tao-yang)))
 (global-set-key (kbd "<f5>") (lambda () (interactive) (org-agenda nil "nn")))
 (global-set-key (kbd "<f6>") (lambda () (interactive) (org-agenda nil "rr")))
 (global-set-key (kbd "<f7>") (lambda () (interactive) (org-agenda nil "ww")))
