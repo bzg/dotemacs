@@ -1529,6 +1529,9 @@
 
 (envrc-global-mode)
 
+;; Always follow symbolic links when editing
+(setq vc-follow-symlinks t)
+
 ;; elp.el is the Emacs Lisp profiler, sort by average time
 (setq elp-sort-by-function 'elp-sort-by-average-time)
 
