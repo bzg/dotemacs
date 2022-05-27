@@ -569,7 +569,7 @@
 	  (org-agenda-entry-types '(:deadline))
 	  (org-agenda-sorting-strategy
 	   '(deadline-up todo-state-up priority-down))))
-	(":" "Other deadlines" agenda "Past/upcoming work deadlines"
+	(":" "Other deadlines" agenda "Past/upcoming non-work deadlines"
 	 ((org-agenda-span 1)
 	  (org-agenda-category-filter-preset '("-ETL"))
 	  (org-deadline-warning-days 100)
