@@ -159,7 +159,9 @@
 (global-set-key (kbd "<f8>") (lambda () (interactive) (org-agenda nil "cc")))
 (global-set-key (kbd "<f9>") #'hl-line-mode)
 (global-set-key (kbd "<f10>") #'bzg-browse-url-toggle)
-(global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil " ")))
+(global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "!")))
+(global-set-key (kbd "C-:") (lambda () (interactive) (org-agenda nil "(")))
+(global-set-key (kbd "C-;") (lambda () (interactive) (org-agenda nil ")")))
 (global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "ne")))
 (global-set-key (kbd "<f12>") (lambda () (interactive) (org-agenda nil "ne")))
 (global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "$")))
@@ -539,15 +541,24 @@
 	 ((org-agenda-files '("~/org/rdv.org" "~/org/bzg.org" "~/org/libre.org" "~/org/rdv-emacs.org" "~/org/rdv-etalab.org"))
 	  (org-agenda-sorting-strategy '(timestamp-up))))
 
-	(" " "Work (agenda)" agenda "Tasks and rdv for today"
+	("(" "Today's work" agenda "Tasks and rdv for today"
 	 ((org-agenda-span 1)
+	  (org-agenda-category-filter-preset '("+ETL"))
+	  (org-agenda-files '("~/org/bzg.org"))
+	  (org-deadline-warning-days 0)
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up deadline-up priority-down))))
+
+	(")" "Today's other tasks" agenda "Tasks and rdv for today"
+	 ((org-agenda-span 1)
+	  (org-agenda-category-filter-preset '("-ETL"))
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-deadline-warning-days 0)
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up deadline-up priority-down))))
 
 	("n" . "What's next?")
-	("nn" "Main" tags-todo "TODO={STRT\\|NEXT}"
+	("nn" "Main (no work)" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("-ETL"))
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
@@ -1452,7 +1463,7 @@
       (find-function-at-point)
       (message "No variable or function at point.")))
 
-(global-set-key (kbd "C-:") 'find-variable-or-function-at-point)
+(global-set-key (kbd "C-,") 'find-variable-or-function-at-point)
 
 (use-package paredit
   :config
