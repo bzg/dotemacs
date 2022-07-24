@@ -595,17 +595,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	 ((org-agenda-files '("~/org/rdv.org" "~/org/bzg.org" "~/org/libre.org" "~/org/rdv-emacs.org" "~/org/rdv-etalab.org"))
 	  (org-agenda-sorting-strategy '(timestamp-up))))
 
-	("(" "Today's work" agenda "Tasks and rdv for today"
+	("(" "Today's tasks" agenda "Tasks and rdv for today"
 	 ((org-agenda-span 1)
-	  (org-agenda-category-filter-preset '("+ETL"))
-	  (org-agenda-files '("~/org/bzg.org"))
-	  (org-deadline-warning-days 0)
-	  (org-agenda-sorting-strategy
-	   '(todo-state-up deadline-up priority-down))))
-
-	(")" "Today's other tasks" agenda "Tasks and rdv for today"
-	 ((org-agenda-span 1)
-	  (org-agenda-category-filter-preset '("-ETL"))
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-deadline-warning-days 0)
 	  (org-agenda-sorting-strategy
@@ -634,7 +625,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	  (org-agenda-entry-types '(:deadline))
 	  (org-agenda-sorting-strategy
 	   '(deadline-up todo-state-up priority-down))))
-	(":" "Other deadlines" agenda "Past/upcoming non-work deadlines"
+	("?" "Other deadlines" agenda "Past/upcoming non-work deadlines"
 	 ((org-agenda-span 1)
 	  (org-agenda-category-filter-preset '("-ETL"))
 	  (org-deadline-warning-days 100)
@@ -885,7 +876,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (setq gnus-visible-headers
 	"^From:\\|^Subject:\\|^X-Mailer:\\|^X-Newsreader:\\|^Date:\\|^To:\\|^Cc:\\|^User-agent:\\|^Newsgroups:\\|^Comments:"
 	message-draft-headers '(References From In-Reply-To)
-	message-generate-headers-first t
+	message-generate-headers-first t ;; Fixme: Not needed Emacs>=29
 	message-hidden-headers
 	'("^References:" "^Face:" "^X-Face:" "^X-Draft-From:" "^In-Reply-To:" "^Message-ID:")
 	)
@@ -1288,7 +1279,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	     (message "Browser set to eww"))
     (setq browse-url-browser-function 'browse-url-generic)
     (message "Browser set to generic")))
-  
+
 (setq browse-url-browser-function 'browse-url-generic)
 (setq browse-url-generic-program "firefox-trunk")
 (setq browse-url-firefox-new-window-is-tab t)
@@ -1758,7 +1749,7 @@ Use `winstack-push' and
 (global-set-key (kbd "C-x <down>") 'winstack-pop)
 #+end_src
 
-*** avy
+*** COMMENT avy
 
 #+begin_src emacs-lisp
 (avy-setup-default)
@@ -1822,5 +1813,3 @@ Use `winstack-push' and
   :ensure t
   :commands company-lsp)
 #+end_src
-
-

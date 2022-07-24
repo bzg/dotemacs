@@ -155,6 +155,7 @@
 (global-set-key (kbd "C-<dead-circumflex>") (lambda () (interactive) (load-theme 'tao-yang)))
 (global-set-key (kbd "<f9>") #'hl-line-mode)
 (global-set-key (kbd "<f10>") #'bzg-browse-url-toggle)
+;; Org agenda view keybodings
 (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "!")))
 (global-set-key (kbd "C-:") (lambda () (interactive) (org-agenda nil "(")))
 (global-set-key (kbd "C-;") (lambda () (interactive) (org-agenda nil ")")))
@@ -164,9 +165,7 @@
 (global-set-key (kbd "<f7>") (lambda () (interactive) (org-agenda nil "ww")))
 (global-set-key (kbd "<f8>") (lambda () (interactive) (org-agenda nil "cc")))
 (global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "$")))
-(global-set-key (kbd "<f11>") (lambda () (interactive) (org-agenda nil "$")))
 (global-set-key (kbd "C-%") (lambda () (interactive) (org-agenda nil "%")))
-(global-set-key (kbd "C-£") (lambda () (interactive) (org-agenda nil "!")))
 (global-set-key (kbd "C-&") 'gnus)
 (global-set-key (kbd "C-é") 'bzg-cycle-view)
 (global-set-key (kbd "C-\"") (lambda () (interactive) (dired "~") (revert-buffer)))
@@ -540,17 +539,8 @@
 	 ((org-agenda-files '("~/org/rdv.org" "~/org/bzg.org" "~/org/libre.org" "~/org/rdv-emacs.org" "~/org/rdv-etalab.org"))
 	  (org-agenda-sorting-strategy '(timestamp-up))))
 
-	("(" "Today's work" agenda "Tasks and rdv for today"
+	("(" "Today's tasks" agenda "Tasks and rdv for today"
 	 ((org-agenda-span 1)
-	  (org-agenda-category-filter-preset '("+ETL"))
-	  (org-agenda-files '("~/org/bzg.org"))
-	  (org-deadline-warning-days 0)
-	  (org-agenda-sorting-strategy
-	   '(todo-state-up deadline-up priority-down))))
-
-	(")" "Today's other tasks" agenda "Tasks and rdv for today"
-	 ((org-agenda-span 1)
-	  (org-agenda-category-filter-preset '("-ETL"))
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-deadline-warning-days 0)
 	  (org-agenda-sorting-strategy
@@ -579,7 +569,7 @@
 	  (org-agenda-entry-types '(:deadline))
 	  (org-agenda-sorting-strategy
 	   '(deadline-up todo-state-up priority-down))))
-	(":" "Other deadlines" agenda "Past/upcoming non-work deadlines"
+	("?" "Other deadlines" agenda "Past/upcoming non-work deadlines"
 	 ((org-agenda-span 1)
 	  (org-agenda-category-filter-preset '("-ETL"))
 	  (org-deadline-warning-days 100)
@@ -822,7 +812,7 @@
   (setq gnus-visible-headers
 	"^From:\\|^Subject:\\|^X-Mailer:\\|^X-Newsreader:\\|^Date:\\|^To:\\|^Cc:\\|^User-agent:\\|^Newsgroups:\\|^Comments:"
 	message-draft-headers '(References From In-Reply-To)
-	message-generate-headers-first t
+	message-generate-headers-first t ;; Fixme: Not needed Emacs>=29
 	message-hidden-headers
 	'("^References:" "^Face:" "^X-Face:" "^X-Draft-From:" "^In-Reply-To:" "^Message-ID:")
 	)
@@ -1203,7 +1193,7 @@
 	     (message "Browser set to eww"))
     (setq browse-url-browser-function 'browse-url-generic)
     (message "Browser set to generic")))
-  
+
 (setq browse-url-browser-function 'browse-url-generic)
 (setq browse-url-generic-program "firefox-trunk")
 (setq browse-url-firefox-new-window-is-tab t)
@@ -1587,3 +1577,42 @@
       (message "nntp server OFF"))))
 
 (define-key gnus-group-mode-map (kbd "%") #'bzg-gnus-toggle-nntp)
+
+(use-package perspective
+      :config
+      ;; (setq persp-mode-prefix-key (kbd "C-z"))
+      (persp-mode 1))
+
+(use-package guide-key
+  :config
+  (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x c" "C-z"))
+  (guide-key-mode 1)) ; Enable guide-key-mode
+
+;; I very seldomly use this
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+(global-set-key (kbd "C-c C->") 'mc/mark-all-dwim)
+
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
+
+(use-package lsp-mode
+  :ensure t
+  :commands lsp
+  :config
+  (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure-mode"))
+  :init
+  (setq lsp-enable-indentation nil)
+  (add-hook 'clojure-mode-hook #'lsp)
+  (add-hook 'clojurec-mode-hook #'lsp)
+  (add-hook 'clojurescript-mode-hook #'lsp))
+
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode)
+
+(use-package company-lsp
+  :ensure t
+  :commands company-lsp)
