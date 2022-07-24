@@ -112,7 +112,7 @@
 (display-time-mode 1)
 (tooltip-mode -1)
 (blink-cursor-mode -1)
-(scroll-bar-mode -1)
+;; (scroll-bar-mode -1)
 (pixel-scroll-mode 1)
 (mouse-avoidance-mode 'cat-and-mouse)
 
