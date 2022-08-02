@@ -1578,11 +1578,6 @@
 
 (define-key gnus-group-mode-map (kbd "%") #'bzg-gnus-toggle-nntp)
 
-(use-package perspective
-      :config
-      ;; (setq persp-mode-prefix-key (kbd "C-z"))
-      (persp-mode 1))
-
 (use-package guide-key
   :config
   (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x c" "C-z"))

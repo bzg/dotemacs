@@ -1757,15 +1757,6 @@ Use `winstack-push' and
 (global-set-key (kbd "C-&") 'avy-goto-char-2)
 #+end_src
 
-*** perspective
-
-#+begin_src emacs-lisp
-(use-package perspective
-      :config
-      ;; (setq persp-mode-prefix-key (kbd "C-z"))
-      (persp-mode 1))
-#+end_src
-
 *** guide-key
 
 #+begin_src emacs-lisp
