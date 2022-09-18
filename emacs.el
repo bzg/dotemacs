@@ -360,7 +360,7 @@
 	("c" "Misc (edit)" entry (file "~/org/bzg.org")
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
-        ("m" "Mail reminder" entry (file+headline "~/org/bzg.org" "Basement")
+        ("m" "Mail reminder" entry (file+olp "~/org/bzg.org" "Etalab" "Basement")
 	 "* WAIT Relancer %:to: [[%L][%:subject]] :Mail:\n  SCHEDULED: %^t\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n")
 
 	("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
