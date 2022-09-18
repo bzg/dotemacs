@@ -403,7 +403,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	("c" "Misc (edit)" entry (file "~/org/bzg.org")
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
-        ("m" "Mail reminder" entry (file+olp "~/org/bzg.org" "Etalab" "Basement")
+        ("m" "Mail reminder" entry (file+headline "~/org/bzg.org" "Attic")
 	 "* WAIT Relancer %:to: [[%L][%:subject]] :Mail:\n  SCHEDULED: %^t\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n")
 
 	("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
@@ -415,11 +415,17 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	("o" "Org" entry (file+headline "~/org/bzg.org" "Org-mode")
 	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n" :prepend t)
 
+	("O" "Org" entry (file+headline "~/org/bzg.org" "Buffer") ;; Org-mode/Buffer
+	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n" :prepend t)
+
 	("e" "Etalab" entry (file+headline "~/org/bzg.org" "Etalab")
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
 
-	;; ("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
-	;;  "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
+	("E" "Etalab's attic" entry (file+headline "~/org/bzg.org" "Attic") ;; Etalab/Attic
+	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
+
+	("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
+	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
 	))
 
 (setq org-capture-templates-contexts
