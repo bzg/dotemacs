@@ -157,7 +157,7 @@
 (global-set-key (kbd "<f10>") #'bzg-browse-url-toggle)
 ;; Org agenda view keybodings
 (global-set-key (kbd "C-:") (lambda () (interactive) (org-agenda nil "(")))
-(global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "ne")))
+(global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "n!")))
 (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "d!")))
 (global-set-key (kbd "<f5>") (lambda () (interactive) (org-agenda nil "nn")))
 (global-set-key (kbd "<f6>") (lambda () (interactive) (org-agenda nil "dd")))
