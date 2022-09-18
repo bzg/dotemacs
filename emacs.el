@@ -1360,6 +1360,7 @@
   (add-hook 'eww-mode-hook 'visual-line-mode)
   (setq eww-header-line-format nil
 	shr-width 80
+	shr-inhibit-images t
 	shr-use-colors nil
 	shr-use-fonts nil))
 
