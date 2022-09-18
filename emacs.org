@@ -185,10 +185,9 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (global-set-key (kbd "<f9>") #'hl-line-mode)
 (global-set-key (kbd "<f10>") #'bzg-browse-url-toggle)
 ;; Org agenda view keybodings
-(global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "!")))
 (global-set-key (kbd "C-:") (lambda () (interactive) (org-agenda nil "(")))
-(global-set-key (kbd "C-;") (lambda () (interactive) (org-agenda nil ")")))
 (global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "ne")))
+(global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "!e")))
 (global-set-key (kbd "<f5>") (lambda () (interactive) (org-agenda nil "nn")))
 (global-set-key (kbd "<f6>") (lambda () (interactive) (org-agenda nil "rr")))
 (global-set-key (kbd "<f7>") (lambda () (interactive) (org-agenda nil "ww")))
@@ -404,7 +403,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	("c" "Misc (edit)" entry (file "~/org/bzg.org")
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
-        ("m" "Mail reminder" entry (file+headline "~/org/bzg.org" "Etalab : impulser dynamique LL via la DINUM")
+        ("m" "Mail reminder" entry (file+headline "~/org/bzg.org" "Basement")
 	 "* WAIT Relancer %:to: [[%L][%:subject]] :Mail:\n  SCHEDULED: %^t\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n")
 
 	("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
@@ -413,10 +412,10 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	("R" "RDV Etalab" entry (file+headline "~/org/rdv-etalab.org" "RDV Etalab")
 	 "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
-	("o" "Org" entry (file+headline "~/org/bzg.org" "Org-mode : passer la maintenance fin 2021")
+	("o" "Org" entry (file+headline "~/org/bzg.org" "Org-mode")
 	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n" :prepend t)
 
-	("e" "Etalab" entry (file+headline "~/org/bzg.org" "Etalab : impulser dynamique LL via la DINUM")
+	("e" "Etalab" entry (file+headline "~/org/bzg.org" "Etalab")
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
 
 	;; ("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
@@ -578,15 +577,15 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	("$" "All appointments" agenda* "Week planning"
 	 ((org-agenda-span 'week)
 	  (org-agenda-sorting-strategy
-	   '(todo-state-up time-up priority-down))))
+	   '(todo-state-up priority-down time-up))))
 
 	("%" "Personal appointments" agenda* "Month planning"
 	 ((org-agenda-span 'month)
 	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-emacs.org"))
 	  (org-agenda-sorting-strategy
-	   '(todo-state-up time-up priority-down))))
+	   '(todo-state-up priority-down time-up))))
 
-	("@" "Mail" tags-todo "+Mail+TODO={NEXT\\|STRT\\|TODO\\|WAIT}"
+	("@" "Mail" tags-todo "+Mail+TODO={STRT\\|NEXT\\|TODO\\|WAIT}"
 	 ((org-agenda-sorting-strategy
 	   '(todo-state-up priority-down))))
 	("?" "Waiting" tags-todo "+TODO={WAIT}")
@@ -603,65 +602,102 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	   '(todo-state-up deadline-up priority-down))))
 
 	("n" . "What's next?")
-	("nn" "Main (no work)" tags-todo "TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("-ETL"))
-	  (org-agenda-files '("~/org/bzg.org"))
+	("nn" "Main (all)" tags-todo "TODO={STRT\\|NEXT}"
+	 ((org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
-	   '(todo-state-up time-up priority-down))))
-	("ne" "Etalab" tags-todo "TODO={STRT\\|NEXT}"
+	   '(todo-state-up  priority-down time-up))))
+	("n!" "Etalab" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("+ETL"))
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
-	   '(todo-state-up time-up priority-down))))
-	("nl" "Libre" tags-todo "TODO={STRT\\|NEXT}"
+	   '(todo-state-up priority-down time-up))))
+	("n?" "Main (no work)" tags-todo "TODO={STRT\\|NEXT}"
+	 ((org-agenda-category-filter-preset '("-ETL"))
+	  (org-agenda-files '("~/org/bzg.org"))
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up  priority-down time-up))))
+	("n/" "Libre" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))
 	  (org-agenda-sorting-strategy
-	   '(todo-state-up time-up priority-down))))
+	   '(todo-state-up priority-down time-up))))
 
-	("!" "Etalab deadlines" agenda "Past/upcoming work deadlines"
+	("d" . "Deadlines")
+	("dd" "Deadlines (all)" agenda "Past/upcoming deadlines"
+	 ((org-agenda-span 1)
+	  (org-deadline-warning-days 100)
+	  (org-agenda-entry-types '(:deadline))
+	  (org-agenda-sorting-strategy
+	   '(deadline-up todo-state-up priority-down))))
+	("d!" "Etalab deadlines" agenda "Past/upcoming work deadlines"
 	 ((org-agenda-span 1)
 	  (org-agenda-category-filter-preset '("+ETL"))
 	  (org-deadline-warning-days 100)
 	  (org-agenda-entry-types '(:deadline))
 	  (org-agenda-sorting-strategy
 	   '(deadline-up todo-state-up priority-down))))
-	("?" "Other deadlines" agenda "Past/upcoming non-work deadlines"
+	("d?" "Other deadlines" agenda "Past/upcoming non-work deadlines"
 	 ((org-agenda-span 1)
 	  (org-agenda-category-filter-preset '("-ETL"))
 	  (org-deadline-warning-days 100)
 	  (org-agenda-entry-types '(:deadline))
 	  (org-agenda-sorting-strategy
 	   '(deadline-up todo-state-up priority-down))))
+	("d/" "Deadlines (libre)" agenda "Past/upcoming deadlines (libre)"
+	 ((org-agenda-span 1)
+	  (org-agenda-files '("~/org/libre.org"))
+	  (org-deadline-warning-days 100)
+	  (org-agenda-entry-types '(:deadline))
+	  (org-agenda-sorting-strategy
+	   '(deadline-up todo-state-up priority-down))))
+
 	("A" "Write, Code, Mail (no work)" tags-todo
-         "+TAGS={Write\\|Code\\|Mail}+TODO={NEXT\\|STRT}"
-	 ((org-agenda-category-filter-preset '("-ETL"))))
+         "+TAGS={Write\\|Code\\|Mail}+TODO={NEXT\\|STRT}")
 	("Z" "Read, Listen, View (no work)" tags-todo
-         "+TAGS={Read\\|Listen\\|View}+TODO={NEXT\\|STRT}"
-	 ((org-agenda-category-filter-preset '("-ETL"))))
+         "+TAGS={Read\\|Listen\\|View}+TODO={NEXT\\|STRT}")
+
 	("r" . "Read")
-	("rr" "Main (no work)" tags-todo "+Read+TODO={NEXT\\|STRT}"
+	("rr" "Main" tags-todo "+Read+TODO={NEXT\\|STRT}")
+	("r!" "Main (Etalab)" tags-todo "+Read+TODO={NEXT\\|STRT}"
          ((org-agenda-category-filter-preset '("-ETL"))))
-	("rR" "Libre" tags-todo "+Read+TODO={NEXT\\|STRT}"
+	("r?" "Main (no work)" tags-todo "+Read+TODO={NEXT\\|STRT}"
+         ((org-agenda-category-filter-preset '("-ETL"))))
+	("r/" "Libre" tags-todo "+Read+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
+
 	("v" . "View")
-	("vv" "Main (no work)" tags-todo "+View+TODO={NEXT\\|STRT}"
+	("vv" "Main" tags-todo "+View+TODO={NEXT\\|STRT}")
+	("v!" "Main (Etalab)" tags-todo "+View+TODO={NEXT\\|STRT}"
+	 ((org-agenda-category-filter-preset '("+ETL"))))
+	("v?" "Main (no work)" tags-todo "+View+TODO={NEXT\\|STRT}"
 	 ((org-agenda-category-filter-preset '("-ETL"))))
-	("vV" "Libre" tags-todo "+View+TODO={NEXT\\|STRT}"
+	("v/" "Libre" tags-todo "+View+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
+
 	("l" . "Listen")
-	("ll" "Main (no work)" tags-todo "+Listen+TODO={NEXT\\|STRT}"
+	("ll" "Main" tags-todo "+Listen+TODO={NEXT\\|STRT}")
+	("l!" "Main (Etalab)" tags-todo "+Listen+TODO={NEXT\\|STRT}"
+	 ((org-agenda-category-filter-preset '("+ETL"))))
+	("l?" "Main (no work)" tags-todo "+Listen+TODO={NEXT\\|STRT}"
 	 ((org-agenda-category-filter-preset '("-ETL"))))
-	("lL" "Libre" tags-todo "+Listen+TODO={NEXT\\|STRT}"
+	("l/" "Libre" tags-todo "+Listen+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
+
 	("w" . "Write")
-	("ww" "Main (no work)" tags-todo "+Write+TODO={NEXT\\|STRT}"
+	("ww" "Main (no work)" tags-todo "+Write+TODO={NEXT\\|STRT}")
+	("w!" "Main (Etalab)" tags-todo "+Write+TODO={NEXT\\|STRT}"
+	 ((org-agenda-category-filter-preset '("+ETL"))))
+	("w?" "Main (no work)" tags-todo "+Write+TODO={NEXT\\|STRT}"
 	 ((org-agenda-category-filter-preset '("-ETL"))))
-	("wW" "Libre" tags-todo "+Write+TODO={NEXT\\|STRT}"
+	("w/" "Libre" tags-todo "+Write+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
+
 	("c" . "Code")
-	("cc" "Main (no work)" tags-todo "+Code+TODO={NEXT\\|STRT}"
+	("cc" "Main" tags-todo "+Code+TODO={NEXT\\|STRT}")
+	("c!" "Main (Etalab)" tags-todo "+Code+TODO={NEXT\\|STRT}"
+	 ((org-agenda-category-filter-preset '("+ETL"))))
+	("c?" "Main (no work)" tags-todo "+Code+TODO={NEXT\\|STRT}"
 	 ((org-agenda-category-filter-preset '("-ETL"))))
-	("cC" "Libre" tags-todo "+Code+TODO={NEXT\\|STRT}"
+	("c!" "Libre" tags-todo "+Code+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 	))
 #+end_src
