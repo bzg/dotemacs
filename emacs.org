@@ -583,13 +583,13 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	("$" "All appointments" agenda* "Week planning"
 	 ((org-agenda-span 'week)
 	  (org-agenda-sorting-strategy
-	   '(todo-state-up priority-down time-up))))
+	   '(time-up todo-state-up priority-down))))
 
 	("%" "Personal appointments" agenda* "Month planning"
 	 ((org-agenda-span 'month)
 	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-emacs.org"))
 	  (org-agenda-sorting-strategy
-	   '(todo-state-up priority-down time-up))))
+	   '(time-up todo-state-up priority-down))))
 
 	("@" "Mail" tags-todo "+Mail+TODO={STRT\\|NEXT\\|TODO\\|WAIT}"
 	 ((org-agenda-sorting-strategy
@@ -605,7 +605,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-deadline-warning-days 0)
 	  (org-agenda-sorting-strategy
-	   '(todo-state-up deadline-up priority-down))))
+	   '(deadline-up todo-state-up priority-down))))
 
 	("n" . "What's next?")
 	("nn" "Main (all)" tags-todo "TODO={STRT\\|NEXT}"
