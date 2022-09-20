@@ -852,9 +852,9 @@
 
   ;; Headers we wanna see:
   (setq gnus-visible-headers
-	"^From:\\|^Subject:\\|^X-Mailer:\\|^X-Newsreader:\\|^Date:\\|^To:\\|^Cc:\\|^User-agent:\\|^Newsgroups:\\|^Comments:"
+	"^From:\\|^Subject:\\|^Date:\\|^To:\\|^Cc:\\|^Newsgroups:\\|^Comments:"
 	message-draft-headers '(References From In-Reply-To)
-	message-generate-headers-first t ;; Fixme: Not needed Emacs>=29
+	message-generate-headers-first t ;; FIXME: Not needed Emacs>=29?
 	message-hidden-headers
 	'("^References:" "^Face:" "^X-Face:" "^X-Draft-From:" "^In-Reply-To:" "^Message-ID:")
 	)
