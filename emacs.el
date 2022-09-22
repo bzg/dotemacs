@@ -522,7 +522,7 @@
 (setq org-icalendar-store-UID t)
 
 (setq org-agenda-custom-commands
-      `(
+      '(
 	;; Week agenda for rendez-vous and tasks
 	("$" "All appointments" agenda* "Week planning"
 	 ((org-agenda-span 'week)
@@ -1072,7 +1072,7 @@
   (defalias 'bbdb-y-or-n-p #'(lambda (prompt) t))
 
   (setq bbdb-auto-notes-alist
-	`(("Newsgroups" ("[^,]+" newsgroups 0))
+	'(("Newsgroups" ("[^,]+" newsgroups 0))
 	  ("Subject" (".*" last-subj 0 t))
 	  ("User-Agent" (".*" mailer 0))
 	  ("X-Mailer" (".*" mailer 0))
