@@ -501,7 +501,7 @@
 (setq org-agenda-restore-windows-after-quit t)
 (setq org-agenda-show-inherited-tags nil)
 (setq org-agenda-skip-deadline-if-done t)
-(setq org-agenda-skip-deadline-prewarning-if-scheduled t)
+(setq org-agenda-skip-deadline-prewarning-if-scheduled nil)
 (setq org-agenda-skip-scheduled-if-done t)
 (setq org-agenda-skip-timestamp-if-done t)
 (setq org-agenda-sorting-strategy
