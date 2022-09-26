@@ -422,7 +422,7 @@
 
 (setq org-src-tab-acts-natively t)
 (setq org-edit-src-content-indentation 0)
-(setq org-babel-clojure-backend 'inf-clojure)
+(setq org-babel-clojure-backend 'babashka)
 (setq org-link-elisp-confirm-function nil)
 (setq org-link-shell-confirm-function nil)
 (setq org-plantuml-jar-path "~/bin/plantuml.jar")
