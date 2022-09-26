@@ -311,7 +311,6 @@
 (setq org-link-email-description-format "%c: %.50s")
 (setq org-support-shift-select t)
 (setq org-ellipsis "…")
-(setq org-element-use-cache nil) ;; Temporary
 
 (org-clock-persistence-insinuate)
 
@@ -854,7 +853,7 @@
   (setq gnus-visible-headers
 	"^From:\\|^Subject:\\|^Date:\\|^To:\\|^Cc:\\|^Newsgroups:\\|^Comments:"
 	message-draft-headers '(References From In-Reply-To)
-	message-generate-headers-first t ;; FIXME: Not needed Emacs>=29?
+	;; message-generate-headers-first t ;; FIXME: Not needed Emacs>=29?
 	message-hidden-headers
 	'("^References:" "^Face:" "^X-Face:" "^X-Draft-From:" "^In-Reply-To:" "^Message-ID:")
 	)
@@ -1621,37 +1620,3 @@
       (message "nntp server OFF"))))
 
 (define-key gnus-group-mode-map (kbd "%") #'bzg-gnus-toggle-nntp)
-
-(use-package guide-key
-  :config
-  (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x c" "C-z"))
-  (guide-key-mode 1)) ; Enable guide-key-mode
-
-;; I very seldomly use this
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-(global-set-key (kbd "C-c C->") 'mc/mark-all-dwim)
-
-(when (memq window-system '(mac ns x))
-  (exec-path-from-shell-initialize))
-
-(use-package lsp-mode
-  :ensure t
-  :commands lsp
-  :config
-  (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure-mode"))
-  :init
-  (setq lsp-enable-indentation nil)
-  (add-hook 'clojure-mode-hook #'lsp)
-  (add-hook 'clojurec-mode-hook #'lsp)
-  (add-hook 'clojurescript-mode-hook #'lsp))
-
-(use-package lsp-ui
-  :ensure t
-  :commands lsp-ui-mode)
-
-(use-package company-lsp
-  :ensure t
-  :commands company-lsp)

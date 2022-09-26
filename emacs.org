@@ -346,7 +346,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-link-email-description-format "%c: %.50s")
 (setq org-support-shift-select t)
 (setq org-ellipsis "…")
-(setq org-element-use-cache nil) ;; Temporary
 #+end_src
 
 ** Org clock
@@ -918,7 +917,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (setq gnus-visible-headers
 	"^From:\\|^Subject:\\|^Date:\\|^To:\\|^Cc:\\|^Newsgroups:\\|^Comments:"
 	message-draft-headers '(References From In-Reply-To)
-	message-generate-headers-first t ;; FIXME: Not needed Emacs>=29?
+	;; message-generate-headers-first t ;; FIXME: Not needed Emacs>=29?
 	message-hidden-headers
 	'("^References:" "^Face:" "^X-Face:" "^X-Draft-From:" "^In-Reply-To:" "^Message-ID:")
 	)
