@@ -268,7 +268,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-footnote-auto-adjust t)
 (setq org-hide-emphasis-markers t)
 (setq org-hide-macro-markers t)
-(setq org-icalendar-include-todo 'all)
 (setq org-link-frame-setup '((gnus . gnus) (file . find-file-other-window)))
 (setq org-link-mailto-program '(browse-url-mail "mailto:%a?subject=%s"))
 (setq org-log-into-drawer "LOGBOOK")
@@ -512,7 +511,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-export-with-priority t)
 (setq org-export-dispatch-use-expert-ui t)
 (setq org-export-use-babel t)
-(setq org-latex-listings t)
 (setq org-latex-pdf-process
       '("pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f" "pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f" "pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f"))
 (setq org-export-allow-bind-keywords t)
@@ -570,6 +568,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-agenda-loop-over-headlines-in-active-region t)
 
 ;; icalendar stuff
+(setq org-icalendar-include-todo 'all)
 (setq org-icalendar-combined-name "Bastien Guerry ORG")
 (setq org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo))
 (setq org-icalendar-use-deadline '(todo-due event-if-todo event-if-not-todo))
@@ -1626,8 +1625,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   ;; (add-hook 'clojure-mode-hook 'origami-mode)
   (add-hook 'clojure-mode-hook 'paredit-mode)
   ;; (add-hook 'clojure-mode-hook 'lispy-mode)
-  (add-hook 'clojure-mode-hook 'aggressive-indent-mode)
-  (add-hook 'clojure-mode-hook 'clj-refactor-mode))
+  (add-hook 'clojure-mode-hook 'aggressive-indent-mode))
+  ;; (add-hook 'clojure-mode-hook 'clj-refactor-mode)
 
 ;; Emacs Lisp initialization
 (setq clojure-align-forms-automatically t)
@@ -1637,14 +1636,14 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ;; (add-hook 'emacs-lisp-mode-hook 'lispy-mode)
 ;; (add-hook 'emacs-lisp-mode-hook 'origami-mode)
 
-(use-package clj-refactor
-  :defer t
-  :config
-  (setq clojure-thread-all-but-last t)
-  (define-key clj-refactor-map "\C-ctf" #'clojure-thread-first-all)
-  (define-key clj-refactor-map "\C-ctl" #'clojure-thread-last-all)
-  (define-key clj-refactor-map "\C-cu" #'clojure-unwind)
-  (define-key clj-refactor-map "\C-cU" #'clojure-unwind-all))
+;; (use-package clj-refactor
+;;   :defer t
+;;   :config
+;;   (setq clojure-thread-all-but-last t)
+;;   (define-key clj-refactor-map "\C-ctf" #'clojure-thread-first-all)
+;;   (define-key clj-refactor-map "\C-ctl" #'clojure-thread-last-all)
+;;   (define-key clj-refactor-map "\C-cu" #'clojure-unwind)
+;;   (define-key clj-refactor-map "\C-cU" #'clojure-unwind-all))
 
 ;; First install the package:
 (use-package flycheck-clj-kondo :ensure t)
@@ -1713,7 +1712,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq elp-sort-by-function 'elp-sort-by-average-time)
 
 ;; Don't show bookmark line in the margin
-(setq bookmark-set-fringe-mark nil)
+(setq bookmark-fringe-mark nil)
 
 ;; Geiser
 (setq geiser-active-implementations '(guile racket))
