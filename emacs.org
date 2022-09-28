@@ -1812,18 +1812,21 @@ Use `winstack-push' and
 
 #+begin_src emacs-lisp
 ;; I very seldomly use this
+(require 'multiple-cursors)
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+;; (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 (global-set-key (kbd "C-c C->") 'mc/mark-all-dwim)
 #+end_src
+
 *** exec-path-from-shell
 
 #+begin_src emacs-lisp
 (when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize))
 #+end_src
+
 *** lsp-mode
 
 #+begin_src emacs-lisp
