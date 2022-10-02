@@ -11,7 +11,7 @@
 	  ("melpa" . "http://melpa.org/packages/")))
 
 ;; Precompute activation actions to speed up startup
-(setq package-quickstart t)
+(package-activate-all)
 
 ;; Require `use-package' when compiling
 (eval-when-compile (require 'use-package))
