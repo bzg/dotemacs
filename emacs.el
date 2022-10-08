@@ -559,7 +559,7 @@
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up priority-down time-up))))
-	("n?" "NEXT/STRT -ETL/ORG" tags-todo "TODO={STRT\\|NEXT}"
+	("n?" "NEXT/STRT -ETL/-ORG" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("-ETL" "-ORG"))
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
@@ -583,7 +583,7 @@
 	  (org-agenda-entry-types '(:deadline))
 	  (org-agenda-sorting-strategy
 	   '(deadline-up todo-state-up priority-down))))
-	("d?" "Deadlines -ETL/ORG" agenda "Past/upcoming non-work deadlines"
+	("d?" "Deadlines -ETL/-ORG" agenda "Past/upcoming non-work deadlines"
 	 ((org-agenda-span 1)
 	  (org-agenda-category-filter-preset '("-ETL" "-ORG"))
 	  (org-deadline-warning-days 100)
@@ -607,7 +607,7 @@
 	("rr" "Read all" tags-todo "+Read+TODO={NEXT\\|STRT}")
 	("r!" "Read Etalab" tags-todo "+Read+TODO={NEXT\\|STRT}"
          ((org-agenda-category-filter-preset '("+ETL"))))
-	("r?" "Read -ETL/ORG" tags-todo "+Read+TODO={NEXT\\|STRT}"
+	("r?" "Read -ETL/-ORG" tags-todo "+Read+TODO={NEXT\\|STRT}"
          ((org-agenda-category-filter-preset '("-ETL" "-ORG"))))
 	("r/" "Read (libre)" tags-todo "+Read+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
@@ -616,7 +616,7 @@
 	("vv" "View all" tags-todo "+View+TODO={NEXT\\|STRT}")
 	("v!" "View Etalab" tags-todo "+View+TODO={NEXT\\|STRT}"
 	 ((org-agenda-category-filter-preset '("+ETL"))))
-	("v?" "View -ETL/ORG" tags-todo "+View+TODO={NEXT\\|STRT}"
+	("v?" "View -ETL/-ORG" tags-todo "+View+TODO={NEXT\\|STRT}"
 	 ((org-agenda-category-filter-preset '("-ETL" "-ORG"))))
 	("v/" "View (libre)" tags-todo "+View+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
@@ -625,7 +625,7 @@
 	("ll" "Listen main" tags-todo "+Listen+TODO={NEXT\\|STRT}")
 	("l!" "Listen Etalab" tags-todo "+Listen+TODO={NEXT\\|STRT}"
 	 ((org-agenda-category-filter-preset '("+ETL"))))
-	("l?" "Listen -ETL/ORG" tags-todo "+Listen+TODO={NEXT\\|STRT}"
+	("l?" "Listen -ETL/-ORG" tags-todo "+Listen+TODO={NEXT\\|STRT}"
 	 ((org-agenda-category-filter-preset '("-ETL" "-ORG"))))
 	("l/" "Listen (libre)" tags-todo "+Listen+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
@@ -634,7 +634,7 @@
 	("ww" "Write main" tags-todo "+Write+TODO={NEXT\\|STRT}")
 	("w!" "Write Etalab" tags-todo "+Write+TODO={NEXT\\|STRT}"
 	 ((org-agenda-category-filter-preset '("+ETL"))))
-	("w?" "Write -ETL/ORG" tags-todo "+Write+TODO={NEXT\\|STRT}"
+	("w?" "Write -ETL/-ORG" tags-todo "+Write+TODO={NEXT\\|STRT}"
 	 ((org-agenda-category-filter-preset '("-ETL" "-ORG"))))
 	("w/" "Write (libre)" tags-todo "+Write+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
@@ -643,7 +643,7 @@
 	("cc" "Code main" tags-todo "+Code+TODO={NEXT\\|STRT}")
 	("c!" "Code Etalab" tags-todo "+Code+TODO={NEXT\\|STRT}"
 	 ((org-agenda-category-filter-preset '("+ETL"))))
-	("c?" "Code -ETL/ORG" tags-todo "+Code+TODO={NEXT\\|STRT}"
+	("c?" "Code -ETL/-ORG" tags-todo "+Code+TODO={NEXT\\|STRT}"
 	 ((org-agenda-category-filter-preset '("-ETL" "-ORG"))))
 	("c!" "Code (libre)" tags-todo "+Code+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
