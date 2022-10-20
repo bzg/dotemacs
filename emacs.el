@@ -159,8 +159,8 @@
 (global-set-key (kbd "C-:") (lambda () (interactive) (org-agenda nil "(")))
 (global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "n!")))
 (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "d!")))
-(global-set-key (kbd "<f5>") (lambda () (interactive) (org-agenda nil "nn")))
-(global-set-key (kbd "<f6>") (lambda () (interactive) (org-agenda nil "dd")))
+(global-set-key (kbd "<f5>") (lambda () (interactive) (org-agenda nil "dd")))
+(global-set-key (kbd "<f6>") (lambda () (interactive) (org-agenda nil "nn")))
 (global-set-key (kbd "<f7>") (lambda () (interactive) (org-agenda nil "rr")))
 (global-set-key (kbd "<f8>") (lambda () (interactive) (org-agenda nil "ww")))
 (global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "$")))
@@ -1570,6 +1570,9 @@
   (define-key dired-mode-map (kbd "TAB") 'dired-subtree-cycle))
 
 (envrc-global-mode)
+
+;; Load forge
+(use-package forge :after magit)
 
 ;; Always follow symbolic links when editing
 (setq vc-follow-symlinks t)
