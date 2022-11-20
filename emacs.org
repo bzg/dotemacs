@@ -29,9 +29,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 ;; Precompute activation actions to speed up startup
 (package-activate-all)
-
-;; Require `use-package' when compiling
-(eval-when-compile (require 'use-package))
 #+end_src
 
 * General defaults
@@ -164,16 +161,16 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 * Keybindings
 
 #+begin_src emacs-lisp
+(setq bzg-alt-font-size 196)
 (setq bzg-default-font-size 140)
-(setq bzg-bigger-font-size 196)
 
 (defun bzg-toggle-default-font-size ()
   (interactive)
-  (if (< (abs (- (face-attribute 'default :height) bzg-bigger-font-size)) 10)
+  (if (< (abs (- (face-attribute 'default :height) bzg-alt-font-size)) 10)
       (custom-set-faces
-       `(default ((t (:height ,bzg-default-font-size :family "Roboto Mono")))))
+       `(default ((t (:height ,bzg-default-font-size)))))
     (custom-set-faces
-     `(default ((t (:height ,bzg-bigger-font-size :family "Roboto Mono")))))))
+     `(default ((t (:height ,bzg-alt-font-size)))))))
 
 (global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
