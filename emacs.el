@@ -133,7 +133,7 @@
 (set-frame-parameter nil 'fullscreen 'fullboth)
 
 (setq bzg-alt-font-size 196)
-(setq bzg-default-font-size 140)
+(setq bzg-default-font-size 122)
 
 (defun bzg-toggle-default-font-size ()
   (interactive)
@@ -147,7 +147,7 @@
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
 (global-set-key (kbd "C-²") 'follow-delete-other-windows-and-split)
-(global-set-key (kbd "C-<dead-circumflex>") (lambda () (interactive) (load-theme 'tao-yang)))
+(global-set-key (kbd "C-<dead-circumflex>") (lambda () (interactive) (load-theme 'doom-nord)))
 (global-set-key (kbd "<f9>") #'hl-line-mode)
 (global-set-key (kbd "<f10>") #'bzg-browse-url-toggle)
 ;; Org agenda view keybodings
