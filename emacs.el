@@ -6,9 +6,9 @@
 
 ;; Set `package-archives' to the ones I use
 (setq package-archives
-	'(("gnu" . "http://elpa.gnu.org/packages/")
-	  ("nongnu" . "http://elpa.nongnu.org/nongnu/")
-	  ("melpa" . "http://melpa.org/packages/")))
+      '(("gnu" . "http://elpa.gnu.org/packages/")
+	("nongnu" . "http://elpa.nongnu.org/nongnu/")
+	("melpa" . "http://melpa.org/packages/")))
 
 ;; Precompute activation actions to speed up startup
 (package-activate-all)
@@ -149,7 +149,8 @@
 (global-set-key (kbd "C-²") 'follow-delete-other-windows-and-split)
 (global-set-key (kbd "C-<dead-circumflex>") (lambda () (interactive) (load-theme 'doom-nord)))
 (global-set-key (kbd "<f9>") #'hl-line-mode)
-(global-set-key (kbd "<f10>") #'bzg-browse-url-toggle)
+(global-set-key (kbd "<f10>") #'bzg-toggle-browser)
+(global-set-key (kbd "<f11>") #'bzg-toggle-fringe-width)
 ;; Org agenda view keybodings
 (global-set-key (kbd "C-:") (lambda () (interactive) (org-agenda nil "(")))
 (global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "n!")))
@@ -1222,7 +1223,7 @@
 (setq dired-recursive-deletes 'always)
 (setq delete-old-versions t)
 
-(defun bzg-browse-url-toggle ()
+(defun bzg-toggle-browser ()
   (interactive)
   (if (eq browse-url-browser-function 'browse-url-generic)
       (progn (setq browse-url-browser-function 'eww-browse-url)
@@ -1257,21 +1258,14 @@
 ;; Hide fringe background
 (set-face-attribute 'fringe nil :background nil)
 
-(setq fringe-styles
-      '(("default" . nil)
-	("no-fringes" . 0)
-	("right-only" . (0 . nil))
-	("left-only" . (nil . 0))
-	("half-width" . (4 . 4))
-	("big" . (400 . 400))
-	("300" . (300 . 300))
-	("bzg" . (200 . 200))
-	("100" . (100 . 100))
-	("minimal" . (1 . 1))))
-
-(defvar bzg-big-fringe-mode nil)
-
-(defvar bzg-big-fringe-size 300)
+(setq bzg-big-fringe 300)
+(defun bzg-toggle-fringe-width ()
+  (interactive)
+  (if (equal bzg-big-fringe 300)
+      (progn (setq bzg-big-fringe 700)
+	     (message "Fringe set to 700"))
+    (setq bzg-big-fringe 300)
+    (message "Fringe set to 300")))
 
 (define-minor-mode bzg-big-fringe-mode
   "Minor mode to hide the mode-line in the current buffer."
@@ -1280,8 +1274,8 @@
   :variable bzg-big-fringe-mode
   :group 'editing-basics
   (if (not bzg-big-fringe-mode)
-      (set-fringe-mode 10)
-    (set-fringe-mode bzg-big-fringe-size)))
+      (fringe-mode 10)
+    (fringe-mode bzg-big-fringe)))
 
 ;; (bzg-big-fringe-mode 1)
 
@@ -1524,11 +1518,10 @@
 ;;   (define-key clj-refactor-map "\C-cU" #'clojure-unwind-all))
 
 ;; First install the package:
-(use-package flycheck-clj-kondo :ensure t)
+(use-package flycheck-clj-kondo)
 
 ;; then install the checker as soon as `clojure-mode' is loaded
 (use-package clojure-mode
-  :ensure t
   :config
   (require 'flycheck-clj-kondo))
 
@@ -1635,7 +1628,6 @@
   (exec-path-from-shell-initialize))
 
 (use-package lsp-mode
-  :ensure t
   :commands lsp
   :config
   (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure-mode"))
@@ -1646,9 +1638,7 @@
   (add-hook 'clojurescript-mode-hook #'lsp))
 
 (use-package lsp-ui
-  :ensure t
   :commands lsp-ui-mode)
 
 (use-package company-lsp
-  :ensure t
   :commands company-lsp)
