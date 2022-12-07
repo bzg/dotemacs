@@ -132,7 +132,7 @@
 (setq tab-bar-show nil)
 (set-frame-parameter nil 'fullscreen 'fullboth)
 
-(setq bzg-alt-font-size 196)
+(setq bzg-alt-font-size 200)
 (setq bzg-default-font-size 122)
 
 (defun bzg-toggle-default-font-size ()
