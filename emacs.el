@@ -133,7 +133,7 @@
 (set-frame-parameter nil 'fullscreen 'fullboth)
 
 (setq bzg-alt-font-size 200)
-(setq bzg-default-font-size 122)
+(setq bzg-default-font-size 108)
 
 (defun bzg-toggle-default-font-size ()
   (interactive)
@@ -177,8 +177,8 @@
 (global-set-key (kbd "C-=") 'bzg-toggle-default-font-size)
 (global-set-key (kbd "C-x C-<left>") 'tab-previous)
 (global-set-key (kbd "C-x C-<right>") 'tab-next)
-;; (global-set-key (kbd "C-M-]") 'origami-toggle-all-nodes)
-;; (global-set-key (kbd "M-]") 'origami-toggle-node)
+(global-set-key (kbd "C-M-]") 'origami-toggle-all-nodes)
+(global-set-key (kbd "M-]") 'origami-toggle-node)
 (global-set-key "\M- " 'hippie-expand)
 (define-key global-map "\M-Q" 'unfill-paragraph)
 
