@@ -133,7 +133,7 @@
 (set-frame-parameter nil 'fullscreen 'fullboth)
 
 (setq bzg-alt-font-size 200)
-(setq bzg-default-font-size 108)
+(setq bzg-default-font-size 110)
 
 (defun bzg-toggle-default-font-size ()
   (interactive)

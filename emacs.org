@@ -162,7 +162,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 #+begin_src emacs-lisp
 (setq bzg-alt-font-size 200)
-(setq bzg-default-font-size 108)
+(setq bzg-default-font-size 110)
 
 (defun bzg-toggle-default-font-size ()
   (interactive)
