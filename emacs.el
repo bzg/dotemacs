@@ -239,7 +239,7 @@
 (setq org-refile-use-outline-path t)
 (setq org-refile-allow-creating-parent-nodes t)
 (setq org-refile-use-cache t)
-(setq org-element-use-cache nil)
+(setq org-element-use-cache t)
 (setq org-return-follows-link t)
 (setq org-reverse-note-order t)
 (setq org-scheduled-past-days 100)
@@ -846,7 +846,7 @@
 
   ;; Headers we wanna see:
   (setq gnus-visible-headers
-	"^From:\\|^Subject:\\|^Date:\\|^To:\\|^Cc:\\|^Newsgroups:\\|^Comments:"
+	"^From:\\|^Subject:\\|^Date:\\|^To:\\|^Cc:\\|^Newsgroups:\\|^Comments:\\|^User-Agent:"
 	message-draft-headers '(References From In-Reply-To)
 	;; message-generate-headers-first t ;; FIXME: Not needed Emacs>=29?
 	message-hidden-headers
@@ -1560,7 +1560,7 @@
 (envrc-global-mode)
 
 ;; Load forge
-(use-package forge :after magit)
+;; (use-package forge :after magit)
 
 ;; Always follow symbolic links when editing
 (setq vc-follow-symlinks t)
@@ -1610,35 +1610,3 @@
       (message "nntp server OFF"))))
 
 (define-key gnus-group-mode-map (kbd "%") #'bzg-gnus-toggle-nntp)
-
-(use-package guide-key
-  :config
-  (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x c" "C-z"))
-  (guide-key-mode 1)) ; Enable guide-key-mode
-
-;; I very seldomly use this
-(require 'multiple-cursors)
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-;; (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-(global-set-key (kbd "C-c C->") 'mc/mark-all-dwim)
-
-(when (memq window-system '(mac ns x))
-  (exec-path-from-shell-initialize))
-
-(use-package lsp-mode
-  :commands lsp
-  :config
-  (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure-mode"))
-  :init
-  (setq lsp-enable-indentation nil)
-  (add-hook 'clojure-mode-hook #'lsp)
-  (add-hook 'clojurec-mode-hook #'lsp)
-  (add-hook 'clojurescript-mode-hook #'lsp))
-
-(use-package lsp-ui
-  :commands lsp-ui-mode)
-
-(use-package company-lsp
-  :commands company-lsp)

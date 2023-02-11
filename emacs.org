@@ -274,7 +274,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-refile-use-outline-path t)
 (setq org-refile-allow-creating-parent-nodes t)
 (setq org-refile-use-cache t)
-(setq org-element-use-cache nil)
+(setq org-element-use-cache t)
 (setq org-return-follows-link t)
 (setq org-reverse-note-order t)
 (setq org-scheduled-past-days 100)
@@ -910,7 +910,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
   ;; Headers we wanna see:
   (setq gnus-visible-headers
-	"^From:\\|^Subject:\\|^Date:\\|^To:\\|^Cc:\\|^Newsgroups:\\|^Comments:"
+	"^From:\\|^Subject:\\|^Date:\\|^To:\\|^Cc:\\|^Newsgroups:\\|^Comments:\\|^User-Agent:"
 	message-draft-headers '(References From In-Reply-To)
 	;; message-generate-headers-first t ;; FIXME: Not needed Emacs>=29?
 	message-hidden-headers
@@ -1694,7 +1694,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 #+begin_src emacs-lisp
 ;; Load forge
-(use-package forge :after magit)
+;; (use-package forge :after magit)
 
 ;; Always follow symbolic links when editing
 (setq vc-follow-symlinks t)
@@ -1803,7 +1803,7 @@ Use `winstack-push' and
 
 #+begin_src emacs-lisp
 ;; I very seldomly use this
-(require 'multiple-cursors)
+;; (require 'multiple-cursors)
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
