@@ -718,11 +718,8 @@
   (setq gnus-ignored-from-addresses
 	(regexp-opt '("bastien.guerry@free.fr"
 		      "bastien.guerry@data.gouv.fr"
-		      "bzg@data.gouv.fr"
-		      "bzg+emacs@bzg.fr"
+		      "bastien.guerry@code.gouv.fr"
 		      "bzg@bzg.fr"
-		      "bzg@jecode.org"
-		      "bzg@altern.org"
 		      "bzg@gnu.org"
 		      )))
 
