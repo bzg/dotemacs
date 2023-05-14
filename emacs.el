@@ -1008,7 +1008,7 @@
   :config
   ;; Use electric completion in Gnus
   (setq message-directory "~/Mail/")
-  (setq message-mail-alias-type 'ecomplete)
+  ;; (setq message-mail-alias-type 'ecomplete)
   (setq message-send-mail-function 'message-send-mail-with-sendmail)
   (setq message-cite-function 'message-cite-original-without-signature)
   (setq message-dont-reply-to-names gnus-ignored-from-addresses)
