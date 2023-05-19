@@ -201,6 +201,7 @@
 (setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 ;; (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
+(add-hook 'message-mode-hook (lambda () (abbrev-mode 0)))
 (require 'ol-gnus)
 
 ;; org-mode global keybindings
@@ -361,7 +362,7 @@
 	("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
 	 "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
-	("R" "RDV Etalab" entry (file+headline "~/org/rdv-etalab.org" "RDV Etalab")
+	("R" "RDV MLL" entry (file+headline "~/org/rdv-mll.org" "RDV MLL")
 	 "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
 	("o" "Org" entry (file+headline "~/org/bzg.org" "Org-mode")
@@ -370,10 +371,10 @@
 	("O" "Org's buffer" entry (file+headline "~/org/bzg.org" "Buffer") ;; Org-mode/Buffer
 	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n" :prepend t)
 
-	("e" "Etalab" entry (file+headline "~/org/bzg.org" "Etalab")
+	("e" "MLL" entry (file+headline "~/org/bzg.org" "MLL")
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
 
-	("E" "Etalab's attic" entry (file+headline "~/org/bzg.org" "Attic") ;; Etalab/Attic
+	("E" "MLL's attic" entry (file+headline "~/org/bzg.org" "Attic") ;; MLL/Attic
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
 
 	("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
@@ -551,13 +552,13 @@
 	 ((org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up  priority-down time-up))))
-	("n!" "NEXT/STRT Etalab" tags-todo "TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("+ETL"))
+	("n!" "NEXT/STRT MLL" tags-todo "TODO={STRT\\|NEXT}"
+	 ((org-agenda-category-filter-preset '("+MLL"))
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up priority-down time-up))))
-	("n?" "NEXT/STRT -ETL/-ORG" tags-todo "TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("-ETL" "-ORG"))
+	("n?" "NEXT/STRT -MLL/-ORG" tags-todo "TODO={STRT\\|NEXT}"
+	 ((org-agenda-category-filter-preset '("-MLL" "-ORG"))
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up  priority-down time-up))))
@@ -573,16 +574,16 @@
 	  (org-agenda-entry-types '(:deadline))
 	  (org-agenda-sorting-strategy
 	   '(deadline-up todo-state-up priority-down))))
-	("d!" "Deadlines Etalab" agenda "Past/upcoming work deadlines"
+	("d!" "Deadlines MLL" agenda "Past/upcoming work deadlines"
 	 ((org-agenda-span 1)
-	  (org-agenda-category-filter-preset '("+ETL"))
+	  (org-agenda-category-filter-preset '("+MLL"))
 	  (org-deadline-warning-days 100)
 	  (org-agenda-entry-types '(:deadline))
 	  (org-agenda-sorting-strategy
 	   '(deadline-up todo-state-up priority-down))))
-	("d?" "Deadlines -ETL/-ORG" agenda "Past/upcoming non-work deadlines"
+	("d?" "Deadlines -MLL/-ORG" agenda "Past/upcoming non-work deadlines"
 	 ((org-agenda-span 1)
-	  (org-agenda-category-filter-preset '("-ETL" "-ORG"))
+	  (org-agenda-category-filter-preset '("-MLL" "-ORG"))
 	  (org-deadline-warning-days 100)
 	  (org-agenda-entry-types '(:deadline))
 	  (org-agenda-sorting-strategy
@@ -602,46 +603,46 @@
 
 	("r" . "Read")
 	("rr" "Read all" tags-todo "+Read+TODO={NEXT\\|STRT}")
-	("r!" "Read Etalab" tags-todo "+Read+TODO={NEXT\\|STRT}"
-         ((org-agenda-category-filter-preset '("+ETL"))))
-	("r?" "Read -ETL/-ORG" tags-todo "+Read+TODO={NEXT\\|STRT}"
-         ((org-agenda-category-filter-preset '("-ETL" "-ORG"))))
+	("r!" "Read MLL" tags-todo "+Read+TODO={NEXT\\|STRT}"
+         ((org-agenda-category-filter-preset '("+MLL"))))
+	("r?" "Read -MLL/-ORG" tags-todo "+Read+TODO={NEXT\\|STRT}"
+         ((org-agenda-category-filter-preset '("-MLL" "-ORG"))))
 	("r/" "Read (libre)" tags-todo "+Read+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("v" . "View")
 	("vv" "View all" tags-todo "+View+TODO={NEXT\\|STRT}")
-	("v!" "View Etalab" tags-todo "+View+TODO={NEXT\\|STRT}"
-	 ((org-agenda-category-filter-preset '("+ETL"))))
-	("v?" "View -ETL/-ORG" tags-todo "+View+TODO={NEXT\\|STRT}"
-	 ((org-agenda-category-filter-preset '("-ETL" "-ORG"))))
+	("v!" "View MLL" tags-todo "+View+TODO={NEXT\\|STRT}"
+	 ((org-agenda-category-filter-preset '("+MLL"))))
+	("v?" "View -MLL/-ORG" tags-todo "+View+TODO={NEXT\\|STRT}"
+	 ((org-agenda-category-filter-preset '("-MLL" "-ORG"))))
 	("v/" "View (libre)" tags-todo "+View+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("l" . "Listen")
 	("ll" "Listen main" tags-todo "+Listen+TODO={NEXT\\|STRT}")
-	("l!" "Listen Etalab" tags-todo "+Listen+TODO={NEXT\\|STRT}"
-	 ((org-agenda-category-filter-preset '("+ETL"))))
-	("l?" "Listen -ETL/-ORG" tags-todo "+Listen+TODO={NEXT\\|STRT}"
-	 ((org-agenda-category-filter-preset '("-ETL" "-ORG"))))
+	("l!" "Listen MLL" tags-todo "+Listen+TODO={NEXT\\|STRT}"
+	 ((org-agenda-category-filter-preset '("+MLL"))))
+	("l?" "Listen -MLL/-ORG" tags-todo "+Listen+TODO={NEXT\\|STRT}"
+	 ((org-agenda-category-filter-preset '("-MLL" "-ORG"))))
 	("l/" "Listen (libre)" tags-todo "+Listen+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("w" . "Write")
 	("ww" "Write main" tags-todo "+Write+TODO={NEXT\\|STRT}")
-	("w!" "Write Etalab" tags-todo "+Write+TODO={NEXT\\|STRT}"
-	 ((org-agenda-category-filter-preset '("+ETL"))))
-	("w?" "Write -ETL/-ORG" tags-todo "+Write+TODO={NEXT\\|STRT}"
-	 ((org-agenda-category-filter-preset '("-ETL" "-ORG"))))
+	("w!" "Write MLL" tags-todo "+Write+TODO={NEXT\\|STRT}"
+	 ((org-agenda-category-filter-preset '("+MLL"))))
+	("w?" "Write -MLL/-ORG" tags-todo "+Write+TODO={NEXT\\|STRT}"
+	 ((org-agenda-category-filter-preset '("-MLL" "-ORG"))))
 	("w/" "Write (libre)" tags-todo "+Write+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("c" . "Code")
 	("cc" "Code main" tags-todo "+Code+TODO={NEXT\\|STRT}")
-	("c!" "Code Etalab" tags-todo "+Code+TODO={NEXT\\|STRT}"
-	 ((org-agenda-category-filter-preset '("+ETL"))))
-	("c?" "Code -ETL/-ORG" tags-todo "+Code+TODO={NEXT\\|STRT}"
-	 ((org-agenda-category-filter-preset '("-ETL" "-ORG"))))
+	("c!" "Code MLL" tags-todo "+Code+TODO={NEXT\\|STRT}"
+	 ((org-agenda-category-filter-preset '("+MLL"))))
+	("c?" "Code -MLL/-ORG" tags-todo "+Code+TODO={NEXT\\|STRT}"
+	 ((org-agenda-category-filter-preset '("-MLL" "-ORG"))))
 	("c!" "Code (libre)" tags-todo "+Code+TODO={NEXT\\|STRT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 	))
@@ -983,7 +984,7 @@
   ;; To enable optional iCalendar->Org sync functionality
   ;; NOTE: both the capture file and the headline(s) inside must already exist
   (setq gnus-icalendar-org-capture-file "~/org/rdv-etalab.org")
-  (setq gnus-icalendar-org-capture-headline '("RDV Etalab"))
+  (setq gnus-icalendar-org-capture-headline '("RDV MLL"))
   (setq gnus-icalendar-org-template-key "I")
   (gnus-icalendar-org-setup))
 
