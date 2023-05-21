@@ -485,7 +485,7 @@
 (setq org-agenda-diary-file "/home/bzg/org/rdv.org")
 (setq org-agenda-dim-blocked-tasks t)
 (setq org-agenda-entry-text-maxlines 10)
-(setq org-agenda-files '("~/org/rdv.org" "~/org/rdv-etalab.org" "~/org/rdv-bluehats.org" "~/org/rdv-emacs.org" "~/org/bzg.org"))
+(setq org-agenda-files '("~/org/rdv.org" "~/org/rdv-mll.org" "~/org/rdv-bluehats.org" "~/org/rdv-emacs.org" "~/org/bzg.org"))
 (setq org-agenda-prefix-format
       '((agenda . " %i %-12:c%?-14t%s")
 	(timeline . "  % s")
@@ -537,7 +537,7 @@
 	("?" "Waiting" tags-todo "+TODO={WAIT}")
 	("#" "To archive"
 	 todo "DONE|CANCELED|DELEGATED"
-	 ((org-agenda-files '("~/org/rdv.org" "~/org/bzg.org" "~/org/libre.org" "~/org/rdv-emacs.org" "~/org/rdv-etalab.org"))
+	 ((org-agenda-files '("~/org/rdv.org" "~/org/bzg.org" "~/org/libre.org" "~/org/rdv-emacs.org" "~/org/rdv-mll.org"))
 	  (org-agenda-sorting-strategy '(timestamp-up))))
 
 	("(" "Today's tasks" agenda "Tasks and rdv for today"
@@ -659,7 +659,7 @@
 
 (defun bzg-caldav-sync-etalab ()
   (interactive)
-  (let ((org-caldav-inbox "~/org/rdv-etalab.org")
+  (let ((org-caldav-inbox "~/org/rdv-mll.org")
 	(org-caldav-calendar-id "etalab")
 	(org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
 	(org-caldav-files nil))
@@ -983,7 +983,7 @@
   (gnus-icalendar-setup)
   ;; To enable optional iCalendar->Org sync functionality
   ;; NOTE: both the capture file and the headline(s) inside must already exist
-  (setq gnus-icalendar-org-capture-file "~/org/rdv-etalab.org")
+  (setq gnus-icalendar-org-capture-file "~/org/rdv-mll.org")
   (setq gnus-icalendar-org-capture-headline '("RDV MLL"))
   (setq gnus-icalendar-org-template-key "I")
   (gnus-icalendar-org-setup))
