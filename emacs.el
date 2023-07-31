@@ -1230,7 +1230,7 @@
     (message "Browser set to generic")))
 
 (setq browse-url-browser-function 'browse-url-generic)
-(setq browse-url-generic-program "firefox-trunk")
+(setq browse-url-generic-program "firefox")
 (setq browse-url-firefox-new-window-is-tab t)
 
 (use-package whitespace
