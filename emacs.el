@@ -371,7 +371,7 @@
 	("O" "Org's buffer" entry (file+headline "~/org/bzg.org" "Buffer") ;; Org-mode/Buffer
 	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n" :prepend t)
 
-	("e" "MLL" entry (file+headline "~/org/bzg.org" "MLL")
+	("e" "MLL" entry (file+headline "~/org/bzg.org" "Mission")
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
 
 	("E" "MLL's attic" entry (file+headline "~/org/bzg.org" "Attic") ;; MLL/Attic
@@ -1225,8 +1225,10 @@
   (interactive)
   (if (eq browse-url-browser-function 'browse-url-generic)
       (progn (setq browse-url-browser-function 'eww-browse-url)
+	     (setq browse-url-secondary-browser-function 'browse-url-generic)
 	     (message "Browser set to eww"))
     (setq browse-url-browser-function 'browse-url-generic)
+    (setq browse-url-secondary-browser-function 'eww-browse-url)
     (message "Browser set to generic")))
 
 (setq browse-url-browser-function 'browse-url-generic)
