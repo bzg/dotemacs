@@ -1221,6 +1221,7 @@
 (setq dired-recursive-deletes 'always)
 (setq delete-old-versions t)
 
+(setq browse-url-secondary-browser-function 'eww-browse-url)
 (defun bzg-toggle-browser ()
   (interactive)
   (if (eq browse-url-browser-function 'browse-url-generic)

@@ -1307,6 +1307,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 *** Browser settings
 
 #+begin_src emacs-lisp
+(setq browse-url-secondary-browser-function 'eww-browse-url)
 (defun bzg-toggle-browser ()
   (interactive)
   (if (eq browse-url-browser-function 'browse-url-generic)
