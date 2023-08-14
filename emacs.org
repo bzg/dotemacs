@@ -2,7 +2,6 @@
 #+EMAIL:       bzg AT bzg DOT fr
 #+STARTUP:     odd hidestars fold
 #+LANGUAGE:    fr
-#+LINK:        guerry https://bzg.fr/%s
 #+OPTIONS:     skip:nil toc:nil
 #+PROPERTY:    header-args :tangle emacs.el
 
