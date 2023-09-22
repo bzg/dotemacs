@@ -657,10 +657,10 @@
 	(org-caldav-files nil))
     (call-interactively 'org-caldav-sync)))
 
-(defun bzg-caldav-sync-etalab ()
+(defun bzg-caldav-sync-mll ()
   (interactive)
   (let ((org-caldav-inbox "~/org/rdv-mll.org")
-	(org-caldav-calendar-id "etalab")
+	(org-caldav-calendar-id "mll")
 	(org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
 	(org-caldav-files nil))
     (call-interactively 'org-caldav-sync)))
@@ -668,7 +668,7 @@
 ;; https://box.bzg.io/cloud/index.php/apps/calendar/p/Lt2cGqsFS82mjkWL
 (defun bzg-caldav-sync-bluehats ()
   (interactive)
-  (let ((org-caldav-inbox "~/.etalab/git/ateliers/ateliers.org")
+  (let ((org-caldav-inbox "~/.mll/git/ateliers/ateliers.org")
 	(org-caldav-calendar-id "bluehats")
 	(org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
 	(org-caldav-files nil))
@@ -686,7 +686,7 @@
 (defun bzg-caldav-sync-all ()
   (interactive)
   (bzg-caldav-sync-perso)
-  (bzg-caldav-sync-etalab)
+  (bzg-caldav-sync-mll)
   (bzg-caldav-sync-bluehats)
   (bzg-caldav-sync-emacs))
 
