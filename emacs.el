@@ -356,7 +356,7 @@
 	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n"
 	 :prepend t :immediate-finish t)
 
-        ("m" "Mail reminder" entry (file+headline "~/org/bzg.org" "Attic")
+        ("w" "Mail reminder" entry (file+headline "~/org/bzg.org" "Attic")
 	 "* WAIT Relancer %:to: [[%L][%:subject]] :Mail:\n  SCHEDULED: %^t\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n")
 
 	("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
@@ -371,10 +371,10 @@
 	("O" "Org's buffer" entry (file+headline "~/org/bzg.org" "Buffer") ;; Org-mode/Buffer
 	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n" :prepend t)
 
-	("e" "MLL" entry (file+headline "~/org/bzg.org" "Mission")
+	("m" "MLL" entry (file+headline "~/org/bzg.org" "Mission")
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
 
-	("E" "MLL's attic" entry (file+headline "~/org/bzg.org" "Attic") ;; MLL/Attic
+	("M" "MLL's attic" entry (file+headline "~/org/bzg.org" "Attic") ;; MLL/Attic
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
 
 	("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
