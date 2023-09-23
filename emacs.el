@@ -1563,6 +1563,10 @@
 ;; Load forge
 ;; (use-package forge :after magit)
 
+;; Use ugrep
+(setq-default xref-search-program 'ugrep)
+(setq-default grep-template "ugrep --color=always -0Iinr -e <R>")
+
 ;; Always follow symbolic links when editing
 (setq vc-follow-symlinks t)
 
