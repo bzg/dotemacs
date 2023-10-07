@@ -301,7 +301,7 @@
 	("\\.x?html?\\'" . default)
 	("\\.pdf\\'" . "evince %s")))
 (setq org-hide-leading-stars t)
-(setq org-global-properties '(("Effort_ALL" . "0:10 0:30 1:00 2:00 3:30 7:00")))
+(setq org-global-properties '(("Effort_ALL" . "0:10 0:30 1:00 1:24 2:00 3:30 7:00")))
 (setq org-cycle-include-plain-lists nil)
 (setq org-default-notes-file "~/org/notes.org")
 (setq org-directory "~/org/")
