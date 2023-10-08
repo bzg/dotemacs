@@ -582,7 +582,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 	("%" "Personal appointments" agenda* "Month planning"
 	 ((org-agenda-span 'month)
-	  (org-agenda-files '("~/org/rdv.org" "~/org/rdv-emacs.org"))
+	  (org-agenda-files '("~/org/rdv.org"))
 	  (org-agenda-sorting-strategy
 	   '(time-up todo-state-up priority-down))))
 
@@ -592,7 +592,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	("?" "Waiting" tags-todo "+TODO={WAIT}")
 	("#" "To archive"
 	 todo "DONE|CANCELED|DELEGATED"
-	 ((org-agenda-files '("~/org/rdv.org" "~/org/bzg.org" "~/org/libre.org" "~/org/rdv-emacs.org" "~/org/rdv-mll.org"))
+	 ((org-agenda-files '("~/org/rdv.org" "~/org/bzg.org" "~/org/libre.org" "~/org/rdv-mll.org"))
 	  (org-agenda-sorting-strategy '(timestamp-up))))
 
 	("(" "Today's tasks" agenda "Tasks and rdv for today"
@@ -724,30 +724,10 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	(org-caldav-files nil))
     (call-interactively 'org-caldav-sync)))
 
-;; https://box.bzg.io/cloud/index.php/apps/calendar/p/Lt2cGqsFS82mjkWL
-(defun bzg-caldav-sync-bluehats ()
-  (interactive)
-  (let ((org-caldav-inbox "~/.mll/git/ateliers/ateliers.org")
-	(org-caldav-calendar-id "bluehats")
-	(org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
-	(org-caldav-files nil))
-    (call-interactively 'org-caldav-sync)))
-
-;; https://box.bzg.io/cloud/index.php/apps/calendar/p/nMfMJskKXDm4edzw
-(defun bzg-caldav-sync-emacs ()
-  (interactive)
-  (let ((org-caldav-inbox "~/org/rdv-emacs.org")
-	(org-caldav-calendar-id "emacs")
-	(org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
-	(org-caldav-files nil))
-    (call-interactively 'org-caldav-sync)))
-
 (defun bzg-caldav-sync-all ()
   (interactive)
   (bzg-caldav-sync-perso)
-  (bzg-caldav-sync-mll)
-  (bzg-caldav-sync-bluehats)
-  (bzg-caldav-sync-emacs))
+  (bzg-caldav-sync-mll))
 #+end_src
 
 * Gnus
