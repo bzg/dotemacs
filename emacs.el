@@ -153,6 +153,8 @@
 (global-set-key (kbd "<f11>") #'bzg-toggle-fringe-width)
 ;; Org agenda view keybodings
 (global-set-key (kbd "C-:") (lambda () (interactive) (org-agenda nil "(")))
+(global-set-key (kbd "C-<") (lambda () (interactive) (org-agenda nil "[")))
+(global-set-key (kbd "C->") (lambda () (interactive) (org-agenda nil "{")))
 (global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "n!")))
 (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "d!")))
 (global-set-key (kbd "<f5>") (lambda () (interactive) (org-agenda nil "dd")))
@@ -542,6 +544,20 @@
 
 	("(" "Today's tasks" agenda "Tasks and rdv for today"
 	 ((org-agenda-span 1)
+	  (org-agenda-files '("~/org/bzg.org"))
+	  (org-deadline-warning-days 0)
+	  (org-agenda-sorting-strategy
+	   '(deadline-up todo-state-up priority-down))))
+	("[" "Today's tasks for MLL" agenda "Tasks and rdv for today"
+	 ((org-agenda-category-filter-preset '("+MLL"))
+	  (org-agenda-span 1)
+	  (org-agenda-files '("~/org/bzg.org"))
+	  (org-deadline-warning-days 0)
+	  (org-agenda-sorting-strategy
+	   '(deadline-up todo-state-up priority-down))))
+	("{" "Today's tasks for non-MLL" agenda "Tasks and rdv for today"
+	 ((org-agenda-category-filter-preset '("-MLL"))
+	  (org-agenda-span 1)
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-deadline-warning-days 0)
 	  (org-agenda-sorting-strategy
