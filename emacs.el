@@ -189,6 +189,7 @@
   "Find the bzg.org file."
   (interactive)
   (find-file "~/org/bzg.org")
+  (hidden-mode-line-mode 1)
   (delete-other-windows))
 
 ;; Easily unfill paragraphs
@@ -1303,8 +1304,7 @@
 	     "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
 
 (add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
-(add-hook 'org-mode-hook 'hidden-mode-line-mode)
-(add-hook 'org-mode-hook (lambda () (electric-indent-mode 0) (hidden-mode-line-mode 0)))
+(add-hook 'org-mode-hook (lambda () (electric-indent-mode 0)))
 
 (use-package erc
   :config
