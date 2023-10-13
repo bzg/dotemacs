@@ -677,8 +677,8 @@
 (defun bzg-caldav-sync-mll ()
   (interactive)
   (let ((org-caldav-inbox "~/org/rdv-mll.org")
-	(org-caldav-calendar-id "etalab")
-	(org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
+	(org-caldav-calendar-id "personal")
+	(org-caldav-url "https://apps.codegouv.fr/nextcloud/remote.php/dav/calendars/bzg")
 	(org-caldav-files nil))
     (call-interactively 'org-caldav-sync)))
 
