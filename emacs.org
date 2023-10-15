@@ -175,19 +175,28 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (global-set-key (kbd "<end>") 'end-of-buffer)
 (global-set-key (kbd "C-²") 'follow-delete-other-windows-and-split)
 (global-set-key (kbd "C-<dead-circumflex>") (lambda () (interactive) (load-theme 'doom-nord)))
-(global-set-key (kbd "<f9>") #'hl-line-mode)
-(global-set-key (kbd "<f10>") #'bzg-toggle-browser)
-(global-set-key (kbd "<f11>") #'bzg-toggle-fringe-width)
+(global-set-key (kbd "<f10>") #'hl-line-mode)
+(global-set-key (kbd "<f11>") #'bzg-toggle-browser)
+(global-set-key (kbd "<f12>") #'bzg-toggle-fringe-width)
 ;; Org agenda view keybodings
-(global-set-key (kbd "C-:") (lambda () (interactive) (org-agenda nil "(")))
-(global-set-key (kbd "C-<") (lambda () (interactive) (org-agenda nil "[")))
-(global-set-key (kbd "C->") (lambda () (interactive) (org-agenda nil "{")))
+(global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "(")))
+(global-set-key (kbd "C-§") (lambda () (interactive) (org-agenda nil "[")))
+(global-set-key (kbd "C-M-§") (lambda () (interactive) (org-agenda nil "{")))
 (global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "n!")))
 (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "d!")))
-(global-set-key (kbd "<f5>") (lambda () (interactive) (org-agenda nil "dd")))
+(global-set-key (kbd "C-S-*") (lambda () (interactive) (org-agenda nil "n?")))
+(global-set-key (kbd "C-S-$") (lambda () (interactive) (org-agenda nil "d?")))
+(global-set-key (kbd "<f5>") (lambda () (interactive) (org-agenda nil "d!")))
 (global-set-key (kbd "<f6>") (lambda () (interactive) (org-agenda nil "nn")))
 (global-set-key (kbd "<f7>") (lambda () (interactive) (org-agenda nil "rr")))
 (global-set-key (kbd "<f8>") (lambda () (interactive) (org-agenda nil "ww")))
+(global-set-key (kbd "<f9>") (lambda () (interactive) (org-agenda nil "cc")))
+(global-set-key (kbd "S-<f5>") (lambda () (interactive) (org-agenda nil "d?")))
+(global-set-key (kbd "S-<f6>") (lambda () (interactive) (org-agenda nil "tt")))
+(global-set-key (kbd "S-<f7>") (lambda () (interactive) (org-agenda nil "rt")))
+(global-set-key (kbd "S-<f8>") (lambda () (interactive) (org-agenda nil "wt")))
+(global-set-key (kbd "S-<f9>") (lambda () (interactive) (org-agenda nil "ct")))
+
 (global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "$")))
 (global-set-key (kbd "C-%") (lambda () (interactive) (org-agenda nil "%")))
 (global-set-key (kbd "C-&") 'gnus)
@@ -638,6 +647,32 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up priority-down time-up))))
 
+	("t" . "What's next to do?")
+	("tt" "TODO all" tags-todo "TODO={TODO}"
+	 ((org-agenda-files '("~/org/bzg.org"))
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up  priority-down time-up))))
+	("t!" "TODO MLL" tags-todo "TODO={TODO}"
+	 ((org-agenda-category-filter-preset '("+MLL"))
+	  (org-agenda-files '("~/org/bzg.org"))
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up priority-down time-up))))
+	("t?" "TODO -MLL/-ORG" tags-todo "TODO={TODO}"
+	 ((org-agenda-category-filter-preset '("-MLL" "-ORG"))
+	  (org-agenda-files '("~/org/bzg.org"))
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up  priority-down time-up))))
+	("t/" "TODO (libre)" tags-todo "TODO={TODO}"
+	 ((org-agenda-files '("~/org/libre.org"))
+	  (org-agenda-sorting-strategy
+	   '(todo-state-up priority-down time-up))))
+
+	(":" "Scheduled item all" agenda "Scheduled items"
+	 ((org-agenda-span 1)
+	  (org-agenda-entry-types '(:scheduled))
+	  (org-agenda-sorting-strategy
+	   '(scheduled-up todo-state-up priority-down))))
+
 	("d" . "Deadlines")
 	("dd" "Deadlines all" agenda "Past/upcoming deadlines"
 	 ((org-agenda-span 1)
@@ -673,7 +708,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
          "+TAGS={Read\\|Listen\\|View}+TODO={NEXT\\|STRT}")
 
 	("r" . "Read")
-	("rr" "Read all" tags-todo "+Read+TODO={NEXT\\|STRT}")
+	("rr" "Read STRT/NEXT" tags-todo "+Read+TODO={NEXT\\|STRT}")
+	("rt" "Read TODO" tags-todo "+Read+TODO={TODO}")
 	("r!" "Read MLL" tags-todo "+Read+TODO={NEXT\\|STRT}"
          ((org-agenda-category-filter-preset '("+MLL"))))
 	("r?" "Read -MLL/-ORG" tags-todo "+Read+TODO={NEXT\\|STRT}"
@@ -682,7 +718,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("v" . "View")
-	("vv" "View all" tags-todo "+View+TODO={NEXT\\|STRT}")
+	("vv" "View STRT/NEXT" tags-todo "+View+TODO={NEXT\\|STRT}")
+	("vt" "View TODO" tags-todo "+View+TODO={TODO}")
 	("v!" "View MLL" tags-todo "+View+TODO={NEXT\\|STRT}"
 	 ((org-agenda-category-filter-preset '("+MLL"))))
 	("v?" "View -MLL/-ORG" tags-todo "+View+TODO={NEXT\\|STRT}"
@@ -691,7 +728,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("l" . "Listen")
-	("ll" "Listen main" tags-todo "+Listen+TODO={NEXT\\|STRT}")
+	("ll" "Listen STRT/NEXT" tags-todo "+Listen+TODO={NEXT\\|STRT}")
+	("lt" "Listen TODO" tags-todo "+Listen+TODO={TODO}")
 	("l!" "Listen MLL" tags-todo "+Listen+TODO={NEXT\\|STRT}"
 	 ((org-agenda-category-filter-preset '("+MLL"))))
 	("l?" "Listen -MLL/-ORG" tags-todo "+Listen+TODO={NEXT\\|STRT}"
@@ -700,7 +738,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("w" . "Write")
-	("ww" "Write main" tags-todo "+Write+TODO={NEXT\\|STRT}")
+	("ww" "Write STRT/NEXT" tags-todo "+Write+TODO={NEXT\\|STRT}")
+	("wt" "Write TODO" tags-todo "+Write+TODO={TODO}")
 	("w!" "Write MLL" tags-todo "+Write+TODO={NEXT\\|STRT}"
 	 ((org-agenda-category-filter-preset '("+MLL"))))
 	("w?" "Write -MLL/-ORG" tags-todo "+Write+TODO={NEXT\\|STRT}"
@@ -709,7 +748,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("c" . "Code")
-	("cc" "Code main" tags-todo "+Code+TODO={NEXT\\|STRT}")
+	("cc" "Code STRT/NEXT" tags-todo "+Code+TODO={NEXT\\|STRT}")
+	("ct" "Code TODO" tags-todo "+Code+TODO={TODO}")
 	("c!" "Code MLL" tags-todo "+Code+TODO={NEXT\\|STRT}"
 	 ((org-agenda-category-filter-preset '("+MLL"))))
 	("c?" "Code -MLL/-ORG" tags-todo "+Code+TODO={NEXT\\|STRT}"
@@ -1665,7 +1705,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 #+begin_src emacs-lisp
 (use-package multi-term
   :config
-  (global-set-key (kbd "C-!")
+  (global-set-key (kbd "C-:")
 		  (lambda ()
 		    (interactive)
 		    (funcall #'multi-term-dedicated-open)
