@@ -13,6 +13,9 @@
 ;; Precompute activation actions to speed up startup
 (package-activate-all)
 
+;; Start server to use emacsclient
+(server-start)
+
 ;; Unset C-z which is bound to `suspend-frame' by default
 (global-unset-key (kbd "C-z"))
 
@@ -26,15 +29,8 @@
 (add-to-list 'load-path "~/install/git/org-contrib/lisp/")
 (add-to-list 'load-path "~/install/git/org-caldav/")
 
-;; Initialize other important modes
-(add-to-list 'load-path "~/install/cvs/emacs-w3m/")
-(add-to-list 'load-path "~/install/git/notmuch/emacs/")
-
 ;; Initialize my `exec-path' and `load-path' with custom paths
 (add-to-list 'exec-path "~/bin/")
-
-;; Start server to use emacsclient
-(server-start)
 
 (setq Info-refill-paragraphs t)
 ;; Include org-mode and emacs local paths into Info
@@ -48,6 +44,9 @@
 (put 'narrow-to-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 (put 'set-goal-column 'disabled nil)
+
+;; Set `sentence-end-double-space' to nil
+(setq sentence-end-double-space nil)
 
 ;; Expect local variables to be known
 (setq enable-local-eval t)
@@ -132,8 +131,8 @@
 (setq tab-bar-show nil)
 (set-frame-parameter nil 'fullscreen 'fullboth)
 
-(setq bzg-alt-font-size 140)
-(setq bzg-default-font-size 110)
+(setq bzg-alt-font-size 200)
+(setq bzg-default-font-size 120)
 
 (defun bzg-toggle-default-font-size ()
   (interactive)
