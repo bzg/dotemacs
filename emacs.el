@@ -155,20 +155,19 @@
 (global-set-key (kbd "C-§") (lambda () (interactive) (org-agenda nil "[")))
 (global-set-key (kbd "C-M-§") (lambda () (interactive) (org-agenda nil "{")))
 (global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "n!")))
+(global-set-key (kbd "C-M-*") (lambda () (interactive) (org-agenda nil "n?")))
 (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "d!")))
-(global-set-key (kbd "C-S-*") (lambda () (interactive) (org-agenda nil "n?")))
-(global-set-key (kbd "C-S-$") (lambda () (interactive) (org-agenda nil "d?")))
-(global-set-key (kbd "<f5>") (lambda () (interactive) (org-agenda nil "nn")))
-(global-set-key (kbd "<f6>") (lambda () (interactive) (org-agenda nil "rr")))
-(global-set-key (kbd "<f7>") (lambda () (interactive) (org-agenda nil "ww")))
-(global-set-key (kbd "<f8>") (lambda () (interactive) (org-agenda nil "cc")))
-(global-set-key (kbd "<f9>") (lambda () (interactive) (org-agenda nil "d!")))
-(global-set-key (kbd "S-<f5>") (lambda () (interactive) (org-agenda nil "tt")))
-(global-set-key (kbd "S-<f6>") (lambda () (interactive) (org-agenda nil "rt")))
-(global-set-key (kbd "S-<f7>") (lambda () (interactive) (org-agenda nil "wt")))
-(global-set-key (kbd "S-<f8>") (lambda () (interactive) (org-agenda nil "ct")))
-(global-set-key (kbd "S-<f9>") (lambda () (interactive) (org-agenda nil "d?")))
-
+(global-set-key (kbd "C-M-$") (lambda () (interactive) (org-agenda nil "d?")))
+(global-set-key (kbd "<f5>") (lambda () (interactive) (org-agenda nil "cc")))
+(global-set-key (kbd "M-<f5>") (lambda () (interactive) (org-agenda nil "ct")))
+(global-set-key (kbd "<f6>") (lambda () (interactive) (org-agenda nil "ww")))
+(global-set-key (kbd "M-<f6>") (lambda () (interactive) (org-agenda nil "wt")))
+(global-set-key (kbd "<f7>") (lambda () (interactive) (org-agenda nil "rr")))
+(global-set-key (kbd "M-<f7>") (lambda () (interactive) (org-agenda nil "rt")))
+(global-set-key (kbd "<f8>") (lambda () (interactive) (org-agenda nil "nn")))
+(global-set-key (kbd "M-<f8>") (lambda () (interactive) (org-agenda nil "tt")))
+(global-set-key (kbd "<f9>") (lambda () (interactive) (org-agenda nil "@")))
+(global-set-key (kbd "M-<f9>") (lambda () (interactive) (org-agenda nil ":")))
 (global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "$")))
 (global-set-key (kbd "C-%") (lambda () (interactive) (org-agenda nil "%")))
 (global-set-key (kbd "C-&") 'gnus)
@@ -610,7 +609,7 @@
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up priority-down time-up))))
 
-	(":" "Scheduled item all" agenda "Scheduled items"
+	(":" "Scheduled item work" agenda "Scheduled items"
 	 ((org-agenda-span 1)
 	  (org-agenda-entry-types '(:scheduled))
 	  (org-agenda-sorting-strategy
@@ -645,9 +644,9 @@
 	  (org-agenda-sorting-strategy
 	   '(deadline-up todo-state-up priority-down))))
 
-	("A" "Write, Code, Mail (no work)" tags-todo
+	("A" "Write, Code, Mail" tags-todo
          "+TAGS={Write\\|Code\\|Mail}+TODO={NEXT\\|STRT}")
-	("Z" "Read, Listen, View (no work)" tags-todo
+	("Z" "Read, Listen, View" tags-todo
          "+TAGS={Read\\|Listen\\|View}+TODO={NEXT\\|STRT}")
 
 	("r" . "Read")
