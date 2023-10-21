@@ -561,14 +561,12 @@
 	 ((org-agenda-category-filter-preset '("+MLL"))
 	  (org-agenda-span 1)
 	  (org-agenda-files '("~/org/bzg.org"))
-	  (org-deadline-warning-days 0)
 	  (org-agenda-sorting-strategy
 	   '(deadline-up todo-state-up priority-down))))
 	("{" "Today's tasks for non-MLL" agenda "Tasks and rdv for today"
 	 ((org-agenda-category-filter-preset '("-MLL"))
 	  (org-agenda-span 1)
 	  (org-agenda-files '("~/org/bzg.org"))
-	  (org-deadline-warning-days 0)
 	  (org-agenda-sorting-strategy
 	   '(deadline-up todo-state-up priority-down))))
 
@@ -621,28 +619,28 @@
 	("d" . "Deadlines")
 	("dd" "Deadlines all" agenda "Past/upcoming deadlines"
 	 ((org-agenda-span 1)
-	  (org-deadline-warning-days 100)
+	  (org-deadline-warning-days 60)
 	  (org-agenda-entry-types '(:deadline))
 	  (org-agenda-sorting-strategy
 	   '(deadline-up todo-state-up priority-down))))
 	("d!" "Deadlines MLL" agenda "Past/upcoming work deadlines"
 	 ((org-agenda-span 1)
 	  (org-agenda-category-filter-preset '("+MLL"))
-	  (org-deadline-warning-days 100)
+	  (org-deadline-warning-days 60)
 	  (org-agenda-entry-types '(:deadline))
 	  (org-agenda-sorting-strategy
 	   '(deadline-up todo-state-up priority-down))))
 	("d?" "Deadlines -MLL/-ORG" agenda "Past/upcoming non-work deadlines"
 	 ((org-agenda-span 1)
 	  (org-agenda-category-filter-preset '("-MLL" "-ORG"))
-	  (org-deadline-warning-days 100)
+	  (org-deadline-warning-days 60)
 	  (org-agenda-entry-types '(:deadline))
 	  (org-agenda-sorting-strategy
 	   '(deadline-up todo-state-up priority-down))))
 	("d/" "Deadlines libre" agenda "Past/upcoming deadlines (libre)"
 	 ((org-agenda-span 1)
 	  (org-agenda-files '("~/org/libre.org"))
-	  (org-deadline-warning-days 100)
+	  (org-deadline-warning-days 60)
 	  (org-agenda-entry-types '(:deadline))
 	  (org-agenda-sorting-strategy
 	   '(deadline-up todo-state-up priority-down))))
