@@ -147,9 +147,10 @@
 (global-set-key (kbd "<end>") 'end-of-buffer)
 (global-set-key (kbd "C-²") 'follow-delete-other-windows-and-split)
 (global-set-key (kbd "C-<dead-circumflex>") (lambda () (interactive) (load-theme 'doom-nord)))
-(global-set-key (kbd "<f10>") #'hl-line-mode)
+(global-set-key (kbd "<f10>") #'bzg-toggle-fringe-width)
 (global-set-key (kbd "<f11>") #'bzg-toggle-browser)
-(global-set-key (kbd "<f12>") #'bzg-toggle-fringe-width)
+(global-set-key (kbd "<f12>") #'hl-line-mode)
+(global-set-key (kbd "M-<f12>") #'highlight-thing-mode)
 ;; Org agenda view keybodings
 (global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "(")))
 (global-set-key (kbd "C-§") (lambda () (interactive) (org-agenda nil "[")))
