@@ -208,9 +208,12 @@
     (fill-paragraph nil)))
 
 (require 'org-tempo)
-(require 'org-bullets)
-(setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+;; (require 'org-bullets)
+;; (setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
+;; (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+(require 'org-modern)
+(require 'org-appear)
+(add-hook 'org-mode-hook (lambda () (org-modern-mode 1) (org-appear-mode 1)))
 ;; (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
 (add-hook 'message-mode-hook (lambda () (abbrev-mode 0)))
 (require 'ol-gnus)
@@ -571,21 +574,21 @@
 	   '(deadline-up todo-state-up priority-down))))
 
 	("n" . "What's next?")
-	("nn" "NEXT/STRT all" tags-todo "TODO={STRT\\|NEXT}"
+	("nn" "STRT/NEXT all" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up  priority-down time-up))))
-	("n!" "NEXT/STRT MLL" tags-todo "TODO={STRT\\|NEXT}"
+	("n!" "STRT/NEXT MLL" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("+MLL"))
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up priority-down time-up))))
-	("n?" "NEXT/STRT -MLL/-ORG" tags-todo "TODO={STRT\\|NEXT}"
+	("n?" "STRT/NEXT -MLL/-ORG" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("-MLL" "-ORG"))
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up  priority-down time-up))))
-	("n/" "NEXT/STRT (libre)" tags-todo "TODO={STRT\\|NEXT}"
+	("n/" "STRT/NEXT (libre)" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up priority-down time-up))))
@@ -646,58 +649,58 @@
 	   '(deadline-up todo-state-up priority-down))))
 
 	("A" "Write, Code, Mail" tags-todo
-         "+TAGS={Write\\|Code\\|Mail}+TODO={NEXT\\|STRT}")
+         "+TAGS={Write\\|Code\\|Mail}+TODO={STRT\\|NEXT}")
 	("Z" "Read, Listen, View" tags-todo
-         "+TAGS={Read\\|Listen\\|View}+TODO={NEXT\\|STRT}")
+         "+TAGS={Read\\|Listen\\|View}+TODO={STRT\\|NEXT}")
 
 	("r" . "Read")
-	("rr" "Read STRT/NEXT" tags-todo "+Read+TODO={NEXT\\|STRT}")
+	("rr" "Read STRT/NEXT" tags-todo "+Read+TODO={STRT\\|NEXT}")
 	("rt" "Read TODO" tags-todo "+Read+TODO={TODO}")
-	("r!" "Read MLL" tags-todo "+Read+TODO={NEXT\\|STRT}"
+	("r!" "Read MLL" tags-todo "+Read+TODO={STRT\\|NEXT}"
          ((org-agenda-category-filter-preset '("+MLL"))))
-	("r?" "Read -MLL/-ORG" tags-todo "+Read+TODO={NEXT\\|STRT}"
+	("r?" "Read -MLL/-ORG" tags-todo "+Read+TODO={STRT\\|NEXT}"
          ((org-agenda-category-filter-preset '("-MLL" "-ORG"))))
-	("r/" "Read (libre)" tags-todo "+Read+TODO={NEXT\\|STRT}"
+	("r/" "Read (libre)" tags-todo "+Read+TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("v" . "View")
-	("vv" "View STRT/NEXT" tags-todo "+View+TODO={NEXT\\|STRT}")
+	("vv" "View STRT/NEXT" tags-todo "+View+TODO={STRT\\|NEXT}")
 	("vt" "View TODO" tags-todo "+View+TODO={TODO}")
-	("v!" "View MLL" tags-todo "+View+TODO={NEXT\\|STRT}"
+	("v!" "View MLL" tags-todo "+View+TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("+MLL"))))
-	("v?" "View -MLL/-ORG" tags-todo "+View+TODO={NEXT\\|STRT}"
+	("v?" "View -MLL/-ORG" tags-todo "+View+TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("-MLL" "-ORG"))))
-	("v/" "View (libre)" tags-todo "+View+TODO={NEXT\\|STRT}"
+	("v/" "View (libre)" tags-todo "+View+TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("l" . "Listen")
-	("ll" "Listen STRT/NEXT" tags-todo "+Listen+TODO={NEXT\\|STRT}")
+	("ll" "Listen STRT/NEXT" tags-todo "+Listen+TODO={STRT\\|NEXT}")
 	("lt" "Listen TODO" tags-todo "+Listen+TODO={TODO}")
-	("l!" "Listen MLL" tags-todo "+Listen+TODO={NEXT\\|STRT}"
+	("l!" "Listen MLL" tags-todo "+Listen+TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("+MLL"))))
-	("l?" "Listen -MLL/-ORG" tags-todo "+Listen+TODO={NEXT\\|STRT}"
+	("l?" "Listen -MLL/-ORG" tags-todo "+Listen+TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("-MLL" "-ORG"))))
-	("l/" "Listen (libre)" tags-todo "+Listen+TODO={NEXT\\|STRT}"
+	("l/" "Listen (libre)" tags-todo "+Listen+TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("w" . "Write")
-	("ww" "Write STRT/NEXT" tags-todo "+Write+TODO={NEXT\\|STRT}")
+	("ww" "Write STRT/NEXT" tags-todo "+Write+TODO={STRT\\|NEXT}")
 	("wt" "Write TODO" tags-todo "+Write+TODO={TODO}")
-	("w!" "Write MLL" tags-todo "+Write+TODO={NEXT\\|STRT}"
+	("w!" "Write MLL" tags-todo "+Write+TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("+MLL"))))
-	("w?" "Write -MLL/-ORG" tags-todo "+Write+TODO={NEXT\\|STRT}"
+	("w?" "Write -MLL/-ORG" tags-todo "+Write+TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("-MLL" "-ORG"))))
-	("w/" "Write (libre)" tags-todo "+Write+TODO={NEXT\\|STRT}"
+	("w/" "Write (libre)" tags-todo "+Write+TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("c" . "Code")
-	("cc" "Code STRT/NEXT" tags-todo "+Code+TODO={NEXT\\|STRT}")
+	("cc" "Code STRT/NEXT" tags-todo "+Code+TODO={STRT\\|NEXT}")
 	("ct" "Code TODO" tags-todo "+Code+TODO={TODO}")
-	("c!" "Code MLL" tags-todo "+Code+TODO={NEXT\\|STRT}"
+	("c!" "Code MLL" tags-todo "+Code+TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("+MLL"))))
-	("c?" "Code -MLL/-ORG" tags-todo "+Code+TODO={NEXT\\|STRT}"
+	("c?" "Code -MLL/-ORG" tags-todo "+Code+TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("-MLL" "-ORG"))))
-	("c!" "Code (libre)" tags-todo "+Code+TODO={NEXT\\|STRT}"
+	("c!" "Code (libre)" tags-todo "+Code+TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 	))
 
@@ -1576,12 +1579,7 @@
 
 (use-package multi-term
   :config
-  (global-set-key (kbd "C-:")
-		  (lambda ()
-		    (interactive)
-		    (funcall #'multi-term-dedicated-open)
-		    (funcall #'multi-term-dedicated-select)))
-  (setq multi-term-program "/bin/zsh"))
+  (global-set-key (kbd "C-:") (lambda () (interactive) (vterm))))
 
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 

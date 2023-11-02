@@ -242,9 +242,12 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 #+begin_src emacs-lisp
 (require 'org-tempo)
-(require 'org-bullets)
-(setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+;; (require 'org-bullets)
+;; (setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
+;; (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+(require 'org-modern)
+(require 'org-appear)
+(add-hook 'org-mode-hook (lambda () (org-modern-mode 1) (org-appear-mode 1)))
 ;; (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
 (add-hook 'message-mode-hook (lambda () (abbrev-mode 0)))
 (require 'ol-gnus)
@@ -1698,17 +1701,12 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (which-key-mode)
 #+end_src
 
-*** multi-term, ediff, dired
+*** vterm, ediff, dired
 
 #+begin_src emacs-lisp
 (use-package multi-term
   :config
-  (global-set-key (kbd "C-:")
-		  (lambda ()
-		    (interactive)
-		    (funcall #'multi-term-dedicated-open)
-		    (funcall #'multi-term-dedicated-select)))
-  (setq multi-term-program "/bin/zsh"))
+  (global-set-key (kbd "C-:") (lambda () (interactive) (vterm))))
 
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
