@@ -208,12 +208,10 @@
     (fill-paragraph nil)))
 
 (require 'org-tempo)
-;; (require 'org-bullets)
-;; (setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
-;; (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-(require 'org-modern)
-(add-hook 'org-mode-hook (lambda () (org-modern-mode 1)))
-;; (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
+(require 'org-bullets)
+(setq org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+(add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
 (add-hook 'message-mode-hook (lambda () (abbrev-mode 0)))
 (require 'ol-gnus)
 
