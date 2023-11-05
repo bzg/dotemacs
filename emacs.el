@@ -703,14 +703,6 @@
 
 (require 'org-caldav)
 
-(defun bzg-caldav-sync-perso ()
-  (interactive)
-  (let ((org-caldav-inbox "~/org/rdv.org")
-	(org-caldav-calendar-id "personnel")
-	(org-caldav-url "https://box.bzg.io/cloud/remote.php/caldav/calendars/bzg%40bzg.fr")
-	(org-caldav-files nil))
-    (call-interactively 'org-caldav-sync)))
-
 (defun bzg-caldav-sync-mll ()
   (interactive)
   (let ((org-caldav-inbox "~/org/rdv-mll.org")
@@ -718,11 +710,6 @@
 	(org-caldav-url "https://apps.codegouv.fr/nextcloud/remote.php/dav/calendars/bzg")
 	(org-caldav-files nil))
     (call-interactively 'org-caldav-sync)))
-
-(defun bzg-caldav-sync-all ()
-  (interactive)
-  (bzg-caldav-sync-perso)
-  (bzg-caldav-sync-mll))
 
 (use-package epg :defer t)
 (use-package epa
