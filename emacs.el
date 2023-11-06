@@ -701,16 +701,6 @@
 	 ((org-agenda-files '("~/org/libre.org"))))
 	))
 
-(require 'org-caldav)
-
-(defun bzg-caldav-sync-mll ()
-  (interactive)
-  (let ((org-caldav-inbox "~/org/rdv-mll.org")
-	(org-caldav-calendar-id "personal")
-	(org-caldav-url "https://apps.codegouv.fr/nextcloud/remote.php/dav/calendars/bzg")
-	(org-caldav-files nil))
-    (call-interactively 'org-caldav-sync)))
-
 (use-package epg :defer t)
 (use-package epa
   :defer t
