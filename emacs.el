@@ -398,9 +398,6 @@
 	      (in-mode . "message-mode")))
 	("R" ((in-mode . "gnus-summary-mode")
 	      (in-mode . "gnus-article-mode")
-	      (in-mode . "message-mode")))
-	("m" ((in-mode . "gnus-summary-mode")
-	      (in-mode . "gnus-article-mode")
 	      (in-mode . "message-mode")))))
 
 (org-babel-do-load-languages
