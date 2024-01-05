@@ -152,9 +152,8 @@
 (global-set-key (kbd "<f12>") #'global-hl-line-mode)
 (global-set-key (kbd "M-<f12>") #'global-highlight-thing-mode)
 ;; Org agenda view keybodings
-(global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "(")))
-(global-set-key (kbd "C-M-!") (lambda () (interactive) (org-agenda nil "[")))
-(global-set-key (kbd "C-M-§") (lambda () (interactive) (org-agenda nil "{")))
+(global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "[")))
+(global-set-key (kbd "C-M-!") (lambda () (interactive) (org-agenda nil "{")))
 (global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "n!")))
 (global-set-key (kbd "C-M-*") (lambda () (interactive) (org-agenda nil "n?")))
 (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "d!")))
@@ -488,7 +487,7 @@
 ;; Hook to display the agenda in a single window
 (add-hook 'org-agenda-finalize-hook 'delete-other-windows)
 
-(setq org-deadline-warning-days 7)
+(setq org-deadline-warning-days 3)
 (setq org-agenda-inhibit-startup t)
 (setq org-agenda-diary-file "/home/bzg/org/rdv.org")
 (setq org-agenda-dim-blocked-tasks t)
@@ -548,12 +547,6 @@
 	 ((org-agenda-files '("~/org/rdv.org" "~/org/bzg.org" "~/org/libre.org" "~/org/rdv-mll.org"))
 	  (org-agenda-sorting-strategy '(timestamp-up))))
 
-	("(" "Today's tasks" agenda "Tasks and rdv for today"
-	 ((org-agenda-span 1)
-	  (org-agenda-files '("~/org/bzg.org"))
-	  (org-deadline-warning-days 0)
-	  (org-agenda-sorting-strategy
-	   '(deadline-up todo-state-up priority-down))))
 	("[" "Today's tasks for MLL" agenda "Tasks and rdv for today"
 	 ((org-agenda-category-filter-preset '("+MLL"))
 	  (org-agenda-span 1)
