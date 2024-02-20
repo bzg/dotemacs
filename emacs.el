@@ -452,7 +452,7 @@
 
 (setq org-export-with-broken-links t)
 (setq org-export-default-language "fr")
-(setq org-export-backends '(latex odt icalendar html ascii rss koma-letter))
+(setq org-export-backends '(latex odt icalendar html ascii koma-letter))
 (setq org-export-with-archived-trees nil)
 (setq org-export-with-drawers '("HIDE"))
 (setq org-export-with-section-numbers nil)
