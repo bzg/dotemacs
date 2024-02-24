@@ -250,7 +250,7 @@
 (setq org-refile-use-outline-path t)
 (setq org-refile-allow-creating-parent-nodes t)
 (setq org-refile-use-cache t)
-(setq org-element-use-cache nil)
+(setq org-element-use-cache t)
 (setq org-return-follows-link t)
 (setq org-reverse-note-order t)
 (setq org-scheduled-past-days 100)
@@ -1469,13 +1469,13 @@
 
 (setq inf-clojure-generic-cmd "clojure")
 
-;; (use-package cider
-;;   :defer t
-;;   :config
-;;   (add-hook 'cider-repl-mode-hook 'company-mode)
-;;   (setq cider-use-fringe-indicators nil)
-;;   (setq cider-repl-pop-to-buffer-on-connect nil)
-;;   (setq nrepl-hide-special-buffers t))
+(use-package cider
+  :defer t
+  :config
+  (add-hook 'cider-repl-mode-hook 'company-mode)
+  (setq cider-use-fringe-indicators nil)
+  (setq cider-repl-pop-to-buffer-on-connect nil)
+  (setq nrepl-hide-special-buffers t))
 
 ;; Jump to this variable or function at point
 (defun find-variable-or-function-at-point ()
