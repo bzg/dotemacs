@@ -1581,13 +1581,13 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 #+begin_src emacs-lisp
 (setq inf-clojure-generic-cmd "clojure")
 
-(use-package cider
-  :defer t
-  :config
-  (add-hook 'cider-repl-mode-hook 'company-mode)
-  (setq cider-use-fringe-indicators nil)
-  (setq cider-repl-pop-to-buffer-on-connect nil)
-  (setq nrepl-hide-special-buffers t))
+;; (use-package cider
+;;   :defer t
+;;   :config
+;;   (add-hook 'cider-repl-mode-hook 'company-mode)
+;;   (setq cider-use-fringe-indicators nil)
+;;   (setq cider-repl-pop-to-buffer-on-connect nil)
+;;   (setq nrepl-hide-special-buffers t))
 
 ;; Jump to this variable or function at point
 (defun find-variable-or-function-at-point ()
