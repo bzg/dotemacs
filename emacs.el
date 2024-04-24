@@ -250,7 +250,7 @@
 (setq org-refile-use-outline-path t)
 (setq org-refile-allow-creating-parent-nodes t)
 (setq org-refile-use-cache t)
-(setq org-element-use-cache t)
+(setq org-element-use-cache nil)
 (setq org-return-follows-link t)
 (setq org-reverse-note-order t)
 (setq org-scheduled-past-days 100)
@@ -636,9 +636,9 @@
 	   '(deadline-up todo-state-up priority-down))))
 
 	("A" "Write, Code, Mail" tags-todo
-         "+TAGS={Write\\|Code\\|Mail}+TODO={STRT\\|NEXT}")
+         "+TAGS={Write\\|Code\\|Mail}+TODO={STRT}")
 	("Z" "Read, Listen, View" tags-todo
-         "+TAGS={Read\\|Listen\\|View}+TODO={STRT\\|NEXT}")
+         "+TAGS={Read\\|Listen\\|View}+TODO={STRT}")
 
 	("r" . "Read")
 	("rr" "Read STRT/NEXT" tags-todo "+Read+TODO={STRT\\|NEXT}")
