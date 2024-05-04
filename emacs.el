@@ -1,3 +1,5 @@
+;;; emacs.el --- bzg's GNU Emacs configuration -*- lexical-binding: t; -*-
+
 ;; This is bzg's GNU Emacs configuration, refined over the years.
 ;; For more Emacs-related stuff, see https://bzg.fr/en/tags/emacs/
 ;;

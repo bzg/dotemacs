@@ -14,6 +14,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 * Package initialization
 
 #+begin_src emacs-lisp
+;;; emacs.el --- bzg's GNU Emacs configuration -*- lexical-binding: t; -*-
+
 ;; This is bzg's GNU Emacs configuration, refined over the years.
 ;; For more Emacs-related stuff, see https://bzg.fr/en/tags/emacs/
 ;;
