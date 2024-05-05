@@ -46,6 +46,8 @@
 (put 'narrow-to-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 (put 'set-goal-column 'disabled nil)
+(put 'list-threads 'disabled nil)
+(put 'scroll-left 'disabled nil)
 
 ;; Set `sentence-end-double-space' to nil
 (setq sentence-end-double-space nil)
