@@ -134,7 +134,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (display-time-mode 1)
 (tooltip-mode -1)
 (blink-cursor-mode -1)
-;; (scroll-bar-mode -1)
 (pixel-scroll-mode 1)
 (mouse-avoidance-mode 'cat-and-mouse)
 
@@ -174,15 +173,18 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
     (custom-set-faces
      `(default ((t (:height ,bzg-alt-font-size)))))))
 
+(add-to-list 'custom-theme-load-path "~/install/git/vxid-theme/")
+(load-theme 'vxid)
+
 (global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
 (global-set-key (kbd "C-²") 'follow-delete-other-windows-and-split)
-(global-set-key (kbd "C-<dead-circumflex>") (lambda () (interactive) (load-theme 'doom-nord)))
 (global-set-key (kbd "<f10>") #'bzg-toggle-fringe-width)
 (global-set-key (kbd "<f11>") #'bzg-toggle-browser)
 (global-set-key (kbd "<f12>") #'global-hl-line-mode)
 (global-set-key (kbd "M-<f12>") #'global-highlight-thing-mode)
+
 ;; Org agenda view keybodings
 (global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "[")))
 (global-set-key (kbd "C-M-!") (lambda () (interactive) (org-agenda nil "{")))
@@ -240,7 +242,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 #+end_src
 
 * Org
-
 ** Org basics
 
 #+begin_src emacs-lisp
@@ -289,7 +290,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-refile-use-outline-path t)
 (setq org-refile-allow-creating-parent-nodes t)
 (setq org-refile-use-cache t)
-(setq org-element-use-cache t)
+(setq org-element-use-cache nil)
 (setq org-return-follows-link t)
 (setq org-reverse-note-order t)
 (setq org-scheduled-past-days 100)
@@ -1404,7 +1405,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (add-hook 'org-mode-hook (lambda () (electric-indent-mode 0)))
 #+end_src
 
-*** ERC
+*** COMMENT ERC
 
 #+begin_src emacs-lisp
 (use-package erc
@@ -1580,9 +1581,27 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (advice-add 'split-window-right :before (lambda () (interactive) (bzg-big-fringe-mode 0)))
 #+end_src
 
+*** Jump to this variable or function at point
+
+#+begin_src emacs-lisp
+(defun find-variable-or-function-at-point ()
+  (interactive)
+  (or (find-variable-at-point)
+      (find-function-at-point)
+      (message "No variable or function at point.")))
+
+(global-set-key (kbd "C-,") 'find-variable-or-function-at-point)
+#+end_src
+
 *** ELisp and Clojure initialization
 
 #+begin_src emacs-lisp
+;; Paredit initialization
+(use-package paredit
+  :config
+  (define-key paredit-mode-map (kbd "C-M-w") 'sp-copy-sexp))
+
+;; Clojure initialization
 (setq inf-clojure-generic-cmd "clojure")
 
 (use-package cider
@@ -1593,56 +1612,30 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
   (setq cider-repl-pop-to-buffer-on-connect nil)
   (setq nrepl-hide-special-buffers t))
 
-;; Jump to this variable or function at point
-(defun find-variable-or-function-at-point ()
-  (interactive)
-  (or (find-variable-at-point)
-      (find-function-at-point)
-      (message "No variable or function at point.")))
-
-(global-set-key (kbd "C-,") 'find-variable-or-function-at-point)
-
-(use-package paredit
-  :config
-  (define-key paredit-mode-map (kbd "C-M-w") 'sp-copy-sexp))
-
-;; Clojure initialization
 (use-package clojure-mode
-  :defer t
   :config
+  (require 'flycheck-clj-kondo)
+  (setq clojure-align-forms-automatically t)
   (add-hook 'clojure-mode-hook 'company-mode)
   (add-hook 'clojure-mode-hook 'origami-mode)
   (add-hook 'clojure-mode-hook 'paredit-mode)
-  ;; (add-hook 'clojure-mode-hook 'lispy-mode)
+  (add-hook 'clojure-mode-hook 'clj-refactor-mode)
   (add-hook 'clojure-mode-hook 'aggressive-indent-mode))
-  ;; (add-hook 'clojure-mode-hook 'clj-refactor-mode)
+
+(use-package clj-refactor
+  :defer t
+  :config
+  (setq clojure-thread-all-but-last t)
+  (define-key clj-refactor-map "\C-ctf" #'clojure-thread-first-all)
+  (define-key clj-refactor-map "\C-ctl" #'clojure-thread-last-all)
+  (define-key clj-refactor-map "\C-cu" #'clojure-unwind)
+  (define-key clj-refactor-map "\C-cU" #'clojure-unwind-all))
 
 ;; Emacs Lisp initialization
-(setq clojure-align-forms-automatically t)
 (add-hook 'emacs-lisp-mode-hook 'company-mode)
 (add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
-;; (add-hook 'emacs-lisp-mode-hook 'lispy-mode)
 (add-hook 'emacs-lisp-mode-hook 'origami-mode)
-
-;; (use-package clj-refactor
-;;   :defer t
-;;   :config
-;;   (setq clojure-thread-all-but-last t)
-;;   (define-key clj-refactor-map "\C-ctf" #'clojure-thread-first-all)
-;;   (define-key clj-refactor-map "\C-ctl" #'clojure-thread-last-all)
-;;   (define-key clj-refactor-map "\C-cu" #'clojure-unwind)
-;;   (define-key clj-refactor-map "\C-cU" #'clojure-unwind-all))
-
-;; First install the package:
-(use-package flycheck-clj-kondo)
-
-;; then install the checker as soon as `clojure-mode' is loaded
-(use-package clojure-mode
-  :config
-  (require 'flycheck-clj-kondo))
-
-(add-to-list 'auto-mode-alist '("\\.arc\\'" . lisp-mode))
 #+end_src
 
 *** backward-kill-word-noring

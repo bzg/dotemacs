@@ -110,7 +110,6 @@
 (display-time-mode 1)
 (tooltip-mode -1)
 (blink-cursor-mode -1)
-;; (scroll-bar-mode -1)
 (pixel-scroll-mode 1)
 (mouse-avoidance-mode 'cat-and-mouse)
 
@@ -146,15 +145,18 @@
     (custom-set-faces
      `(default ((t (:height ,bzg-alt-font-size)))))))
 
+(add-to-list 'custom-theme-load-path "~/install/git/vxid-theme/")
+(load-theme 'vxid)
+
 (global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
 (global-set-key (kbd "C-²") 'follow-delete-other-windows-and-split)
-(global-set-key (kbd "C-<dead-circumflex>") (lambda () (interactive) (load-theme 'doom-nord)))
 (global-set-key (kbd "<f10>") #'bzg-toggle-fringe-width)
 (global-set-key (kbd "<f11>") #'bzg-toggle-browser)
 (global-set-key (kbd "<f12>") #'global-hl-line-mode)
 (global-set-key (kbd "M-<f12>") #'global-highlight-thing-mode)
+
 ;; Org agenda view keybodings
 (global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "[")))
 (global-set-key (kbd "C-M-!") (lambda () (interactive) (org-agenda nil "{")))
@@ -250,7 +252,7 @@
 (setq org-log-note-headings
       '((done . "CLOSING NOTE %t") (state . "State %-12s %t") (clock-out . "")))
 (setq org-refile-targets '((org-agenda-files . (:maxlevel . 3))
-			   (("~/org/mll-todo/todo.org") . (:maxlevel . 2))
+			   (("~/org/mll-todo/todo.org") . (:maxlevel . 1))
 			   (("~/org/libre.org") . (:maxlevel . 1))))
 (setq org-refile-use-outline-path t)
 (setq org-refile-allow-creating-parent-nodes t)
@@ -1314,81 +1316,6 @@
 (add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
 (add-hook 'org-mode-hook (lambda () (electric-indent-mode 0)))
 
-(use-package erc
-  :config
-  (require 'erc-services)
-
-  ;; highlight notifications in ERC
-  (font-lock-add-keywords
-   'erc-mode
-   '((";;.*\\(bzg2\\|éducation\\|clojure\\|emacs\\|orgmode\\)"
-      (1 bzg-todo-comment-face t))))
-
-  (setq erc-modules '(autoaway autojoin irccontrols log netsplit noncommands
-			       notify pcomplete completion ring services stamp
-			       track truncate)
-	erc-keywords nil
-	erc-prompt-for-nickserv-password nil
-	erc-prompt-for-password nil
-	erc-timestamp-format "%s "
-	erc-hide-timestamps t
-	erc-log-channels t
-	erc-log-write-after-insert t
-	erc-log-insert-log-on-open nil
-	erc-save-buffer-on-part t
-	erc-input-line-position 0
-	erc-fill-function 'erc-fill-static
-	erc-fill-static-center 0
-	erc-fill-column 130
-	erc-insert-timestamp-function 'erc-insert-timestamp-left
-	erc-insert-away-timestamp-function 'erc-insert-timestamp-left
-	erc-whowas-on-nosuchnick t
-	erc-public-away-p nil
-	erc-save-buffer-on-part t
-	erc-echo-notice-always-hook '(erc-echo-notice-in-minibuffer)
-	erc-auto-set-away nil
-	erc-autoaway-message "%i seconds out..."
-	erc-away-nickname "bzg"
-	erc-kill-queries-on-quit nil
-	erc-kill-server-buffer-on-quit t
-	erc-log-channels-directory "~/.erc_log"
-	erc-enable-logging t
-	erc-query-on-unjoined-chan-privmsg t
-	erc-auto-query 'window-noselect
-	erc-server-coding-system '(utf-8 . utf-8)
-	erc-encoding-coding-alist '(("#emacs" . utf-8)
-				    ("&bitlbee" . utf-8)))
-
-  (add-hook 'erc-mode-hook
-	    #'(lambda ()
-		(auto-fill-mode -1)
-		(erc-completion-mode 1)
-		(erc-ring-mode 1)
-		(erc-log-mode 1)
-		(erc-netsplit-mode 1)
-		(erc-button-mode -1)
-		(erc-match-mode 1)
-		(erc-autojoin-mode 1)
-		(erc-nickserv-mode 1)
-		(erc-timestamp-mode 1)
-		(erc-services-mode 1)))
-
-  (defun erc-notify-on-msg (msg)
-    (if (string-match "bzg:" msg)
-	(shell-command (concat "notify-send \"" msg "\""))))
-
-  (add-hook 'erc-insert-pre-hook 'erc-notify-on-msg)
-
-  (defun bzg-erc-connect-libera ()
-    "Connect to Libera server with ERC."
-    (interactive)
-    (erc-ssl :server "irc.libera.chat"
-	     :port 6697
-	     :nick "bzg"
-	     :full-name "Bastien"))
-
-  (require 'tls))
-
 (use-package eww
   :defer t
   :config
@@ -1471,6 +1398,20 @@
 (advice-add 'split-window-horizontally :before (lambda () (interactive) (bzg-big-fringe-mode 0)))
 (advice-add 'split-window-right :before (lambda () (interactive) (bzg-big-fringe-mode 0)))
 
+(defun find-variable-or-function-at-point ()
+  (interactive)
+  (or (find-variable-at-point)
+      (find-function-at-point)
+      (message "No variable or function at point.")))
+
+(global-set-key (kbd "C-,") 'find-variable-or-function-at-point)
+
+;; Paredit initialization
+(use-package paredit
+  :config
+  (define-key paredit-mode-map (kbd "C-M-w") 'sp-copy-sexp))
+
+;; Clojure initialization
 (setq inf-clojure-generic-cmd "clojure")
 
 (use-package cider
@@ -1481,56 +1422,30 @@
   (setq cider-repl-pop-to-buffer-on-connect nil)
   (setq nrepl-hide-special-buffers t))
 
-;; Jump to this variable or function at point
-(defun find-variable-or-function-at-point ()
-  (interactive)
-  (or (find-variable-at-point)
-      (find-function-at-point)
-      (message "No variable or function at point.")))
-
-(global-set-key (kbd "C-,") 'find-variable-or-function-at-point)
-
-(use-package paredit
-  :config
-  (define-key paredit-mode-map (kbd "C-M-w") 'sp-copy-sexp))
-
-;; Clojure initialization
 (use-package clojure-mode
-  :defer t
   :config
+  (require 'flycheck-clj-kondo)
+  (setq clojure-align-forms-automatically t)
   (add-hook 'clojure-mode-hook 'company-mode)
   (add-hook 'clojure-mode-hook 'origami-mode)
   (add-hook 'clojure-mode-hook 'paredit-mode)
-  ;; (add-hook 'clojure-mode-hook 'lispy-mode)
+  (add-hook 'clojure-mode-hook 'clj-refactor-mode)
   (add-hook 'clojure-mode-hook 'aggressive-indent-mode))
-  ;; (add-hook 'clojure-mode-hook 'clj-refactor-mode)
+
+(use-package clj-refactor
+  :defer t
+  :config
+  (setq clojure-thread-all-but-last t)
+  (define-key clj-refactor-map "\C-ctf" #'clojure-thread-first-all)
+  (define-key clj-refactor-map "\C-ctl" #'clojure-thread-last-all)
+  (define-key clj-refactor-map "\C-cu" #'clojure-unwind)
+  (define-key clj-refactor-map "\C-cU" #'clojure-unwind-all))
 
 ;; Emacs Lisp initialization
-(setq clojure-align-forms-automatically t)
 (add-hook 'emacs-lisp-mode-hook 'company-mode)
 (add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
-;; (add-hook 'emacs-lisp-mode-hook 'lispy-mode)
 (add-hook 'emacs-lisp-mode-hook 'origami-mode)
-
-;; (use-package clj-refactor
-;;   :defer t
-;;   :config
-;;   (setq clojure-thread-all-but-last t)
-;;   (define-key clj-refactor-map "\C-ctf" #'clojure-thread-first-all)
-;;   (define-key clj-refactor-map "\C-ctl" #'clojure-thread-last-all)
-;;   (define-key clj-refactor-map "\C-cu" #'clojure-unwind)
-;;   (define-key clj-refactor-map "\C-cU" #'clojure-unwind-all))
-
-;; First install the package:
-(use-package flycheck-clj-kondo)
-
-;; then install the checker as soon as `clojure-mode' is loaded
-(use-package clojure-mode
-  :config
-  (require 'flycheck-clj-kondo))
-
-(add-to-list 'auto-mode-alist '("\\.arc\\'" . lisp-mode))
 
 ;; By default, killing a word backward will put it in the ring, I don't want this
 (defun backward-kill-word-noring (arg)
