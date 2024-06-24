@@ -1421,7 +1421,7 @@
   (add-hook 'clojure-mode-hook 'company-mode)
   (add-hook 'clojure-mode-hook 'origami-mode)
   (add-hook 'clojure-mode-hook 'paredit-mode)
-  (add-hook 'clojure-mode-hook 'clj-refactor-mode)
+  ;; (add-hook 'clojure-mode-hook 'clj-refactor-mode)
   (add-hook 'clojure-mode-hook 'aggressive-indent-mode))
 
 (use-package clj-refactor
