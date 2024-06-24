@@ -1414,14 +1414,6 @@
 ;; Clojure initialization
 (setq inf-clojure-generic-cmd "clojure")
 
-(use-package cider
-  :defer t
-  :config
-  (add-hook 'cider-repl-mode-hook 'company-mode)
-  (setq cider-use-fringe-indicators nil)
-  (setq cider-repl-pop-to-buffer-on-connect nil)
-  (setq nrepl-hide-special-buffers t))
-
 (use-package clojure-mode
   :config
   (require 'flycheck-clj-kondo)
@@ -1435,11 +1427,19 @@
 (use-package clj-refactor
   :defer t
   :config
-  (setq clojure-thread-all-but-last t)
+  ;; (setq clojure-thread-all-but-last t)
   (define-key clj-refactor-map "\C-ctf" #'clojure-thread-first-all)
   (define-key clj-refactor-map "\C-ctl" #'clojure-thread-last-all)
   (define-key clj-refactor-map "\C-cu" #'clojure-unwind)
   (define-key clj-refactor-map "\C-cU" #'clojure-unwind-all))
+
+(use-package cider
+  :defer t
+  :config
+  (add-hook 'cider-repl-mode-hook 'company-mode)
+  (setq cider-use-fringe-indicators nil)
+  (setq cider-repl-pop-to-buffer-on-connect nil)
+  (setq nrepl-hide-special-buffers t))
 
 ;; Emacs Lisp initialization
 (add-hook 'emacs-lisp-mode-hook 'company-mode)

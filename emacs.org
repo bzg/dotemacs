@@ -1604,14 +1604,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ;; Clojure initialization
 (setq inf-clojure-generic-cmd "clojure")
 
-(use-package cider
-  :defer t
-  :config
-  (add-hook 'cider-repl-mode-hook 'company-mode)
-  (setq cider-use-fringe-indicators nil)
-  (setq cider-repl-pop-to-buffer-on-connect nil)
-  (setq nrepl-hide-special-buffers t))
-
 (use-package clojure-mode
   :config
   (require 'flycheck-clj-kondo)
@@ -1625,11 +1617,19 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (use-package clj-refactor
   :defer t
   :config
-  (setq clojure-thread-all-but-last t)
+  ;; (setq clojure-thread-all-but-last t)
   (define-key clj-refactor-map "\C-ctf" #'clojure-thread-first-all)
   (define-key clj-refactor-map "\C-ctl" #'clojure-thread-last-all)
   (define-key clj-refactor-map "\C-cu" #'clojure-unwind)
   (define-key clj-refactor-map "\C-cU" #'clojure-unwind-all))
+
+(use-package cider
+  :defer t
+  :config
+  (add-hook 'cider-repl-mode-hook 'company-mode)
+  (setq cider-use-fringe-indicators nil)
+  (setq cider-repl-pop-to-buffer-on-connect nil)
+  (setq nrepl-hide-special-buffers t))
 
 ;; Emacs Lisp initialization
 (add-hook 'emacs-lisp-mode-hook 'company-mode)
@@ -1813,16 +1813,6 @@ Use `winstack-push' and
 *** lsp-mode
 
 #+begin_src emacs-lisp
-(use-package lsp-mode
-  :commands lsp
-  :config
-  (add-to-list 'lsp-language-id-configuration '(clojure-mode . "clojure-mode"))
-  :init
-  (setq lsp-enable-indentation nil)
-  (add-hook 'clojure-mode-hook #'lsp)
-  (add-hook 'clojurec-mode-hook #'lsp)
-  (add-hook 'clojurescript-mode-hook #'lsp))
-
 (use-package lsp-ui
   :commands lsp-ui-mode)
 
