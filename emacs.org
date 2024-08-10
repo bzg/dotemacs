@@ -192,12 +192,12 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (global-set-key (kbd "C-M-*") (lambda () (interactive) (org-agenda nil "n?")))
 (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "d!")))
 (global-set-key (kbd "C-M-$") (lambda () (interactive) (org-agenda nil "d?")))
-(global-set-key (kbd "<f5>") (lambda () (interactive) (org-agenda nil "cc")))
-(global-set-key (kbd "M-<f5>") (lambda () (interactive) (org-agenda nil "ct")))
+(global-set-key (kbd "<f5>") (lambda () (interactive) (org-agenda nil "rr")))
+(global-set-key (kbd "M-<f5>") (lambda () (interactive) (org-agenda nil "rt")))
 (global-set-key (kbd "<f6>") (lambda () (interactive) (org-agenda nil "ww")))
 (global-set-key (kbd "M-<f6>") (lambda () (interactive) (org-agenda nil "wt")))
-(global-set-key (kbd "<f7>") (lambda () (interactive) (org-agenda nil "rr")))
-(global-set-key (kbd "M-<f7>") (lambda () (interactive) (org-agenda nil "rt")))
+(global-set-key (kbd "<f7>") (lambda () (interactive) (org-agenda nil "cc")))
+(global-set-key (kbd "M-<f7>") (lambda () (interactive) (org-agenda nil "ct")))
 (global-set-key (kbd "<f8>") (lambda () (interactive) (org-agenda nil "nn")))
 (global-set-key (kbd "M-<f8>") (lambda () (interactive) (org-agenda nil "tt")))
 (global-set-key (kbd "<f9>") (lambda () (interactive) (org-agenda nil "@")))
@@ -414,25 +414,16 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n"
 	 :prepend t :immediate-finish t)
 
-        ("w" "Mail reminder" entry (file+headline "~/org/bzg.org" "Attic")
-	 "* WAIT Relancer %:to: [[%L][%:subject]] :Mail:\n  SCHEDULED: %^t\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n")
-
 	("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
 	 "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
 	("R" "RDV MLL" entry (file+headline "~/org/rdv-mll.org" "RDV MLL")
 	 "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
-	("o" "Org" entry (file+headline "~/org/bzg.org" "Org-mode")
+	("o" "Org" entry (file+headline "~/org/bzg.org" "Org")
 	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n" :prepend t)
 
-	("O" "Org's buffer" entry (file+headline "~/org/bzg.org" "Buffer") ;; Org-mode/Buffer
-	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n" :prepend t)
-
-	("m" "MLL" entry (file+headline "~/org/bzg.org" "Mission")
-	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
-
-	("M" "ELL" entry (file+headline "~/org/mll-todo/todo.org" "Bastien") ;; MLL/Attic
+	("m" "MLL" entry (file+headline "~/org/bzg.org" "MLL")
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
 
 	("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
