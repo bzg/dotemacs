@@ -248,7 +248,8 @@
 (setq org-hide-macro-markers t)
 (setq org-link-frame-setup '((gnus . gnus) (file . find-file-other-window)))
 (setq org-link-mailto-program '(browse-url-mail "mailto:%a?subject=%s"))
-(setq org-log-into-drawer "LOGBOOK")
+(setq org-log-done nil)
+(setq org-log-into-drawer nil)
 (setq org-log-note-headings
       '((done . "CLOSING NOTE %t") (state . "State %-12s %t") (clock-out . "")))
 (setq org-refile-targets '((org-agenda-files . (:maxlevel . 3))
@@ -545,7 +546,7 @@
 	 ((org-agenda-sorting-strategy '(timestamp-up))))
 
 	("[" "Today's tasks for MLL" agenda "Tasks and rdv for today"
-	 ((org-agenda-category-filter-preset '("+MLL" "+ELL"))
+	 ((org-agenda-category-filter-preset '("+MLL"))
 	  (org-agenda-span 1)
 	  (org-agenda-files '("~/org/bzg.org" "~/org/mll-todo/todo.org"))
 	  (org-agenda-sorting-strategy
@@ -563,12 +564,12 @@
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up  priority-down time-up))))
 	("n!" "STRT/NEXT MLL" tags-todo "TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("+MLL" "+ELL"))
+	 ((org-agenda-category-filter-preset '("+MLL"))
 	  (org-agenda-files '("~/org/bzg.org" "~/org/mll-todo/todo.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up priority-down time-up))))
-	("n?" "STRT/NEXT -MLL/-ORG" tags-todo "TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("-MLL" "-ORG"))
+	("n?" "STRT/NEXT -MLL" tags-todo "TODO={STRT\\|NEXT}"
+	 ((org-agenda-category-filter-preset '("-MLL"))
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up  priority-down time-up))))
@@ -583,12 +584,12 @@
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up  priority-down time-up))))
 	("t!" "TODO MLL" tags-todo "TODO={TODO}"
-	 ((org-agenda-category-filter-preset '("+MLL" "+ELL"))
+	 ((org-agenda-category-filter-preset '("+MLL"))
 	  (org-agenda-files '("~/org/bzg.org" "~/org/mll-todo/todo.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up priority-down time-up))))
-	("t?" "TODO -MLL/-ORG" tags-todo "TODO={TODO}"
-	 ((org-agenda-category-filter-preset '("-MLL" "-ORG"))
+	("t?" "TODO -MLL" tags-todo "TODO={TODO}"
+	 ((org-agenda-category-filter-preset '("-MLL"))
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up  priority-down time-up))))
@@ -612,14 +613,14 @@
 	   '(deadline-up todo-state-up priority-down))))
 	("d!" "Deadlines MLL" agenda "Past/upcoming work deadlines"
 	 ((org-agenda-span 1)
-	  (org-agenda-category-filter-preset '("+MLL" "+ELL"))
+	  (org-agenda-category-filter-preset '("+MLL"))
 	  (org-deadline-warning-days 60)
 	  (org-agenda-entry-types '(:deadline))
 	  (org-agenda-sorting-strategy
 	   '(deadline-up todo-state-up priority-down))))
-	("d?" "Deadlines -MLL/-ORG" agenda "Past/upcoming non-work deadlines"
+	("d?" "Deadlines -MLL" agenda "Past/upcoming non-work deadlines"
 	 ((org-agenda-span 1)
-	  (org-agenda-category-filter-preset '("-MLL" "-ORG"))
+	  (org-agenda-category-filter-preset '("-MLL"))
 	  (org-deadline-warning-days 60)
 	  (org-agenda-entry-types '(:deadline))
 	  (org-agenda-sorting-strategy
@@ -641,9 +642,9 @@
 	("rr" "Read STRT/NEXT" tags-todo "+Read+TODO={STRT\\|NEXT}")
 	("rt" "Read TODO" tags-todo "+Read+TODO={TODO}")
 	("r!" "Read MLL" tags-todo "+Read+TODO={STRT\\|NEXT}"
-         ((org-agenda-category-filter-preset '("+MLL" "+ELL"))))
-	("r?" "Read -MLL/-ORG" tags-todo "+Read+TODO={STRT\\|NEXT}"
-         ((org-agenda-category-filter-preset '("-MLL" "-ORG"))))
+         ((org-agenda-category-filter-preset '("+MLL"))))
+	("r?" "Read -MLL" tags-todo "+Read+TODO={STRT\\|NEXT}"
+         ((org-agenda-category-filter-preset '("-MLL"))))
 	("r/" "Read (libre)" tags-todo "+Read+TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
@@ -651,9 +652,9 @@
 	("vv" "View STRT/NEXT" tags-todo "+View+TODO={STRT\\|NEXT}")
 	("vt" "View TODO" tags-todo "+View+TODO={TODO}")
 	("v!" "View MLL" tags-todo "+View+TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("+MLL" "+ELL"))))
-	("v?" "View -MLL/-ORG" tags-todo "+View+TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("-MLL" "-ORG"))))
+	 ((org-agenda-category-filter-preset '("+MLL"))))
+	("v?" "View -MLL" tags-todo "+View+TODO={STRT\\|NEXT}"
+	 ((org-agenda-category-filter-preset '("-MLL"))))
 	("v/" "View (libre)" tags-todo "+View+TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
@@ -661,9 +662,9 @@
 	("ll" "Listen STRT/NEXT" tags-todo "+Listen+TODO={STRT\\|NEXT}")
 	("lt" "Listen TODO" tags-todo "+Listen+TODO={TODO}")
 	("l!" "Listen MLL" tags-todo "+Listen+TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("+MLL" "+ELL"))))
-	("l?" "Listen -MLL/-ORG" tags-todo "+Listen+TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("-MLL" "-ORG"))))
+	 ((org-agenda-category-filter-preset '("+MLL"))))
+	("l?" "Listen -MLL" tags-todo "+Listen+TODO={STRT\\|NEXT}"
+	 ((org-agenda-category-filter-preset '("-MLL"))))
 	("l/" "Listen (libre)" tags-todo "+Listen+TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
@@ -671,9 +672,9 @@
 	("ww" "Write STRT/NEXT" tags-todo "+Write+TODO={STRT\\|NEXT}")
 	("wt" "Write TODO" tags-todo "+Write+TODO={TODO}")
 	("w!" "Write MLL" tags-todo "+Write+TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("+MLL" "+ELL"))))
-	("w?" "Write -MLL/-ORG" tags-todo "+Write+TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("-MLL" "-ORG"))))
+	 ((org-agenda-category-filter-preset '("+MLL"))))
+	("w?" "Write -MLL" tags-todo "+Write+TODO={STRT\\|NEXT}"
+	 ((org-agenda-category-filter-preset '("-MLL"))))
 	("w/" "Write (libre)" tags-todo "+Write+TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
@@ -681,9 +682,9 @@
 	("cc" "Code STRT/NEXT" tags-todo "+Code+TODO={STRT\\|NEXT}")
 	("ct" "Code TODO" tags-todo "+Code+TODO={TODO}")
 	("c!" "Code MLL" tags-todo "+Code+TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("+MLL" "+ELL"))))
-	("c?" "Code -MLL/-ORG" tags-todo "+Code+TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("-MLL" "-ORG"))))
+	 ((org-agenda-category-filter-preset '("+MLL"))))
+	("c?" "Code -MLL" tags-todo "+Code+TODO={STRT\\|NEXT}"
+	 ((org-agenda-category-filter-preset '("-MLL"))))
 	("c!" "Code (libre)" tags-todo "+Code+TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 	))
