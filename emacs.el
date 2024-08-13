@@ -249,7 +249,7 @@
 (setq org-link-frame-setup '((gnus . gnus) (file . find-file-other-window)))
 (setq org-link-mailto-program '(browse-url-mail "mailto:%a?subject=%s"))
 (setq org-log-done nil)
-(setq org-log-into-drawer nil)
+(setq org-log-into-drawer t)
 (setq org-log-note-headings
       '((done . "CLOSING NOTE %t") (state . "State %-12s %t") (clock-out . "")))
 (setq org-refile-targets '((org-agenda-files . (:maxlevel . 3))
@@ -491,7 +491,7 @@
 (setq org-agenda-diary-file "/home/bzg/org/rdv.org")
 (setq org-agenda-dim-blocked-tasks t)
 (setq org-agenda-entry-text-maxlines 10)
-(setq org-agenda-files '("~/org/rdv.org" "~/org/rdv-mll.org" "~/org/bzg.org" "~/org/mll-todo/todo.org"))
+(setq org-agenda-files '("~/org/rdv.org" "~/org/rdv-mll.org" "~/org/bzg.org"))
 (setq org-agenda-prefix-format
       '((agenda . " %i %-12:c%?-14t%s")
 	(timeline . "  % s")
@@ -548,7 +548,7 @@
 	("[" "Today's tasks for MLL" agenda "Tasks and rdv for today"
 	 ((org-agenda-category-filter-preset '("+MLL"))
 	  (org-agenda-span 1)
-	  (org-agenda-files '("~/org/bzg.org" "~/org/mll-todo/todo.org"))
+	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(deadline-up todo-state-up priority-down))))
 	("{" "Today's tasks for non-MLL" agenda "Tasks and rdv for today"
@@ -560,12 +560,12 @@
 
 	("n" . "What's next?")
 	("nn" "STRT/NEXT all" tags-todo "TODO={STRT\\|NEXT}"
-	 ((org-agenda-files '("~/org/bzg.org" "~/org/mll-todo/todo.org"))
+	 ((org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up  priority-down time-up))))
 	("n!" "STRT/NEXT MLL" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("+MLL"))
-	  (org-agenda-files '("~/org/bzg.org" "~/org/mll-todo/todo.org"))
+	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up priority-down time-up))))
 	("n?" "STRT/NEXT -MLL" tags-todo "TODO={STRT\\|NEXT}"
@@ -580,12 +580,12 @@
 
 	("t" . "What's next to do?")
 	("tt" "TODO all" tags-todo "TODO={TODO}"
-	 ((org-agenda-files '("~/org/bzg.org" "~/org/mll-todo/todo.org"))
+	 ((org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up  priority-down time-up))))
 	("t!" "TODO MLL" tags-todo "TODO={TODO}"
 	 ((org-agenda-category-filter-preset '("+MLL"))
-	  (org-agenda-files '("~/org/bzg.org" "~/org/mll-todo/todo.org"))
+	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up priority-down time-up))))
 	("t?" "TODO -MLL" tags-todo "TODO={TODO}"
