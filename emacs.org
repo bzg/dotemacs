@@ -191,6 +191,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "n!")))
 (global-set-key (kbd "C-M-*") (lambda () (interactive) (org-agenda nil "n?")))
 (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "d!")))
+(global-set-key (kbd "C-<dead-circumflex>") (lambda () (interactive) (org-agenda nil ":")))
 (global-set-key (kbd "C-M-$") (lambda () (interactive) (org-agenda nil "d?")))
 (global-set-key (kbd "<f5>") (lambda () (interactive) (org-agenda nil "rr")))
 (global-set-key (kbd "M-<f5>") (lambda () (interactive) (org-agenda nil "rt")))
@@ -201,7 +202,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (global-set-key (kbd "<f8>") (lambda () (interactive) (org-agenda nil "nn")))
 (global-set-key (kbd "M-<f8>") (lambda () (interactive) (org-agenda nil "tt")))
 (global-set-key (kbd "<f9>") (lambda () (interactive) (org-agenda nil "@")))
-(global-set-key (kbd "M-<f9>") (lambda () (interactive) (org-agenda nil ":")))
+(global-set-key (kbd "M-<f9>") (lambda () (interactive) (org-agenda nil "?")))
 (global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "$")))
 (global-set-key (kbd "C-%") (lambda () (interactive) (org-agenda nil "%")))
 (global-set-key (kbd "C-&") 'gnus)
@@ -653,7 +654,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	   '(todo-state-up priority-down time-up))))
 
 	(":" "Scheduled item work" agenda "Scheduled items"
-	 ((org-agenda-span 1)
+	 ((org-agenda-span 3)
 	  (org-agenda-entry-types '(:scheduled))
 	  (org-agenda-sorting-strategy
 	   '(scheduled-up todo-state-up priority-down))))
