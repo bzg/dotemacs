@@ -551,13 +551,13 @@
 	  (org-agenda-span 1)
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
-	   '(deadline-up todo-state-up priority-down))))
+	   '(scheduled-up deadline-up todo-state-up priority-down))))
 	("{" "Today's tasks for non-MLL" agenda "Tasks and rdv for today"
 	 ((org-agenda-category-filter-preset '("-MLL"))
 	  (org-agenda-span 1)
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
-	   '(deadline-up todo-state-up priority-down))))
+	   '(scheduled-up deadline-up todo-state-up priority-down))))
 
 	("n" . "What's next?")
 	("nn" "STRT/NEXT all" tags-todo "TODO={STRT\\|NEXT}"
