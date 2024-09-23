@@ -720,6 +720,7 @@
 	(regexp-opt '("bastien.guerry@free.fr"
 		      "bastien.guerry@data.gouv.fr"
 		      "bastien.guerry@code.gouv.fr"
+		      "bastien.guerry@mail.numerique.gouv.fr"
 		      "bzg@bzg.fr"
 		      "bzg@gnu.org"
 		      )))
