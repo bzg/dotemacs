@@ -12,12 +12,6 @@
 	("nongnu" . "http://elpa.nongnu.org/nongnu/")
 	("melpa" . "http://melpa.org/packages/")))
 
-;; Precompute activation actions to speed up startup
-(package-activate-all)
-
-;; Start server to use emacsclient
-(server-start)
-
 ;; Unset C-z which is bound to `suspend-frame' by default
 (global-unset-key (kbd "C-z"))
 
@@ -29,12 +23,10 @@
 ;; See https://orgmode.org/manual/Installation.html
 (add-to-list 'load-path "~/install/git/org-mode/lisp/")
 (add-to-list 'load-path "~/install/git/org-contrib/lisp/")
-(add-to-list 'load-path "~/install/git/org-caldav/")
 
 ;; Initialize my `exec-path' and `load-path' with custom paths
 (add-to-list 'exec-path "~/bin/")
 
-(setq Info-refill-paragraphs t)
 ;; Include org-mode and emacs local paths into Info
 (add-to-list 'Info-directory-list "~/install/git/org-mode/doc/")
 (add-to-list 'Info-directory-list "~/install/git/emacs/info/")
@@ -74,7 +66,6 @@
 ;; Stop polluting the directory with auto-saved files and backup
 (setq auto-save-default nil)
 (setq make-backup-files nil)
-(setq auto-save-list-file-prefix nil)
 
 ;; Well, it's more so that you know this option
 (setq kill-whole-line t)
@@ -84,8 +75,6 @@
 ;; Scrolling done right
 (setq scroll-error-top-bottom t)
 (setq focus-follows-mouse t)
-(setq recenter-positions '(top bottom middle))
-(setq view-read-only t)
 
 ;; Number of lines of continuity when scrolling by screenfulls
 (setq next-screen-context-lines 0)
@@ -93,30 +82,17 @@
 ;; Always use "y" for "yes"
 (fset 'yes-or-no-p 'y-or-n-p)
 
-(setq fill-column 72)
-(setq spell-command "aspell")
-(setq tab-always-indent 'always)
-(setq display-time-mail-string "#")
-(setq text-mode-hook '(turn-on-auto-fill text-mode-hook-identify))
-(setq max-lisp-eval-depth 10000)
-
-(setenv "EDITOR" "emacsclient")
-(setenv "CVS_RSH" "ssh")
-
 ;; Enabling and disabling some modes
 ;; Less is more - see https://bzg.fr/en/emacs-strip-tease/
-(show-paren-mode 1)
 (auto-insert-mode 1)
 (display-time-mode 1)
 (tooltip-mode -1)
 (blink-cursor-mode -1)
 (pixel-scroll-mode 1)
-(mouse-avoidance-mode 'cat-and-mouse)
 
 ;; Default Frame
 (setq initial-frame-alist
-      '((alpha . 85)
-	(left-margin-width . 10)
+      '((left-margin-width . 10)
 	(menu-bar-lines . 0)
 	(tool-bar-lines . 0)
 	(horizontal-scroll-bars . nil)
@@ -126,7 +102,7 @@
 (setq initial-scratch-message "")
 (setq initial-major-mode 'org-mode)
 (setq inhibit-startup-screen t)
-(setq inhibit-startup-echo-area-message "guerry")
+(setq inhibit-startup-echo-area-message t)
 (setq use-dialog-box nil)
 (setq default-frame-alist initial-frame-alist)
 (setq line-move-visual nil)
@@ -231,14 +207,11 @@
 (setq org-priority-start-cycle-with-default nil)
 (setq org-pretty-entities t)
 (setq org-fast-tag-selection-single-key 'expert)
-(setq org-fontify-done-headline t)
 (setq org-footnote-auto-label 'confirm)
 (setq org-footnote-auto-adjust t)
 (setq org-hide-emphasis-markers t)
 (setq org-hide-macro-markers t)
 (setq org-link-frame-setup '((gnus . gnus) (file . find-file-other-window)))
-(setq org-link-mailto-program '(browse-url-mail "mailto:%a?subject=%s"))
-(setq org-log-done nil)
 (setq org-log-into-drawer t)
 (setq org-log-note-headings
       '((done . "CLOSING NOTE %t") (state . "State %-12s %t") (clock-out . "")))
@@ -268,16 +241,12 @@
 	("Read" . ?r) ("View" . ?v) ("Listen" . ?l)
 	(:endgroup)
 	("Mail" . ?@) ("Print" . ?P) ("Buy" . ?b)))
-(setq org-tags-column -74)
 (setq org-todo-keywords '((type "STRT" "NEXT" "TODO" "WAIT" "|" "DONE" "DELEGATED" "CANCELED")))
 (setq org-todo-repeat-to-state t)
 (setq org-use-property-inheritance t)
 (setq org-use-sub-superscripts '{})
 (setq org-insert-heading-respect-content t)
-(setq org-id-method 'uuidgen)
-(setq org-combined-agenda-icalendar-file "~/org/bzg.ics")
 (setq org-confirm-babel-evaluate nil)
-(setq org-archive-default-command 'org-archive-to-archive-sibling)
 (setq org-id-uuid-program "uuidgen")
 (setq org-use-speed-commands
       (lambda nil
@@ -293,13 +262,9 @@
       '(("ggle" . "http://www.google.com/search?q=%s")
 	("gmap" . "http://maps.google.com/maps?q=%s")
 	("omap" . "http://nominatim.openstreetmap.org/search?q=%s&polygon=1")))
-
 (setq org-attach-id-dir "~/org/data/")
-(setq org-loop-over-headlines-in-active-region t)
-(setq org-create-formula-image-program 'dvipng) ;; imagemagick
 (setq org-allow-promoting-top-level-subtree t)
 (setq org-blank-before-new-entry '((heading . t) (plain-list-item . auto)))
-(setq org-crypt-key "Bastien Guerry")
 (setq org-enforce-todo-dependencies t)
 (setq org-fontify-whole-heading-line t)
 (setq org-file-apps
@@ -312,18 +277,15 @@
 (setq org-global-properties '(("Effort_ALL" . "0:10 0:30 1:00 1:24 2:00 3:30 7:00")))
 (setq org-cycle-include-plain-lists nil)
 (setq org-default-notes-file "~/org/notes.org")
-(setq org-directory "~/org/")
 (setq org-link-email-description-format "%c: %.50s")
 (setq org-support-shift-select t)
 (setq org-ellipsis "…")
 
 (org-clock-persistence-insinuate)
 
-(setq org-timer-default-timer 25)
 (setq org-clock-display-default-range 'thisweek)
 (setq org-clock-persist t)
 (setq org-clock-idle-time 60)
-(setq org-clock-history-length 35)
 (setq org-clock-in-resume t)
 (setq org-clock-out-remove-zero-time-clocks t)
 (setq org-clock-sound "~/Music/clock.wav")
@@ -413,13 +375,11 @@
 	(:tangle . "no")
 	(:padnewline . "yes")))
 
-(setq org-src-tab-acts-natively t)
 (setq org-edit-src-content-indentation 0)
 (setq org-babel-clojure-backend 'babashka)
 (setq org-link-elisp-confirm-function nil)
 (setq org-link-shell-confirm-function nil)
-(setq org-plantuml-jar-path "~/bin/plantuml.jar")
-(setq org-plantuml-jar-path (expand-file-name "/home/bzg/bin/plantuml.jar"))
+(setq org-plantuml-jar-path "/home/bzg/bin/plantuml.jar")
 (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
 (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
 
@@ -467,7 +427,6 @@
 	    "</tr>"))
 
 (setq org-html-head-include-default-style nil)
-(setq org-html-head-include-scripts nil)
 
 (add-to-list 'org-latex-packages-alist '("AUTO" "babel" t ("pdflatex")))
 
@@ -479,8 +438,6 @@
 (setq org-deadline-warning-days 3)
 (setq org-agenda-inhibit-startup t)
 (setq org-agenda-diary-file "/home/bzg/org/rdv.org")
-(setq org-agenda-dim-blocked-tasks t)
-(setq org-agenda-entry-text-maxlines 10)
 (setq org-agenda-files '("~/org/rdv.org" "~/org/rdv-mll.org" "~/org/bzg.org"))
 (setq org-agenda-prefix-format
       '((agenda . " %i %-12:c%?-14t%s")
@@ -492,7 +449,6 @@
 (setq org-agenda-restore-windows-after-quit t)
 (setq org-agenda-show-inherited-tags nil)
 (setq org-agenda-skip-deadline-if-done t)
-(setq org-agenda-skip-deadline-prewarning-if-scheduled nil)
 (setq org-agenda-skip-scheduled-if-done t)
 (setq org-agenda-skip-timestamp-if-done t)
 (setq org-agenda-sorting-strategy
@@ -503,7 +459,6 @@
 (setq org-agenda-deadline-faces
       '((1.0001 . org-warning)              ; due yesterday or before
 	(0.0    . org-upcoming-deadline)))  ; due today or later
-(setq org-agenda-loop-over-headlines-in-active-region t)
 
 ;; icalendar stuff
 (setq org-icalendar-include-todo 'all)
@@ -695,9 +650,9 @@
   :config
   (gnus-delay-initialize)
   (setq gnus-refer-thread-limit t)
-  (setq gnus-delay-default-delay "1d")
   (setq gnus-use-atomic-windows nil)
-  (setq gnus-always-read-dribble-file t)
+  ;; Test
+  ;; (setq gnus-always-read-dribble-file t)
   (setq nndraft-directory "~/News/drafts/")
   (setq nnmh-directory "~/News/drafts/")
   (setq nnfolder-directory "~/Mail/archive")
@@ -710,33 +665,13 @@
 		      "bastien.guerry@data.gouv.fr"
 		      "bastien.guerry@code.gouv.fr"
 		      "bastien.guerry@mail.numerique.gouv.fr"
+		      "bastien.guerry@numerique.gouv.fr"
 		      "bzg@bzg.fr"
 		      "bzg@gnu.org"
 		      )))
 
   (setq send-mail-function 'sendmail-send-it)
-
-  ;; (setq mail-header-separator "----")
   (setq mail-use-rfc822 t)
-
-  ;; Attachments
-  (setq mm-content-transfer-encoding-defaults
-	(quote
-	 (("text/x-patch" 8bit)
-	  ("text/.*" 8bit)
-	  ("message/rfc822" 8bit)
-	  ("application/emacs-lisp" 8bit)
-	  ("application/x-emacs-lisp" 8bit)
-	  ("application/x-patch" 8bit)
-	  (".*" base64))))
-
-  (setq mm-url-use-external nil)
-
-  (setq nnmail-extra-headers
-	'(X-Diary-Time-Zone X-Diary-Dow X-Diary-Year
-			    X-Diary-Month X-Diary-Dom
-			    X-Diary-Hour X-Diary-Minute
-			    To Newsgroups Cc))
 
   ;; Sources and methods
   (setq mail-sources nil
@@ -748,7 +683,8 @@
 		  (nnimap-stream ssl)
 		  (nnimap-expunge t))))
 
-  (setq gnus-check-new-newsgroups nil)
+  ;; Test
+  ;; (setq gnus-check-new-newsgroups nil)
 
   (add-hook 'gnus-exit-gnus-hook
 	    (lambda ()
@@ -756,50 +692,28 @@
 		  (with-current-buffer "bbdb" (save-buffer)))))
 
   (setq read-mail-command 'gnus
-	gnus-asynchronous t
 	gnus-directory "~/News/"
 	gnus-gcc-mark-as-read t
 	gnus-inhibit-startup-message t
 	gnus-interactive-catchup nil
 	gnus-interactive-exit nil
-	gnus-large-newsgroup 10000
 	gnus-no-groups-message ""
 	gnus-novice-user nil
-	nntp-nov-is-evil t
 	gnus-nov-is-evil t
-	gnus-play-startup-jingle nil
-	gnus-show-all-headers nil
-	gnus-use-bbdb t
-	gnus-use-correct-string-widths nil
 	gnus-use-cross-reference nil
 	gnus-verbose 6
 	mail-specify-envelope-from t
 	mail-envelope-from 'header
-	message-sendmail-envelope-from 'header
 	mail-user-agent 'gnus-user-agent
-	message-fill-column 70
 	message-kill-buffer-on-exit t
 	message-mail-user-agent 'gnus-user-agent
-	message-use-mail-followup-to nil
-	message-forward-as-mime t
-	nnimap-expiry-wait 'never
-	nnmail-crosspost nil
-	nnmail-expiry-target "nnml:expired"
-	nnmail-expiry-wait 'never
-	nnmail-split-methods 'nnmail-split-fancy
-	nnmail-treat-duplicates 'delete)
+	;; Test
+	;; message-forward-as-mime t
+	)
 
-  (setq gnus-subscribe-newsgroup-method 'gnus-subscribe-interactively
-	gnus-group-default-list-level 6 ; 3
-	gnus-level-default-subscribed 3
-	gnus-level-default-unsubscribed 7
-	gnus-level-subscribed 6
-	gnus-activate-level 6
-	gnus-level-unsubscribed 7)
+  (setq gnus-subscribe-newsgroup-method 'gnus-subscribe-interactively)
 
   (setq nnir-notmuch-remove-prefix "/home/bzg/Mail/Maildir")
-  (setq gnus-search-default-engines
-	'((nnimap . notmuch)))
 
   (defun my-gnus-message-archive-group (group-current)
     "Return prefered archive group."
@@ -814,9 +728,6 @@
      (t "nnimap+localhost:bzg@bzg.fr/Sent")))
 
   (setq gnus-message-archive-group 'my-gnus-message-archive-group)
-
-  ;; Delete mail backups older than 1 days
-  (setq mail-source-delete-incoming 1)
 
   ;; Group sorting
   (setq gnus-group-sort-function
@@ -838,8 +749,7 @@
 	message-draft-headers '(References From In-Reply-To)
 	;; message-generate-headers-first t ;; FIXME: Not needed Emacs>=29?
 	message-hidden-headers
-	'("^References:" "^Face:" "^X-Face:" "^X-Draft-From:" "^In-Reply-To:" "^Message-ID:")
-	)
+	'("^References:" "^Face:" "^X-Face:" "^X-Draft-From:" "^In-Reply-To:" "^Message-ID:"))
 
   ;; Sort mails
   (setq nnmail-split-abbrev-alist
@@ -854,12 +764,7 @@
   (setq gnus-simplify-subject-functions
 	'(gnus-simplify-subject-re gnus-simplify-whitespace))
 
-  ;; Display faces
-  (setq gnus-treat-display-face 'head)
-
   ;; Thread by Xref, not by subject
-  (setq gnus-thread-ignore-subject t)
-  (setq gnus-thread-hide-subtree nil)
   (setq gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references
 	gnus-thread-sort-functions '(gnus-thread-sort-by-number
 				     gnus-thread-sort-by-total-score
@@ -874,17 +779,16 @@
   ;; Dispkay a button for MIME parts
   (setq gnus-buttonized-mime-types '("multipart/alternative"))
 
-  ;; Use w3m to display HTML mails
-  (setq mm-text-html-renderer 'gnus-w3m
-	mm-inline-text-html-with-images t
-	mm-inline-large-images nil
-	mm-attachment-file-modes 420)
+  ;; Use w3m to display HTML mails?
+  ;; Test
+  ;; (setq mm-text-html-renderer 'gnus-w3m)
 
   ;; Avoid spaces when saving attachments
-  (setq mm-file-name-rewrite-functions
-	'(mm-file-name-trim-whitespace
-	  mm-file-name-collapse-whitespace
-	  mm-file-name-replace-whitespace))
+  ;; Test
+  ;; (setq mm-file-name-rewrite-functions
+  ;; 	'(mm-file-name-trim-whitespace
+  ;; 	  mm-file-name-collapse-whitespace
+  ;; 	  mm-file-name-replace-whitespace))
 
   (setq gnus-user-date-format-alist
 	'(((gnus-seconds-today) . "     %k:%M")
@@ -893,8 +797,6 @@
 	  ((gnus-seconds-month) . "%a  %d")
 	  ((gnus-seconds-year) . "%b %d")
 	  (t . "%b %d '%y")))
-
-  (setq gnus-topic-indent-level 3)
 
   ;; Add a time-stamp to a group when it is selected
   (add-hook 'gnus-select-group-hook 'gnus-group-set-timestamp)
@@ -920,7 +822,6 @@
   (setq gnus-use-adaptive-scoring '(word line)
 	gnus-adaptive-pretty-print t
         gnus-adaptive-word-length-limit 5
-	;; gnus-score-expiry-days 14
 	gnus-default-adaptive-score-alist
 	'((gnus-replied-mark (from 50) (subject 10))
           (gnus-read-mark (from 30) (subject 10))
@@ -997,11 +898,7 @@
 (use-package message
   :defer t
   :config
-  ;; Use electric completion in Gnus
-  (setq message-directory "~/Mail/")
-  ;; (setq message-mail-alias-type 'ecomplete)
   (setq message-send-mail-function 'message-send-mail-with-sendmail)
-  (setq message-cite-function 'message-cite-original-without-signature)
   (setq message-dont-reply-to-names gnus-ignored-from-addresses)
   (setq message-alternative-emails gnus-ignored-from-addresses))
 
@@ -1018,38 +915,15 @@
   (setq bbdb-allow-duplicates t)
   (setq bbdb-pop-up-window-size 5)
   (setq bbdb-ignore-redundant-mails t)
-  (setq bbdb-update-records-p 'create)
-  (setq bbdb-mua-update-interactive-p '(create . query))
-  (setq bbdb-mua-auto-update-p 'create)
 
   (add-hook 'mail-setup-hook 'bbdb-mail-aliases)
   (add-hook 'message-setup-hook 'bbdb-mail-aliases)
   (add-hook 'bbdb-notice-mail-hook 'bbdb-auto-notes)
   ;; (add-hook 'list-diary-entries-hook 'bbdb-include-anniversaries)
 
-  (setq bbdb-always-add-addresses t
-	bbdb-complete-name-allow-cycling t
-	bbdb-completion-display-record t
-	bbdb-default-area-code nil
-	bbdb-dwim-net-address-allow-redundancy t
-	bbdb-electric-p nil
-	bbdb-add-aka nil
+  (setq bbdb-add-aka nil
 	bbdb-add-name nil
 	bbdb-add-mails t
-	bbdb-new-nets-always-primary 'never
-	bbdb-north-american-phone-numbers-p nil
-	bbdb-offer-save 'auto
-	bbdb-pop-up-target-lines 3
-	bbdb-print-net 'primary
-	bbdb-print-require t
-	bbdb-use-pop-up nil
-	bbdb-user-mail-names gnus-ignored-from-addresses
-	bbdb/gnus-split-crosspost-default nil
-	bbdb/gnus-split-default-group nil
-	bbdb/gnus-split-myaddr-regexp gnus-ignored-from-addresses
-	bbdb/gnus-split-nomatch-function nil
-	bbdb/gnus-summary-known-poster-mark "+"
-	bbdb/gnus-summary-mark-known-posters t
 	bbdb-ignore-message-alist '(("Newsgroup" . ".*")))
 
   (defalias 'bbdb-y-or-n-p #'(lambda (prompt) t))
@@ -1112,10 +986,11 @@
 	   "Fête des mères")))
 
   (setq calendar-date-style 'european
-	calendar-holidays (append french-holiday)
 	calendar-mark-holidays-flag t
 	calendar-week-start-day 1
-	calendar-mark-diary-entries-flag nil))
+	;; Test
+	;; calendar-mark-diary-entries-flag t
+	))
 
 ;; notmuch configuration
 (use-package notmuch
@@ -1206,7 +1081,6 @@
 (setq dired-listing-switches "-l")
 (setq dired-dwim-target t)
 (setq dired-maybe-use-globstar t)
-(setq dired-omit-mode nil)
 (setq dired-recursive-copies 'always)
 (setq dired-recursive-deletes 'always)
 (setq delete-old-versions t)
@@ -1229,8 +1103,7 @@
 (use-package whitespace
   :defer t
   :config
-  (add-to-list 'whitespace-style 'lines-tail)
-  (setq whitespace-line-column 80))
+  (add-to-list 'whitespace-style 'lines-tail))
 
 (use-package ibuffer
   :defer t
@@ -1461,8 +1334,7 @@
 ;; (use-package forge :after magit)
 
 ;; Use ugrep
-(setq-default xref-search-program 'ugrep)
-(setq-default grep-template "ugrep --color=always -0Iinr -e <R>")
+(setq xref-search-program 'ugrep)
 
 ;; Always follow symbolic links when editing
 (setq vc-follow-symlinks t)
@@ -1472,11 +1344,6 @@
 
 ;; Don't show bookmark line in the margin
 (setq bookmark-fringe-mark nil)
-
-;; Geiser
-(setq geiser-active-implementations '(guile racket))
-(setq geiser-scheme-implementation 'racket)
-(setq geiser-repl-startup-time 20000)
 
 ;; doc-view and eww/shr configuration
 (setq doc-view-continuous t)
