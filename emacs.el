@@ -132,7 +132,7 @@
 (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "d!")))
 (global-set-key (kbd "C-M-$") (lambda () (interactive) (org-agenda nil "d?")))
 (global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "$")))
-(global-set-key (kbd "C-%") (lambda () (interactive) (org-agenda nil "%")))
+(global-set-key (kbd "C-M-ù") (lambda () (interactive) (org-agenda nil "%")))
 
 ;; Other useful global keybindings
 (define-key global-map "\M-Q" 'unfill-paragraph)
@@ -651,8 +651,6 @@
   (gnus-delay-initialize)
   (setq gnus-refer-thread-limit t)
   (setq gnus-use-atomic-windows nil)
-  ;; Test
-  ;; (setq gnus-always-read-dribble-file t)
   (setq nndraft-directory "~/News/drafts/")
   (setq nnmh-directory "~/News/drafts/")
   (setq nnfolder-directory "~/Mail/archive")
@@ -683,9 +681,6 @@
 		  (nnimap-stream ssl)
 		  (nnimap-expunge t))))
 
-  ;; Test
-  ;; (setq gnus-check-new-newsgroups nil)
-
   (add-hook 'gnus-exit-gnus-hook
 	    (lambda ()
 	      (if (get-buffer "bbdb")
@@ -707,9 +702,7 @@
 	mail-user-agent 'gnus-user-agent
 	message-kill-buffer-on-exit t
 	message-mail-user-agent 'gnus-user-agent
-	;; Test
-	;; message-forward-as-mime t
-	)
+	message-forward-as-mime t)
 
   (setq gnus-subscribe-newsgroup-method 'gnus-subscribe-interactively)
 
@@ -778,17 +771,6 @@
 
   ;; Dispkay a button for MIME parts
   (setq gnus-buttonized-mime-types '("multipart/alternative"))
-
-  ;; Use w3m to display HTML mails?
-  ;; Test
-  ;; (setq mm-text-html-renderer 'gnus-w3m)
-
-  ;; Avoid spaces when saving attachments
-  ;; Test
-  ;; (setq mm-file-name-rewrite-functions
-  ;; 	'(mm-file-name-trim-whitespace
-  ;; 	  mm-file-name-collapse-whitespace
-  ;; 	  mm-file-name-replace-whitespace))
 
   (setq gnus-user-date-format-alist
 	'(((gnus-seconds-today) . "     %k:%M")
@@ -987,10 +969,7 @@
 
   (setq calendar-date-style 'european
 	calendar-mark-holidays-flag t
-	calendar-week-start-day 1
-	;; Test
-	;; calendar-mark-diary-entries-flag t
-	))
+	calendar-week-start-day 1))
 
 ;; notmuch configuration
 (use-package notmuch
