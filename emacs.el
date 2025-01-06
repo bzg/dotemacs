@@ -125,10 +125,10 @@
 (load-theme 'vxid)
 
 ;; Org agenda view keybindings
-(global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "[")))
-(global-set-key (kbd "C-M-!") (lambda () (interactive) (org-agenda nil "{")))
-(global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "n!")))
-(global-set-key (kbd "C-M-*") (lambda () (interactive) (org-agenda nil "n§")))
+(global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "[")))
+(global-set-key (kbd "C-M-*") (lambda () (interactive) (org-agenda nil "{")))
+(global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "n!")))
+(global-set-key (kbd "C-M-!") (lambda () (interactive) (org-agenda nil "n§")))
 (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "d!")))
 (global-set-key (kbd "C-M-$") (lambda () (interactive) (org-agenda nil "d§")))
 (global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "$")))
