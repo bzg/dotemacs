@@ -152,15 +152,15 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (add-to-list 'custom-theme-load-path "~/install/git/vxid-theme/")
 (load-theme 'vxid)
 
-;; Org agenda view keybindings
-(global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "[")))
-(global-set-key (kbd "C-M-*") (lambda () (interactive) (org-agenda nil "{")))
-(global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "n!")))
-(global-set-key (kbd "C-M-!") (lambda () (interactive) (org-agenda nil "n§")))
-(global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "d!")))
-(global-set-key (kbd "C-M-$") (lambda () (interactive) (org-agenda nil "d§")))
-(global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "$")))
-(global-set-key (kbd "C-M-ù") (lambda () (interactive) (org-agenda nil "%")))
+;; Org agenda main views
+(global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "[[")))
+(global-set-key (kbd "C-M-$") (lambda () (interactive) (org-agenda nil "[§")))
+(global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "n!")))
+(global-set-key (kbd "C-M-*") (lambda () (interactive) (org-agenda nil "n§")))
+(global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "d!")))
+(global-set-key (kbd "C-M-!") (lambda () (interactive) (org-agenda nil "d§")))
+(global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "$$")))
+(global-set-key (kbd "C-M-ù") (lambda () (interactive) (org-agenda nil "$§")))
 
 ;; Other useful global keybindings
 (define-key global-map "\M-Q" 'unfill-paragraph)
@@ -524,12 +524,13 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-agenda-custom-commands
       '(
 	;; Week agenda for rendez-vous and tasks
-	("$" "All appointments" agenda* "Week planning"
+	("$" . "Planning")
+	("$$" "All appointments" agenda* "Week planning"
 	 ((org-agenda-span 'week)
 	  (org-agenda-sorting-strategy
 	   '(time-up todo-state-up priority-down))))
 
-	("%" "Personal appointments" agenda* "Month planning"
+	("$§" "Personal appointments" agenda* "Month planning"
 	 ((org-agenda-span 'month)
 	  (org-agenda-files '("~/org/rdv.org"))
 	  (org-agenda-sorting-strategy
@@ -543,13 +544,14 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	 todo "DONE|CANCELED|DELEGATED"
 	 ((org-agenda-sorting-strategy '(timestamp-up))))
 
-	("[" "Today's tasks for MLL" agenda "Tasks and rdv for today"
+	("[" . "Tasks for today")
+	("[[" "Today's tasks for MLL" agenda "Work tasks for today"
 	 ((org-agenda-category-filter-preset '("+MLL"))
 	  (org-agenda-span 1)
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(deadline-up scheduled-up todo-state-up priority-down))))
-	("{" "Today's tasks for non-MLL" agenda "Tasks and rdv for today"
+	("[§"" "Today's tasks for non-MLL" agenda "Non-work tasks for today"
 	 ((org-agenda-category-filter-preset '("-MLL"))
 	  (org-agenda-span 1)
 	  (org-agenda-files '("~/org/bzg.org"))
