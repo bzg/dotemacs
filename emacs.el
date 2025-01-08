@@ -139,11 +139,11 @@
 (global-set-key "\M- " 'hippie-expand)
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
-(global-set-key (kbd "C-è") 'calc)
-(global-set-key (kbd "C-_") (lambda () (interactive) (if (eq major-mode 'calendar-mode) (calendar-exit) (calendar))))
-(global-set-key (kbd "C-ç") 'bzg-toggle-browser)
-(global-set-key (kbd "C-à") 'global-hl-line-mode)
 (global-set-key (kbd "C-&") 'gnus)
+(global-set-key (kbd "C-è") 'bzg-toggle-browser)
+(global-set-key (kbd "C-_") 'global-hl-line-mode)
+(global-set-key (kbd "C-ç") 'calc)
+(global-set-key (kbd "C-à") (lambda () (interactive) (if (eq major-mode 'calendar-mode) (calendar-exit) (calendar))))
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-=") 'bzg-toggle-default-font-size)
@@ -498,7 +498,7 @@
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(deadline-up scheduled-up todo-state-up priority-down))))
-	("[§"" "Today's tasks for non-MLL" agenda "Non-work tasks for today"
+	("[§" "Today's tasks for non-MLL" agenda "Non-work tasks for today"
 	 ((org-agenda-category-filter-preset '("-MLL"))
 	  (org-agenda-span 1)
 	  (org-agenda-files '("~/org/bzg.org"))
