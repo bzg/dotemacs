@@ -479,6 +479,7 @@
 
 	("$§" "Personal appointments" agenda* "Month planning"
 	 ((org-agenda-span 'month)
+	  (org-agenda-category-filter-preset '("+RDL"))
 	  (org-agenda-files '("~/org/rdv.org"))
 	  (org-agenda-sorting-strategy
 	   '(time-up todo-state-up priority-down))))
