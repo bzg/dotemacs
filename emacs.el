@@ -125,14 +125,14 @@
 (load-theme 'vxid)
 
 ;; Org agenda main views
-(global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "[[")))
-(global-set-key (kbd "C-M-$") (lambda () (interactive) (org-agenda nil "[§")))
+(global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "$$")))
+(global-set-key (kbd "C-M-$") (lambda () (interactive) (org-agenda nil "$§")))
 (global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "n!")))
 (global-set-key (kbd "C-M-*") (lambda () (interactive) (org-agenda nil "n§")))
 (global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "d!")))
 (global-set-key (kbd "C-M-!") (lambda () (interactive) (org-agenda nil "d§")))
-(global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "$$")))
-(global-set-key (kbd "C-M-ù") (lambda () (interactive) (org-agenda nil "$§")))
+(global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "ùù")))
+(global-set-key (kbd "C-M-ù") (lambda () (interactive) (org-agenda nil "ù§")))
 
 ;; Other useful global keybindings
 (define-key global-map "\M-Q" 'unfill-paragraph)
@@ -471,13 +471,13 @@
 (setq org-agenda-custom-commands
       '(
 	;; Week agenda for rendez-vous and tasks
-	("$" . "Planning")
-	("$$" "All appointments" agenda* "Week planning"
+	("ù" . "Planning")
+	("ùù" "Weekly work appointments" agenda* "Weekly work appointments"
 	 ((org-agenda-span 'week)
 	  (org-agenda-sorting-strategy
 	   '(time-up todo-state-up priority-down))))
 
-	("$§" "Personal appointments" agenda* "Month planning"
+	("ù§" "Monthly appointments" agenda* "Monthly appointments"
 	 ((org-agenda-span 'month)
 	  (org-agenda-category-filter-preset '("+RDL"))
 	  (org-agenda-files '("~/org/rdv.org"))
@@ -492,14 +492,14 @@
 	 todo "DONE|CANCELED|DELEGATED"
 	 ((org-agenda-sorting-strategy '(timestamp-up))))
 
-	("[" . "Tasks for today")
-	("[[" "Today's tasks for MLL" agenda "Work tasks for today"
+	("$" . "Tasks for today")
+	("$$" "Today's tasks for MLL" agenda "Work tasks for today"
 	 ((org-agenda-category-filter-preset '("+MLL"))
 	  (org-agenda-span 1)
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(deadline-up scheduled-up todo-state-up priority-down))))
-	("[§" "Today's tasks for non-MLL" agenda "Non-work tasks for today"
+	("$§" "Today's tasks for non-MLL" agenda "Non-work tasks for today"
 	 ((org-agenda-category-filter-preset '("-MLL"))
 	  (org-agenda-span 1)
 	  (org-agenda-files '("~/org/bzg.org"))
@@ -545,12 +545,6 @@
 	 ((org-agenda-files '("~/org/libre.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up deadline-up priority-down time-up))))
-
-	(":" "Scheduled item work" agenda "Scheduled items"
-	 ((org-agenda-span 3)
-	  (org-agenda-entry-types '(:scheduled))
-	  (org-agenda-sorting-strategy
-	   '(scheduled-up deadline-up todo-state-up priority-down))))
 
 	("d" . "Deadlines")
 	("dd" "Deadlines all" agenda "Past/upcoming deadlines"
