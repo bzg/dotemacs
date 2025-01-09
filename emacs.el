@@ -329,7 +329,7 @@
 	("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
 	 "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
-	("R" "RDV MLL" entry (file+headline "~/org/rdv-mll.org" "RDV MLL")
+	("R" "RDV MLL" entry (file+headline "~/org/rdv.org" "RDV MLL")
 	 "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 
 	("o" "Org" entry (file+headline "~/org/bzg.org" "Org")
@@ -438,7 +438,7 @@
 (setq org-deadline-warning-days 3)
 (setq org-agenda-inhibit-startup t)
 (setq org-agenda-diary-file "/home/bzg/org/rdv.org")
-(setq org-agenda-files '("~/org/rdv.org" "~/org/rdv-mll.org" "~/org/bzg.org"))
+(setq org-agenda-files '("~/org/rdv.org" "~/org/bzg.org"))
 (setq org-agenda-prefix-format
       '((agenda . " %i %-12:c%?-14t%s")
 	(timeline . "  % s")
@@ -858,7 +858,7 @@
   (gnus-icalendar-setup)
   ;; To enable optional iCalendar->Org sync functionality
   ;; NOTE: both the capture file and the headline(s) inside must already exist
-  (setq gnus-icalendar-org-capture-file "~/org/rdv-mll.org")
+  (setq gnus-icalendar-org-capture-file "~/org/rdv.org")
   (setq gnus-icalendar-org-capture-headline '("RDV MLL"))
   (setq gnus-icalendar-org-template-key "I")
   (gnus-icalendar-org-setup))
