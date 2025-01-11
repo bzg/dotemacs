@@ -319,28 +319,16 @@
 		  (call-interactively 'org-clock-out)))))
 
 (setq org-capture-templates
-      '(("c" "Misc (edit)" entry (file+headline "~/org/bzg.org" "Basement")
+      '(("c" "Misc (edit)" entry (file+headline "~/org/bzg.org" "Misc")
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
-
-        ("C" "Misc" entry (file+headline "~/org/bzg.org" "Basement")
-	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n"
-	 :prepend t :immediate-finish t)
-
 	("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
 	 "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
-
 	("R" "RDV MLL" entry (file+headline "~/org/rdv.org" "RDV MLL")
 	 "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
-
-	("o" "Org" entry (file+headline "~/org/bzg.org" "Org")
-	 "* TODO %a\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n" :prepend t)
-
 	("m" "MLL" entry (file+headline "~/org/bzg.org" "MLL")
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
-
 	("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
-	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
-	))
+	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)))
 
 (setq org-capture-templates-contexts
       '(("r" ((in-mode . "gnus-summary-mode")
@@ -646,6 +634,7 @@
   :defer t
   :config
   (gnus-delay-initialize)
+  (setq gnus-delay-default-delay "2d")
   (setq gnus-refer-thread-limit t)
   (setq gnus-use-atomic-windows nil)
   (setq nndraft-directory "~/News/drafts/")
