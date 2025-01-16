@@ -1050,8 +1050,8 @@
 (setq dired-recursive-deletes 'always)
 (setq delete-old-versions t)
 
-(setq browse-url-browser-function 'eww-browse-url)
-(setq browse-url-secondary-browser-function 'browse-url-generic)
+(setq browse-url-browser-function 'browse-url-generic)
+(setq browse-url-secondary-browser-function 'eww-browse-url)
 (setq browse-url-generic-program "firefox")
 (setq browse-url-firefox-new-window-is-tab t)
 
