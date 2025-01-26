@@ -440,7 +440,10 @@
 (setq org-agenda-skip-scheduled-if-done t)
 (setq org-agenda-skip-timestamp-if-done t)
 (setq org-agenda-sorting-strategy
-      '((agenda time-up) (todo time-up) (tags time-up) (search time-up)))
+      '((agenda time-up todo-state-up priority-down)
+	(todo todo-state-up deadline-up priority-down)
+	(tags todo-state-up deadline-up priority-down)
+	(search time-up)))
 (setq org-agenda-tags-todo-honor-ignore-options t)
 (setq org-agenda-use-tag-inheritance nil)
 (setq org-agenda-window-frame-fractions '(0.0 . 0.5))
@@ -461,20 +464,14 @@
 	;; Week agenda for rendez-vous and tasks
 	("ù" . "Planning")
 	("ùù" "Weekly work appointments" agenda* "Weekly work appointments"
-	 ((org-agenda-span 'week)
-	  (org-agenda-sorting-strategy
-	   '(time-up todo-state-up priority-down))))
+	 ((org-agenda-span 'week)))
 
 	("ù§" "Monthly appointments" agenda* "Monthly appointments"
 	 ((org-agenda-span 'month)
 	  (org-agenda-category-filter-preset '("+RDL"))
-	  (org-agenda-files '("~/org/rdv.org"))
-	  (org-agenda-sorting-strategy
-	   '(time-up todo-state-up priority-down))))
+	  (org-agenda-files '("~/org/rdv.org"))))
 
-	("@" "Mail" tags-todo "+Mail+TODO={STRT\\|NEXT\\|TODO\\|WAIT}"
-	 ((org-agenda-sorting-strategy
-	   '(todo-state-up deadline-up priority-down))))
+	("@" "Mail" tags-todo "+Mail+TODO={STRT\\|NEXT\\|TODO\\|WAIT}")
 	("?" "Waiting" tags-todo "+TODO={WAIT}")
 	("#" "To archive"
 	 todo "DONE|CANCELED|DELEGATED"
@@ -496,43 +493,31 @@
 
 	("n" . "What's next?")
 	("nn" "STRT/NEXT all" tags-todo "TODO={STRT\\|NEXT}"
-	 ((org-agenda-files '("~/org/bzg.org"))
-	  (org-agenda-sorting-strategy
-	   '(todo-state-up deadline-up priority-down time-up))))
+	 ((org-agenda-files '("~/org/bzg.org"))))
 	("n!" "STRT/NEXT MLL" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("+MLL"))
-	  (org-agenda-files '("~/org/bzg.org"))
-	  (org-agenda-sorting-strategy
-	   '(todo-state-up deadline-up priority-down time-up))))
+	  (org-agenda-files '("~/org/bzg.org"))))
 	("n§" "STRT/NEXT -MLL" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("-MLL"))
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up  priority-down time-up))))
 	("n?" "STRT/NEXT (libre)" tags-todo "TODO={STRT\\|NEXT}"
-	 ((org-agenda-files '("~/org/libre.org"))
-	  (org-agenda-sorting-strategy
-	   '(todo-state-up deadline-up priority-down time-up))))
+	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("t" . "What's next to do?")
 	("tt" "TODO all" tags-todo "TODO={TODO}"
-	 ((org-agenda-files '("~/org/bzg.org"))
-	  (org-agenda-sorting-strategy
-	   '(todo-state-up deadline-up priority-down time-up))))
+	 ((org-agenda-files '("~/org/bzg.org"))))
 	("t!" "TODO MLL" tags-todo "TODO={TODO}"
 	 ((org-agenda-category-filter-preset '("+MLL"))
-	  (org-agenda-files '("~/org/bzg.org"))
-	  (org-agenda-sorting-strategy
-	   '(todo-state-up deadline-up priority-down time-up))))
+	  (org-agenda-files '("~/org/bzg.org"))))
 	("t§" "TODO -MLL" tags-todo "TODO={TODO}"
 	 ((org-agenda-category-filter-preset '("-MLL"))
 	  (org-agenda-files '("~/org/bzg.org"))
 	  (org-agenda-sorting-strategy
 	   '(todo-state-up  priority-down time-up))))
 	("t?" "TODO (libre)" tags-todo "TODO={TODO}"
-	 ((org-agenda-files '("~/org/libre.org"))
-	  (org-agenda-sorting-strategy
-	   '(todo-state-up deadline-up priority-down time-up))))
+	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("d" . "Deadlines")
 	("dd" "Deadlines all" agenda "Past/upcoming deadlines"
