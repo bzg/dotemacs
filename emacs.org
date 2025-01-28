@@ -493,10 +493,10 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 (setq org-agenda-skip-scheduled-if-done t)
 (setq org-agenda-skip-timestamp-if-done t)
 (setq org-agenda-sorting-strategy
-      '((agenda time-up todo-state-up priority-down)
-	(todo todo-state-up deadline-up priority-down)
-	(tags todo-state-up deadline-up priority-down)
-	(search time-up)))
+      '((agenda time-up deadline-up scheduled-up todo-state-up priority-down)
+	(todo todo-state-up priority-down deadline-up)
+	(tags todo-state-up priority-down deadline-up)
+	(search todo-state-up priority-down deadline-up)))
 (setq org-agenda-tags-todo-honor-ignore-options t)
 (setq org-agenda-use-tag-inheritance nil)
 (setq org-agenda-window-frame-fractions '(0.0 . 0.5))
@@ -526,23 +526,19 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 	("@" "Mail" tags-todo "+Mail+TODO={STRT\\|NEXT\\|TODO\\|WAIT}")
 	("?" "Waiting" tags-todo "+TODO={WAIT}")
-	("#" "To archive"
-	 todo "DONE|CANCELED|DELEGATED"
-	 ((org-agenda-sorting-strategy '(timestamp-up))))
+	("#" "To archive" todo "DONE|CANCELED|DELEGATED")
 
 	("$" . "Tasks for today")
 	("$$" "Today's tasks for MLL" agenda "Work tasks for today"
 	 ((org-agenda-category-filter-preset '("+MLL"))
-	  (org-agenda-span 1)
-	  (org-agenda-files '("~/org/bzg.org"))
-	  (org-agenda-sorting-strategy
-	   '(deadline-up scheduled-up todo-state-up priority-down))))
+	  (org-agenda-span 'day)
+	  (org-agenda-use-time-grid nil)
+	  (org-agenda-files '("~/org/bzg.org"))))
 	("$§" "Today's tasks for non-MLL" agenda "Non-work tasks for today"
 	 ((org-agenda-category-filter-preset '("-MLL"))
-	  (org-agenda-span 1)
-	  (org-agenda-files '("~/org/bzg.org"))
-	  (org-agenda-sorting-strategy
-	   '(deadline-up scheduled-up todo-state-up priority-down))))
+	  (org-agenda-span 'day)
+	  (org-agenda-use-time-grid nil)
+	  (org-agenda-files '("~/org/bzg.org"))))
 
 	("n" . "What's next?")
 	("nn" "STRT/NEXT all" tags-todo "TODO={STRT\\|NEXT}"
@@ -552,9 +548,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	  (org-agenda-files '("~/org/bzg.org"))))
 	("n§" "STRT/NEXT -MLL" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("-MLL"))
-	  (org-agenda-files '("~/org/bzg.org"))
-	  (org-agenda-sorting-strategy
-	   '(todo-state-up  priority-down time-up))))
+	  (org-agenda-files '("~/org/bzg.org"))))
 	("n?" "STRT/NEXT (libre)" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
@@ -566,9 +560,7 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	  (org-agenda-files '("~/org/bzg.org"))))
 	("t§" "TODO -MLL" tags-todo "TODO={TODO}"
 	 ((org-agenda-category-filter-preset '("-MLL"))
-	  (org-agenda-files '("~/org/bzg.org"))
-	  (org-agenda-sorting-strategy
-	   '(todo-state-up  priority-down time-up))))
+	  (org-agenda-files '("~/org/bzg.org"))))
 	("t?" "TODO (libre)" tags-todo "TODO={TODO}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
@@ -576,30 +568,22 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	("dd" "Deadlines all" agenda "Past/upcoming deadlines"
 	 ((org-agenda-span 1)
 	  (org-deadline-warning-days 60)
-	  (org-agenda-entry-types '(:deadline))
-	  (org-agenda-sorting-strategy
-	   '(deadline-up todo-state-up priority-down))))
+	  (org-agenda-entry-types '(:deadline))))
 	("d!" "Deadlines MLL" agenda "Past/upcoming work deadlines"
 	 ((org-agenda-span 1)
 	  (org-agenda-category-filter-preset '("+MLL"))
 	  (org-deadline-warning-days 60)
-	  (org-agenda-entry-types '(:deadline))
-	  (org-agenda-sorting-strategy
-	   '(deadline-up todo-state-up priority-down))))
+	  (org-agenda-entry-types '(:deadline))))
 	("d§" "Deadlines -MLL" agenda "Past/upcoming non-work deadlines"
 	 ((org-agenda-span 1)
 	  (org-agenda-category-filter-preset '("-MLL"))
 	  (org-deadline-warning-days 60)
-	  (org-agenda-entry-types '(:deadline))
-	  (org-agenda-sorting-strategy
-	   '(deadline-up todo-state-up priority-down))))
+	  (org-agenda-entry-types '(:deadline))))
 	("d?" "Deadlines libre" agenda "Past/upcoming deadlines (libre)"
 	 ((org-agenda-span 1)
 	  (org-agenda-files '("~/org/libre.org"))
 	  (org-deadline-warning-days 60)
-	  (org-agenda-entry-types '(:deadline))
-	  (org-agenda-sorting-strategy
-	   '(deadline-up todo-state-up priority-down))))
+	  (org-agenda-entry-types '(:deadline))))
 
 	("A" "Write, Code, Mail" tags-todo
          "+TAGS={Write\\|Code\\|Mail}+TODO={STRT}")
