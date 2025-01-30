@@ -60,8 +60,11 @@
 ;; The default is to wait 1 second, which I find a bit long
 (setq echo-keystrokes 0.1)
 
-;; ;; Let search for "e" match e.g. "é":
+;; Let search for "e" match e.g. "é":
 (setq search-default-mode 'char-fold-to-regexp)
+
+;; Ignore case when sorting
+(setq sort-fold-case t)
 
 ;; Stop polluting the directory with auto-saved files and backup
 (setq auto-save-default nil)
