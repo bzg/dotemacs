@@ -85,7 +85,7 @@
 ;; Enabling and disabling some modes
 ;; Less is more - see https://bzg.fr/en/emacs-strip-tease/
 (auto-insert-mode 1)
-(display-time-mode 1)
+(display-time-mode -1)
 (tooltip-mode -1)
 (blink-cursor-mode -1)
 (pixel-scroll-mode 1)
