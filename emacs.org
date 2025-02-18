@@ -41,14 +41,14 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 ;; Initialize Org from sources
 ;; See https://orgmode.org/manual/Installation.html
-(add-to-list 'load-path "~/install/git/org-mode/lisp/")
-(add-to-list 'load-path "~/install/git/org-contrib/lisp/")
+(add-to-list 'load-path "~/install/git/org/org-mode/lisp/")
+(add-to-list 'load-path "~/install/git/org/org-contrib/lisp/")
 
 ;; Initialize my `exec-path' and `load-path' with custom paths
 (add-to-list 'exec-path "~/bin/")
 
 ;; Include org-mode and emacs local paths into Info
-(add-to-list 'Info-directory-list "~/install/git/org-mode/doc/")
+(add-to-list 'Info-directory-list "~/install/git/org/org-mode/doc/")
 (add-to-list 'Info-directory-list "~/install/git/emacs/info/")
 
 ;; Don't ask for confirmation for "dangerous" commands
