@@ -323,7 +323,7 @@
 		  (call-interactively 'org-clock-out)))))
 
 (setq org-capture-templates
-      '(("c" "Misc (edit)" entry (file+headline "~/org/bzg.org" "Misc")
+      '(("c" "Divers (edit)" entry (file+headline "~/org/bzg.org" "Divers")
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 	("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
 	 "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
