@@ -232,7 +232,7 @@
 (setq org-refile-use-outline-path t)
 (setq org-refile-allow-creating-parent-nodes t)
 (setq org-refile-use-cache t)
-(setq org-element-use-cache nil)
+(setq org-element-use-cache t)
 (setq org-return-follows-link t)
 (setq org-reverse-note-order t)
 (setq org-scheduled-past-days 100)
