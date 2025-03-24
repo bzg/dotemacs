@@ -14,6 +14,13 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 * Package initialization
 
 #+begin_src emacs-lisp
+;; Increase GC threshold during startup
+(setq gc-cons-threshold 100000000)
+;; Reset after init
+(add-hook 'emacs-startup-hook (lambda () (setq gc-cons-threshold 800000)))
+#+end_src
+
+#+begin_src emacs-lisp
 ;;; emacs.el --- bzg's GNU Emacs configuration -*- lexical-binding: t; -*-
 
 ;; This is bzg's GNU Emacs configuration, refined over the years.
@@ -23,6 +30,8 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ;; version.
 
 ;; Set `package-archives' to the ones I use
+(setq package-native-compile t)
+
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
 	("nongnu" . "http://elpa.nongnu.org/nongnu/")
@@ -1397,6 +1406,14 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ;; Clojure initialization
 (setq inf-clojure-generic-cmd "clojure")
 
+;; Use LSP
+(use-package lsp-mode
+  :commands lsp
+  :hook ((clojure-mode . lsp)
+         (emacs-lisp-mode . lsp))
+  :config
+  (setq lsp-prefer-flymake nil))
+
 (use-package clojure-mode
   :config
   (require 'flycheck-clj-kondo)
@@ -1525,4 +1542,3 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 
 (define-key gnus-group-mode-map (kbd "%") #'bzg-gnus-toggle-nntp)
 #+end_src
-

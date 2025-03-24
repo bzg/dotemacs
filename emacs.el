@@ -1,3 +1,8 @@
+;; Increase GC threshold during startup
+(setq gc-cons-threshold 100000000)
+;; Reset after init
+(add-hook 'emacs-startup-hook (lambda () (setq gc-cons-threshold 800000)))
+
 ;;; emacs.el --- bzg's GNU Emacs configuration -*- lexical-binding: t; -*-
 
 ;; This is bzg's GNU Emacs configuration, refined over the years.
@@ -7,6 +12,8 @@
 ;; version.
 
 ;; Set `package-archives' to the ones I use
+(setq package-native-compile t)
+
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
 	("nongnu" . "http://elpa.nongnu.org/nongnu/")
@@ -1207,6 +1214,14 @@
 
 ;; Clojure initialization
 (setq inf-clojure-generic-cmd "clojure")
+
+;; Use LSP
+(use-package lsp-mode
+  :commands lsp
+  :hook ((clojure-mode . lsp)
+         (emacs-lisp-mode . lsp))
+  :config
+  (setq lsp-prefer-flymake nil))
 
 (use-package clojure-mode
   :config
