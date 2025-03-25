@@ -132,8 +132,8 @@
     (custom-set-faces
      `(default ((t (:height ,bzg-alt-font-size)))))))
 
-(add-to-list 'custom-theme-load-path "~/install/git/vxid-theme/")
-(load-theme 'vxid)
+(setq modus-themes-common-palette-overrides '((fringe bg-main)))
+(load-theme 'modus-operandi)
 
 ;; Org agenda main views
 (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "$$")))
