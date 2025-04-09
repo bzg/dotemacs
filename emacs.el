@@ -325,16 +325,26 @@
 		  (call-interactively 'org-clock-out)))))
 
 (setopt org-capture-templates
-      '(("c" "Divers (edit)" entry (file+headline "~/org/bzg.org" "Divers")
-	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
-	("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
+      '(("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
 	 "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 	("R" "RDV MLL" entry (file+headline "~/org/rdv.org" "RDV MLL")
 	 "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
+	("d" "Divers" entry (file+headline "~/org/bzg.org" "Divers")
+	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
+	("D" "Divers (read)" entry (file+headline "~/org/bzg.org" "Divers")
+	 "* TODO %a :Read:" :prepend t :immediate-finish t)
 	("m" "Mission" entry (file+headline "~/org/bzg.org" "Mission")
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
-	("g" "Garden" entry (file+headline "~/org/libre.org" "Garden")
-	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)))
+	("M" "Mission (read)" entry (file+headline "~/org/bzg.org" "Mission")
+	 "* TODO %a :Read" :prepend t :immediate-finish t)
+	("j" "Jardin" entry (file+headline "~/org/libre.org" "Jardin")
+	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
+	("J" "Jardin (read)" entry (file+headline "~/org/libre.org" "Jardin")
+	 "* TODO %a" :prepend t :immediate-finish t)
+	("v" "Vrac" entry (file+headline "~/org/libre.org" "Vrac")
+	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
+	("V" "Vrac (read)" entry (file+headline "~/org/libre.org" "Vrac")
+	 "* TODO %a :Read:" :prepend t :immediate-finish t)))
 
 (org-babel-do-load-languages
  'org-babel-load-languages
