@@ -1,8 +1,3 @@
-;; Increase GC threshold during startup
-(setopt gc-cons-threshold 100000000)
-;; Reset after init
-(add-hook 'emacs-startup-hook (lambda () (setopt gc-cons-threshold 800000)))
-
 ;;; emacs.el --- bzg's GNU Emacs configuration -*- lexical-binding: t; -*-
 
 ;; This is bzg's GNU Emacs configuration, refined over the years.
@@ -18,6 +13,12 @@
       '(("gnu" . "http://elpa.gnu.org/packages/")
 	("nongnu" . "http://elpa.nongnu.org/nongnu/")
 	("melpa" . "http://melpa.org/packages/")))
+
+;; Increase GC threshold during startup
+(setopt gc-cons-threshold 100000000)
+
+;; Reset after init
+(add-hook 'emacs-startup-hook (lambda () (setopt gc-cons-threshold 800000)))
 
 ;; Unset C-z which is bound to `suspend-frame' by default
 (global-unset-key (kbd "C-z"))
@@ -474,7 +475,6 @@
 	  (org-agenda-files '("~/org/rdv.org"))))
 
 	("@" "Mail" tags-todo "+Mail+TODO={STRT\\|NEXT\\|TODO\\|WAIT}")
-	("?" "Waiting" tags-todo "+TODO={WAIT}")
 	("#" "To archive" todo "DONE|CANCELED|DELEGATED")
 
 	("$" . "Tasks for today")
@@ -501,16 +501,28 @@
 	("n?" "STRT/NEXT (libre)" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
-	("t" . "What's next to do?")
-	("tt" "TODO all" tags-todo "TODO={TODO}"
+	("?" . "What's waiting?")
+	("??" "TODO all" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
 	 ((org-agenda-files '("~/org/bzg.org"))))
-	("t!" "TODO MLL" tags-todo "TODO={TODO}"
+	("?!" "TODO MLL" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
 	 ((org-agenda-category-filter-preset '("+MLL"))
 	  (org-agenda-files '("~/org/bzg.org"))))
-	("t§" "TODO -MLL" tags-todo "TODO={TODO}"
+	("?§" "TODO -MLL" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
 	 ((org-agenda-category-filter-preset '("-MLL"))
 	  (org-agenda-files '("~/org/bzg.org"))))
-	("t?" "TODO (libre)" tags-todo "TODO={TODO}"
+	("??" "TODO (libre)" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
+	 ((org-agenda-files '("~/org/libre.org"))))
+
+	("t" . "What's next to do?")
+	("tt" "TODO all" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
+	 ((org-agenda-files '("~/org/bzg.org"))))
+	("t!" "TODO MLL" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
+	 ((org-agenda-category-filter-preset '("+MLL"))
+	  (org-agenda-files '("~/org/bzg.org"))))
+	("t§" "TODO -MLL" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
+	 ((org-agenda-category-filter-preset '("-MLL"))
+	  (org-agenda-files '("~/org/bzg.org"))))
+	("t?" "TODO (libre)" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
 	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("d" . "Deadlines")

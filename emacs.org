@@ -1,24 +1,11 @@
 #+TITLE:       bzg .emacs.el file
-#+EMAIL:       bzg AT bzg DOT fr
+#+EMAIL:       bzg@gnu.org
 #+STARTUP:     odd hidestars fold
 #+LANGUAGE:    fr
 #+OPTIONS:     skip:nil toc:nil
 #+PROPERTY:    header-args :tangle emacs.el
 
-This is my =.emacs.el= file, as a HTMLized =emacs.org= file.
-
-You can browse the =.el= file [[http://bzg.fr/u/emacs.el][here]] or clone the =.org= file from [[https://github.com/bzg/dotemacs][github]].
-
-Comments and suggestions are welcome! =bzg AT gnu DOT org=
-
-* Package initialization
-
-#+begin_src emacs-lisp
-;; Increase GC threshold during startup
-(setopt gc-cons-threshold 100000000)
-;; Reset after init
-(add-hook 'emacs-startup-hook (lambda () (setopt gc-cons-threshold 800000)))
-#+end_src
+Comments and suggestions are welcome.
 
 #+begin_src emacs-lisp
 ;;; emacs.el --- bzg's GNU Emacs configuration -*- lexical-binding: t; -*-
@@ -28,7 +15,11 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 ;;
 ;; Code in this file is licensed under the GNU GPLv3 or any later
 ;; version.
+#+end_src
 
+* Initialize package
+
+#+begin_src emacs-lisp
 ;; Set `package-archives' to the ones I use
 (setopt package-native-compile t)
 
@@ -41,6 +32,12 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 * General defaults
 
 #+begin_src emacs-lisp
+;; Increase GC threshold during startup
+(setopt gc-cons-threshold 100000000)
+
+;; Reset after init
+(add-hook 'emacs-startup-hook (lambda () (setopt gc-cons-threshold 800000)))
+
 ;; Unset C-z which is bound to `suspend-frame' by default
 (global-unset-key (kbd "C-z"))
 
@@ -529,7 +526,6 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	  (org-agenda-files '("~/org/rdv.org"))))
 
 	("@" "Mail" tags-todo "+Mail+TODO={STRT\\|NEXT\\|TODO\\|WAIT}")
-	("?" "Waiting" tags-todo "+TODO={WAIT}")
 	("#" "To archive" todo "DONE|CANCELED|DELEGATED")
 
 	("$" . "Tasks for today")
@@ -556,16 +552,28 @@ Comments and suggestions are welcome! =bzg AT gnu DOT org=
 	("n?" "STRT/NEXT (libre)" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
-	("t" . "What's next to do?")
-	("tt" "TODO all" tags-todo "TODO={TODO}"
+	("?" . "What's waiting?")
+	("??" "TODO all" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
 	 ((org-agenda-files '("~/org/bzg.org"))))
-	("t!" "TODO MLL" tags-todo "TODO={TODO}"
+	("?!" "TODO MLL" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
 	 ((org-agenda-category-filter-preset '("+MLL"))
 	  (org-agenda-files '("~/org/bzg.org"))))
-	("t§" "TODO -MLL" tags-todo "TODO={TODO}"
+	("?§" "TODO -MLL" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
 	 ((org-agenda-category-filter-preset '("-MLL"))
 	  (org-agenda-files '("~/org/bzg.org"))))
-	("t?" "TODO (libre)" tags-todo "TODO={TODO}"
+	("??" "TODO (libre)" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
+	 ((org-agenda-files '("~/org/libre.org"))))
+
+	("t" . "What's next to do?")
+	("tt" "TODO all" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
+	 ((org-agenda-files '("~/org/bzg.org"))))
+	("t!" "TODO MLL" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
+	 ((org-agenda-category-filter-preset '("+MLL"))
+	  (org-agenda-files '("~/org/bzg.org"))))
+	("t§" "TODO -MLL" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
+	 ((org-agenda-category-filter-preset '("-MLL"))
+	  (org-agenda-files '("~/org/bzg.org"))))
+	("t?" "TODO (libre)" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
 	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("d" . "Deadlines")
