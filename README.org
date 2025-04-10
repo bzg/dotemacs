@@ -1,4 +1,4 @@
-This is my =.emacs.el= file, you can [[file:emacs.org][browse it]] or [[https://raw.githubusercontent.com/bzg/dotemacs/refs/heads/master/emacs.el][download it]].
+This is my =.emacs.el= file, you can [[file:emacs.org][browse it]] or [[https://codeberg.org/bzg/dotemacs/raw/branch/master/emacs.el][download it]].
 
 It is licensed under the [[file:LICENSE][GPLv3 license]] or any later version.
 
