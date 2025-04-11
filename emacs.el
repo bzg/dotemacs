@@ -498,7 +498,7 @@
 	("n§" "STRT/NEXT -MLL" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("-MLL"))
 	  (org-agenda-files '("~/org/bzg.org"))))
-	("n?" "STRT/NEXT (libre)" tags-todo "TODO={STRT\\|NEXT}"
+	("n%" "STRT/NEXT (libre)" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("?" . "What's waiting?")
@@ -510,7 +510,7 @@
 	("?§" "TODO -MLL" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
 	 ((org-agenda-category-filter-preset '("-MLL"))
 	  (org-agenda-files '("~/org/bzg.org"))))
-	("??" "TODO (libre)" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
+	("?%" "TODO (libre)" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
 	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("t" . "What's next to do?")
@@ -522,7 +522,7 @@
 	("t§" "TODO -MLL" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
 	 ((org-agenda-category-filter-preset '("-MLL"))
 	  (org-agenda-files '("~/org/bzg.org"))))
-	("t?" "TODO (libre)" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
+	("t%" "TODO (libre)" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
 	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("d" . "Deadlines")
@@ -540,7 +540,7 @@
 	  (org-agenda-category-filter-preset '("-MLL"))
 	  (org-deadline-warning-days 60)
 	  (org-agenda-entry-types '(:deadline))))
-	("d?" "Deadlines libre" agenda "Past/upcoming deadlines (libre)"
+	("d%" "Deadlines libre" agenda "Past/upcoming deadlines (libre)"
 	 ((org-agenda-span 1)
 	  (org-agenda-files '("~/org/libre.org"))
 	  (org-deadline-warning-days 60)
@@ -558,7 +558,7 @@
          ((org-agenda-category-filter-preset '("+MLL"))))
 	("r§" "Read -MLL" tags-todo "+Read+TODO={STRT\\|NEXT}"
          ((org-agenda-category-filter-preset '("-MLL"))))
-	("r?" "Read (libre)" tags-todo "+Read+TODO={STRT\\|NEXT}"
+	("r%" "Read (libre)" tags-todo "+Read+TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("v" . "View")
@@ -568,7 +568,7 @@
 	 ((org-agenda-category-filter-preset '("+MLL"))))
 	("v§" "View -MLL" tags-todo "+View+TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("-MLL"))))
-	("v?" "View (libre)" tags-todo "+View+TODO={STRT\\|NEXT}"
+	("v%" "View (libre)" tags-todo "+View+TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("l" . "Listen")
@@ -578,7 +578,7 @@
 	 ((org-agenda-category-filter-preset '("+MLL"))))
 	("l§" "Listen -MLL" tags-todo "+Listen+TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("-MLL"))))
-	("l?" "Listen (libre)" tags-todo "+Listen+TODO={STRT\\|NEXT}"
+	("l%" "Listen (libre)" tags-todo "+Listen+TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("w" . "Write")
@@ -588,7 +588,7 @@
 	 ((org-agenda-category-filter-preset '("+MLL"))))
 	("w§" "Write -MLL" tags-todo "+Write+TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("-MLL"))))
-	("w?" "Write (libre)" tags-todo "+Write+TODO={STRT\\|NEXT}"
+	("w%" "Write (libre)" tags-todo "+Write+TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 
 	("c" . "Code")
@@ -598,7 +598,7 @@
 	 ((org-agenda-category-filter-preset '("+MLL"))))
 	("c§" "Code -MLL" tags-todo "+Code+TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("-MLL"))))
-	("c?" "Code (libre)" tags-todo "+Code+TODO={STRT\\|NEXT}"
+	("c%" "Code (libre)" tags-todo "+Code+TODO={STRT\\|NEXT}"
 	 ((org-agenda-files '("~/org/libre.org"))))
 	))
 
