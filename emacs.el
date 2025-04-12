@@ -480,12 +480,12 @@
 	("$" . "Tasks for today")
 	("$$" "Today's tasks for MLL" agenda "Work tasks for today"
 	 ((org-agenda-category-filter-preset '("+MLL"))
-	  (org-agenda-span 'day)
+	  (org-agenda-span 'week)
 	  (org-agenda-use-time-grid nil)
 	  (org-agenda-files '("~/org/bzg.org"))))
 	("$§" "Today's tasks for non-MLL" agenda "Non-work tasks for today"
 	 ((org-agenda-category-filter-preset '("-MLL"))
-	  (org-agenda-span 'day)
+	  (org-agenda-span 'week)
 	  (org-agenda-use-time-grid nil)
 	  (org-agenda-files '("~/org/bzg.org"))))
 
