@@ -167,18 +167,6 @@
     (backward-kill-word arg)
     (setopt kill-ring (reverse kr))))
 
-;; Google translate
-(require 'google-translate)
-
-(defun google-translate--search-tkk ()
-  "Search TKK."
-  (list 430675 2721866130))
-
-(defun google-translate-word-at-point ()
-  (interactive)
-  (let ((w (thing-at-point 'word)))
-    (google-translate-translate "auto" "fr" w)))
-
 ;; Weekly appointments
 (global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "ù")))
 
@@ -216,11 +204,6 @@
 (global-set-key (kbd "M-]") 'origami-toggle-node)
 (global-set-key (kbd "C-,") 'find-variable-or-function-at-point)
 (global-set-key (kbd "C-M-<backspace>") 'backward-kill-word-noring)
-
-;; Translation
-(global-set-key (kbd "C-c t") (lambda (s) (interactive "sTranslate: ")
-				(google-translate-translate "auto" "fr" s)))
-(global-set-key (kbd "C-c T") 'google-translate-word-at-point)
 
 (require 'org-tempo)
 (require 'org-bullets)
@@ -295,10 +278,6 @@
 	("WAIT" . (:inverse-video t))
 	("CANCELED" . (:inverse-video t))))
 (setopt org-footnote-section "Notes")
-(setopt org-link-abbrev-alist
-      '(("ggle" . "http://www.google.com/search?q=%s")
-	("gmap" . "http://maps.google.com/maps?q=%s")
-	("omap" . "http://nominatim.openstreetmap.org/search?q=%s&polygon=1")))
 (setopt org-attach-id-dir "~/org/data/")
 (setopt org-allow-promoting-top-level-subtree t)
 (setopt org-blank-before-new-entry '((heading . t) (plain-list-item . auto)))
