@@ -205,6 +205,9 @@
 (global-set-key (kbd "C-,") 'find-variable-or-function-at-point)
 (global-set-key (kbd "C-M-<backspace>") 'backward-kill-word-noring)
 
+;; Translation
+(global-set-key (kbd "C-x T")   'txl-translate-region-or-paragraph)
+
 (require 'org-tempo)
 (require 'org-bullets)
 (setopt org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
