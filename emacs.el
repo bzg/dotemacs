@@ -10,9 +10,9 @@
 (setopt package-native-compile t)
 
 (setopt package-archives
-      '(("gnu" . "http://elpa.gnu.org/packages/")
-	("nongnu" . "http://elpa.nongnu.org/nongnu/")
-	("melpa" . "http://melpa.org/packages/")))
+	'(("gnu" . "http://elpa.gnu.org/packages/")
+	  ("nongnu" . "http://elpa.nongnu.org/nongnu/")
+	  ("melpa" . "http://melpa.org/packages/")))
 
 ;; Increase GC threshold during startup
 (setopt gc-cons-threshold 100000000)
@@ -106,11 +106,11 @@
 
 ;; Default Frame
 (setopt initial-frame-alist
-      '((left-margin-width . 10)
-	(menu-bar-lines . 0)
-	(tool-bar-lines . 0)
-	(horizontal-scroll-bars . nil)
-	(vertical-scroll-bars . nil)))
+	'((left-margin-width . 10)
+	  (menu-bar-lines . 0)
+	  (tool-bar-lines . 0)
+	  (horizontal-scroll-bars . nil)
+	  (vertical-scroll-bars . nil)))
 
 ;; Don't display initial messages
 (setopt initial-scratch-message "")
@@ -252,18 +252,18 @@
 (setopt org-special-ctrl-a/e 'reversed)
 (setopt org-special-ctrl-k t)
 (setopt org-tag-alist
-      '((:startgroup)
-	("Handson" . ?o)
-	(:grouptags)
-	("Write" . ?w) ("Code" . ?c) ("Tel" . ?t)
-	(:endgroup)
-	(:startgroup)
-	("Handsoff" . ?f)
-	(:grouptags)
-	("Read" . ?r) ("View" . ?v) ("Listen" . ?l)
-	(:endgroup)
-	("Mail" . ?@) ("Buy" . ?b)))
-(setopt org-todo-keywords '((type "STRT" "NEXT" "TODO" "WAIT" "|" "DONE" "DELEGATED" "CANCELED")))
+	'((:startgroup)
+	  ("Handson" . ?o)
+	  (:grouptags)
+	  ("Write" . ?w) ("Code" . ?c) ("Tel" . ?t)
+	  (:endgroup)
+	  (:startgroup)
+	  ("Handsoff" . ?f)
+	  (:grouptags)
+	  ("Read" . ?r) ("View" . ?v) ("Listen" . ?l)
+	  (:endgroup)
+	  ("Mail" . ?@) ("Buy" . ?b)))
+(setopt org-todo-keywords '((type "STRT" "NEXT" "TODO" "WAIT" "|" "DONE" "CANCELED")))
 (setopt org-todo-repeat-to-state t)
 (setopt org-use-property-inheritance t)
 (setopt org-use-sub-superscripts '{})
@@ -271,14 +271,14 @@
 (setopt org-confirm-babel-evaluate nil)
 (setopt org-id-uuid-program "uuidgen")
 (setopt org-use-speed-commands
-      (lambda nil
-	(and (looking-at org-outline-regexp-bol)
-	     (not (org-in-src-block-p t)))))
+	(lambda nil
+	  (and (looking-at org-outline-regexp-bol)
+	       (not (org-in-src-block-p t)))))
 (setopt org-todo-keyword-faces
-      '(("STRT" . (:inverse-video t :foreground (face-foreground 'default)))
-	("NEXT" . (:weight bold :foreground (face-foreground 'default)))
-	("WAIT" . (:inverse-video t))
-	("CANCELED" . (:inverse-video t))))
+	'(("STRT" . (:inverse-video t :foreground (face-foreground 'default)))
+	  ("NEXT" . (:weight bold :foreground (face-foreground 'default)))
+	  ("WAIT" . (:inverse-video t))
+	  ("CANCELED" . (:inverse-video t))))
 (setopt org-footnote-section "Notes")
 (setopt org-attach-id-dir "~/org/data/")
 (setopt org-allow-promoting-top-level-subtree t)
@@ -286,11 +286,11 @@
 (setopt org-enforce-todo-dependencies t)
 (setopt org-fontify-whole-heading-line t)
 (setopt org-file-apps
-      '((auto-mode . emacs)
-	(directory . emacs)
-	("\\.mm\\'" . default)
-	("\\.x?html?\\'" . default)
-	("\\.pdf\\'" . "evince %s")))
+	'((auto-mode . emacs)
+	  (directory . emacs)
+	  ("\\.mm\\'" . default)
+	  ("\\.x?html?\\'" . default)
+	  ("\\.pdf\\'" . "evince %s")))
 (setopt org-hide-leading-stars t)
 (setopt org-global-properties '(("Effort_ALL" . "0:10 0:30 1:00 1:24 2:00 3:30 7:00")))
 (setopt org-cycle-include-plain-lists nil)
@@ -337,18 +337,18 @@
 		  (call-interactively 'org-clock-out)))))
 
 (setopt org-capture-templates
-      '(("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
-	 "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
-	("R" "RDV MLL" entry (file+headline "~/org/rdv.org" "RDV MLL")
-	 "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
-	("d" "Divers" entry (file+headline "~/org/bzg.org" "Divers")
-	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
-	("D" "Divers (read)" entry (file+headline "~/org/bzg.org" "Divers")
-	 "* TODO %a :Read:" :prepend t :immediate-finish t)
-	("m" "Mission" entry (file+headline "~/org/bzg.org" "Mission")
-	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
-	("M" "Mission (read)" entry (file+headline "~/org/bzg.org" "Mission")
-	 "* TODO %a :Read" :prepend t :immediate-finish t)))
+	'(("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
+	   "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
+	  ("R" "RDV MLL" entry (file+headline "~/org/rdv.org" "RDV MLL")
+	   "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
+	  ("d" "Divers" entry (file+headline "~/org/bzg.org" "Divers")
+	   "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
+	  ("D" "Divers (read)" entry (file+headline "~/org/bzg.org" "Divers")
+	   "* TODO %a :Read:" :prepend t :immediate-finish t)
+	  ("m" "Mission" entry (file+headline "~/org/bzg.org" "Mission")
+	   "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
+	  ("M" "Mission (read)" entry (file+headline "~/org/bzg.org" "Mission")
+	   "* TODO %a :Read" :prepend t :immediate-finish t)))
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -366,14 +366,14 @@
    (gnuplot . t)))
 
 (setopt org-babel-default-header-args
-      '((:session . "none")
-	(:results . "replace")
-	(:exports . "code")
-	(:cache . "no")
-	(:noweb . "yes")
-	(:hlines . "no")
-	(:tangle . "no")
-	(:padnewline . "yes")))
+	'((:session . "none")
+	  (:results . "replace")
+	  (:exports . "code")
+	  (:cache . "no")
+	  (:noweb . "yes")
+	  (:hlines . "no")
+	  (:tangle . "no")
+	  (:padnewline . "yes")))
 
 (setopt org-edit-src-content-indentation 0)
 (setopt org-babel-clojure-backend 'babashka)
@@ -415,16 +415,16 @@
 (setopt org-export-dispatch-use-expert-ui t)
 (setopt org-export-use-babel t)
 (setopt org-latex-pdf-process
-      '("pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f" "pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f" "pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f"))
+	'("pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f" "pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f" "pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f"))
 (setopt org-export-allow-bind-keywords t)
 (setopt org-publish-list-skipped-files nil)
 (setopt org-html-table-row-tags
-      (cons '(cond (top-row-p "<tr class=\"tr-top\">")
-		   (bottom-row-p "<tr class=\"tr-bottom\">")
-		   (t (if (= (mod row-number 2) 1)
-			  "<tr class=\"tr-odd\">"
-			"<tr class=\"tr-even\">")))
-	    "</tr>"))
+	(cons '(cond (top-row-p "<tr class=\"tr-top\">")
+		     (bottom-row-p "<tr class=\"tr-bottom\">")
+		     (t (if (= (mod row-number 2) 1)
+			    "<tr class=\"tr-odd\">"
+			  "<tr class=\"tr-even\">")))
+	      "</tr>"))
 
 (setopt org-html-head-include-default-style nil)
 
@@ -446,16 +446,16 @@
 (setopt org-agenda-skip-scheduled-if-done t)
 (setopt org-agenda-skip-timestamp-if-done t)
 (setopt org-agenda-sorting-strategy
-      '((agenda time-up deadline-up scheduled-up todo-state-up priority-down)
-	(todo todo-state-up priority-down deadline-up)
-	(tags todo-state-up priority-down deadline-up)
-	(search todo-state-up priority-down deadline-up)))
+	'((agenda time-up deadline-up scheduled-up todo-state-up priority-down)
+	  (todo todo-state-up priority-down deadline-up)
+	  (tags todo-state-up priority-down deadline-up)
+	  (search todo-state-up priority-down deadline-up)))
 (setopt org-agenda-tags-todo-honor-ignore-options t)
 (setopt org-agenda-use-tag-inheritance nil)
 (setopt org-agenda-window-frame-fractions '(0.0 . 0.5))
 (setopt org-agenda-deadline-faces
-      '((1.0001 . org-warning)              ; due yesterday or before
-	(0.0    . org-upcoming-deadline)))  ; due today or later
+	'((1.0001 . org-warning)              ; due yesterday or before
+	  (0.0    . org-upcoming-deadline)))  ; due today or later
 
 ;; icalendar stuff
 (setopt org-icalendar-include-todo 'all)
@@ -466,72 +466,72 @@
 (setopt org-icalendar-store-UID t)
 
 (setopt org-agenda-custom-commands
-      '(
-	;; Main tags views
-	("@" "Mail" tags-todo "+Mail")
-	("#" "To archive" todo "DONE|CANCELED|DELEGATED")
-	("A" "Write, Code, Mail" tags-todo
-         "+TAGS={Write\\|Code}+TODO={STRT}")
-	("Z" "Read, Listen, View" tags-todo
-         "+TAGS={Read\\|Listen\\|View}+TODO={STRT}")
+	'(
+	  ;; Main tags views
+	  ("@" "Mail" tags-todo "+Mail")
+	  ("#" "To archive" todo "DONE|CANCELED|DELEGATED")
+	  ("A" "Write, Code, Mail" tags-todo
+           "+TAGS={Write\\|Code}+TODO={STRT}")
+	  ("Z" "Read, Listen, View" tags-todo
+           "+TAGS={Read\\|Listen\\|View}+TODO={STRT}")
 
-	;; Weekly agenda view of appointments
-	("ù" "Weekly appointments" agenda* "Weekly appointments"
-	 ((org-agenda-span 'week)
-	  (org-agenda-files '("~/org/rdv.org"))))
+	  ;; Weekly agenda view of appointments
+	  ("ù" "Weekly appointments" agenda* "Weekly appointments"
+	   ((org-agenda-span 'week)
+	    (org-agenda-files '("~/org/rdv.org"))))
 
-	("$" . "Scheduled tasks for this week")
-	("$$" "Week tasks" agenda "Scheduled tasks for this week"
-	 ((org-agenda-span 'week)
-	  (org-agenda-use-time-grid nil)
-	  (org-agenda-files '("~/org/bzg.org"))))
-	("$!" "MLL week tasks" agenda "Scheduled work tasks for this week"
-	 ((org-agenda-category-filter-preset '("+MLL"))
-	  (org-agenda-span 'week)
-	  (org-agenda-use-time-grid nil)
-	  (org-agenda-files '("~/org/bzg.org"))))
-	("$§" "Non-MLL week tasks" agenda "Scheduled non-work tasks for this week"
-	 ((org-agenda-category-filter-preset '("-MLL"))
-	  (org-agenda-span 'week)
-	  (org-agenda-use-time-grid nil)
-	  (org-agenda-files '("~/org/bzg.org"))))
+	  ("$" . "Scheduled tasks for this week")
+	  ("$$" "Week tasks" agenda "Scheduled tasks for this week"
+	   ((org-agenda-span 'week)
+	    (org-agenda-use-time-grid nil)
+	    (org-agenda-files '("~/org/bzg.org"))))
+	  ("$!" "MLL week tasks" agenda "Scheduled work tasks for this week"
+	   ((org-agenda-category-filter-preset '("+MLL"))
+	    (org-agenda-span 'week)
+	    (org-agenda-use-time-grid nil)
+	    (org-agenda-files '("~/org/bzg.org"))))
+	  ("$§" "Non-MLL week tasks" agenda "Scheduled non-work tasks for this week"
+	   ((org-agenda-category-filter-preset '("-MLL"))
+	    (org-agenda-span 'week)
+	    (org-agenda-use-time-grid nil)
+	    (org-agenda-files '("~/org/bzg.org"))))
 
-	("n" . "What's next?")
-	("nn" "STRT/NEXT all" tags-todo "TODO={STRT\\|NEXT}"
-	 ((org-agenda-files '("~/org/bzg.org"))))
-	("n!" "STRT/NEXT MLL" tags-todo "TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("+MLL"))
-	  (org-agenda-files '("~/org/bzg.org"))))
-	("n§" "STRT/NEXT -MLL" tags-todo "TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("-MLL"))
-	  (org-agenda-files '("~/org/bzg.org"))))
+	  ("n" . "What's next?")
+	  ("nn" "STRT/NEXT all" tags-todo "TODO={STRT\\|NEXT}"
+	   ((org-agenda-files '("~/org/bzg.org"))))
+	  ("n!" "STRT/NEXT MLL" tags-todo "TODO={STRT\\|NEXT}"
+	   ((org-agenda-category-filter-preset '("+MLL"))
+	    (org-agenda-files '("~/org/bzg.org"))))
+	  ("n§" "STRT/NEXT -MLL" tags-todo "TODO={STRT\\|NEXT}"
+	   ((org-agenda-category-filter-preset '("-MLL"))
+	    (org-agenda-files '("~/org/bzg.org"))))
 
-	("?" . "What's to do or waiting?")
-	("??" "TODO all" tags-todo "TODO={TODO\\|WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
-	 ((org-agenda-files '("~/org/bzg.org"))))
-	("?!" "TODO MLL" tags-todo "TODO={TODO\\|WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
-	 ((org-agenda-category-filter-preset '("+MLL"))
-	  (org-agenda-files '("~/org/bzg.org"))))
-	("?§" "TODO -MLL" tags-todo "TODO={TODO\\|WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
-	 ((org-agenda-category-filter-preset '("-MLL"))
-	  (org-agenda-files '("~/org/bzg.org"))))
-	
-	("d" . "Deadlines")
-	("dd" "Deadlines all" agenda "Past/upcoming deadlines"
-	 ((org-agenda-span 1)
-	  (org-deadline-warning-days 60)
-	  (org-agenda-entry-types '(:deadline))))
-	("d!" "Deadlines MLL" agenda "Past/upcoming work deadlines"
-	 ((org-agenda-span 1)
-	  (org-agenda-category-filter-preset '("+MLL"))
-	  (org-deadline-warning-days 60)
-	  (org-agenda-entry-types '(:deadline))))
-	("d§" "Deadlines -MLL" agenda "Past/upcoming non-work deadlines"
-	 ((org-agenda-span 1)
-	  (org-agenda-category-filter-preset '("-MLL"))
-	  (org-deadline-warning-days 60)
-	  (org-agenda-entry-types '(:deadline))))
-	))
+	  ("?" . "What's to do or waiting?")
+	  ("??" "TODO all" tags-todo "TODO={TODO\\|WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
+	   ((org-agenda-files '("~/org/bzg.org"))))
+	  ("?!" "TODO MLL" tags-todo "TODO={TODO\\|WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
+	   ((org-agenda-category-filter-preset '("+MLL"))
+	    (org-agenda-files '("~/org/bzg.org"))))
+	  ("?§" "TODO -MLL" tags-todo "TODO={TODO\\|WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
+	   ((org-agenda-category-filter-preset '("-MLL"))
+	    (org-agenda-files '("~/org/bzg.org"))))
+	  
+	  ("d" . "Deadlines")
+	  ("dd" "Deadlines all" agenda "Past/upcoming deadlines"
+	   ((org-agenda-span 1)
+	    (org-deadline-warning-days 60)
+	    (org-agenda-entry-types '(:deadline))))
+	  ("d!" "Deadlines MLL" agenda "Past/upcoming work deadlines"
+	   ((org-agenda-span 1)
+	    (org-agenda-category-filter-preset '("+MLL"))
+	    (org-deadline-warning-days 60)
+	    (org-agenda-entry-types '(:deadline))))
+	  ("d§" "Deadlines -MLL" agenda "Past/upcoming non-work deadlines"
+	   ((org-agenda-span 1)
+	    (org-agenda-category-filter-preset '("-MLL"))
+	    (org-deadline-warning-days 60)
+	    (org-agenda-entry-types '(:deadline))))
+	  ))
 
 (use-package epg :defer t)
 (use-package epa
@@ -790,72 +790,72 @@
   ;; (add-hook 'list-diary-entries-hook 'bbdb-include-anniversaries)
 
   (setopt bbdb-add-aka nil
-	bbdb-add-name nil
-	bbdb-add-mails t
-	bbdb-ignore-message-alist '(("Newsgroup" . ".*")))
+	  bbdb-add-name nil
+	  bbdb-add-mails t
+	  bbdb-ignore-message-alist '(("Newsgroup" . ".*")))
 
   (defalias 'bbdb-y-or-n-p #'(lambda (prompt) t))
 
   (setopt bbdb-auto-notes-alist
-	'(("Newsgroups" ("[^,]+" newsgroups 0))
-	  ("Subject" (".*" last-subj 0 t))
-	  ("User-Agent" (".*" mailer 0))
-	  ("X-Mailer" (".*" mailer 0))
-	  ("Organization" (".*" organization 0))
-	  ("X-Newsreader" (".*" mailer 0))
-	  ("X-Face" (".+" face 0 'replace))
-	  ("Face" (".+" face 0 'replace)))))
+	  '(("Newsgroups" ("[^,]+" newsgroups 0))
+	    ("Subject" (".*" last-subj 0 t))
+	    ("User-Agent" (".*" mailer 0))
+	    ("X-Mailer" (".*" mailer 0))
+	    ("Organization" (".*" organization 0))
+	    ("X-Newsreader" (".*" mailer 0))
+	    ("X-Face" (".+" face 0 'replace))
+	    ("Face" (".+" face 0 'replace)))))
 
 (appt-activate t)
 (setopt display-time-24hr-format t
-      display-time-day-and-date t
-      appt-audible nil
-      appt-display-interval 10
-      appt-message-warning-time 120)
+	display-time-day-and-date t
+	appt-audible nil
+	appt-display-interval 10
+	appt-message-warning-time 120)
 (setopt diary-file "~/.diary")
 
 (use-package calendar
   :defer t
   :config
   (setopt french-holiday
-	'((holiday-fixed 1 1 "Jour de l'an")
-	  (holiday-fixed 5 8 "Victoire 45")
-	  (holiday-fixed 7 14 "Fête nationale")
-	  (holiday-fixed 8 15 "Assomption")
-	  (holiday-fixed 11 1 "Toussaint")
-	  (holiday-fixed 11 11 "Armistice 18")
-	  (holiday-easter-etc 1 "Lundi de Pâques")
-	  (holiday-easter-etc 39 "Ascension")
-	  (holiday-easter-etc 50 "Lundi de Pentecôte")
-	  (holiday-fixed 1 6 "Épiphanie")
-	  (holiday-fixed 2 2 "Chandeleur")
-	  (holiday-fixed 2 14 "Saint Valentin")
-	  (holiday-fixed 5 1 "Fête du travail")
-	  (holiday-fixed 5 8 "Commémoration de la capitulation de l'Allemagne en 1945")
-	  (holiday-fixed 6 21 "Fête de la musique")
-	  (holiday-fixed 11 2 "Commémoration des fidèles défunts")
-	  (holiday-fixed 12 25 "Noël")
-	  ;; fêtes à date variable
-	  (holiday-easter-etc 0 "Pâques")
-	  (holiday-easter-etc 49 "Pentecôte")
-	  (holiday-easter-etc -47 "Mardi gras")
-	  (holiday-float 6 0 3 "Fête des pères") ;; troisième dimanche de juin
-	  ;; Fête des mères
-	  (holiday-sexp
-	   '(if (equal
-		 ;; Pentecôte
-		 (holiday-easter-etc 49)
-		 ;; Dernier dimanche de mai
-		 (holiday-float 5 0 -1 nil))
-		;; -> Premier dimanche de juin si coïncidence
-		(car (car (holiday-float 6 0 1 nil)))
-	      ;; -> Dernier dimanche de mai sinon
-	      (car (car (holiday-float 5 0 -1 nil))))
-	   "Fête des mères")))
+	  '((holiday-fixed 1 1 "Jour de l'an")
+	    (holiday-fixed 5 8 "Victoire 45")
+	    (holiday-fixed 7 14 "Fête nationale")
+	    (holiday-fixed 8 15 "Assomption")
+	    (holiday-fixed 11 1 "Toussaint")
+	    (holiday-fixed 11 11 "Armistice 18")
+	    (holiday-easter-etc 1 "Lundi de Pâques")
+	    (holiday-easter-etc 39 "Ascension")
+	    (holiday-easter-etc 50 "Lundi de Pentecôte")
+	    (holiday-fixed 1 6 "Épiphanie")
+	    (holiday-fixed 2 2 "Chandeleur")
+	    (holiday-fixed 2 14 "Saint Valentin")
+	    (holiday-fixed 5 1 "Fête du travail")
+	    (holiday-fixed 5 8 "Commémoration de la capitulation de l'Allemagne en 1945")
+	    (holiday-fixed 6 21 "Fête de la musique")
+	    (holiday-fixed 11 2 "Commémoration des fidèles défunts")
+	    (holiday-fixed 12 25 "Noël")
+	    ;; fêtes à date variable
+	    (holiday-easter-etc 0 "Pâques")
+	    (holiday-easter-etc 49 "Pentecôte")
+	    (holiday-easter-etc -47 "Mardi gras")
+	    (holiday-float 6 0 3 "Fête des pères") ;; troisième dimanche de juin
+	    ;; Fête des mères
+	    (holiday-sexp
+	     '(if (equal
+		   ;; Pentecôte
+		   (holiday-easter-etc 49)
+		   ;; Dernier dimanche de mai
+		   (holiday-float 5 0 -1 nil))
+		  ;; -> Premier dimanche de juin si coïncidence
+		  (car (car (holiday-float 6 0 1 nil)))
+		;; -> Dernier dimanche de mai sinon
+		(car (car (holiday-float 5 0 -1 nil))))
+	     "Fête des mères")))
 
   (setopt calendar-date-style 'european
-	calendar-mark-holidays-flag t
-	calendar-week-start-day 1))
+	  calendar-mark-holidays-flag t
+	  calendar-week-start-day 1))
 
 ;; notmuch configuration
 (use-package notmuch
@@ -885,62 +885,62 @@
 	(message "Couldn't get relevant infos for switching to Gnus."))))
 
   (define-key notmuch-show-mode-map
-    (kbd "C-c C-c") #'bzg-notmuch-goto-message-in-gnus))
+	      (kbd "C-c C-c") #'bzg-notmuch-goto-message-in-gnus))
 
 (use-package dired-x
   :config
   ;; (define-key dired-mode-map "\C-cd" 'dired-clean-tex)
   (setopt dired-guess-shell-alist-user
-	(list
-	 (list "\\.pdf$" "evince &")
-	 (list "\\.docx?$" "libreoffice &")
-	 (list "\\.aup?$" "audacity")
-	 (list "\\.pptx?$" "libreoffice &")
-	 (list "\\.odf$" "libreoffice &")
-	 (list "\\.odt$" "libreoffice &")
-	 (list "\\.odt$" "libreoffice &")
-	 (list "\\.kdenlive$" "kdenlive")
-	 (list "\\.svg$" "gimp")
-	 (list "\\.csv$" "libreoffice &")
-	 (list "\\.sla$" "scribus")
-	 (list "\\.od[sgpt]$" "libreoffice &")
-	 (list "\\.xls$" "libreoffice &")
-	 (list "\\.xlsx$" "libreoffice &")
-	 (list "\\.txt$" "gedit")
-	 (list "\\.sql$" "gedit")
-	 (list "\\.css$" "gedit")
-	 (list "\\.jpe?g$" "sxiv")
-	 (list "\\.png$" "sxiv")
-	 (list "\\.gif$" "sxiv")
-	 (list "\\.psd$" "gimp")
-	 (list "\\.xcf" "gimp")
-	 (list "\\.xo$" "unzip")
-	 (list "\\.3gp$" "vlc")
-	 (list "\\.mp3$" "vlc")
-	 (list "\\.flac$" "vlc")
-	 (list "\\.avi$" "vlc")
-	 ;; (list "\\.og[av]$" "vlc")
-	 (list "\\.wm[va]$" "vlc")
-	 (list "\\.flv$" "vlc")
-	 (list "\\.mov$" "vlc")
-	 (list "\\.divx$" "vlc")
-	 (list "\\.mp4$" "vlc")
-	 (list "\\.webm$" "vlc")
-	 (list "\\.mkv$" "vlc")
-	 (list "\\.mpe?g$" "vlc")
-	 (list "\\.m4[av]$" "vlc")
-	 (list "\\.mp2$" "vlc")
-	 (list "\\.pp[st]$" "libreoffice &")
-	 (list "\\.ogg$" "vlc")
-	 (list "\\.ogv$" "vlc")
-	 (list "\\.rtf$" "libreoffice &")
-	 (list "\\.ps$" "gv")
-	 (list "\\.mp3$" "play")
-	 (list "\\.wav$" "vlc")
-	 (list "\\.rar$" "unrar x")
-	 ))
+	  (list
+	   (list "\\.pdf$" "evince &")
+	   (list "\\.docx?$" "libreoffice &")
+	   (list "\\.aup?$" "audacity")
+	   (list "\\.pptx?$" "libreoffice &")
+	   (list "\\.odf$" "libreoffice &")
+	   (list "\\.odt$" "libreoffice &")
+	   (list "\\.odt$" "libreoffice &")
+	   (list "\\.kdenlive$" "kdenlive")
+	   (list "\\.svg$" "gimp")
+	   (list "\\.csv$" "libreoffice &")
+	   (list "\\.sla$" "scribus")
+	   (list "\\.od[sgpt]$" "libreoffice &")
+	   (list "\\.xls$" "libreoffice &")
+	   (list "\\.xlsx$" "libreoffice &")
+	   (list "\\.txt$" "gedit")
+	   (list "\\.sql$" "gedit")
+	   (list "\\.css$" "gedit")
+	   (list "\\.jpe?g$" "sxiv")
+	   (list "\\.png$" "sxiv")
+	   (list "\\.gif$" "sxiv")
+	   (list "\\.psd$" "gimp")
+	   (list "\\.xcf" "gimp")
+	   (list "\\.xo$" "unzip")
+	   (list "\\.3gp$" "vlc")
+	   (list "\\.mp3$" "vlc")
+	   (list "\\.flac$" "vlc")
+	   (list "\\.avi$" "vlc")
+	   ;; (list "\\.og[av]$" "vlc")
+	   (list "\\.wm[va]$" "vlc")
+	   (list "\\.flv$" "vlc")
+	   (list "\\.mov$" "vlc")
+	   (list "\\.divx$" "vlc")
+	   (list "\\.mp4$" "vlc")
+	   (list "\\.webm$" "vlc")
+	   (list "\\.mkv$" "vlc")
+	   (list "\\.mpe?g$" "vlc")
+	   (list "\\.m4[av]$" "vlc")
+	   (list "\\.mp2$" "vlc")
+	   (list "\\.pp[st]$" "libreoffice &")
+	   (list "\\.ogg$" "vlc")
+	   (list "\\.ogv$" "vlc")
+	   (list "\\.rtf$" "libreoffice &")
+	   (list "\\.ps$" "gv")
+	   (list "\\.mp3$" "play")
+	   (list "\\.wav$" "vlc")
+	   (list "\\.rar$" "unrar x")
+	   ))
   (setopt dired-tex-unclean-extensions
-	'(".toc" ".log" ".aux" ".dvi" ".out" ".nav" ".snm")))
+	  '(".toc" ".log" ".aux" ".dvi" ".out" ".nav" ".snm")))
 
 (setopt list-directory-verbose-switches "-al")
 (setopt dired-listing-switches "-l")
@@ -1094,9 +1094,9 @@
   :group 'editing-basics
   (if hidden-mode-line-mode
       (setopt hide-mode-line mode-line-format
-	    mode-line-format nil)
+	      mode-line-format nil)
     (setopt mode-line-format hide-mode-line
-	  hide-mode-line nil))
+	    hide-mode-line nil))
   (force-mode-line-update)
   ;; Apparently force-mode-line-update is not always enough to
   ;; redisplay the mode-line
@@ -1135,10 +1135,10 @@
   :config
   (add-hook 'eww-mode-hook 'visual-line-mode)
   (setopt eww-header-line-format ""
-	shr-width 80
-	shr-inhibit-images t
-	shr-use-colors nil
-	shr-use-fonts nil))
+	  shr-width 80
+	  shr-inhibit-images t
+	  shr-use-colors nil
+	  shr-use-fonts nil))
 
 (envrc-global-mode)
 
@@ -1195,8 +1195,8 @@
 	     (message "nntp server ON"))
     (progn
       (setopt gnus-secondary-select-methods
-	    (remove '(nntp "news" (nntp-address "news.gmane.io"))
-		    gnus-secondary-select-methods))
+	      (remove '(nntp "news" (nntp-address "news.gmane.io"))
+		      gnus-secondary-select-methods))
       (message "nntp server OFF"))))
 
 (define-key gnus-group-mode-map (kbd "%") #'bzg-gnus-toggle-nntp)
