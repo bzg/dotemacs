@@ -167,16 +167,15 @@
     (backward-kill-word arg)
     (setopt kill-ring (reverse kr))))
 
-;; Weekly appointments
-(global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "ù")))
-
-;; What's to do?
-(global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "$!")))
-(global-set-key (kbd "C-M-$") (lambda () (interactive) (org-agenda nil "$§")))
-(global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "n!")))
-(global-set-key (kbd "C-M-*") (lambda () (interactive) (org-agenda nil "n§")))
-(global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "d!")))
-(global-set-key (kbd "C-M-!") (lambda () (interactive) (org-agenda nil "d§")))
+(global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "^")))
+(global-set-key (kbd "C-<dead-circumflex>") (lambda () (interactive) (org-agenda nil "$!")))
+(global-set-key (kbd "C-M-<dead-circumflex>") (lambda () (interactive) (org-agenda nil "$§")))
+(global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "d!")))
+(global-set-key (kbd "C-M-*") (lambda () (interactive) (org-agenda nil "d§")))
+(global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "n!")))
+(global-set-key (kbd "C-M-ù") (lambda () (interactive) (org-agenda nil "n§")))
+(global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "?!")))
+(global-set-key (kbd "C-M-!") (lambda () (interactive) (org-agenda nil "?§")))
 
 ;; Other useful global keybindings
 (define-key global-map "\M-Q" 'unfill-paragraph)
@@ -337,9 +336,9 @@
 		  (call-interactively 'org-clock-out)))))
 
 (setopt org-capture-templates
-	'(("r" "RDV Perso" entry (file+headline "~/org/rdv.org" "RDV Perso")
+	'(("r" "RDV Perso" entry (file+headline "~/org/bzg.org" "RDV Perso")
 	   "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
-	  ("R" "RDV MLL" entry (file+headline "~/org/rdv.org" "RDV MLL")
+	  ("R" "RDV MLL" entry (file+headline "~/org/bzg.org" "RDV MLL")
 	   "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 	  ("d" "Divers" entry (file+headline "~/org/bzg.org" "Divers")
 	   "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
@@ -437,8 +436,8 @@
 
 (setopt org-deadline-warning-days 3)
 (setopt org-agenda-inhibit-startup t)
-(setopt org-agenda-diary-file "/home/bzg/org/rdv.org")
-(setopt org-agenda-files '("~/org/rdv.org" "~/org/bzg.org"))
+(setopt org-agenda-diary-file "/home/bzg/org/bzg.org")
+(setopt org-agenda-files '("~/org/bzg.org"))
 (setopt org-agenda-remove-tags t)
 (setopt org-agenda-restore-windows-after-quit t)
 (setopt org-agenda-show-inherited-tags nil)
@@ -476,9 +475,9 @@
            "+TAGS={Read\\|Listen\\|View}+TODO={STRT}")
 
 	  ;; Weekly agenda view of appointments
-	  ("ù" "Weekly appointments" agenda* "Weekly appointments"
+	  ("^" "Weekly appointments" agenda* "Weekly appointments"
 	   ((org-agenda-span 'week)
-	    (org-agenda-files '("~/org/rdv.org"))))
+	    (org-agenda-files '("~/org/bzg.org"))))
 
 	  ("$" . "Scheduled tasks for this week")
 	  ("$$" "Week tasks" agenda "Scheduled tasks for this week"
@@ -516,7 +515,7 @@
 	   ((org-agenda-category-filter-preset '("-MLL"))
 	    (org-agenda-files '("~/org/bzg.org"))))
 	  
-	  ("d" . "Deadlines")
+	  ("d" . "Upcoming deadlines")
 	  ("dd" "Deadlines all" agenda "Past/upcoming deadlines"
 	   ((org-agenda-span 1)
 	    (org-deadline-warning-days 60)
@@ -742,7 +741,7 @@
   (gnus-icalendar-setup)
   ;; To enable optional iCalendar->Org sync functionality
   ;; NOTE: both the capture file and the headline(s) inside must already exist
-  (setopt gnus-icalendar-org-capture-file "~/org/rdv.org")
+  (setopt gnus-icalendar-org-capture-file "~/org/bzg.org")
   (setopt gnus-icalendar-org-capture-headline '("RDV MLL"))
   (setopt gnus-icalendar-org-template-key "I")
   (gnus-icalendar-org-setup))
