@@ -122,6 +122,10 @@
 (setopt tab-bar-show nil)
 (set-frame-parameter nil 'fullscreen 'fullboth)
 
+(setopt modus-themes-common-palette-overrides '((fringe bg-main)))
+(load-theme 'modus-operandi)
+
+;; Define options and functions I will later bind
 (setopt bzg-alt-font-size 200)
 (setopt bzg-default-font-size 120)
 
@@ -132,48 +136,6 @@
        `(default ((t (:height ,bzg-default-font-size)))))
     (custom-set-faces
      `(default ((t (:height ,bzg-alt-font-size)))))))
-
-(setopt modus-themes-common-palette-overrides '((fringe bg-main)))
-(load-theme 'modus-operandi)
-
-;; Org agenda main views
-(global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "$$")))
-(global-set-key (kbd "C-M-$") (lambda () (interactive) (org-agenda nil "$§")))
-(global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "n!")))
-(global-set-key (kbd "C-M-*") (lambda () (interactive) (org-agenda nil "n§")))
-(global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "d!")))
-(global-set-key (kbd "C-M-!") (lambda () (interactive) (org-agenda nil "d§")))
-(global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "ùù")))
-(global-set-key (kbd "C-M-ù") (lambda () (interactive) (org-agenda nil "ù§")))
-
-;; Other useful global keybindings
-(define-key global-map "\M-Q" 'unfill-paragraph)
-(global-set-key "\M- " 'hippie-expand)
-(global-set-key (kbd "<home>") 'beginning-of-buffer)
-(global-set-key (kbd "<end>") 'end-of-buffer)
-(global-set-key (kbd "C-&") 'gnus)
-(global-set-key (kbd "C-è") 'bzg-toggle-browser)
-(global-set-key (kbd "C-_") 'global-hl-line-mode)
-(global-set-key (kbd "C-ç") 'calc)
-(global-set-key (kbd "C-à") (lambda () (interactive) (if (eq major-mode 'calendar-mode) (calendar-exit) (calendar))))
-(global-set-key (kbd "C-+") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
-(global-set-key (kbd "C-=") 'bzg-toggle-default-font-size)
-(global-set-key (kbd "C-M-=") 'bzg-toggle-fringe-width)
-(global-set-key (kbd "C-\"") (lambda () (interactive) (dired "~") (revert-buffer)))
-(global-set-key (kbd "C-c F") 'auto-fill-mode)
-(global-set-key (kbd "C-c o") 'occur)
-(global-set-key (kbd "C-c O") 'multi-occur)
-(global-set-key (kbd "C-c f") 'find-name-dired)
-(global-set-key (kbd "C-c g") 'deadgrep)
-(global-set-key (kbd "C-c m") 'magit-status)
-(global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
-(global-set-key (kbd "C-x C-<left>") 'tab-previous)
-(global-set-key (kbd "C-x C-<right>") 'tab-next)
-(global-set-key (kbd "C-²") 'follow-delete-other-windows-and-split)
-(global-set-key (kbd "C-é") 'bzg-cycle-view)
-(global-set-key (kbd "C-M-]") 'origami-toggle-all-nodes)
-(global-set-key (kbd "M-]") 'origami-toggle-node)
 
 ;; Easily jump to my main org file
 (defun bzg-find-bzg nil
@@ -189,6 +151,74 @@
   (interactive)
   (let ((fill-column (point-max)))
     (fill-paragraph nil)))
+
+(defun find-variable-or-function-at-point ()
+  (interactive)
+  (or (find-variable-at-point)
+      (find-function-at-point)
+      (message "No variable or function at point.")))
+
+;; By default, killing a word backward will put it in the ring, I don't want this
+(defun backward-kill-word-noring (arg)
+  (interactive "p")
+  (let ((kr kill-ring))
+    (backward-kill-word arg)
+    (setopt kill-ring (reverse kr))))
+
+;; Google translate
+(require 'google-translate)
+
+(defun google-translate--search-tkk ()
+  "Search TKK."
+  (list 430675 2721866130))
+
+(defun google-translate-word-at-point ()
+  (interactive)
+  (let ((w (thing-at-point 'word)))
+    (google-translate-translate "auto" "fr" w)))
+
+;; Weekly appointments
+(global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "ù")))
+
+;; What's to do?
+(global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "$!")))
+(global-set-key (kbd "C-M-$") (lambda () (interactive) (org-agenda nil "$§")))
+(global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "n!")))
+(global-set-key (kbd "C-M-*") (lambda () (interactive) (org-agenda nil "n§")))
+(global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "d!")))
+(global-set-key (kbd "C-M-!") (lambda () (interactive) (org-agenda nil "d§")))
+
+;; Other useful global keybindings
+(define-key global-map "\M-Q" 'unfill-paragraph)
+(global-set-key "\M- " 'hippie-expand)
+(global-set-key (kbd "<home>") 'beginning-of-buffer)
+(global-set-key (kbd "<end>") 'end-of-buffer)
+(global-set-key (kbd "C-&") 'gnus)
+(global-set-key (kbd "C-è") 'bzg-toggle-browser)
+(global-set-key (kbd "C-_") 'global-hl-line-mode)
+(global-set-key (kbd "C-ç") 'calc)
+(global-set-key (kbd "C-à") (lambda () (interactive) (if (eq major-mode 'calendar-mode) (calendar-exit) (calendar))))
+(global-set-key (kbd "C-+") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
+(global-set-key (kbd "C-=") 'bzg-toggle-default-font-size)
+(global-set-key (kbd "C-M-=") 'bzg-toggle-fringe-width)
+(global-set-key (kbd "C-c F") 'auto-fill-mode)
+(global-set-key (kbd "C-c f") 'find-name-dired)
+(global-set-key (kbd "C-c g") 'deadgrep)
+(global-set-key (kbd "C-c m") 'magit-status)
+(global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
+(global-set-key (kbd "C-x C-<left>") 'tab-previous)
+(global-set-key (kbd "C-x C-<right>") 'tab-next)
+(global-set-key (kbd "C-é") 'bzg-cycle-view)
+(global-set-key (kbd "C-M-]") 'origami-toggle-all-nodes)
+(global-set-key (kbd "M-]") 'origami-toggle-node)
+(global-set-key (kbd "C-,") 'find-variable-or-function-at-point)
+(global-set-key (kbd "C-M-<backspace>") 'backward-kill-word-noring)
+
+;; Translation
+(global-set-key (kbd "C-c t") (lambda (s) (interactive "sTranslate: ")
+				(google-translate-translate "auto" "fr" s)))
+(global-set-key (kbd "C-c T") 'google-translate-word-at-point)
 
 (require 'org-tempo)
 (require 'org-bullets)
@@ -224,8 +254,6 @@
 (setopt org-hide-emphasis-markers t)
 (setopt org-hide-macro-markers t)
 (setopt org-log-into-drawer t)
-;; (setopt org-refile-targets '((org-agenda-files . (:maxlevel . 3))
-;; 			     (("~/org/libre.org") . (:maxlevel . 1))))
 (setopt org-refile-use-outline-path t)
 (setopt org-refile-allow-creating-parent-nodes t)
 (setopt org-refile-use-cache t)
@@ -337,15 +365,7 @@
 	("m" "Mission" entry (file+headline "~/org/bzg.org" "Mission")
 	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
 	("M" "Mission (read)" entry (file+headline "~/org/bzg.org" "Mission")
-	 "* TODO %a :Read" :prepend t :immediate-finish t)
-	("j" "Jardin" entry (file+headline "~/org/libre.org" "Jardin")
-	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
-	("J" "Jardin (read)" entry (file+headline "~/org/libre.org" "Jardin")
-	 "* TODO %a" :prepend t :immediate-finish t)
-	("v" "Vrac" entry (file+headline "~/org/libre.org" "Vrac")
-	 "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
-	("V" "Vrac (read)" entry (file+headline "~/org/libre.org" "Vrac")
-	 "* TODO %a :Read:" :prepend t :immediate-finish t)))
+	 "* TODO %a :Read" :prepend t :immediate-finish t)))
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -465,25 +485,21 @@
 (setopt org-agenda-custom-commands
       '(
 	;; Week agenda for rendez-vous and tasks
-	("ù" . "Planning")
-	("ùù" "Weekly work appointments" agenda* "Weekly work appointments"
-	 ((org-agenda-span 'week)))
-
-	("ù§" "Monthly appointments" agenda* "Monthly appointments"
-	 ((org-agenda-span 'month)
-	  (org-agenda-category-filter-preset '("+RDL"))
+	("ù" "Weekly appointments" agenda* "Weekly appointments"
+	 ((org-agenda-span 'week)
 	  (org-agenda-files '("~/org/rdv.org"))))
 
-	("@" "Mail" tags-todo "+Mail+TODO={STRT\\|NEXT\\|TODO\\|WAIT}")
-	("#" "To archive" todo "DONE|CANCELED|DELEGATED")
-
-	("$" . "Tasks for today")
-	("$$" "Today's tasks for MLL" agenda "Work tasks for today"
+	("$" . "Tasks for this week")
+	("$$" "Week tasks " agenda "All tasks for this week"
+	 ((org-agenda-span 'week)
+	  (org-agenda-use-time-grid nil)
+	  (org-agenda-files '("~/org/bzg.org"))))
+	("$!" "MLL week tasks" agenda "Work tasks for this week"
 	 ((org-agenda-category-filter-preset '("+MLL"))
 	  (org-agenda-span 'week)
 	  (org-agenda-use-time-grid nil)
 	  (org-agenda-files '("~/org/bzg.org"))))
-	("$§" "Today's tasks for non-MLL" agenda "Non-work tasks for today"
+	("$§" "Non-MLL week tasks" agenda "Non-work tasks for this week"
 	 ((org-agenda-category-filter-preset '("-MLL"))
 	  (org-agenda-span 'week)
 	  (org-agenda-use-time-grid nil)
@@ -498,8 +514,16 @@
 	("n§" "STRT/NEXT -MLL" tags-todo "TODO={STRT\\|NEXT}"
 	 ((org-agenda-category-filter-preset '("-MLL"))
 	  (org-agenda-files '("~/org/bzg.org"))))
-	("n%" "STRT/NEXT (libre)" tags-todo "TODO={STRT\\|NEXT}"
-	 ((org-agenda-files '("~/org/libre.org"))))
+
+	("t" . "What's to do?")
+	("tt" "TODO all" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
+	 ((org-agenda-files '("~/org/bzg.org"))))
+	("t!" "TODO MLL" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
+	 ((org-agenda-category-filter-preset '("+MLL"))
+	  (org-agenda-files '("~/org/bzg.org"))))
+	("t§" "TODO -MLL" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
+	 ((org-agenda-category-filter-preset '("-MLL"))
+	  (org-agenda-files '("~/org/bzg.org"))))
 
 	("?" . "What's waiting?")
 	("??" "TODO all" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
@@ -510,21 +534,7 @@
 	("?§" "TODO -MLL" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
 	 ((org-agenda-category-filter-preset '("-MLL"))
 	  (org-agenda-files '("~/org/bzg.org"))))
-	("?%" "TODO (libre)" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
-	 ((org-agenda-files '("~/org/libre.org"))))
-
-	("t" . "What's next to do?")
-	("tt" "TODO all" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
-	 ((org-agenda-files '("~/org/bzg.org"))))
-	("t!" "TODO MLL" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
-	 ((org-agenda-category-filter-preset '("+MLL"))
-	  (org-agenda-files '("~/org/bzg.org"))))
-	("t§" "TODO -MLL" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
-	 ((org-agenda-category-filter-preset '("-MLL"))
-	  (org-agenda-files '("~/org/bzg.org"))))
-	("t%" "TODO (libre)" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
-	 ((org-agenda-files '("~/org/libre.org"))))
-
+	
 	("d" . "Deadlines")
 	("dd" "Deadlines all" agenda "Past/upcoming deadlines"
 	 ((org-agenda-span 1)
@@ -540,12 +550,10 @@
 	  (org-agenda-category-filter-preset '("-MLL"))
 	  (org-deadline-warning-days 60)
 	  (org-agenda-entry-types '(:deadline))))
-	("d%" "Deadlines libre" agenda "Past/upcoming deadlines (libre)"
-	 ((org-agenda-span 1)
-	  (org-agenda-files '("~/org/libre.org"))
-	  (org-deadline-warning-days 60)
-	  (org-agenda-entry-types '(:deadline))))
 
+	("@" "Mail" tags-todo "+Mail+TODO={STRT\\|NEXT\\|TODO\\|WAIT}")
+	("#" "To archive" todo "DONE|CANCELED|DELEGATED")
+	
 	("A" "Write, Code, Mail" tags-todo
          "+TAGS={Write\\|Code\\|Mail}+TODO={STRT}")
 	("Z" "Read, Listen, View" tags-todo
@@ -553,53 +561,23 @@
 
 	("r" . "Read")
 	("rr" "Read STRT/NEXT" tags-todo "+Read+TODO={STRT\\|NEXT}")
-	("rt" "Read TODO" tags-todo "+Read+TODO={TODO}")
-	("r!" "Read MLL" tags-todo "+Read+TODO={STRT\\|NEXT}"
-         ((org-agenda-category-filter-preset '("+MLL"))))
-	("r§" "Read -MLL" tags-todo "+Read+TODO={STRT\\|NEXT}"
-         ((org-agenda-category-filter-preset '("-MLL"))))
-	("r%" "Read (libre)" tags-todo "+Read+TODO={STRT\\|NEXT}"
-	 ((org-agenda-files '("~/org/libre.org"))))
+	("rt" "Read TODO" tags-todo "+Read+TODO={TODO\\|WAIT}")
 
 	("v" . "View")
 	("vv" "View STRT/NEXT" tags-todo "+View+TODO={STRT\\|NEXT}")
-	("vt" "View TODO" tags-todo "+View+TODO={TODO}")
-	("v!" "View MLL" tags-todo "+View+TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("+MLL"))))
-	("v§" "View -MLL" tags-todo "+View+TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("-MLL"))))
-	("v%" "View (libre)" tags-todo "+View+TODO={STRT\\|NEXT}"
-	 ((org-agenda-files '("~/org/libre.org"))))
+	("vt" "View TODO" tags-todo "+View+TODO={TODO\\|WAIT}")
 
 	("l" . "Listen")
 	("ll" "Listen STRT/NEXT" tags-todo "+Listen+TODO={STRT\\|NEXT}")
-	("lt" "Listen TODO" tags-todo "+Listen+TODO={TODO}")
-	("l!" "Listen MLL" tags-todo "+Listen+TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("+MLL"))))
-	("l§" "Listen -MLL" tags-todo "+Listen+TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("-MLL"))))
-	("l%" "Listen (libre)" tags-todo "+Listen+TODO={STRT\\|NEXT}"
-	 ((org-agenda-files '("~/org/libre.org"))))
+	("lt" "Listen TODO/WAIT" tags-todo "+Listen+TODO={TODO\\|WAIT}")
 
 	("w" . "Write")
 	("ww" "Write STRT/NEXT" tags-todo "+Write+TODO={STRT\\|NEXT}")
-	("wt" "Write TODO" tags-todo "+Write+TODO={TODO}")
-	("w!" "Write MLL" tags-todo "+Write+TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("+MLL"))))
-	("w§" "Write -MLL" tags-todo "+Write+TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("-MLL"))))
-	("w%" "Write (libre)" tags-todo "+Write+TODO={STRT\\|NEXT}"
-	 ((org-agenda-files '("~/org/libre.org"))))
+	("wt" "Write TODO" tags-todo "+Write+TODO={TODO\\|WAIT}")
 
 	("c" . "Code")
 	("cc" "Code STRT/NEXT" tags-todo "+Code+TODO={STRT\\|NEXT}")
-	("ct" "Code TODO" tags-todo "+Code+TODO={TODO}")
-	("c!" "Code MLL" tags-todo "+Code+TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("+MLL"))))
-	("c§" "Code -MLL" tags-todo "+Code+TODO={STRT\\|NEXT}"
-	 ((org-agenda-category-filter-preset '("-MLL"))))
-	("c%" "Code (libre)" tags-todo "+Code+TODO={STRT\\|NEXT}"
-	 ((org-agenda-files '("~/org/libre.org"))))
+	("ct" "Code TODO" tags-todo "+Code+TODO={TODO\\|WAIT}")
 	))
 
 (use-package epg :defer t)
@@ -628,27 +606,27 @@
   (setopt gnus-suppress-duplicates t)
   (setopt gnus-auto-select-first nil)
   (setopt gnus-ignored-from-addresses
-	(regexp-opt '("bastien.guerry@free.fr"
-		      "bastien.guerry@data.gouv.fr"
-		      "bastien.guerry@code.gouv.fr"
-		      "bastien.guerry@mail.numerique.gouv.fr"
-		      "bastien.guerry@numerique.gouv.fr"
-		      "bzg@bzg.fr"
-		      "bzg@gnu.org"
-		      )))
+	  (regexp-opt '("bastien.guerry@free.fr"
+			"bastien.guerry@data.gouv.fr"
+			"bastien.guerry@code.gouv.fr"
+			"bastien.guerry@mail.numerique.gouv.fr"
+			"bastien.guerry@numerique.gouv.fr"
+			"bzg@bzg.fr"
+			"bzg@gnu.org"
+			)))
 
   (setopt send-mail-function 'sendmail-send-it)
   (setopt mail-use-rfc822 t)
 
   ;; Sources and methods
   (setopt mail-sources nil
-	gnus-select-method '(nnnil "")
-	gnus-secondary-select-methods
-	'((nnimap "localhost"
-		  (nnimap-server-port "imaps")
-		  (nnimap-authinfo-file "~/.authinfo")
-		  (nnimap-stream ssl)
-		  (nnimap-expunge t))))
+	  gnus-select-method '(nnnil "")
+	  gnus-secondary-select-methods
+	  '((nnimap "localhost"
+		    (nnimap-server-port "imaps")
+		    (nnimap-authinfo-file "~/.authinfo")
+		    (nnimap-stream ssl)
+		    (nnimap-expunge t))))
 
   (add-hook 'gnus-exit-gnus-hook
 	    (lambda ()
@@ -656,21 +634,21 @@
 		  (with-current-buffer "bbdb" (save-buffer)))))
 
   (setopt read-mail-command 'gnus
-	gnus-directory "~/News/"
-	gnus-gcc-mark-as-read t
-	gnus-inhibit-startup-message t
-	gnus-interactive-catchup nil
-	gnus-interactive-exit nil
-	gnus-no-groups-message ""
-	gnus-novice-user nil
-	gnus-nov-is-evil t
-	gnus-use-cross-reference nil
-	gnus-verbose 6
-	mail-specify-envelope-from t
-	mail-envelope-from 'header
-	mail-user-agent 'gnus-user-agent
-	message-kill-buffer-on-exit t
-	message-forward-as-mime t)
+	  gnus-directory "~/News/"
+	  gnus-gcc-mark-as-read t
+	  gnus-inhibit-startup-message t
+	  gnus-interactive-catchup nil
+	  gnus-interactive-exit nil
+	  gnus-no-groups-message ""
+	  gnus-novice-user nil
+	  gnus-nov-is-evil t
+	  gnus-use-cross-reference nil
+	  gnus-verbose 6
+	  mail-specify-envelope-from t
+	  mail-envelope-from 'header
+	  mail-user-agent 'gnus-user-agent
+	  message-kill-buffer-on-exit t
+	  message-forward-as-mime t)
 
   (setopt gnus-subscribe-newsgroup-method 'gnus-subscribe-interactively)
 
@@ -692,12 +670,12 @@
 
   ;; Group sorting
   (setopt gnus-group-sort-function
-	'(gnus-group-sort-by-unread
-	  gnus-group-sort-by-rank
-	  ;; gnus-group-sort-by-score
-	  ;; gnus-group-sort-by-level
-	  ;; gnus-group-sort-by-alphabet
-	  ))
+	  '(gnus-group-sort-by-unread
+	    gnus-group-sort-by-rank
+	    ;; gnus-group-sort-by-score
+	    ;; gnus-group-sort-by-level
+	    ;; gnus-group-sort-by-alphabet
+	    ))
 
   (add-hook 'gnus-summary-exit-hook 'gnus-summary-bubble-group)
   (add-hook 'gnus-summary-exit-hook 'gnus-group-sort-groups-by-rank)
@@ -706,47 +684,47 @@
 
   ;; Headers we wanna see:
   (setopt gnus-visible-headers
-	"^From:\\|^Subject:\\|^Date:\\|^To:\\|^Cc:\\|^Newsgroups:\\|^Comments:\\|^User-Agent:"
-	message-draft-headers '(References From In-Reply-To)
-	;; message-generate-headers-first t ;; FIXME: Not needed Emacs>=29?
-	message-hidden-headers
-	'("^References:" "^Face:" "^X-Face:" "^X-Draft-From:" "^In-Reply-To:" "^Message-ID:"))
+	  "^From:\\|^Subject:\\|^Date:\\|^To:\\|^Cc:\\|^Newsgroups:\\|^Comments:\\|^User-Agent:"
+	  message-draft-headers '(References From In-Reply-To)
+	  ;; message-generate-headers-first t ;; FIXME: Not needed Emacs>=29?
+	  message-hidden-headers
+	  '("^References:" "^Face:" "^X-Face:" "^X-Draft-From:" "^In-Reply-To:" "^Message-ID:"))
 
   ;; Sort mails
   (setopt nnmail-split-abbrev-alist
-	'((any . "From\\|To\\|Cc\\|Sender\\|Apparently-To\\|Delivered-To\\|X-Apparently-To\\|Resent-From\\|Resent-To\\|Resent-Cc")
-	  (mail . "Mailer-Daemon\\|Postmaster\\|Uucp")
-	  (to . "To\\|Cc\\|Apparently-To\\|Resent-To\\|Resent-Cc\\|Delivered-To\\|X-Apparently-To")
-	  (from . "From\\|Sender\\|Resent-From")
-	  (nato . "To\\|Cc\\|Resent-To\\|Resent-Cc\\|Delivered-To\\|X-Apparently-To")
-	  (naany . "From\\|To\\|Cc\\|Sender\\|Resent-From\\|Resent-To\\|Delivered-To\\|X-Apparently-To\\|Resent-Cc")))
+	  '((any . "From\\|To\\|Cc\\|Sender\\|Apparently-To\\|Delivered-To\\|X-Apparently-To\\|Resent-From\\|Resent-To\\|Resent-Cc")
+	    (mail . "Mailer-Daemon\\|Postmaster\\|Uucp")
+	    (to . "To\\|Cc\\|Apparently-To\\|Resent-To\\|Resent-Cc\\|Delivered-To\\|X-Apparently-To")
+	    (from . "From\\|Sender\\|Resent-From")
+	    (nato . "To\\|Cc\\|Resent-To\\|Resent-Cc\\|Delivered-To\\|X-Apparently-To")
+	    (naany . "From\\|To\\|Cc\\|Sender\\|Resent-From\\|Resent-To\\|Delivered-To\\|X-Apparently-To\\|Resent-Cc")))
 
   ;; Simplify the subject lines
   (setopt gnus-simplify-subject-functions
-	'(gnus-simplify-subject-re gnus-simplify-whitespace))
+	  '(gnus-simplify-subject-re gnus-simplify-whitespace))
 
   ;; Thread by Xref, not by subject
   (setopt gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references
-	gnus-thread-sort-functions '(gnus-thread-sort-by-number
-				     gnus-thread-sort-by-total-score
-				     gnus-thread-sort-by-date)
-	gnus-sum-thread-tree-false-root ""
-	gnus-sum-thread-tree-indent " "
-	gnus-sum-thread-tree-leaf-with-other "├► "
-	gnus-sum-thread-tree-root ""
-	gnus-sum-thread-tree-single-leaf "╰► "
-	gnus-sum-thread-tree-vertical "│")
+	  gnus-thread-sort-functions '(gnus-thread-sort-by-number
+				       gnus-thread-sort-by-total-score
+				       gnus-thread-sort-by-date)
+	  gnus-sum-thread-tree-false-root ""
+	  gnus-sum-thread-tree-indent " "
+	  gnus-sum-thread-tree-leaf-with-other "├► "
+	  gnus-sum-thread-tree-root ""
+	  gnus-sum-thread-tree-single-leaf "╰► "
+	  gnus-sum-thread-tree-vertical "│")
 
   ;; Dispkay a button for MIME parts
   (setopt gnus-buttonized-mime-types '("multipart/alternative"))
 
   (setopt gnus-user-date-format-alist
-	'(((gnus-seconds-today) . "     %k:%M")
-	  ((+ 86400 (gnus-seconds-today)) . "hier %k:%M")
-	  ((+ 604800 (gnus-seconds-today)) . "%a  %k:%M")
-	  ((gnus-seconds-month) . "%a  %d")
-	  ((gnus-seconds-year) . "%b %d")
-	  (t . "%b %d '%y")))
+	  '(((gnus-seconds-today) . "     %k:%M")
+	    ((+ 86400 (gnus-seconds-today)) . "hier %k:%M")
+	    ((+ 604800 (gnus-seconds-today)) . "%a  %k:%M")
+	    ((gnus-seconds-month) . "%a  %d")
+	    ((gnus-seconds-year) . "%b %d")
+	    (t . "%b %d '%y")))
 
   ;; Add a time-stamp to a group when it is selected
   (add-hook 'gnus-select-group-hook 'gnus-group-set-timestamp)
@@ -760,44 +738,44 @@
     (if (equal gnus-group-line-format
 	       gnus-group-line-default-format)
 	(setopt gnus-group-line-format
-	      "%M%S%p%P %(%-40,40G%)\n")
+		"%M%S%p%P %(%-40,40G%)\n")
       (setopt gnus-group-line-format
-	    gnus-group-line-default-format)))
+	      gnus-group-line-default-format)))
 
   ;; Toggle the group line format
   (define-key gnus-group-mode-map "("
-    (lambda () (interactive) (bzg-gnus-toggle-group-line-format) (gnus)))
+	      (lambda () (interactive) (bzg-gnus-toggle-group-line-format) (gnus)))
 
   ;; Scoring
   (setopt gnus-use-adaptive-scoring '(word line)
-	gnus-adaptive-pretty-print t
-        gnus-adaptive-word-length-limit 5
-	gnus-score-exact-adapt-limit nil
-	gnus-default-adaptive-word-score-alist
-	'((42 . 3) ;cached
-          (65 . 2) ;replied
-          (70 . 1) ;forwarded
-          (82 . 1) ;read
-          (67 . -1) ;catchup
-          (69 . 0) ;expired
-          (75 . -3) ;killed
-          (114 . -3))
-	;; gnus-score-decay-constant 1
-	;; gnus-decay-scores t
-	;; gnus-decay-score 1000
-	)
+	  gnus-adaptive-pretty-print t
+          gnus-adaptive-word-length-limit 5
+	  gnus-score-exact-adapt-limit nil
+	  gnus-default-adaptive-word-score-alist
+	  '((42 . 3) ;cached
+            (65 . 2) ;replied
+            (70 . 1) ;forwarded
+            (82 . 1) ;read
+            (67 . -1) ;catchup
+            (69 . 0) ;expired
+            (75 . -3) ;killed
+            (114 . -3))
+	  ;; gnus-score-decay-constant 1
+	  ;; gnus-decay-scores t
+	  ;; gnus-decay-score 1000
+	  )
 
   (setopt gnus-summary-line-format
-	(concat "%*%0{%U%R%z%}"
-		"%0{ %}(%2t)"
-		"%2{ %}%-23,23n"
-		"%1{ %}%1{%B%}%2{%-102,102s%}%-140="
-		"\n")))
+	  (concat "%*%0{%U%R%z%}"
+		  "%0{ %}(%2t)"
+		  "%2{ %}%-23,23n"
+		  "%1{ %}%1{%B%}%2{%-102,102s%}%-140="
+		  "\n")))
 
 (use-package gnus-alias
   :config
   (define-key message-mode-map (kbd "C-c C-x C-i")
-    'gnus-alias-select-identity))
+	      'gnus-alias-select-identity))
 
 (use-package gnus-art
   :defer t
@@ -1034,20 +1012,94 @@
     (setopt browse-url-secondary-browser-function 'eww-browse-url)
     (message "Browser set to generic")))
 
-(use-package whitespace
+;; Paredit initialization
+(use-package paredit
+  :config
+  (define-key paredit-mode-map (kbd "C-M-w") 'sp-copy-sexp))
+
+;; Clojure initialization
+(setopt inf-clojure-generic-cmd "clojure")
+
+;; Use LSP
+(use-package lsp-mode
+  :commands lsp
+  :hook ((clojure-mode . lsp)
+         (emacs-lisp-mode . lsp))
+  :config
+  (setopt lsp-prefer-flymake nil))
+
+(use-package clojure-mode
+  :config
+  (require 'flycheck-clj-kondo)
+  (setopt clojure-align-forms-automatically t)
+  (add-hook 'clojure-mode-hook 'company-mode)
+  (add-hook 'clojure-mode-hook 'origami-mode)
+  (add-hook 'clojure-mode-hook 'paredit-mode)
+  ;; (add-hook 'clojure-mode-hook 'clj-refactor-mode)
+  (add-hook 'clojure-mode-hook 'aggressive-indent-mode))
+
+(use-package clj-refactor
   :defer t
   :config
-  (add-to-list 'whitespace-style 'lines-tail))
+  ;; (setopt clojure-thread-all-but-last t)
+  (define-key clj-refactor-map "\C-ctf" #'clojure-thread-first-all)
+  (define-key clj-refactor-map "\C-ctl" #'clojure-thread-last-all)
+  (define-key clj-refactor-map "\C-cu" #'clojure-unwind)
+  (define-key clj-refactor-map "\C-cU" #'clojure-unwind-all))
 
-(use-package ibuffer
+(use-package cider
   :defer t
   :config
-  (global-set-key (kbd "C-x C-b") 'ibuffer))
+  (add-hook 'cider-repl-mode-hook 'company-mode)
+  (setopt cider-use-fringe-indicators nil)
+  (setopt cider-repl-pop-to-buffer-on-connect nil)
+  (setopt nrepl-hide-special-buffers t))
 
-;; M-x package-install RET register-list RET
-(use-package register-list
-  :config
-  (global-set-key (kbd "C-x r L") 'register-list))
+;; Emacs Lisp initialization
+(add-hook 'emacs-lisp-mode-hook 'company-mode)
+(add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
+(add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+(add-hook 'emacs-lisp-mode-hook 'origami-mode)
+
+(setopt bzg-cycle-view-current nil)
+
+(defun bzg-cycle-view ()
+  "Cycle through my favorite views."
+  (interactive)
+  (let ((splitted-frame
+	 (or (< (window-height) (1- (frame-height)))
+	     (< (window-width) (frame-width)))))
+    (cond ((not (eq last-command 'bzg-cycle-view))
+	   (delete-other-windows)
+	   (bzg-big-fringe-mode)
+	   (setopt bzg-cycle-view-current 'one-window-with-fringe))
+	  ((and (not bzg-cycle-view-current) splitted-frame)
+	   (delete-other-windows))
+	  ((not bzg-cycle-view-current)
+	   (delete-other-windows)
+	   (if bzg-big-fringe-mode
+	       (progn (bzg-big-fringe-mode)
+		      (setopt bzg-cycle-view-current 'one-window-no-fringe))
+	     (bzg-big-fringe-mode)
+	     (setopt bzg-cycle-view-current 'one-window-with-fringe)))
+	  ((eq bzg-cycle-view-current 'one-window-with-fringe)
+	   (delete-other-windows)
+	   (bzg-big-fringe-mode -1)
+	   (setopt bzg-cycle-view-current 'one-window-no-fringe))
+	  ((eq bzg-cycle-view-current 'one-window-no-fringe)
+	   (delete-other-windows)
+	   (split-window-right)
+	   (bzg-big-fringe-mode -1)
+	   (other-window 1)
+	   (balance-windows)
+	   (setopt bzg-cycle-view-current 'two-windows-balanced))
+	  ((eq bzg-cycle-view-current 'two-windows-balanced)
+	   (delete-other-windows)
+	   (bzg-big-fringe-mode 1)
+	   (setopt bzg-cycle-view-current 'one-window-with-fringe)))))
+
+(advice-add 'split-window-horizontally :before (lambda () (interactive) (bzg-big-fringe-mode 0)))
+(advice-add 'split-window-right :before (lambda () (interactive) (bzg-big-fringe-mode 0)))
 
 ;; Hide fringe indicators
 (mapc (lambda (fb) (set-fringe-bitmap-face fb 'org-hide))
@@ -1106,6 +1158,25 @@
 (add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
 (add-hook 'org-mode-hook (lambda () (electric-indent-mode 0)))
 
+(use-package whitespace
+  :defer t
+  :config
+  (add-to-list 'whitespace-style 'lines-tail))
+
+(use-package ibuffer
+  :defer t
+  :config
+  (global-set-key (kbd "C-x C-b") 'ibuffer))
+
+;; M-x package-install RET register-list RET
+(use-package register-list
+  :config
+  (global-set-key (kbd "C-x r L") 'register-list))
+
+;; Displays a helper about the current available keybindings
+(require 'which-key)
+(which-key-mode)
+
 (use-package eww
   :defer t
   :config
@@ -1116,147 +1187,7 @@
 	shr-use-colors nil
 	shr-use-fonts nil))
 
-;; Google translate
-(require 'google-translate)
-
-(defun google-translate--search-tkk ()
-  "Search TKK."
-  (list 430675 2721866130))
-
-(defun google-translate-word-at-point ()
-  (interactive)
-  (let ((w (thing-at-point 'word)))
-    (google-translate-translate "auto" "fr" w)))
-
-(global-set-key (kbd "C-c t") (lambda (s) (interactive "sTranslate: ")
-				(google-translate-translate "auto" "fr" s)))
-(global-set-key (kbd "C-c T") 'google-translate-word-at-point)
-
-(defun uniquify-all-lines-region (start end)
-  "Find duplicate lines in region START to END keeping first occurrence."
-  (interactive "*r")
-  (save-excursion
-    (let ((end (copy-marker end)))
-      (while
-	  (progn
-	    (goto-char start)
-	    (re-search-forward "^\\(.*\\)\n\\(\\(.*\n\\)*\\)\\1\n" end t))
-	(replace-match "\\1\n\\2")))))
-
-(defun uniquify-all-lines-buffer ()
-  "Delete duplicate lines in buffer and keep first occurrence."
-  (interactive "*")
-  (uniquify-all-lines-region (point-min) (point-max)))
-
-(setopt bzg-cycle-view-current nil)
-
-(defun bzg-cycle-view ()
-  "Cycle through my favorite views."
-  (interactive)
-  (let ((splitted-frame
-	 (or (< (window-height) (1- (frame-height)))
-	     (< (window-width) (frame-width)))))
-    (cond ((not (eq last-command 'bzg-cycle-view))
-	   (delete-other-windows)
-	   (bzg-big-fringe-mode)
-	   (setopt bzg-cycle-view-current 'one-window-with-fringe))
-	  ((and (not bzg-cycle-view-current) splitted-frame)
-	   (delete-other-windows))
-	  ((not bzg-cycle-view-current)
-	   (delete-other-windows)
-	   (if bzg-big-fringe-mode
-	       (progn (bzg-big-fringe-mode)
-		      (setopt bzg-cycle-view-current 'one-window-no-fringe))
-	     (bzg-big-fringe-mode)
-	     (setopt bzg-cycle-view-current 'one-window-with-fringe)))
-	  ((eq bzg-cycle-view-current 'one-window-with-fringe)
-	   (delete-other-windows)
-	   (bzg-big-fringe-mode -1)
-	   (setopt bzg-cycle-view-current 'one-window-no-fringe))
-	  ((eq bzg-cycle-view-current 'one-window-no-fringe)
-	   (delete-other-windows)
-	   (split-window-right)
-	   (bzg-big-fringe-mode -1)
-	   (other-window 1)
-	   (balance-windows)
-	   (setopt bzg-cycle-view-current 'two-windows-balanced))
-	  ((eq bzg-cycle-view-current 'two-windows-balanced)
-	   (delete-other-windows)
-	   (bzg-big-fringe-mode 1)
-	   (setopt bzg-cycle-view-current 'one-window-with-fringe)))))
-
-(advice-add 'split-window-horizontally :before (lambda () (interactive) (bzg-big-fringe-mode 0)))
-(advice-add 'split-window-right :before (lambda () (interactive) (bzg-big-fringe-mode 0)))
-
-(defun find-variable-or-function-at-point ()
-  (interactive)
-  (or (find-variable-at-point)
-      (find-function-at-point)
-      (message "No variable or function at point.")))
-
-(global-set-key (kbd "C-,") 'find-variable-or-function-at-point)
-
-;; Paredit initialization
-(use-package paredit
-  :config
-  (define-key paredit-mode-map (kbd "C-M-w") 'sp-copy-sexp))
-
-;; Clojure initialization
-(setopt inf-clojure-generic-cmd "clojure")
-
-;; Use LSP
-(use-package lsp-mode
-  :commands lsp
-  :hook ((clojure-mode . lsp)
-         (emacs-lisp-mode . lsp))
-  :config
-  (setopt lsp-prefer-flymake nil))
-
-(use-package clojure-mode
-  :config
-  (require 'flycheck-clj-kondo)
-  (setopt clojure-align-forms-automatically t)
-  (add-hook 'clojure-mode-hook 'company-mode)
-  (add-hook 'clojure-mode-hook 'origami-mode)
-  (add-hook 'clojure-mode-hook 'paredit-mode)
-  ;; (add-hook 'clojure-mode-hook 'clj-refactor-mode)
-  (add-hook 'clojure-mode-hook 'aggressive-indent-mode))
-
-(use-package clj-refactor
-  :defer t
-  :config
-  ;; (setopt clojure-thread-all-but-last t)
-  (define-key clj-refactor-map "\C-ctf" #'clojure-thread-first-all)
-  (define-key clj-refactor-map "\C-ctl" #'clojure-thread-last-all)
-  (define-key clj-refactor-map "\C-cu" #'clojure-unwind)
-  (define-key clj-refactor-map "\C-cU" #'clojure-unwind-all))
-
-(use-package cider
-  :defer t
-  :config
-  (add-hook 'cider-repl-mode-hook 'company-mode)
-  (setopt cider-use-fringe-indicators nil)
-  (setopt cider-repl-pop-to-buffer-on-connect nil)
-  (setopt nrepl-hide-special-buffers t))
-
-;; Emacs Lisp initialization
-(add-hook 'emacs-lisp-mode-hook 'company-mode)
-(add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
-(add-hook 'emacs-lisp-mode-hook 'paredit-mode)
-(add-hook 'emacs-lisp-mode-hook 'origami-mode)
-
-;; By default, killing a word backward will put it in the ring, I don't want this
-(defun backward-kill-word-noring (arg)
-  (interactive "p")
-  (let ((kr kill-ring))
-    (backward-kill-word arg)
-    (setopt kill-ring (reverse kr))))
-
-(global-set-key (kbd "C-M-<backspace>") 'backward-kill-word-noring)
-
-;; Displays a helper about the current available keybindings
-(require 'which-key)
-(which-key-mode)
+(envrc-global-mode)
 
 (use-package multi-term
   :config
@@ -1269,11 +1200,6 @@
   (setopt dired-subtree-use-backgrounds nil)
   (define-key dired-mode-map (kbd "I") 'dired-subtree-toggle)
   (define-key dired-mode-map (kbd "TAB") 'dired-subtree-cycle))
-
-(envrc-global-mode)
-
-;; Load forge
-;; (use-package forge :after magit)
 
 ;; Use ugrep
 (setopt xref-search-program 'ugrep)
