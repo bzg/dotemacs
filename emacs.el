@@ -251,7 +251,6 @@
 (setopt org-scheduled-past-days 100)
 (setopt org-special-ctrl-a/e 'reversed)
 (setopt org-special-ctrl-k t)
-(setopt org-tag-persistent-alist '(("Write" . ?w) ("Read" . ?r)))
 (setopt org-tag-alist
       '((:startgroup)
 	("Handson" . ?o)
@@ -263,7 +262,7 @@
 	(:grouptags)
 	("Read" . ?r) ("View" . ?v) ("Listen" . ?l)
 	(:endgroup)
-	("Mail" . ?@) ("Print" . ?P) ("Buy" . ?b)))
+	("Mail" . ?@) ("Buy" . ?b)))
 (setopt org-todo-keywords '((type "STRT" "NEXT" "TODO" "WAIT" "|" "DONE" "DELEGATED" "CANCELED")))
 (setopt org-todo-repeat-to-state t)
 (setopt org-use-property-inheritance t)
