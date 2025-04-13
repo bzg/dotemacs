@@ -94,6 +94,8 @@
 ;; Always use "y" for "yes"
 (fset 'yes-or-no-p 'y-or-n-p)
 
+(setopt with-editor-emacsclient-executable "emacsclient")
+
 ;; Enabling and disabling some modes
 ;; Less is more - see https://bzg.fr/en/emacs-strip-tease/
 (auto-insert-mode 1)
@@ -484,22 +486,30 @@
 
 (setopt org-agenda-custom-commands
       '(
-	;; Week agenda for rendez-vous and tasks
+	;; Main tags views
+	("@" "Mail" tags-todo "+Mail")
+	("#" "To archive" todo "DONE|CANCELED|DELEGATED")
+	("A" "Write, Code, Mail" tags-todo
+         "+TAGS={Write\\|Code}+TODO={STRT}")
+	("Z" "Read, Listen, View" tags-todo
+         "+TAGS={Read\\|Listen\\|View}+TODO={STRT}")
+
+	;; Weekly agenda view of appointments
 	("ù" "Weekly appointments" agenda* "Weekly appointments"
 	 ((org-agenda-span 'week)
 	  (org-agenda-files '("~/org/rdv.org"))))
 
-	("$" . "Tasks for this week")
-	("$$" "Week tasks " agenda "All tasks for this week"
+	("$" . "Scheduled tasks for this week")
+	("$$" "Week tasks" agenda "Scheduled tasks for this week"
 	 ((org-agenda-span 'week)
 	  (org-agenda-use-time-grid nil)
 	  (org-agenda-files '("~/org/bzg.org"))))
-	("$!" "MLL week tasks" agenda "Work tasks for this week"
+	("$!" "MLL week tasks" agenda "Scheduled work tasks for this week"
 	 ((org-agenda-category-filter-preset '("+MLL"))
 	  (org-agenda-span 'week)
 	  (org-agenda-use-time-grid nil)
 	  (org-agenda-files '("~/org/bzg.org"))))
-	("$§" "Non-MLL week tasks" agenda "Non-work tasks for this week"
+	("$§" "Non-MLL week tasks" agenda "Scheduled non-work tasks for this week"
 	 ((org-agenda-category-filter-preset '("-MLL"))
 	  (org-agenda-span 'week)
 	  (org-agenda-use-time-grid nil)
@@ -515,23 +525,13 @@
 	 ((org-agenda-category-filter-preset '("-MLL"))
 	  (org-agenda-files '("~/org/bzg.org"))))
 
-	("t" . "What's to do?")
-	("tt" "TODO all" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
+	("?" . "What's to do or waiting?")
+	("??" "TODO all" tags-todo "TODO={TODO\\|WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
 	 ((org-agenda-files '("~/org/bzg.org"))))
-	("t!" "TODO MLL" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
+	("?!" "TODO MLL" tags-todo "TODO={TODO\\|WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
 	 ((org-agenda-category-filter-preset '("+MLL"))
 	  (org-agenda-files '("~/org/bzg.org"))))
-	("t§" "TODO -MLL" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
-	 ((org-agenda-category-filter-preset '("-MLL"))
-	  (org-agenda-files '("~/org/bzg.org"))))
-
-	("?" . "What's waiting?")
-	("??" "TODO all" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
-	 ((org-agenda-files '("~/org/bzg.org"))))
-	("?!" "TODO MLL" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
-	 ((org-agenda-category-filter-preset '("+MLL"))
-	  (org-agenda-files '("~/org/bzg.org"))))
-	("?§" "TODO -MLL" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
+	("?§" "TODO -MLL" tags-todo "TODO={TODO\\|WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
 	 ((org-agenda-category-filter-preset '("-MLL"))
 	  (org-agenda-files '("~/org/bzg.org"))))
 	
@@ -550,34 +550,6 @@
 	  (org-agenda-category-filter-preset '("-MLL"))
 	  (org-deadline-warning-days 60)
 	  (org-agenda-entry-types '(:deadline))))
-
-	("@" "Mail" tags-todo "+Mail+TODO={STRT\\|NEXT\\|TODO\\|WAIT}")
-	("#" "To archive" todo "DONE|CANCELED|DELEGATED")
-	
-	("A" "Write, Code, Mail" tags-todo
-         "+TAGS={Write\\|Code\\|Mail}+TODO={STRT}")
-	("Z" "Read, Listen, View" tags-todo
-         "+TAGS={Read\\|Listen\\|View}+TODO={STRT}")
-
-	("r" . "Read")
-	("rr" "Read STRT/NEXT" tags-todo "+Read+TODO={STRT\\|NEXT}")
-	("rt" "Read TODO" tags-todo "+Read+TODO={TODO\\|WAIT}")
-
-	("v" . "View")
-	("vv" "View STRT/NEXT" tags-todo "+View+TODO={STRT\\|NEXT}")
-	("vt" "View TODO" tags-todo "+View+TODO={TODO\\|WAIT}")
-
-	("l" . "Listen")
-	("ll" "Listen STRT/NEXT" tags-todo "+Listen+TODO={STRT\\|NEXT}")
-	("lt" "Listen TODO/WAIT" tags-todo "+Listen+TODO={TODO\\|WAIT}")
-
-	("w" . "Write")
-	("ww" "Write STRT/NEXT" tags-todo "+Write+TODO={STRT\\|NEXT}")
-	("wt" "Write TODO" tags-todo "+Write+TODO={TODO\\|WAIT}")
-
-	("c" . "Code")
-	("cc" "Code STRT/NEXT" tags-todo "+Code+TODO={STRT\\|NEXT}")
-	("ct" "Code TODO" tags-todo "+Code+TODO={TODO\\|WAIT}")
 	))
 
 (use-package epg :defer t)
