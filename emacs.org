@@ -202,12 +202,12 @@ Comments and suggestions are welcome.
   (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "^")))
   (global-set-key (kbd "C-<dead-circumflex>") (lambda () (interactive) (org-agenda nil "$!")))
   (global-set-key (kbd "C-M-<dead-circumflex>") (lambda () (interactive) (org-agenda nil "$§")))
-  (global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "d!")))
-  (global-set-key (kbd "C-M-*") (lambda () (interactive) (org-agenda nil "d§")))
+  (global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "d!")))
+  (global-set-key (kbd "C-M-!") (lambda () (interactive) (org-agenda nil "d§")))
   (global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "n!")))
   (global-set-key (kbd "C-M-ù") (lambda () (interactive) (org-agenda nil "n§")))
-  (global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "?!")))
-  (global-set-key (kbd "C-M-!") (lambda () (interactive) (org-agenda nil "?§")))
+  (global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "?!")))
+  (global-set-key (kbd "C-M-*") (lambda () (interactive) (org-agenda nil "?§")))
 
   ;; Other useful global keybindings
   (define-key global-map "\M-Q" 'unfill-paragraph)
