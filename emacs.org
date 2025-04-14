@@ -547,7 +547,7 @@ Comments and suggestions are welcome.
    	    (org-agenda-use-time-grid nil)
    	    (org-agenda-files '("~/org/bzg.org"))))
    	  ("$§" "Non-MLL week tasks" agenda "Scheduled non-work tasks for this week"
-   	   ((org-agenda-category-filter-preset '("-MLL"))
+   	   ((org-agenda-category-filter-preset '("-MLL" "-RDV" "-RDL"))
    	    (org-agenda-span 'week)
    	    (org-agenda-use-time-grid nil)
    	    (org-agenda-files '("~/org/bzg.org"))))
