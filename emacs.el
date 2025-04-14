@@ -259,7 +259,7 @@
 	  (:startgroup)
 	  ("Handsoff" . ?f)
 	  (:grouptags)
-	  ("Read" . ?r) ("View" . ?v) ("Listen" . ?l)
+	  ("Read" . ?r) ("Watch" . ?W) ("Listen" . ?l)
 	  (:endgroup)
 	  ("Mail" . ?@) ("Buy" . ?b)))
 (setopt org-todo-keywords '((type "STRT" "NEXT" "TODO" "WAIT" "|" "DONE" "CANCELED")))
@@ -471,8 +471,8 @@
 	  ("#" "To archive" todo "DONE|CANCELED|DELEGATED")
 	  ("A" "Write, Code, Mail" tags-todo
            "+TAGS={Write\\|Code}+TODO={STRT}")
-	  ("Z" "Read, Listen, View" tags-todo
-           "+TAGS={Read\\|Listen\\|View}+TODO={STRT}")
+	  ("Z" "Read, Listen, Watch" tags-todo
+           "+TAGS={Read\\|Listen\\|Watch}+TODO={STRT}")
 
 	  ;; Weekly agenda view of appointments
 	  ("^" "Weekly appointments" agenda* "Weekly appointments"
@@ -505,13 +505,23 @@
 	   ((org-agenda-category-filter-preset '("-MLL"))
 	    (org-agenda-files '("~/org/bzg.org"))))
 
-	  ("?" . "What's to do or waiting?")
-	  ("??" "TODO all" tags-todo "TODO={TODO\\|WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
+	  ("t" . "What's to do?")
+	  ("t?" "TODO all" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
 	   ((org-agenda-files '("~/org/bzg.org"))))
-	  ("?!" "TODO MLL" tags-todo "TODO={TODO\\|WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
+	  ("t!" "TODO MLL" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
 	   ((org-agenda-category-filter-preset '("+MLL"))
 	    (org-agenda-files '("~/org/bzg.org"))))
-	  ("?§" "TODO -MLL" tags-todo "TODO={TODO\\|WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
+	  ("t§" "TODO -MLL" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
+	   ((org-agenda-category-filter-preset '("-MLL"))
+	    (org-agenda-files '("~/org/bzg.org"))))
+
+	  ("?" . "What's waiting?")
+	  ("??" "WAIT all" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
+	   ((org-agenda-files '("~/org/bzg.org"))))
+	  ("?!" "WAIT MLL" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
+	   ((org-agenda-category-filter-preset '("+MLL"))
+	    (org-agenda-files '("~/org/bzg.org"))))
+	  ("?§" "WAIT -MLL" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
 	   ((org-agenda-category-filter-preset '("-MLL"))
 	    (org-agenda-files '("~/org/bzg.org"))))
 	  
