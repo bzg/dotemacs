@@ -338,7 +338,7 @@
 (setopt org-capture-templates
 	'(("r" "RDV Perso" entry (file+headline "~/org/bzg.org" "RDV Perso")
 	   "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
-	  ("R" "RDV MLL" entry (file+headline "~/org/bzg.org" "RDV MLL")
+	  ("!" "RDV MLL" entry (file+headline "~/org/bzg.org" "RDV MLL")
 	   "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 	  ("d" "Divers" entry (file+headline "~/org/bzg.org" "Divers")
 	   "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
