@@ -466,65 +466,51 @@
 
 (setopt org-agenda-custom-commands
 	'(
-	  ;; Main tags views
-	  ("@" "Mail" tags-todo "+Mail")
+	  ;; Main todo and tags views
 	  ("#" "To archive" todo "DONE|CANCELED|DELEGATED")
-	  ("A" "Write, Code, Mail" tags-todo
-           "+TAGS={Write\\|Code}+TODO={STRT}")
-	  ("Z" "Read, Listen, Watch" tags-todo
-           "+TAGS={Read\\|Listen\\|Watch}+TODO={STRT}")
+	  ("@" "Mail" tags-todo "+Mail")
+	  ("A" "Hands on" tags-todo "+TAGS={Write\\|Code}+TODO={STRT}")
+	  ("Z" "Hands off" tags-todo "+TAGS={Read\\|Listen\\|Watch}+TODO={STRT}")
 
-	  ;; Weekly agenda view of appointments
-	  ("^" "Weekly appointments" agenda* "Weekly appointments"
-	   ((org-agenda-span 'week)
-	    (org-agenda-files '("~/org/bzg.org"))))
+	  ;; Agenda view of appointments for this week
+	  ("^" "Weekly appointments" agenda* "Weekly appointments")
 
+	  ;; Agenda view to see SCHEDULED/DEADLINE tasks for this week
 	  ("$" . "Scheduled tasks for this week")
 	  ("$$" "Week tasks" agenda "Scheduled tasks for this week"
-	   ((org-agenda-span 'week)
-	    (org-agenda-use-time-grid nil)
-	    (org-agenda-files '("~/org/bzg.org"))))
+	   ((org-agenda-use-time-grid nil)))
 	  ("$!" "MLL week tasks" agenda "Scheduled work tasks for this week"
 	   ((org-agenda-category-filter-preset '("+MLL"))
-	    (org-agenda-span 'week)
-	    (org-agenda-use-time-grid nil)
-	    (org-agenda-files '("~/org/bzg.org"))))
+	    (org-agenda-use-time-grid nil)))
 	  ("$§" "Non-MLL week tasks" agenda "Scheduled non-work tasks for this week"
 	   ((org-agenda-category-filter-preset '("-MLL" "-RDV" "-RDL"))
-	    (org-agenda-span 'week)
-	    (org-agenda-use-time-grid nil)
-	    (org-agenda-files '("~/org/bzg.org"))))
+	    (org-agenda-use-time-grid nil)))
 
+	  ;; Agenda view to see STRT/NEXT tasks for this week
 	  ("n" . "What's next?")
-	  ("nn" "STRT/NEXT all" tags-todo "TODO={STRT\\|NEXT}"
-	   ((org-agenda-files '("~/org/bzg.org"))))
+	  ("nn" "STRT/NEXT all" tags-todo "TODO={STRT\\|NEXT}")
 	  ("n!" "STRT/NEXT MLL" tags-todo "TODO={STRT\\|NEXT}"
-	   ((org-agenda-category-filter-preset '("+MLL"))
-	    (org-agenda-files '("~/org/bzg.org"))))
+	   ((org-agenda-category-filter-preset '("+MLL"))))
 	  ("n§" "STRT/NEXT -MLL" tags-todo "TODO={STRT\\|NEXT}"
-	   ((org-agenda-category-filter-preset '("-MLL"))
-	    (org-agenda-files '("~/org/bzg.org"))))
+	   ((org-agenda-category-filter-preset '("-MLL"))))
 
+	  ;; Agenda view to see TODO tasks with no SCHEDULED/DEADLINE
 	  ("t" . "What's to do?")
-	  ("t?" "TODO all" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
-	   ((org-agenda-files '("~/org/bzg.org"))))
+	  ("t?" "TODO all" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\"")
 	  ("t!" "TODO MLL" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
-	   ((org-agenda-category-filter-preset '("+MLL"))
-	    (org-agenda-files '("~/org/bzg.org"))))
+	   ((org-agenda-category-filter-preset '("+MLL"))))
 	  ("t§" "TODO -MLL" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
-	   ((org-agenda-category-filter-preset '("-MLL"))
-	    (org-agenda-files '("~/org/bzg.org"))))
+	   ((org-agenda-category-filter-preset '("-MLL"))))
 
+	  ;; Agenda view to see WAIT tasks with no SCHEDULED/DEADLINE
 	  ("?" . "What's waiting?")
-	  ("??" "WAIT all" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
-	   ((org-agenda-files '("~/org/bzg.org"))))
+	  ("??" "WAIT all" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\"")
 	  ("?!" "WAIT MLL" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
-	   ((org-agenda-category-filter-preset '("+MLL"))
-	    (org-agenda-files '("~/org/bzg.org"))))
+	   ((org-agenda-category-filter-preset '("+MLL"))))
 	  ("?§" "WAIT -MLL" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
-	   ((org-agenda-category-filter-preset '("-MLL"))
-	    (org-agenda-files '("~/org/bzg.org"))))
-	  
+	   ((org-agenda-category-filter-preset '("-MLL"))))
+
+	  ;; Agenda view to see upcoming deadlines with 60 days of warning period
 	  ("d" . "Upcoming deadlines")
 	  ("dd" "Deadlines all" agenda "Past/upcoming deadlines"
 	   ((org-agenda-span 1)
@@ -539,8 +525,7 @@
 	   ((org-agenda-span 1)
 	    (org-agenda-category-filter-preset '("-MLL"))
 	    (org-deadline-warning-days 60)
-	    (org-agenda-entry-types '(:deadline))))
-	  ))
+	    (org-agenda-entry-types '(:deadline))))))
 
 (use-package epg :defer t)
 (use-package epa
