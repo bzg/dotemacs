@@ -299,7 +299,7 @@ Comments and suggestions are welcome.
    	  ("Read" . ?r) ("Watch" . ?W) ("Listen" . ?l)
    	  (:endgroup)
    	  ("Mail" . ?@) ("Buy" . ?b)))
-   (setopt org-todo-keywords '((type "STRT" "NEXT" "TODO" "WAIT" "|" "DONE" "CANCELED")))
+   (setopt org-todo-keywords '((type "STRT" "NEXT" "TODO" "WAIT" "|" "DONE" "CXLD")))
    (setopt org-todo-repeat-to-state t)
    (setopt org-use-property-inheritance t)
    (setopt org-use-sub-superscripts '{})
@@ -311,10 +311,10 @@ Comments and suggestions are welcome.
    	  (and (looking-at org-outline-regexp-bol)
    	       (not (org-in-src-block-p t)))))
    (setopt org-todo-keyword-faces
-   	'(("STRT" . (:inverse-video t :foreground (face-foreground 'default)))
-   	  ("NEXT" . (:weight bold :foreground (face-foreground 'default)))
+   	'(("STRT" . (:inverse-video t))
+   	  ("NEXT" . (:weight bold))
    	  ("WAIT" . (:inverse-video t))
-   	  ("CANCELED" . (:inverse-video t))))
+   	  ("CXLD" . (:inverse-video t))))
    (setopt org-footnote-section "Notes")
    (setopt org-attach-id-dir "~/org/data/")
    (setopt org-allow-promoting-top-level-subtree t)
@@ -524,7 +524,7 @@ Comments and suggestions are welcome.
    (setopt org-agenda-custom-commands
    	'(
    	  ;; Main todo and tags views
-   	  ("#" "To archive" todo "DONE|CANCELED|DELEGATED")
+   	  ("#" "To archive" todo "DONE|CXLD")
    	  ("@" "Mail" tags-todo "+Mail")
    	  ("A" "Hands on" tags-todo "+TAGS={Write\\|Code}+TODO={STRT}")
    	  ("Z" "Hands off" tags-todo "+TAGS={Read\\|Listen\\|Watch}+TODO={STRT}")
