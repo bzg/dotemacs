@@ -262,7 +262,7 @@
 	  ("Read" . ?r) ("Watch" . ?W) ("Listen" . ?l)
 	  (:endgroup)
 	  ("Mail" . ?@) ("Buy" . ?b)))
-(setopt org-todo-keywords '((type "STRT" "NEXT" "TODO" "WAIT" "|" "DONE" "CXLD")))
+(setopt org-todo-keywords '((type "STRT" "NEXT" "TODO" "WAIT" "|" "DONE" "CANX")))
 (setopt org-todo-repeat-to-state t)
 (setopt org-use-property-inheritance t)
 (setopt org-use-sub-superscripts '{})
@@ -277,7 +277,7 @@
 	'(("STRT" . (:inverse-video t))
 	  ("NEXT" . (:weight bold))
 	  ("WAIT" . (:inverse-video t))
-	  ("CXLD" . (:inverse-video t))))
+	  ("CANX" . (:inverse-video t))))
 (setopt org-footnote-section "Notes")
 (setopt org-attach-id-dir "~/org/data/")
 (setopt org-allow-promoting-top-level-subtree t)
@@ -467,7 +467,7 @@
 (setopt org-agenda-custom-commands
 	'(
 	  ;; Main todo and tags views
-	  ("#" "To archive" todo "DONE|CXLD")
+	  ("#" "To archive" todo "DONE|CANX")
 	  ("@" "Mail" tags-todo "+Mail")
 	  ("A" "Hands on" tags-todo "+TAGS={Write\\|Code}+TODO={STRT}")
 	  ("Z" "Hands off" tags-todo "+TAGS={Read\\|Listen\\|Watch}+TODO={STRT}")
