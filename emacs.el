@@ -262,7 +262,7 @@
 	  ("Read" . ?r) ("Watch" . ?W) ("Listen" . ?l)
 	  (:endgroup)
 	  ("Mail" . ?@) ("Buy" . ?b)))
-(setopt org-todo-keywords '((type "ONGO" "NEXT" "TODO" "WAIT" "|" "DONE" "SKIP")))
+(setopt org-todo-keywords '((type "ONGO(o)" "NEXT(n)" "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SKIP(s)")))
 (setopt org-todo-repeat-to-state t)
 (setopt org-use-property-inheritance t)
 (setopt org-use-sub-superscripts '{})
@@ -297,6 +297,7 @@
 (setopt org-link-email-description-format "%c: %.50s")
 (setopt org-support-shift-select t)
 (setopt org-ellipsis "…")
+(setopt org-archive-location "~/org/archives/%s::")
 
 (org-clock-persistence-insinuate)
 
