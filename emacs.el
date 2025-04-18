@@ -262,7 +262,7 @@
 	  ("Read" . ?r) ("Watch" . ?W) ("Listen" . ?l)
 	  (:endgroup)
 	  ("Mail" . ?@) ("Buy" . ?b)))
-(setopt org-todo-keywords '((type "STRT" "NEXT" "TODO" "WAIT" "|" "DONE" "CANX")))
+(setopt org-todo-keywords '((type "ONGO" "NEXT" "TODO" "WAIT" "|" "DONE" "SKIP")))
 (setopt org-todo-repeat-to-state t)
 (setopt org-use-property-inheritance t)
 (setopt org-use-sub-superscripts '{})
@@ -274,10 +274,10 @@
 	  (and (looking-at org-outline-regexp-bol)
 	       (not (org-in-src-block-p t)))))
 (setopt org-todo-keyword-faces
-	'(("STRT" . (:inverse-video t))
+	'(("ONGO" . (:inverse-video t))
 	  ("NEXT" . (:weight bold))
 	  ("WAIT" . (:inverse-video t))
-	  ("CANX" . (:inverse-video t))))
+	  ("SKIP" . (:inverse-video t))))
 (setopt org-footnote-section "Notes")
 (setopt org-attach-id-dir "~/org/data/")
 (setopt org-allow-promoting-top-level-subtree t)
@@ -307,10 +307,10 @@
 (setopt org-clock-out-remove-zero-time-clocks t)
 (setopt org-clock-sound "~/Music/clock.wav")
 
-;; Set headlines to STRT when clocking in
-(add-hook 'org-clock-in-hook (lambda() (org-todo "STRT")))
+;; Set headlines to ONGO when clocking in
+(add-hook 'org-clock-in-hook (lambda() (org-todo "ONGO")))
 
-;; Set headlines to STRT and clock-in when running a countdown
+;; Set headlines to ONGO and clock-in when running a countdown
 (add-hook 'org-timer-set-hook
 	  (lambda ()
 	    (if (eq major-mode 'org-agenda-mode)
@@ -467,10 +467,10 @@
 (setopt org-agenda-custom-commands
 	'(
 	  ;; Main todo and tags views
-	  ("#" "To archive" todo "DONE|CANX")
+	  ("#" "To archive" todo "DONE|SKIP")
 	  ("@" "Mail" tags-todo "+Mail")
-	  ("A" "Hands on" tags-todo "+TAGS={Write\\|Code}+TODO={STRT}")
-	  ("Z" "Hands off" tags-todo "+TAGS={Read\\|Listen\\|Watch}+TODO={STRT}")
+	  ("A" "Hands on" tags-todo "+TAGS={Write\\|Code}+TODO={ONGO}")
+	  ("Z" "Hands off" tags-todo "+TAGS={Read\\|Listen\\|Watch}+TODO={ONGO}")
 
 	  ;; Agenda view of appointments for this week
 	  ("^" "Weekly appointments" agenda* "Weekly appointments")
@@ -486,12 +486,12 @@
 	   ((org-agenda-category-filter-preset '("-MLL" "-RDV" "-RDL"))
 	    (org-agenda-use-time-grid nil)))
 
-	  ;; Agenda view to see STRT/NEXT tasks for this week
+	  ;; Agenda view to see ONGO/NEXT tasks for this week
 	  ("n" . "What's next?")
-	  ("nn" "STRT/NEXT all" tags-todo "TODO={STRT\\|NEXT}")
-	  ("n!" "STRT/NEXT MLL" tags-todo "TODO={STRT\\|NEXT}"
+	  ("nn" "ONGO/NEXT all" tags-todo "TODO={ONGO\\|NEXT}")
+	  ("n!" "ONGO/NEXT MLL" tags-todo "TODO={ONGO\\|NEXT}"
 	   ((org-agenda-category-filter-preset '("+MLL"))))
-	  ("n§" "STRT/NEXT -MLL" tags-todo "TODO={STRT\\|NEXT}"
+	  ("n§" "ONGO/NEXT -MLL" tags-todo "TODO={ONGO\\|NEXT}"
 	   ((org-agenda-category-filter-preset '("-MLL"))))
 
 	  ;; Agenda view to see TODO tasks with no SCHEDULED/DEADLINE
