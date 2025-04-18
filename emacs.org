@@ -299,7 +299,7 @@ Comments and suggestions are welcome.
    	  ("Read" . ?r) ("Watch" . ?W) ("Listen" . ?l)
    	  (:endgroup)
    	  ("Mail" . ?@) ("Buy" . ?b)))
-   (setopt org-todo-keywords '((type "ONGO(o)" "NEXT(n)" "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SKIP(s)")))
+   (setopt org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "ONGO(o)" "WAIT(w)" "|" "DONE(d)" "SKIP(s)")))
    (setopt org-todo-repeat-to-state t)
    (setopt org-use-property-inheritance t)
    (setopt org-use-sub-superscripts '{})
