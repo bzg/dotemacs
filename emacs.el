@@ -254,14 +254,13 @@
 	'((:startgroup)
 	  ("Handson" . ?o)
 	  (:grouptags)
-	  ("Write" . ?w) ("Code" . ?c) ("Tel" . ?t)
+	  ("Write" . ?w) ("Code" . ?c) ("Buy" . ?b)
 	  (:endgroup)
 	  (:startgroup)
 	  ("Handsoff" . ?f)
 	  (:grouptags)
 	  ("Read" . ?r) ("Watch" . ?W) ("Listen" . ?l)
-	  (:endgroup)
-	  ("Mail" . ?@) ("Buy" . ?b)))
+	  (:endgroup)))
 (setopt org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "ONGO(o)" "WAIT(w)" "|" "DONE(d)" "SKIP(s)")))
 (setopt org-todo-repeat-to-state t)
 (setopt org-use-property-inheritance t)
@@ -466,12 +465,10 @@
 (setopt org-icalendar-store-UID t)
 
 (setopt org-agenda-custom-commands
-	'(
-	  ;; Main todo and tags views
-	  ("#" "To archive" todo "DONE|SKIP")
-	  ("@" "Mail" tags-todo "+Mail")
-	  ("A" "Hands on" tags-todo "+TAGS={Write\\|Code}+TODO={ONGO}")
-	  ("Z" "Hands off" tags-todo "+TAGS={Read\\|Listen\\|Watch}+TODO={ONGO}")
+	'(;; Todo and tags views for ongoing tasks by types of activity:
+          ("#" "To archive" todo "DONE|SKIP")
+          ("A" "Hands on" tags-todo "+TAGS={Write\\|Code}+TODO={ONGO}")
+          ("Z" "Hands off" tags-todo "+TAGS={Read\\|Listen\\|Watch}+TODO={ONGO}")
 
 	  ;; Agenda view of appointments for this week
 	  ("^" "Weekly appointments" agenda* "Weekly appointments")

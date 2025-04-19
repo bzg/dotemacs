@@ -291,14 +291,13 @@ Comments and suggestions are welcome.
    	'((:startgroup)
    	  ("Handson" . ?o)
    	  (:grouptags)
-   	  ("Write" . ?w) ("Code" . ?c) ("Tel" . ?t)
+   	  ("Write" . ?w) ("Code" . ?c) ("Buy" . ?b)
    	  (:endgroup)
    	  (:startgroup)
    	  ("Handsoff" . ?f)
    	  (:grouptags)
    	  ("Read" . ?r) ("Watch" . ?W) ("Listen" . ?l)
-   	  (:endgroup)
-   	  ("Mail" . ?@) ("Buy" . ?b)))
+   	  (:endgroup)))
    (setopt org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "ONGO(o)" "WAIT(w)" "|" "DONE(d)" "SKIP(s)")))
    (setopt org-todo-repeat-to-state t)
    (setopt org-use-property-inheritance t)
@@ -503,10 +502,10 @@ Comments and suggestions are welcome.
    (setopt org-agenda-skip-scheduled-if-done t)
    (setopt org-agenda-skip-timestamp-if-done t)
    (setopt org-agenda-sorting-strategy
-	'((agenda time-up deadline-up scheduled-up todo-state-up priority-down)
-	  (todo todo-state-down priority-down deadline-up)
-	  (tags todo-state-down priority-down deadline-up)
-	  (search todo-state-down priority-down deadline-up)))
+   	'((agenda time-up deadline-up scheduled-up todo-state-up priority-down)
+   	  (todo todo-state-down priority-down deadline-up)
+   	  (tags todo-state-down priority-down deadline-up)
+   	  (search todo-state-down priority-down deadline-up)))
    (setopt org-agenda-tags-todo-honor-ignore-options t)
    (setopt org-agenda-use-tag-inheritance nil)
    (setopt org-agenda-window-frame-fractions '(0.0 . 0.5))
@@ -523,12 +522,10 @@ Comments and suggestions are welcome.
    (setopt org-icalendar-store-UID t)
 
    (setopt org-agenda-custom-commands
-   	'(
-   	  ;; Main todo and tags views
-   	  ("#" "To archive" todo "DONE|SKIP")
-   	  ("@" "Mail" tags-todo "+Mail")
-   	  ("A" "Hands on" tags-todo "+TAGS={Write\\|Code}+TODO={ONGO}")
-   	  ("Z" "Hands off" tags-todo "+TAGS={Read\\|Listen\\|Watch}+TODO={ONGO}")
+   	'(;; Todo and tags views for ongoing tasks by types of activity:
+             ("#" "To archive" todo "DONE|SKIP")
+             ("A" "Hands on" tags-todo "+TAGS={Write\\|Code}+TODO={ONGO}")
+             ("Z" "Hands off" tags-todo "+TAGS={Read\\|Listen\\|Watch}+TODO={ONGO}")
 
    	  ;; Agenda view of appointments for this week
    	  ("^" "Weekly appointments" agenda* "Weekly appointments")
