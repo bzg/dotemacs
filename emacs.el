@@ -167,15 +167,23 @@
     (backward-kill-word arg)
     (setopt kill-ring (reverse kr))))
 
-(global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "^")))
-(global-set-key (kbd "C-<dead-circumflex>") (lambda () (interactive) (org-agenda nil "$!")))
-(global-set-key (kbd "C-M-<dead-circumflex>") (lambda () (interactive) (org-agenda nil "$§")))
-(global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "d!")))
-(global-set-key (kbd "C-M-!") (lambda () (interactive) (org-agenda nil "d§")))
-(global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "n!")))
-(global-set-key (kbd "C-M-ù") (lambda () (interactive) (org-agenda nil "n§")))
-(global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "?!")))
-(global-set-key (kbd "C-M-*") (lambda () (interactive) (org-agenda nil "?§")))
+;; Weekly appointments
+(global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "$")))
+;; Weekly tasks
+(global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "ùù")))
+(global-set-key (kbd "C-M-ù") (lambda () (interactive) (org-agenda nil "ù,")))
+;; Started and next tasks
+(global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "**")))
+(global-set-key (kbd "C-M-*") (lambda () (interactive) (org-agenda nil "*,")))
+;; Tasks to do and not in the agenda
+(global-set-key (kbd "C-;") (lambda () (interactive) (org-agenda nil ";;")))
+(global-set-key (kbd "C-M-;") (lambda () (interactive) (org-agenda nil ";,")))
+;; Tasks with an upcoming deadline
+(global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "!!")))
+(global-set-key (kbd "C-M-!") (lambda () (interactive) (org-agenda nil "!,")))
+;; Tasks waiting and not in the agenda
+(global-set-key (kbd "C-:") (lambda () (interactive) (org-agenda nil "::")))
+(global-set-key (kbd "C-M-:") (lambda () (interactive) (org-agenda nil ":,")))
 
 ;; Other useful global keybindings
 (define-key global-map "\M-Q" 'unfill-paragraph)
@@ -465,61 +473,62 @@
 (setopt org-icalendar-store-UID t)
 
 (setopt org-agenda-custom-commands
-	'(;; Todo and tags views for ongoing tasks by types of activity:
-          ("#" "To archive" todo "DONE|SKIP")
-          ("A" "Hands on" tags-todo "+TAGS={Write\\|Code}+TODO={ONGO}")
-          ("Z" "Hands off" tags-todo "+TAGS={Read\\|Listen\\|Watch}+TODO={ONGO}")
+	'(;; Todo and tags views for ongoing tasks by types of activity
+	  ("#" "To archive" todo "DONE|SKIP")
+	  ("A" "Hands on" tags-todo "+TAGS={Write\\|Code}+TODO={ONGO}")
+	  ("Z" "Hands off" tags-todo "+TAGS={Read\\|Listen\\|Watch}+TODO={ONGO}")
 
 	  ;; Agenda view of appointments for this week
-	  ("^" "Weekly appointments" agenda* "Weekly appointments")
+	  ("$" "Weekly appointments" agenda* "Weekly appointments")
 
-	  ;; Agenda view to see SCHEDULED/DEADLINE tasks for this week
-	  ("$" . "Scheduled/deadline tasks for this week")
-	  ("$$" "Week tasks" agenda "Scheduled tasks for this week"
-	   ((org-agenda-use-time-grid nil)))
-	  ("$!" "MLL week tasks" agenda "Scheduled work tasks for this week"
-	   ((org-agenda-category-filter-preset '("+MLL"))
+	  ;; Agenda view to see SCHEDULED/DEADLINE non-appt tasks for this week
+	  ("ù" . "Scheduled/deadline tasks for this week")
+	  ("ùù" "Week tasks" agenda "Scheduled tasks for this week"
+	   ((org-agenda-category-filter-preset '("-RDV" "-RDL"))
 	    (org-agenda-use-time-grid nil)))
-	  ("$§" "Non-MLL week tasks" agenda "Scheduled non-work tasks for this week"
+	  ("ù," "MLL week tasks" agenda "Scheduled work tasks for this week"
+	   ((org-agenda-category-filter-preset '("+MLL" "-RDV" "-RDL"))
+	    (org-agenda-use-time-grid nil)))
+	  ("ù?" "Non-MLL week tasks" agenda "Scheduled non-work tasks for this week"
 	   ((org-agenda-category-filter-preset '("-MLL" "-RDV" "-RDL"))
 	    (org-agenda-use-time-grid nil)))
 
 	  ;; Agenda view to see ONGO/NEXT tasks for this week
-	  ("n" . "What's next?")
-	  ("nn" "ONGO/NEXT all" tags-todo "TODO={ONGO\\|NEXT}")
-	  ("n!" "ONGO/NEXT MLL" tags-todo "TODO={ONGO\\|NEXT}"
+	  ("*" . "What's next?")
+	  ("**" "ONGO/NEXT all" tags-todo "TODO={ONGO\\|NEXT}")
+	  ("*," "ONGO/NEXT MLL" tags-todo "TODO={ONGO\\|NEXT}"
 	   ((org-agenda-category-filter-preset '("+MLL"))))
-	  ("n§" "ONGO/NEXT -MLL" tags-todo "TODO={ONGO\\|NEXT}"
+	  ("*?" "ONGO/NEXT -MLL" tags-todo "TODO={ONGO\\|NEXT}"
 	   ((org-agenda-category-filter-preset '("-MLL"))))
 
 	  ;; Agenda view to see TODO tasks with no SCHEDULED/DEADLINE
-	  ("t" . "What's to do?")
-	  ("t?" "TODO all" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\"")
-	  ("t!" "TODO MLL" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
+	  (";" . "What's to do?")
+	  (";;" "TODO all" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\"")
+	  (";," "TODO MLL" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
 	   ((org-agenda-category-filter-preset '("+MLL"))))
-	  ("t§" "TODO -MLL" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
+	  (";?" "TODO -MLL" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
 	   ((org-agenda-category-filter-preset '("-MLL"))))
 
 	  ;; Agenda view to see WAIT tasks with no SCHEDULED/DEADLINE
-	  ("?" . "What's waiting?")
-	  ("??" "WAIT all" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\"")
-	  ("?!" "WAIT MLL" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
+	  (":" . "What's waiting?")
+	  ("::" "WAIT all" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\"")
+	  (":," "WAIT MLL" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
 	   ((org-agenda-category-filter-preset '("+MLL"))))
-	  ("?§" "WAIT -MLL" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
+	  (":?" "WAIT -MLL" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
 	   ((org-agenda-category-filter-preset '("-MLL"))))
 
 	  ;; Agenda view to see upcoming deadlines with 60 days of warning period
-	  ("d" . "Upcoming deadlines")
-	  ("dd" "Deadlines all" agenda "Past/upcoming deadlines"
+	  ("!" . "Upcoming deadlines")
+	  ("!!" "Deadlines all" agenda "Past/upcoming deadlines"
 	   ((org-agenda-span 1)
 	    (org-deadline-warning-days 60)
 	    (org-agenda-entry-types '(:deadline))))
-	  ("d!" "Deadlines MLL" agenda "Past/upcoming work deadlines"
+	  ("!," "Deadlines MLL" agenda "Past/upcoming work deadlines"
 	   ((org-agenda-span 1)
 	    (org-agenda-category-filter-preset '("+MLL"))
 	    (org-deadline-warning-days 60)
 	    (org-agenda-entry-types '(:deadline))))
-	  ("d§" "Deadlines -MLL" agenda "Past/upcoming non-work deadlines"
+	  ("!?" "Deadlines -MLL" agenda "Past/upcoming non-work deadlines"
 	   ((org-agenda-span 1)
 	    (org-agenda-category-filter-preset '("-MLL"))
 	    (org-deadline-warning-days 60)
@@ -1136,7 +1145,7 @@
 
 (use-package multi-term
   :config
-  (global-set-key (kbd "C-:") (lambda () (interactive) (vterm))))
+  (global-set-key (kbd "C-<dead-circumflex>") (lambda () (interactive) (vterm))))
 
 (setopt ediff-window-setup-function 'ediff-setup-windows-plain)
 
