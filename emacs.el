@@ -534,7 +534,6 @@
 	    (org-deadline-warning-days 60)
 	    (org-agenda-entry-types '(:deadline))))))
 
-(use-package epg :defer t)
 (use-package epa
   :defer t
   :config
@@ -727,6 +726,7 @@
 		  "\n")))
 
 (use-package gnus-alias
+  :defer t
   :config
   (define-key message-mode-map (kbd "C-c C-x C-i")
 	      'gnus-alias-select-identity))
@@ -739,6 +739,7 @@
 	       '("Bastien\\|bzg" 0 0 gnus-emphasis-highlight-words)))
 
 (use-package gnus-icalendar
+  :defer t
   :config
   (gnus-icalendar-setup)
   ;; To enable optional iCalendar->Org sync functionality
@@ -772,6 +773,7 @@
   (setopt message-alternative-emails gnus-ignored-from-addresses))
 
 (use-package bbdb
+  :defer t
   :config
   (require 'bbdb-com)
   (require 'bbdb-anniv)
@@ -860,6 +862,7 @@
 
 ;; notmuch configuration
 (use-package notmuch
+  :defer t
   :config
   (setopt notmuch-fcc-dirs nil)
   (add-hook 'gnus-group-mode-hook 'bzg-notmuch-shortcut)
@@ -889,6 +892,7 @@
 	      (kbd "C-c C-c") #'bzg-notmuch-goto-message-in-gnus))
 
 (use-package dired-x
+  :defer t
   :config
   ;; (define-key dired-mode-map "\C-cd" 'dired-clean-tex)
   (setopt dired-guess-shell-alist-user
@@ -968,6 +972,7 @@
 
 ;; Paredit initialization
 (use-package paredit
+  :defer t
   :config
   (define-key paredit-mode-map (kbd "C-M-w") 'sp-copy-sexp))
 
@@ -976,6 +981,7 @@
 
 ;; Use LSP
 (use-package lsp-mode
+  :defer t
   :commands lsp
   :hook ((clojure-mode . lsp)
          (emacs-lisp-mode . lsp))
@@ -983,6 +989,7 @@
   (setopt lsp-prefer-flymake nil))
 
 (use-package clojure-mode
+  :defer t
   :config
   (require 'flycheck-clj-kondo)
   (setopt clojure-align-forms-automatically t)
@@ -1094,10 +1101,10 @@
   :variable hidden-mode-line-mode
   :group 'editing-basics
   (if hidden-mode-line-mode
-      (setopt hide-mode-line mode-line-format
-	      mode-line-format nil)
-    (setopt mode-line-format hide-mode-line
-	    hide-mode-line nil))
+      (setq hide-mode-line mode-line-format
+	    mode-line-format nil)
+    (setq mode-line-format hide-mode-line
+	  hide-mode-line nil))
   (force-mode-line-update)
   ;; Apparently force-mode-line-update is not always enough to
   ;; redisplay the mode-line
@@ -1124,11 +1131,11 @@
 
 ;; M-x package-install RET register-list RET
 (use-package register-list
+  :defer t
   :config
   (global-set-key (kbd "C-x r L") 'register-list))
 
 ;; Displays a helper about the current available keybindings
-(require 'which-key)
 (which-key-mode)
 
 (use-package eww
@@ -1143,13 +1150,12 @@
 
 (envrc-global-mode)
 
-(use-package multi-term
-  :config
-  (global-set-key (kbd "C-<dead-circumflex>") (lambda () (interactive) (vterm))))
+(global-set-key (kbd "C-<dead-circumflex>") (lambda () (interactive) (vterm)))
 
 (setopt ediff-window-setup-function 'ediff-setup-windows-plain)
 
 (use-package dired-subtree
+  :defer t
   :config
   (setopt dired-subtree-use-backgrounds nil)
   (define-key dired-mode-map (kbd "I") 'dired-subtree-toggle)
