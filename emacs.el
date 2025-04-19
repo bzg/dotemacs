@@ -254,7 +254,7 @@
 	'((:startgroup)
 	  ("Handson" . ?o)
 	  (:grouptags)
-	  ("Write" . ?w) ("Code" . ?c) ("Buy" . ?b)
+	  ("Write" . ?w) ("Code" . ?c)
 	  (:endgroup)
 	  (:startgroup)
 	  ("Handsoff" . ?f)
