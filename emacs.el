@@ -474,7 +474,7 @@
 	  ("^" "Weekly appointments" agenda* "Weekly appointments")
 
 	  ;; Agenda view to see SCHEDULED/DEADLINE tasks for this week
-	  ("$" . "Scheduled tasks for this week")
+	  ("$" . "Scheduled/deadline tasks for this week")
 	  ("$$" "Week tasks" agenda "Scheduled tasks for this week"
 	   ((org-agenda-use-time-grid nil)))
 	  ("$!" "MLL week tasks" agenda "Scheduled work tasks for this week"
