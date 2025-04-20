@@ -726,20 +726,17 @@
 		  "\n")))
 
 (use-package gnus-alias
-  :defer t
   :config
   (define-key message-mode-map (kbd "C-c C-x C-i")
 	      'gnus-alias-select-identity))
 
 (use-package gnus-art
-  :defer t
   :config
   ;; Highlight my name in messages
   (add-to-list 'gnus-emphasis-alist
 	       '("Bastien\\|bzg" 0 0 gnus-emphasis-highlight-words)))
 
 (use-package gnus-icalendar
-  :defer t
   :config
   (gnus-icalendar-setup)
   ;; To enable optional iCalendar->Org sync functionality
@@ -891,7 +888,6 @@
 	      (kbd "C-c C-c") #'bzg-notmuch-goto-message-in-gnus))
 
 (use-package dired-x
-  :defer t
   :config
   ;; (define-key dired-mode-map "\C-cd" 'dired-clean-tex)
   (setopt dired-guess-shell-alist-user
