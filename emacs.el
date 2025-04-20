@@ -862,7 +862,6 @@
 
 ;; notmuch configuration
 (use-package notmuch
-  :defer t
   :config
   (setopt notmuch-fcc-dirs nil)
   (add-hook 'gnus-group-mode-hook 'bzg-notmuch-shortcut)
