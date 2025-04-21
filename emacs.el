@@ -213,6 +213,8 @@
 (global-set-key (kbd "C-M-<backspace>") 'backward-kill-word-noring)
 
 ;; Translation
+(load-file "~/install/git/txl.el/txl.el")
+(global-set-key (kbd "C-x R")   'txl-rephrase-region-or-paragraph)
 (global-set-key (kbd "C-x T")   'txl-translate-region-or-paragraph)
 
 (require 'org-tempo)
@@ -269,7 +271,7 @@
 	  (:grouptags)
 	  ("Read" . ?r) ("Watch" . ?W) ("Listen" . ?l)
 	  (:endgroup)))
-(setopt org-todo-keywords '((sequence "ONGO(o)" "NEXT(n)" "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SKIP(s)")))
+(setopt org-todo-keywords '((sequence "ONGO(o)" "TODO(n)" "PLAN(p)" "WAIT(w)" "|" "DONE(d)" "SKIP(s)")))
 (setopt org-todo-repeat-to-state t)
 (setopt org-use-property-inheritance t)
 (setopt org-use-sub-superscripts '{})
@@ -282,7 +284,7 @@
 	       (not (org-in-src-block-p t)))))
 (setopt org-todo-keyword-faces
 	'(("ONGO" . (:inverse-video t))
-	  ("NEXT" . (:weight bold :background "#eeeeee"))
+	  ("TODO" . (:weight bold :background "#eeeeee"))
 	  ("WAIT" . (:box t))
 	  ("SKIP" . (:strike-through t))))
 (setopt org-footnote-section "Notes")
@@ -349,13 +351,13 @@
 	  ("!" "RDV MLL" entry (file+headline "~/org/bzg.org" "RDV MLL")
 	   "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 	  ("d" "Divers" entry (file+headline "~/org/bzg.org" "Divers")
-	   "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
+	   "* PLAN %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 	  ("D" "Divers (read)" entry (file+headline "~/org/bzg.org" "Divers")
-	   "* TODO %a :Read:" :prepend t :immediate-finish t)
+	   "* PLAN %a :Read:" :prepend t :immediate-finish t)
 	  ("m" "Mission" entry (file+headline "~/org/bzg.org" "Mission")
-	   "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
+	   "* PLAN %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
 	  ("M" "Mission (read)" entry (file+headline "~/org/bzg.org" "Mission")
-	   "* TODO %a :Read" :prepend t :immediate-finish t)))
+	   "* PLAN %a :Read" :prepend t :immediate-finish t)))
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -493,20 +495,20 @@
 	   ((org-agenda-category-filter-preset '("-MLL" "-RDV" "-RDL"))
 	    (org-agenda-use-time-grid nil)))
 
-	  ;; Agenda view to see ONGO/NEXT tasks for this week
+	  ;; Agenda view to see ONGO/TODO tasks for this week
 	  ("*" . "What's next?")
-	  ("**" "ONGO/NEXT all" tags-todo "TODO={ONGO\\|NEXT}")
-	  ("*," "ONGO/NEXT MLL" tags-todo "TODO={ONGO\\|NEXT}"
+	  ("**" "ONGO/TODO all" tags-todo "TODO={ONGO\\|TODO}")
+	  ("*," "ONGO/TODO MLL" tags-todo "TODO={ONGO\\|TODO}"
 	   ((org-agenda-category-filter-preset '("+MLL"))))
-	  ("*?" "ONGO/NEXT -MLL" tags-todo "TODO={ONGO\\|NEXT}"
+	  ("*?" "ONGO/TODO -MLL" tags-todo "TODO={ONGO\\|TODO}"
 	   ((org-agenda-category-filter-preset '("-MLL"))))
 
-	  ;; Agenda view to see TODO tasks with no SCHEDULED/DEADLINE
+	  ;; Agenda view to see PLAN items with no SCHEDULED/DEADLINE
 	  (";" . "What's to do?")
-	  (";;" "TODO all" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\"")
-	  (";," "TODO MLL" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
+	  (";;" "PLAN all" tags-todo "TODO={PLAN}+DEADLINE=\"\"+SCHEDULED=\"\"")
+	  (";," "PLAN MLL" tags-todo "TODO={PLAN}+DEADLINE=\"\"+SCHEDULED=\"\""
 	   ((org-agenda-category-filter-preset '("+MLL"))))
-	  (";?" "TODO -MLL" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
+	  (";?" "PLAN -MLL" tags-todo "TODO={PLAN}+DEADLINE=\"\"+SCHEDULED=\"\""
 	   ((org-agenda-category-filter-preset '("-MLL"))))
 
 	  ;; Agenda view to see WAIT tasks with no SCHEDULED/DEADLINE
