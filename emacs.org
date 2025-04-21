@@ -32,6 +32,10 @@ Comments and suggestions are welcome.
 * General defaults
 
   #+begin_src emacs-lisp
+  ;; Reset some font stuff
+  (set-face-attribute 'default nil :family "Roboto Mono" :weight 'semi-light :height 120)
+  (set-face-attribute 'bold nil :family "Roboto Mono" :weight 'regular)
+
   ;; Increase GC threshold during startup
   (setopt gc-cons-threshold 100000000)
 
@@ -158,8 +162,8 @@ Comments and suggestions are welcome.
 
   #+begin_src emacs-lisp
   ;; Define options and functions I will later bind
-  (setopt bzg-alt-font-size 200)
   (setopt bzg-default-font-size 120)
+  (setopt bzg-alt-font-size 200)
 
   (defun bzg-toggle-default-font-size ()
     (interactive)

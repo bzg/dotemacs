@@ -14,6 +14,10 @@
 	  ("nongnu" . "http://elpa.nongnu.org/nongnu/")
 	  ("melpa" . "http://melpa.org/packages/")))
 
+;; Reset some font stuff
+(set-face-attribute 'default nil :family "Roboto Mono" :weight 'semi-light :height 120)
+(set-face-attribute 'bold nil :family "Roboto Mono" :weight 'regular)
+
 ;; Increase GC threshold during startup
 (setopt gc-cons-threshold 100000000)
 
@@ -128,8 +132,8 @@
 (load-theme 'modus-operandi)
 
 ;; Define options and functions I will later bind
-(setopt bzg-alt-font-size 200)
 (setopt bzg-default-font-size 120)
+(setopt bzg-alt-font-size 200)
 
 (defun bzg-toggle-default-font-size ()
   (interactive)
