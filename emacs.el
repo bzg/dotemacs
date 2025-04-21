@@ -271,7 +271,7 @@
 	  (:grouptags)
 	  ("Read" . ?r) ("Watch" . ?W) ("Listen" . ?l)
 	  (:endgroup)))
-(setopt org-todo-keywords '((sequence "ONGO(o)" "TODO(n)" "PLAN(p)" "WAIT(w)" "|" "DONE(d)" "SKIP(s)")))
+(setopt org-todo-keywords '((sequence "ONGO(o)" "TODO(t)" "PLAN(p)" "WAIT(w)" "|" "DONE(d)" "SKIP(s)")))
 (setopt org-todo-repeat-to-state t)
 (setopt org-use-property-inheritance t)
 (setopt org-use-sub-superscripts '{})
