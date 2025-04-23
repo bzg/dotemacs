@@ -15,8 +15,13 @@
 	  ("melpa" . "http://melpa.org/packages/")))
 
 ;; Reset some font stuff
-(set-face-attribute 'default nil :family "Roboto Mono" :weight 'semi-light :height 120)
-(set-face-attribute 'bold nil :family "Roboto Mono" :weight 'regular)
+(set-face-attribute 'default nil :family "Roboto Mono" :height 120)
+;; (set-face-attribute 'default nil :family "Roboto Mono" :weight 'semi-light :height 120)
+;; (set-face-attribute 'bold nil :family "Roboto Mono" :weight 'regular)
+
+;; Hide fringe background and fringe indicators
+(set-face-attribute 'fringe nil :background nil)
+(mapc (lambda (fb) (set-fringe-bitmap-face fb 'org-hide)) fringe-bitmaps)
 
 ;; Increase GC threshold during startup
 (setopt gc-cons-threshold 100000000)
@@ -275,7 +280,7 @@
 	  (:grouptags)
 	  ("Read" . ?r) ("Watch" . ?W) ("Listen" . ?l)
 	  (:endgroup)))
-(setopt org-todo-keywords '((sequence "ONGO(o)" "TODO(t)" "PLAN(p)" "WAIT(w)" "|" "DONE(d)" "SKIP(s)")))
+(setopt org-todo-keywords '((sequence "ONGO(o)" "NEXT(n)" "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SKIP(s)")))
 (setopt org-todo-repeat-to-state t)
 (setopt org-use-property-inheritance t)
 (setopt org-use-sub-superscripts '{})
@@ -288,7 +293,7 @@
 	       (not (org-in-src-block-p t)))))
 (setopt org-todo-keyword-faces
 	'(("ONGO" . (:inverse-video t))
-	  ("TODO" . (:weight bold :background "#eeeeee"))
+	  ("NEXT" . (:weight bold :background "#eeeeee"))
 	  ("WAIT" . (:box t))
 	  ("SKIP" . (:strike-through t))))
 (setopt org-footnote-section "Notes")
@@ -355,13 +360,13 @@
 	  ("!" "RDV MLL" entry (file+headline "~/org/bzg.org" "RDV MLL")
 	   "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 	  ("d" "Divers" entry (file+headline "~/org/bzg.org" "Divers")
-	   "* PLAN %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
+	   "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
 	  ("D" "Divers (read)" entry (file+headline "~/org/bzg.org" "Divers")
-	   "* PLAN %a :Read:" :prepend t :immediate-finish t)
+	   "* TODO %a :Read:" :prepend t :immediate-finish t)
 	  ("m" "Mission" entry (file+headline "~/org/bzg.org" "Mission")
-	   "* PLAN %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
+	   "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
 	  ("M" "Mission (read)" entry (file+headline "~/org/bzg.org" "Mission")
-	   "* PLAN %a :Read" :prepend t :immediate-finish t)))
+	   "* TODO %a :Read" :prepend t :immediate-finish t)))
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -466,9 +471,6 @@
 (setopt org-agenda-tags-todo-honor-ignore-options t)
 (setopt org-agenda-use-tag-inheritance nil)
 (setopt org-agenda-window-frame-fractions '(0.0 . 0.5))
-(setopt org-agenda-deadline-faces
-	'((1.0001 . org-warning)              ; due yesterday or before
-	  (0.0    . org-upcoming-deadline)))  ; due today or later
 
 ;; icalendar stuff
 (setopt org-icalendar-include-todo 'all)
@@ -488,31 +490,33 @@
 	  ("$" "Weekly appointments" agenda* "Weekly appointments")
 
 	  ;; Agenda view to see SCHEDULED/DEADLINE non-appt tasks for this week
+	  ;; MLL is for "Mission logiciels libres", my work
+	  ;; RDV is for "Rendez-vous", RDL is for "Work (MLL) rendez-vous"
 	  ("ù" . "Scheduled/deadline tasks for this week")
 	  ("ùù" "Week tasks" agenda "Scheduled tasks for this week"
 	   ((org-agenda-category-filter-preset '("-RDV" "-RDL"))
 	    (org-agenda-use-time-grid nil)))
-	  ("ù," "MLL week tasks" agenda "Scheduled work tasks for this week"
+	  ("ù," "Work week tasks" agenda "Scheduled work tasks for this week"
 	   ((org-agenda-category-filter-preset '("+MLL" "-RDV" "-RDL"))
 	    (org-agenda-use-time-grid nil)))
-	  ("ù?" "Non-MLL week tasks" agenda "Scheduled non-work tasks for this week"
+	  ("ù?" "Non-work week tasks" agenda "Scheduled non-work tasks for this week"
 	   ((org-agenda-category-filter-preset '("-MLL" "-RDV" "-RDL"))
 	    (org-agenda-use-time-grid nil)))
 
-	  ;; Agenda view to see ONGO/TODO tasks for this week
+	  ;; Agenda view to see ONGO/NEXT tasks for this week
 	  ("*" . "What's next?")
-	  ("**" "ONGO/TODO all" tags-todo "TODO={ONGO\\|TODO}")
-	  ("*," "ONGO/TODO MLL" tags-todo "TODO={ONGO\\|TODO}"
+	  ("**" "ONGO/NEXT" tags-todo "TODO={ONGO\\|NEXT}")
+	  ("*," "ONGO/NEXT (Work)" tags-todo "TODO={ONGO\\|NEXT}"
 	   ((org-agenda-category-filter-preset '("+MLL"))))
-	  ("*?" "ONGO/TODO -MLL" tags-todo "TODO={ONGO\\|TODO}"
+	  ("*?" "ONGO/NEXT (Non-work)" tags-todo "TODO={ONGO\\|NEXT}"
 	   ((org-agenda-category-filter-preset '("-MLL"))))
 
-	  ;; Agenda view to see PLAN items with no SCHEDULED/DEADLINE
+	  ;; Agenda view to list TODO items with no SCHEDULED/DEADLINE and no [#A] priority
 	  (";" . "What's to do?")
-	  (";;" "PLAN all" tags-todo "TODO={PLAN}+DEADLINE=\"\"+SCHEDULED=\"\"")
-	  (";," "PLAN MLL" tags-todo "TODO={PLAN}+DEADLINE=\"\"+SCHEDULED=\"\""
+	  (";;" "Non-priority TODO" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\"")
+	  (";," "Non-priority TODO (Work)" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
 	   ((org-agenda-category-filter-preset '("+MLL"))))
-	  (";?" "PLAN -MLL" tags-todo "TODO={PLAN}+DEADLINE=\"\"+SCHEDULED=\"\""
+	  (";?" "Non-priority TODO (Non-work)" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
 	   ((org-agenda-category-filter-preset '("-MLL"))))
 
 	  ;; Agenda view to see WAIT tasks with no SCHEDULED/DEADLINE
@@ -1062,13 +1066,6 @@
 
 (advice-add 'split-window-horizontally :before (lambda () (interactive) (bzg-big-fringe-mode 0)))
 (advice-add 'split-window-right :before (lambda () (interactive) (bzg-big-fringe-mode 0)))
-
-;; Hide fringe indicators
-(mapc (lambda (fb) (set-fringe-bitmap-face fb 'org-hide))
-      fringe-bitmaps)
-
-;; Hide fringe background
-(set-face-attribute 'fringe nil :background nil)
 
 (setopt bzg-big-fringe 300)
 (defun bzg-toggle-fringe-width ()
