@@ -176,23 +176,22 @@
     (backward-kill-word arg)
     (setopt kill-ring (reverse kr))))
 
+;; Work routine keybindings
+(global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "ù,"))) ; Weekly tasks
+(global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "*,"))) ; Started and next tasks
+(global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "!,"))) ; Tasks with an upcoming deadline
+(global-set-key (kbd "C-;") (lambda () (interactive) (org-agenda nil ";,"))) ; Tasks to do and not in the agenda
+(global-set-key (kbd "C-:") (lambda () (interactive) (org-agenda nil ":,"))) ; Tasks waiting and not in the agenda
+
+;; Non-work routine keybindings
+(global-set-key (kbd "C-M-ù") (lambda () (interactive) (org-agenda nil "ù?")))
+(global-set-key (kbd "C-M-*") (lambda () (interactive) (org-agenda nil "*?")))
+(global-set-key (kbd "C-M-!") (lambda () (interactive) (org-agenda nil "!?")))
+(global-set-key (kbd "C-M-;") (lambda () (interactive) (org-agenda nil ";?")))
+(global-set-key (kbd "C-M-:") (lambda () (interactive) (org-agenda nil ":?")))
+
 ;; Weekly appointments
 (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "$")))
-;; Weekly tasks
-(global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "ùù")))
-(global-set-key (kbd "C-M-ù") (lambda () (interactive) (org-agenda nil "ù,")))
-;; Started and next tasks
-(global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "**")))
-(global-set-key (kbd "C-M-*") (lambda () (interactive) (org-agenda nil "*,")))
-;; Tasks to do and not in the agenda
-(global-set-key (kbd "C-;") (lambda () (interactive) (org-agenda nil ";;")))
-(global-set-key (kbd "C-M-;") (lambda () (interactive) (org-agenda nil ";,")))
-;; Tasks with an upcoming deadline
-(global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "!!")))
-(global-set-key (kbd "C-M-!") (lambda () (interactive) (org-agenda nil "!,")))
-;; Tasks waiting and not in the agenda
-(global-set-key (kbd "C-:") (lambda () (interactive) (org-agenda nil "::")))
-(global-set-key (kbd "C-M-:") (lambda () (interactive) (org-agenda nil ":,")))
 
 ;; Other useful global keybindings
 (define-key global-map "\M-Q" 'unfill-paragraph)
@@ -225,6 +224,9 @@
 (load-file "~/install/git/txl.el/txl.el")
 (global-set-key (kbd "C-x R")   'txl-rephrase-region-or-paragraph)
 (global-set-key (kbd "C-x T")   'txl-translate-region-or-paragraph)
+
+;; Elfeed
+(global-set-key (kbd "C-x w") 'elfeed)
 
 (require 'org-tempo)
 (require 'org-bullets)
@@ -280,7 +282,7 @@
 	  (:grouptags)
 	  ("Read" . ?r) ("Watch" . ?W) ("Listen" . ?l)
 	  (:endgroup)))
-(setopt org-todo-keywords '((sequence "ONGO(o)" "NEXT(n)" "TODO(t)" "WAIT(w)" "|" "DONE(d)" "SKIP(s)")))
+(setopt org-todo-keywords '((sequence "STRT(s)" "NEXT(n)" "TODO(t)" "WAIT(w)" "|" "DONE(d)" "CANX(c)")))
 (setopt org-todo-repeat-to-state t)
 (setopt org-use-property-inheritance t)
 (setopt org-use-sub-superscripts '{})
@@ -292,10 +294,10 @@
 	  (and (looking-at org-outline-regexp-bol)
 	       (not (org-in-src-block-p t)))))
 (setopt org-todo-keyword-faces
-	'(("ONGO" . (:inverse-video t))
+	'(("STRT" . (:inverse-video t))
 	  ("NEXT" . (:weight bold :background "#eeeeee"))
 	  ("WAIT" . (:box t))
-	  ("SKIP" . (:strike-through t))))
+	  ("CANX" . (:strike-through t))))
 (setopt org-footnote-section "Notes")
 (setopt org-attach-id-dir "~/org/data/")
 (setopt org-allow-promoting-top-level-subtree t)
@@ -326,10 +328,10 @@
 (setopt org-clock-out-remove-zero-time-clocks t)
 (setopt org-clock-sound "~/Music/clock.wav")
 
-;; Set headlines to ONGO when clocking in
-(add-hook 'org-clock-in-hook (lambda() (org-todo "ONGO")))
+;; Set headlines to STRT when clocking in
+(add-hook 'org-clock-in-hook (lambda() (org-todo "STRT")))
 
-;; Set headlines to ONGO and clock-in when running a countdown
+;; Set headlines to STRT and clock-in when running a countdown
 (add-hook 'org-timer-set-hook
 	  (lambda ()
 	    (if (eq major-mode 'org-agenda-mode)
@@ -355,18 +357,15 @@
 		  (call-interactively 'org-clock-out)))))
 
 (setopt org-capture-templates
-	'(("r" "RDV Perso" entry (file+headline "~/org/bzg.org" "RDV Perso")
+	'(("r" "RDV" entry (file+headline "~/org/bzg.org" "RDV")
 	   "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
-	  ("!" "RDV MLL" entry (file+headline "~/org/bzg.org" "RDV MLL")
-	   "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
-	  ("d" "Divers" entry (file+headline "~/org/bzg.org" "Divers")
-	   "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
-	  ("D" "Divers (read)" entry (file+headline "~/org/bzg.org" "Divers")
+	  ;; (!) Will let me know in the UI that the capture is immediately stored
+	  ("c" "A trier (!)" entry (file "~/org/bzg.org")
+	   "* TODO %a" :prepend t :immediate-finish t)
+	  ("d" "Divers à lire (!)" entry (file+headline "~/org/bzg.org" "Divers")
 	   "* TODO %a :Read:" :prepend t :immediate-finish t)
 	  ("m" "Mission" entry (file+headline "~/org/bzg.org" "Mission")
-	   "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)
-	  ("M" "Mission (read)" entry (file+headline "~/org/bzg.org" "Mission")
-	   "* TODO %a :Read" :prepend t :immediate-finish t)))
+	   "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)))
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -482,33 +481,33 @@
 
 (setopt org-agenda-custom-commands
 	'(;; Todo and tags views for ongoing tasks by types of activity
-	  ("#" "To archive" todo "DONE|SKIP")
-	  ("A" "Hands on" tags-todo "+TAGS={Write\\|Code}+TODO={ONGO}")
-	  ("Z" "Hands off" tags-todo "+TAGS={Read\\|Listen\\|Watch}+TODO={ONGO}")
+	  ("A" "Hands on" tags-todo "+TAGS={Write\\|Code}+TODO={STRT}")
+	  ("Z" "Hands off" tags-todo "+TAGS={Read\\|Listen\\|Watch}+TODO={STRT}")
+	  ("#" "To archive" todo "DONE|CANX")
 
 	  ;; Agenda view of appointments for this week
 	  ("$" "Weekly appointments" agenda* "Weekly appointments")
 
 	  ;; Agenda view to see SCHEDULED/DEADLINE non-appt tasks for this week
 	  ;; MLL is for "Mission logiciels libres", my work
-	  ;; RDV is for "Rendez-vous", RDL is for "Work (MLL) rendez-vous"
+	  ;; RDV is for "Rendez-vous" (personal appointments)
 	  ("ù" . "Scheduled/deadline tasks for this week")
 	  ("ùù" "Week tasks" agenda "Scheduled tasks for this week"
-	   ((org-agenda-category-filter-preset '("-RDV" "-RDL"))
+	   ((org-agenda-category-filter-preset '("-RDV"))
 	    (org-agenda-use-time-grid nil)))
 	  ("ù," "Work week tasks" agenda "Scheduled work tasks for this week"
-	   ((org-agenda-category-filter-preset '("+MLL" "-RDV" "-RDL"))
+	   ((org-agenda-category-filter-preset '("+MLL" "-RDV"))
 	    (org-agenda-use-time-grid nil)))
 	  ("ù?" "Non-work week tasks" agenda "Scheduled non-work tasks for this week"
-	   ((org-agenda-category-filter-preset '("-MLL" "-RDV" "-RDL"))
+	   ((org-agenda-category-filter-preset '("-MLL" "-RDV"))
 	    (org-agenda-use-time-grid nil)))
 
-	  ;; Agenda view to see ONGO/NEXT tasks for this week
+	  ;; Agenda view to see STRT/NEXT tasks for this week
 	  ("*" . "What's next?")
-	  ("**" "ONGO/NEXT" tags-todo "TODO={ONGO\\|NEXT}")
-	  ("*," "ONGO/NEXT (Work)" tags-todo "TODO={ONGO\\|NEXT}"
+	  ("**" "STRT/NEXT" tags-todo "TODO={STRT\\|NEXT}")
+	  ("*," "STRT/NEXT (Work)" tags-todo "TODO={STRT\\|NEXT}"
 	   ((org-agenda-category-filter-preset '("+MLL"))))
-	  ("*?" "ONGO/NEXT (Non-work)" tags-todo "TODO={ONGO\\|NEXT}"
+	  ("*?" "STRT/NEXT (Non-work)" tags-todo "TODO={STRT\\|NEXT}"
 	   ((org-agenda-category-filter-preset '("-MLL"))))
 
 	  ;; Agenda view to list TODO items with no SCHEDULED/DEADLINE and no [#A] priority
@@ -545,17 +544,14 @@
 	    (org-agenda-entry-types '(:deadline))))))
 
 (use-package epa
-  :defer t
   :config
   (setopt epa-popup-info-window nil))
 
 (use-package epg
-  :defer t
   :config
   (setopt epg-pinentry-mode 'loopback))
 
 (use-package gnus
-  :defer t
   :config
   (gnus-delay-initialize)
   (setopt gnus-delay-default-delay "2d")
@@ -752,12 +748,11 @@
   ;; To enable optional iCalendar->Org sync functionality
   ;; NOTE: both the capture file and the headline(s) inside must already exist
   (setopt gnus-icalendar-org-capture-file "~/org/bzg.org")
-  (setopt gnus-icalendar-org-capture-headline '("RDV MLL"))
+  (setopt gnus-icalendar-org-capture-headline '("Rendez-vous"))
   (setopt gnus-icalendar-org-template-key "I")
   (gnus-icalendar-org-setup))
 
 (use-package gnus-dired
-  :defer t
   :config
   ;; Make the `gnus-dired-mail-buffers' function also work on
   ;; message-mode derived modes, such as mu4e-compose-mode
@@ -773,14 +768,12 @@
       (nreverse buffers))))
 
 (use-package message
-  :defer t
   :config
   (setopt message-send-mail-function 'message-send-mail-with-sendmail)
   (setopt message-dont-reply-to-names gnus-ignored-from-addresses)
   (setopt message-alternative-emails gnus-ignored-from-addresses))
 
 (use-package bbdb
-  :defer t
   :config
   (require 'bbdb-com)
   (require 'bbdb-anniv)
@@ -825,7 +818,6 @@
 (setopt diary-file "~/.diary")
 
 (use-package calendar
-  :defer t
   :config
   (setopt french-holiday
 	  '((holiday-fixed 1 1 "Jour de l'an")
@@ -977,7 +969,6 @@
 
 ;; Paredit initialization
 (use-package paredit
-  :defer t
   :config
   (define-key paredit-mode-map (kbd "C-M-w") 'sp-copy-sexp))
 
@@ -986,7 +977,6 @@
 
 ;; Use LSP
 (use-package lsp-mode
-  :defer t
   :commands lsp
   :hook ((clojure-mode . lsp)
          (emacs-lisp-mode . lsp))
@@ -994,7 +984,6 @@
   (setopt lsp-prefer-flymake nil))
 
 (use-package clojure-mode
-  :defer t
   :config
   (require 'flycheck-clj-kondo)
   (setopt clojure-align-forms-automatically t)
@@ -1005,7 +994,6 @@
   (add-hook 'clojure-mode-hook 'aggressive-indent-mode))
 
 (use-package clj-refactor
-  :defer t
   :config
   ;; (setopt clojure-thread-all-but-last t)
   (define-key clj-refactor-map "\C-ctf" #'clojure-thread-first-all)
@@ -1014,7 +1002,6 @@
   (define-key clj-refactor-map "\C-cU" #'clojure-unwind-all))
 
 (use-package cider
-  :defer t
   :config
   (add-hook 'cider-repl-mode-hook 'company-mode)
   (setopt cider-use-fringe-indicators nil)
@@ -1118,18 +1105,15 @@
 (add-hook 'org-mode-hook (lambda () (electric-indent-mode 0)))
 
 (use-package whitespace
-  :defer t
   :config
   (add-to-list 'whitespace-style 'lines-tail))
 
 (use-package ibuffer
-  :defer t
   :config
   (global-set-key (kbd "C-x C-b") 'ibuffer))
 
 ;; M-x package-install RET register-list RET
 (use-package register-list
-  :defer t
   :config
   (global-set-key (kbd "C-x r L") 'register-list))
 
@@ -1137,7 +1121,6 @@
 (which-key-mode)
 
 (use-package eww
-  :defer t
   :config
   (add-hook 'eww-mode-hook 'visual-line-mode)
   (setopt eww-header-line-format ""
@@ -1153,7 +1136,6 @@
 (setopt ediff-window-setup-function 'ediff-setup-windows-plain)
 
 (use-package dired-subtree
-  :defer t
   :config
   (setopt dired-subtree-use-backgrounds nil)
   (define-key dired-mode-map (kbd "I") 'dired-subtree-toggle)
