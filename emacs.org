@@ -402,15 +402,15 @@ Comments and suggestions are welcome.
 
    #+begin_src emacs-lisp
    (setopt org-capture-templates
-   	'(("r" "RDV" entry (file+headline "~/org/bzg.org" "RDV")
-   	   "* RDV avec %:fromname %?\n  SCHEDULED: %^T\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a" :prepend t)
-   	  ;; (!) Will let me know in the UI that the capture is immediately stored
+   	'(("r" "Rendez-vous" entry (file+headline "~/org/bzg.org" "Rendez-vous")
+   	   "* %:fromname %?\n  SCHEDULED: %^T\n\n- %a" :prepend t)
+   	  ;; (!) To indicate the captured item is immediately stored
    	  ("c" "A trier (!)" entry (file "~/org/bzg.org")
    	   "* TODO %a" :prepend t :immediate-finish t)
    	  ("d" "Divers à lire (!)" entry (file+headline "~/org/bzg.org" "Divers")
    	   "* TODO %a :Read:" :prepend t :immediate-finish t)
    	  ("m" "Mission" entry (file+headline "~/org/bzg.org" "Mission")
-   	   "* TODO %?\n  :PROPERTIES:\n  :CAPTURED: %U\n  :END:\n\n- %a\n\n%i" :prepend t)))
+   	   "* TODO %?\n\n- %a\n\n%i" :prepend t)))
    #+end_src
 
 ** Org babel
