@@ -175,22 +175,22 @@
     (backward-kill-word arg)
     (setopt kill-ring (reverse kr))))
 
-;; Work routine keybindings
-(global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "ù,"))) ; Weekly tasks
-(global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "*,"))) ; Started and next tasks
-(global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "!,"))) ; Tasks with an upcoming deadline
-(global-set-key (kbd "C-;") (lambda () (interactive) (org-agenda nil ";,"))) ; Tasks to do and not in the agenda
-(global-set-key (kbd "C-:") (lambda () (interactive) (org-agenda nil ":,"))) ; Tasks waiting and not in the agenda
-
-;; Non-work routine keybindings
-(global-set-key (kbd "C-M-ù") (lambda () (interactive) (org-agenda nil "ù?")))
-(global-set-key (kbd "C-M-*") (lambda () (interactive) (org-agenda nil "*?")))
-(global-set-key (kbd "C-M-!") (lambda () (interactive) (org-agenda nil "!?")))
-(global-set-key (kbd "C-M-;") (lambda () (interactive) (org-agenda nil ";?")))
-(global-set-key (kbd "C-M-:") (lambda () (interactive) (org-agenda nil ":?")))
-
 ;; Weekly appointments
 (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "$")))
+
+;; Work routine keybindings
+(global-set-key (kbd "C-M-ù") (lambda () (interactive) (org-agenda nil "ù,")))
+(global-set-key (kbd "C-M-*") (lambda () (interactive) (org-agenda nil "*,")))
+(global-set-key (kbd "C-M-!") (lambda () (interactive) (org-agenda nil "!,")))
+(global-set-key (kbd "C-M-;") (lambda () (interactive) (org-agenda nil ";,")))
+(global-set-key (kbd "C-M-:") (lambda () (interactive) (org-agenda nil ":,")))
+
+;; Non-work routine keybindings
+(global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "ù?"))) ; Weekly tasks
+(global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "*?"))) ; Started and next tasks
+(global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "!?"))) ; Tasks with an upcoming deadline
+(global-set-key (kbd "C-;") (lambda () (interactive) (org-agenda nil ";?"))) ; Tasks to do and not in the agenda
+(global-set-key (kbd "C-:") (lambda () (interactive) (org-agenda nil ":?"))) ; Tasks waiting and not in the agenda
 
 ;; Other useful global keybindings
 (define-key global-map "\M-Q" 'unfill-paragraph)
