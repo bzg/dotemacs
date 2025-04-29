@@ -114,12 +114,13 @@
 (pixel-scroll-mode 1)
 
 ;; Default Frame
-(setopt initial-frame-alist
-	'((left-margin-width . 10)
-	  (menu-bar-lines . 0)
+(setopt default-frame-alist
+	'((menu-bar-lines . 0)
 	  (tool-bar-lines . 0)
 	  (horizontal-scroll-bars . nil)
 	  (vertical-scroll-bars . nil)))
+
+(set-frame-parameter nil 'fullscreen 'fullboth)
 
 ;; Don't display initial messages
 (setopt initial-scratch-message "")
@@ -127,11 +128,9 @@
 (setopt inhibit-startup-screen t)
 (setopt inhibit-startup-echo-area-message "bzg")
 (setopt use-dialog-box nil)
-(setopt default-frame-alist initial-frame-alist)
 (setopt line-move-visual nil)
 (setopt visible-bell t)
 (setopt tab-bar-show nil)
-(set-frame-parameter nil 'fullscreen 'fullboth)
 
 (setopt modus-themes-common-palette-overrides '((fringe bg-main)))
 (load-theme 'modus-operandi)
