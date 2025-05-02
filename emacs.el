@@ -479,9 +479,7 @@
 (setopt org-icalendar-store-UID t)
 
 (setopt org-agenda-custom-commands
-	'(;; Todo and tags views for ongoing tasks by types of activity
-	  ("A" "Hands on" tags-todo "+TAGS={Write\\|Code}+TODO={STRT}")
-	  ("Z" "Hands off" tags-todo "+TAGS={Read\\|Listen\\|Watch}+TODO={STRT}")
+	'(;; For weekly archiving
 	  ("#" "To archive" todo "DONE|CANX")
 
 	  ;; Agenda view of appointments for this week
