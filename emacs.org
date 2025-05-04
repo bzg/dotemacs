@@ -1061,28 +1061,28 @@ Comments and suggestions are welcome.
     ;; Use LSP
     (use-package lsp-mode
       :commands lsp
-      :hook ((clojure-mode . lsp)
+      :hook ((clojure-ts-mode . lsp)
              (emacs-lisp-mode . lsp))
       :config
       (setopt lsp-prefer-flymake nil))
 
-    (use-package clojure-mode
+    (use-package clojure-ts-mode
       :config
       (require 'flycheck-clj-kondo)
       (setopt clojure-align-forms-automatically t)
-      (add-hook 'clojure-mode-hook 'company-mode)
-      (add-hook 'clojure-mode-hook 'origami-mode)
-      (add-hook 'clojure-mode-hook 'paredit-mode)
+      (add-hook 'clojure-ts-mode-hook 'company-mode)
+      (add-hook 'clojure-ts-mode-hook 'origami-mode)
+      (add-hook 'clojure-ts-mode-hook 'paredit-mode)
       ;; (add-hook 'clojure-mode-hook 'clj-refactor-mode)
-      (add-hook 'clojure-mode-hook 'aggressive-indent-mode))
+      (add-hook 'clojure-ts-mode-hook 'aggressive-indent-mode))
 
-    (use-package clj-refactor
-      :config
-      ;; (setopt clojure-thread-all-but-last t)
-      (define-key clj-refactor-map "\C-ctf" #'clojure-thread-first-all)
-      (define-key clj-refactor-map "\C-ctl" #'clojure-thread-last-all)
-      (define-key clj-refactor-map "\C-cu" #'clojure-unwind)
-      (define-key clj-refactor-map "\C-cU" #'clojure-unwind-all))
+    ;; (use-package clj-refactor
+    ;;   :config
+    ;;   ;; (setopt clojure-thread-all-but-last t)
+    ;;   (define-key clj-refactor-map "\C-ctf" #'clojure-thread-first-all)
+    ;;   (define-key clj-refactor-map "\C-ctl" #'clojure-thread-last-all)
+    ;;   (define-key clj-refactor-map "\C-cu" #'clojure-unwind)
+    ;;   (define-key clj-refactor-map "\C-cU" #'clojure-unwind-all))
 
     (use-package cider
       :config
