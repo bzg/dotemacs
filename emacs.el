@@ -507,12 +507,12 @@
 	  ("*?" "STRT/NEXT (Non-work)" tags-todo "TODO={STRT\\|NEXT}"
 	   ((org-agenda-category-filter-preset '("-MLL"))))
 
-	  ;; Agenda view to list TODO items with no SCHEDULED/DEADLINE and no [#A] priority
+	  ;; Agenda view to list TODO items with no SCHEDULED/DEADLINE
 	  (";" . "What's to do?")
-	  (";;" "Non-priority TODO" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\"")
-	  (";," "Non-priority TODO (Work)" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
+	  (";;" "TODO" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\"")
+	  (";," "TODO (Work)" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
 	   ((org-agenda-category-filter-preset '("+MLL"))))
-	  (";?" "Non-priority TODO (Non-work)" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
+	  (";?" "TODO (Non-work)" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
 	   ((org-agenda-category-filter-preset '("-MLL"))))
 
 	  ;; Agenda view to see WAIT tasks with no SCHEDULED/DEADLINE
