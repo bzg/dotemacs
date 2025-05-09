@@ -17,6 +17,7 @@
 ;; Reset some font stuff
 (set-face-attribute 'default nil :family "Roboto Mono" :height 120)
 ;; (set-face-attribute 'default nil :family "Roboto Mono" :weight 'semi-light :height 120)
+;; (set-face-attribute 'default nil :family "Roboto Mono" :weight 'regular :height 120)
 ;; (set-face-attribute 'bold nil :family "Roboto Mono" :weight 'regular)
 
 ;; Hide fringe background and fringe indicators
