@@ -211,19 +211,12 @@ Comments and suggestions are welcome.
   ;; Weekly appointments
   (global-set-key (kbd "C-$") (lambda () (interactive) (org-agenda nil "$")))
 
-  ;; Work routine keybindings
-  (global-set-key (kbd "C-M-ù") (lambda () (interactive) (org-agenda nil "ù,")))
-  (global-set-key (kbd "C-M-*") (lambda () (interactive) (org-agenda nil "*,")))
-  (global-set-key (kbd "C-M-!") (lambda () (interactive) (org-agenda nil "!,")))
-  (global-set-key (kbd "C-M-;") (lambda () (interactive) (org-agenda nil ";,")))
-  (global-set-key (kbd "C-M-:") (lambda () (interactive) (org-agenda nil ":,")))
-
-  ;; Non-work routine keybindings
-  (global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "ù?"))) ; Weekly tasks
-  (global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "*?"))) ; Started and next tasks
-  (global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "!?"))) ; Tasks with an upcoming deadline
-  (global-set-key (kbd "C-;") (lambda () (interactive) (org-agenda nil ";?"))) ; Tasks to do and not in the agenda
-  (global-set-key (kbd "C-:") (lambda () (interactive) (org-agenda nil ":?"))) ; Tasks waiting and not in the agenda
+  ;; Routine keybindings
+  (global-set-key (kbd "C-ù") (lambda () (interactive) (org-agenda nil "ù"))) ; Week tasks
+  (global-set-key (kbd "C-*") (lambda () (interactive) (org-agenda nil "µ"))) ; STRT/NEXT
+  (global-set-key (kbd "C-!") (lambda () (interactive) (org-agenda nil "!"))) ; Deadlines
+  (global-set-key (kbd "C-;") (lambda () (interactive) (org-agenda nil ";"))) ; Other TODOs
+  (global-set-key (kbd "C-:") (lambda () (interactive) (org-agenda nil ":"))) ; WAITing
 
   ;; Other useful global keybindings
   (define-key global-map "\M-Q" 'unfill-paragraph)
@@ -537,64 +530,29 @@ Comments and suggestions are welcome.
    (setopt org-icalendar-store-UID t)
 
    (setopt org-agenda-custom-commands
-   	'(;; For weekly archiving
+   	'(;; Archive tasks
    	  ("#" "To archive" todo "DONE|CANX")
 
-   	  ;; Agenda view of appointments for this week
+   	  ;; Review weekly appointements
    	  ("$" "Weekly appointments" agenda* "Weekly appointments")
 
-   	  ;; Agenda view to see SCHEDULED/DEADLINE non-appt tasks for this week
-   	  ;; MLL is for "Mission logiciels libres", my work
-   	  ;; RDV is for "Rendez-vous" (personal appointments)
-   	  ("ù" . "Scheduled/deadline tasks for this week")
-   	  ("ùù" "Week tasks" agenda "Scheduled tasks for this week"
-   	   ((org-agenda-category-filter-preset '("-RDV"))
-   	    (org-agenda-use-time-grid nil)))
-   	  ("ù," "Work week tasks" agenda "Scheduled work tasks for this week"
-   	   ((org-agenda-category-filter-preset '("+MLL" "-RDV"))
-   	    (org-agenda-use-time-grid nil)))
-   	  ("ù?" "Non-work week tasks" agenda "Scheduled non-work tasks for this week"
-   	   ((org-agenda-category-filter-preset '("-MLL" "-RDV"))
+   	  ;; Review weekly tasks
+   	  ("ù" "Week tasks" agenda "Scheduled tasks for this week"
+   	   ((org-agenda-category-filter-preset '("-RDV")) ; RDV for Rendez-vous
    	    (org-agenda-use-time-grid nil)))
 
-   	  ;; Agenda view to see STRT/NEXT tasks for this week
-   	  ("*" . "What's next?")
-   	  ("**" "STRT/NEXT" tags-todo "TODO={STRT\\|NEXT}")
-   	  ("*," "STRT/NEXT (Work)" tags-todo "TODO={STRT\\|NEXT}"
-   	   ((org-agenda-category-filter-preset '("+MLL"))))
-   	  ("*?" "STRT/NEXT (Non-work)" tags-todo "TODO={STRT\\|NEXT}"
-   	   ((org-agenda-category-filter-preset '("-MLL"))))
+   	  ;; Review started and next tasks
+   	  ("µ" "STRT/NEXT" tags-todo "TODO={STRT\\|NEXT}")
 
-   	  ;; Agenda view to list TODO items with no SCHEDULED/DEADLINE
-   	  (";" . "What's to do?")
-   	  (";;" "TODO" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\"")
-   	  (";," "TODO (Work)" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
-   	   ((org-agenda-category-filter-preset '("+MLL"))))
-   	  (";?" "TODO (Non-work)" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\""
-   	   ((org-agenda-category-filter-preset '("-MLL"))))
+   	  ;; Review other non-scheduled/deadlined to-do tasks
+   	  (";" "TODO" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\"")
 
-   	  ;; Agenda view to see WAIT tasks with no SCHEDULED/DEADLINE
-   	  (":" . "What's waiting?")
-   	  ("::" "WAIT all" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\"")
-   	  (":," "WAIT MLL" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
-   	   ((org-agenda-category-filter-preset '("+MLL"))))
-   	  (":?" "WAIT -MLL" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\""
-   	   ((org-agenda-category-filter-preset '("-MLL"))))
+   	  ;; Review other non-scheduled/deadlined pending tasks
+   	  (":" "WAIT" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\"")
 
-   	  ;; Agenda view to see upcoming deadlines with 60 days of warning period
-   	  ("!" . "Upcoming deadlines")
-   	  ("!!" "Deadlines all" agenda "Past/upcoming deadlines"
+   	  ;; Review upcoming deadlines for the next 60 days
+   	  ("!" "Deadlines all" agenda "Past/upcoming deadlines"
    	   ((org-agenda-span 1)
-   	    (org-deadline-warning-days 60)
-   	    (org-agenda-entry-types '(:deadline))))
-   	  ("!," "Deadlines MLL" agenda "Past/upcoming work deadlines"
-   	   ((org-agenda-span 1)
-   	    (org-agenda-category-filter-preset '("+MLL"))
-   	    (org-deadline-warning-days 60)
-   	    (org-agenda-entry-types '(:deadline))))
-   	  ("!?" "Deadlines -MLL" agenda "Past/upcoming non-work deadlines"
-   	   ((org-agenda-span 1)
-   	    (org-agenda-category-filter-preset '("-MLL"))
    	    (org-deadline-warning-days 60)
    	    (org-agenda-entry-types '(:deadline))))))
    #+end_src
@@ -1283,4 +1241,6 @@ Comments and suggestions are welcome.
           (message "nntp server OFF"))))
 
     (define-key gnus-group-mode-map (kbd "%") #'bzg-gnus-toggle-nntp)
+
+    (load-file "~/.emacs.d/gptel.el")
     #+end_src
