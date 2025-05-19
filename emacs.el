@@ -480,6 +480,7 @@
 	  ;; Review weekly tasks
 	  ("ù" "Week tasks" agenda "Scheduled tasks for this week"
 	   ((org-agenda-category-filter-preset '("-RDV")) ; RDV for Rendez-vous
+	    (org-deadline-warning-days 0)
 	    (org-agenda-use-time-grid nil)))
 
 	  ;; Review started and next tasks
