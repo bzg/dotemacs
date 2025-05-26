@@ -134,7 +134,7 @@
 (setopt tab-bar-show nil)
 
 (setopt modus-themes-common-palette-overrides '((fringe bg-main)))
-(load-theme 'modus-operandi)
+(load-theme 'doric-light)
 
 ;; Define options and functions I will later bind
 (setopt bzg-default-font-size 120)

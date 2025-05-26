@@ -160,7 +160,7 @@ Comments and suggestions are welcome.
 
   #+begin_src emacs-lisp
   (setopt modus-themes-common-palette-overrides '((fringe bg-main)))
-  (load-theme 'modus-operandi)
+  (load-theme 'doric-light)
   #+end_src
 
 * Keybindings
