@@ -14,12 +14,6 @@
 	  ("nongnu" . "http://elpa.nongnu.org/nongnu/")
 	  ("melpa" . "http://melpa.org/packages/")))
 
-;; Reset some font stuff
-(set-face-attribute 'default nil :family "Roboto Mono" :height 120)
-;; (set-face-attribute 'default nil :family "Roboto Mono" :weight 'semi-light :height 120)
-;; (set-face-attribute 'default nil :family "Roboto Mono" :weight 'regular :height 120)
-;; (set-face-attribute 'bold nil :family "Roboto Mono" :weight 'regular)
-
 ;; Hide fringe background and fringe indicators
 (set-face-attribute 'fringe nil :background nil)
 (mapc (lambda (fb) (set-fringe-bitmap-face fb 'org-hide)) fringe-bitmaps)
@@ -118,7 +112,7 @@
 (setopt default-frame-alist
 	'((menu-bar-lines . 0)
 	  (tool-bar-lines . 0)
-	  (horizontal-scroll-bars . nil)
+	  ;; (horizontal-scroll-bars . nil)
 	  (vertical-scroll-bars . nil)))
 
 (set-frame-parameter nil 'fullscreen 'fullboth)
@@ -135,6 +129,14 @@
 
 (setopt modus-themes-common-palette-overrides '((fringe bg-main)))
 (load-theme 'doric-light)
+
+;; Reset some font stuff
+(set-face-attribute 'default nil :family "Roboto Mono" :height 120)
+(set-face-attribute 'italic nil :family "Roboto Mono" :weight 'semi-light :slant 'normal)
+(set-face-attribute 'bold-italic nil :slant 'normal)
+;; (set-face-attribute 'default nil :family "Roboto Mono" :weight 'semi-light :height 120)
+;; (set-face-attribute 'default nil :family "Roboto Mono" :weight 'regular :height 120)
+;; (set-face-attribute 'bold nil :family "Roboto Mono" :weight 'regular)
 
 ;; Define options and functions I will later bind
 (setopt bzg-default-font-size 120)
@@ -255,9 +257,9 @@
 (setopt org-hide-emphasis-markers t)
 (setopt org-hide-macro-markers t)
 (setopt org-log-into-drawer t)
-(setopt org-refile-use-outline-path t)
 (setopt org-refile-allow-creating-parent-nodes t)
-(setopt org-refile-use-cache t)
+;; (setopt org-refile-use-cache t)
+(setq org-refile-targets '((org-agenda-files :maxlevel . 2)))
 (setopt org-element-use-cache t)
 (setopt org-return-follows-link t)
 (setopt org-reverse-note-order t)
@@ -770,7 +772,6 @@
 	appt-audible nil
 	appt-display-interval 10
 	appt-message-warning-time 120)
-(setopt diary-file "~/.diary")
 
 (use-package calendar
   :config
