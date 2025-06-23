@@ -111,9 +111,7 @@
 ;; Default Frame
 (setopt default-frame-alist
 	'((menu-bar-lines . 0)
-	  (tool-bar-lines . 0)
-	  ;; (horizontal-scroll-bars . nil)
-	  (vertical-scroll-bars . nil)))
+	  (tool-bar-lines . 0)))
 
 (set-frame-parameter nil 'fullscreen 'fullboth)
 
@@ -128,7 +126,7 @@
 (setopt tab-bar-show nil)
 
 (setopt modus-themes-common-palette-overrides '((fringe bg-main)))
-(load-theme 'doric-light)
+(load-theme 'modus-operandi)
 
 ;; Reset some font stuff
 (set-face-attribute 'default nil :family "Roboto Mono" :height 120)
@@ -517,7 +515,7 @@
   (setopt nndraft-directory "~/News/drafts/")
   (setopt nnmh-directory "~/News/drafts/")
   (setopt nnfolder-directory "~/Mail/archive")
-  (setopt nnml-directory "~/Mail/old/Mail/")
+  (setopt nnml-directory "~/Mail/nnml/")
   (setopt gnus-summary-ignore-duplicates t)
   (setopt gnus-suppress-duplicates t)
   (setopt gnus-auto-select-first nil)
@@ -568,7 +566,7 @@
 
   (setopt gnus-subscribe-newsgroup-method 'gnus-subscribe-interactively)
 
-  (setopt nnir-notmuch-remove-prefix "/home/bzg/Mail/Maildir")
+  (setopt nnir-notmuch-remove-prefix "/home/bzg/Mail")
 
   (defun my-gnus-message-archive-group (group-current)
     "Return prefered archive group."
@@ -826,7 +824,7 @@
 
   (defun bzg-notmuch-file-to-group (file)
     "Calculate the Gnus group name from the given file name."
-    (cond ((string-match "/home/bzg/Mail/old/Mail/mail/\\([^/]+\\)/" file)
+    (cond ((string-match "/home/bzg/Mail/nnml/\\([^/]+\\)/" file)
 	   (format "nnml:mail.%s" (match-string 1 file)))
 	  ((string-match "/home/bzg/Mail/Maildir/\\([^/]+\\)/\\([^/]+\\)" file)
 	   (format "nnimap+localhost:%s/%s" (match-string 1 file) (match-string 2 file)))
@@ -937,6 +935,7 @@
   :hook ((clojure-ts-mode . lsp)
          (emacs-lisp-mode . lsp))
   :config
+  (setopt lsp-warn-no-matched-clients nil)
   (setopt lsp-prefer-flymake nil))
 
 (use-package clojure-ts-mode
