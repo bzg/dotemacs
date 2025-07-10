@@ -348,14 +348,14 @@
 		  (call-interactively 'org-clock-out)))))
 
 (setopt org-capture-templates
-	'(("r" "Rendez-vous" entry (file+headline "~/org/bzg.org" "Rendez-vous")
+	'((":" "Rendez-vous" entry (file+headline "~/org/bzg.org" "Rendez-vous")
 	   "* %:fromname %?\n  SCHEDULED: %^T\n\n- %a" :prepend t)
 	  ;; (!) To indicate the captured item is immediately stored
-	  ("c" "A trier (!)" entry (file "~/org/bzg.org")
+	  ("s" "A trier (!)" entry (file "~/org/bzg.org") ; "s" for "sort"
 	   "* TODO %a" :prepend t :immediate-finish t)
-	  ("d" "Divers à lire (!)" entry (file+headline "~/org/bzg.org" "Divers")
+	  ("r" "Divers à lire (!)" entry (file+headline "~/org/bzg.org" "Divers") ; "r" for read
 	   "* TODO %a :Read:" :prepend t :immediate-finish t)
-	  ("m" "Mission" entry (file+headline "~/org/bzg.org" "Mission")
+	  ("w" "Mission" entry (file+headline "~/org/bzg.org" "Mission") ; "w" for work
 	   "* TODO %?\n\n- %a\n\n%i" :prepend t)))
 
 (org-babel-do-load-languages
@@ -926,6 +926,10 @@
   :config
   (define-key paredit-mode-map (kbd "C-M-w") 'sp-copy-sexp))
 
+(use-package slime
+  :config
+  (setq inferior-lisp-program "sbcl"))
+
 ;; Clojure initialization
 (setopt inf-clojure-generic-cmd "clojure")
 
@@ -933,6 +937,7 @@
 (use-package lsp-mode
   :commands lsp
   :hook ((clojure-ts-mode . lsp)
+	 (slime-mode . lsp)
          (emacs-lisp-mode . lsp))
   :config
   (setopt lsp-warn-no-matched-clients nil)
