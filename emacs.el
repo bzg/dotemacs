@@ -513,9 +513,7 @@
   (setopt gnus-refer-thread-limit t)
   (setopt gnus-use-atomic-windows nil)
   (setopt nndraft-directory "~/News/drafts/")
-  (setopt nnmh-directory "~/News/drafts/")
   (setopt nnfolder-directory "~/Mail/archive")
-  (setopt nnml-directory "~/Mail/nnml/")
   (setopt gnus-summary-ignore-duplicates t)
   (setopt gnus-suppress-duplicates t)
   (setopt gnus-auto-select-first nil)
@@ -536,7 +534,8 @@
   (setopt mail-sources nil
 	  gnus-select-method '(nnnil "")
 	  gnus-secondary-select-methods
-	  '((nnimap "localhost"
+	  '(;; (nnmaildir "nnml" (directory "~/Mail/nnml"))
+	    (nnimap "localhost"
 		    (nnimap-server-port "imaps")
 		    (nnimap-authinfo-file "~/.authinfo")
 		    (nnimap-stream ssl)
