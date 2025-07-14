@@ -14,10 +14,6 @@
 	  ("nongnu" . "http://elpa.nongnu.org/nongnu/")
 	  ("melpa" . "http://melpa.org/packages/")))
 
-;; Hide fringe background and fringe indicators
-(set-face-attribute 'fringe nil :background nil)
-(mapc (lambda (fb) (set-fringe-bitmap-face fb 'org-hide)) fringe-bitmaps)
-
 ;; Increase GC threshold during startup
 (setopt gc-cons-threshold 100000000)
 
@@ -75,9 +71,6 @@
 ;; Let search for "e" match e.g. "é":
 (setopt search-default-mode 'char-fold-to-regexp)
 
-;; Ignore case when sorting
-(setopt sort-fold-case t)
-
 ;; Stop polluting the directory with auto-saved files and backup
 (setopt auto-save-default nil)
 (setopt make-backup-files nil)
@@ -85,7 +78,7 @@
 ;; Well, it's more so that you know this option
 (setopt kill-whole-line t)
 (setopt kill-read-only-ok t)
-(setopt require-final-newline t)
+(setopt require-final-newline 'visit)
 
 ;; Scrolling done right
 (setopt scroll-error-top-bottom t)
@@ -97,8 +90,6 @@
 
 ;; Always use "y" for "yes"
 (fset 'yes-or-no-p 'y-or-n-p)
-
-(setopt with-editor-emacsclient-executable "emacsclient")
 
 ;; Enabling and disabling some modes
 ;; Less is more - see https://bzg.fr/en/emacs-strip-tease/
@@ -124,6 +115,10 @@
 (setopt line-move-visual nil)
 (setopt visible-bell t)
 (setopt tab-bar-show nil)
+
+;; Hide fringe background and fringe indicators
+(set-face-attribute 'fringe nil :background nil)
+(mapc (lambda (fb) (set-fringe-bitmap-face fb 'org-hide)) fringe-bitmaps)
 
 (setopt modus-themes-common-palette-overrides '((fringe bg-main)))
 (load-theme 'modus-operandi)
@@ -223,11 +218,11 @@
 
 (require 'org-tempo)
 (require 'org-bullets)
+(require 'ol-gnus)
 (setopt org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
 (add-hook 'message-mode-hook (lambda () (abbrev-mode 0)))
-(require 'ol-gnus)
 
 ;; org-mode global keybindings
 (define-key global-map "\C-cl" 'org-store-link)
@@ -257,8 +252,7 @@
 (setopt org-log-into-drawer t)
 (setopt org-refile-allow-creating-parent-nodes t)
 ;; (setopt org-refile-use-cache t)
-(setq org-refile-targets '((org-agenda-files :maxlevel . 2)))
-(setopt org-element-use-cache t)
+(setopt org-refile-targets '((org-agenda-files :maxlevel . 2)))
 (setopt org-return-follows-link t)
 (setopt org-reverse-note-order t)
 (setopt org-scheduled-past-days 100)
@@ -527,14 +521,14 @@
 			"bzg@gnu.org"
 			)))
 
-  (setopt send-mail-function 'sendmail-send-it)
-  (setopt mail-use-rfc822 t)
+  ;; (setopt send-mail-function 'sendmail-send-it)
+  ;; (setopt mail-use-rfc822 t)
 
   ;; Sources and methods
   (setopt mail-sources nil
 	  gnus-select-method '(nnnil "")
 	  gnus-secondary-select-methods
-	  '(;; (nnmaildir "nnml" (directory "~/Mail/nnml"))
+	  '((nnmaildir "nnml" (directory "~/Mail/nnml"))
 	    (nnimap "localhost"
 		    (nnimap-server-port "imaps")
 		    (nnimap-authinfo-file "~/.authinfo")
@@ -927,7 +921,7 @@
 
 (use-package slime
   :config
-  (setq inferior-lisp-program "sbcl"))
+  (setopt inferior-lisp-program "sbcl"))
 
 ;; Clojure initialization
 (setopt inf-clojure-generic-cmd "clojure")
