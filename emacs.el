@@ -528,7 +528,7 @@
   (setopt mail-sources nil
 	  gnus-select-method '(nnnil "")
 	  gnus-secondary-select-methods
-	  '((nnmaildir "nnml" (directory "~/Mail/nnml"))
+	  '(;; (nnmaildir "nnml" (directory "~/Mail/nnml"))
 	    (nnimap "localhost"
 		    (nnimap-server-port "imaps")
 		    (nnimap-authinfo-file "~/.authinfo")
@@ -681,6 +681,7 @@
 
 (use-package gnus-alias
   :config
+  (gnus-alias-init)
   (define-key message-mode-map (kbd "C-c C-x C-i")
 	      'gnus-alias-select-identity))
 
@@ -1062,13 +1063,11 @@
   (add-to-list 'whitespace-style 'lines-tail))
 
 (use-package ibuffer
-  :config
-  (global-set-key (kbd "C-x C-b") 'ibuffer))
+  :bind ("C-x C-b" . ibuffer))
 
 ;; M-x package-install RET register-list RET
 (use-package register-list
-  :config
-  (global-set-key (kbd "C-x r L") 'register-list))
+  :bind ("C-x r L" . register-list))
 
 ;; Displays a helper about the current available keybindings
 (which-key-mode)
@@ -1084,7 +1083,7 @@
 
 (envrc-global-mode)
 
-(global-set-key (kbd "C-<dead-circumflex>") (lambda () (interactive) (vterm)))
+(use-package vterm :bind ("C-<dead-circumflex>" . vterm))
 
 (setopt ediff-window-setup-function 'ediff-setup-windows-plain)
 
