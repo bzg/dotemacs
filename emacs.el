@@ -681,6 +681,8 @@
 
 (use-package gnus-alias
   :config
+  ;; FIXME: the default default (sic) is "" but triggers an error:
+  (setopt gnus-alias-default-identity nil)
   (gnus-alias-init)
   (define-key message-mode-map (kbd "C-c C-x C-i")
 	      'gnus-alias-select-identity))
