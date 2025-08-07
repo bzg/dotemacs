@@ -119,9 +119,7 @@
 ;; Hide fringe background and fringe indicators
 (set-face-attribute 'fringe nil :background nil)
 (mapc (lambda (fb) (set-fringe-bitmap-face fb 'org-hide)) fringe-bitmaps)
-
-(setopt modus-themes-common-palette-overrides '((fringe bg-main)))
-(load-theme 'modus-operandi)
+(load-theme 'doric-light)
 
 ;; Reset some font stuff
 (set-face-attribute 'default nil :family "Roboto Mono" :height 120)
@@ -133,7 +131,7 @@
 
 ;; Define options and functions I will later bind
 (setopt bzg-default-font-size 120)
-(setopt bzg-alt-font-size 200)
+(setopt bzg-alt-font-size 210)
 
 (defun bzg-toggle-default-font-size ()
   (interactive)
