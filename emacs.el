@@ -130,16 +130,19 @@
 ;; (set-face-attribute 'bold nil :family "Roboto Mono" :weight 'regular)
 
 ;; Define options and functions I will later bind
-(setopt bzg-default-font-size 120)
-(setopt bzg-alt-font-size 210)
+(setopt bzg-min-font-size 120)
+(setopt bzg-default-font-size 220)
+(custom-set-faces `(default ((t (:height ,bzg-default-font-size)))))
 
 (defun bzg-toggle-default-font-size ()
   (interactive)
-  (if (< (abs (- (face-attribute 'default :height) bzg-alt-font-size)) 10)
+  (if (< (abs (- (face-attribute 'default :height)
+		 bzg-default-font-size))
+	 10)
       (custom-set-faces
-       `(default ((t (:height ,bzg-default-font-size)))))
+       `(default ((t (:height ,bzg-min-font-size)))))
     (custom-set-faces
-     `(default ((t (:height ,bzg-alt-font-size)))))))
+       `(default ((t (:height ,bzg-default-font-size)))))))
 
 ;; Easily jump to my main org file
 (defun bzg-find-bzg nil
@@ -859,9 +862,9 @@
 	   (list "\\.txt$" "gedit")
 	   (list "\\.sql$" "gedit")
 	   (list "\\.css$" "gedit")
-	   (list "\\.jpe?g$" "sxiv")
-	   (list "\\.png$" "sxiv")
-	   (list "\\.gif$" "sxiv")
+	   (list "\\.jpe?g$" "geeqie")
+	   (list "\\.png$" "geeqie")
+	   (list "\\.gif$" "geeqie")
 	   (list "\\.psd$" "gimp")
 	   (list "\\.xcf" "gimp")
 	   (list "\\.xo$" "unzip")
@@ -1083,7 +1086,7 @@
 
 (envrc-global-mode)
 
-(use-package vterm :bind ("C-<dead-circumflex>" . vterm))
+(use-package vterm :bind ("C-)" . vterm))
 
 (setopt ediff-window-setup-function 'ediff-setup-windows-plain)
 
