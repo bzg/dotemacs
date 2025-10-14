@@ -350,7 +350,7 @@
 	   "* TODO %a" :prepend t :immediate-finish t)
 	  ("r" "Divers à lire (!)" entry (file+headline "~/org/bzg.org" "Divers") ; "r" for read
 	   "* TODO %a :Read:" :prepend t :immediate-finish t)
-	  ("w" "Mission" entry (file+headline "~/org/bzg.org" "Mission") ; "w" for work
+	  ("w" "SWH" entry (file+headline "~/org/bzg.org" "SWH") ; "w" for work
 	   "* TODO %?\n\n- %a\n\n%i" :prepend t)))
 
 (org-babel-do-load-languages
@@ -520,6 +520,8 @@
 			"bastien.guerry@numerique.gouv.fr"
 			"bzg@bzg.fr"
 			"bzg@gnu.org"
+			"bzg@softwareheritage.org"
+			"bastien.guerry@inria.fr"
 			)))
 
   ;; (setopt send-mail-function 'sendmail-send-it)
