@@ -825,8 +825,16 @@
     "Calculate the Gnus group name from the given file name."
     (cond ((string-match "/home/bzg/Mail/nnml/\\([^/]+\\)/" file)
 	   (format "nnml:mail.%s" (match-string 1 file)))
-	  ((string-match "/home/bzg/Mail/Maildir/\\([^/]+\\)/\\([^/]+\\)" file)
-	   (format "nnimap+localhost:%s/%s" (match-string 1 file) (match-string 2 file)))
+	  ((string-match "/home/bzg/Mail/Maildir/\\([^/]+\\)/\\([^/]+\\)\\(?:/\\([^/]+\\)\\)?" file)
+	   (when-let* ((3rd-match (match-string 3 file)))
+	     (if (not (string= "cur" 3rd-match))
+		 (format "nnimap+localhost:%s/%s/%s"
+			 (match-string 1 file)
+			 (match-string 2 file)
+			 3rd-match)
+	       (format "nnimap+localhost:%s/%s"
+		       (match-string 1 file)
+		       (match-string 2 file)))))
 	  (t (user-error "Unknown group"))))
 
   (defun bzg-notmuch-goto-message-in-gnus ()
