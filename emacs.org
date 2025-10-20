@@ -934,7 +934,6 @@ Comments and suggestions are welcome.
 
   #+begin_src emacs-lisp
   (use-package dired-x
-    :defer t
     :config
     ;; (define-key dired-mode-map "\C-cd" 'dired-clean-tex)
     (setopt dired-guess-shell-alist-user

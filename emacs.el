@@ -855,7 +855,6 @@
 	      (kbd "C-c C-c") #'bzg-notmuch-goto-message-in-gnus))
 
 (use-package dired-x
-  :defer t
   :config
   ;; (define-key dired-mode-map "\C-cd" 'dired-clean-tex)
   (setopt dired-guess-shell-alist-user
