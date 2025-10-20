@@ -1181,8 +1181,6 @@ Comments and suggestions are welcome.
 *** Various
 
     #+begin_src emacs-lisp
-    (add-hook 'kill-emacs-hook 'elfeed-db-save)
-
     (use-package whitespace
       :defer t
       :config

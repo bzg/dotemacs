@@ -1080,8 +1080,6 @@
 (add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
 (add-hook 'org-mode-hook (lambda () (electric-indent-mode 0)))
 
-(add-hook 'kill-emacs-hook 'elfeed-db-save)
-
 (use-package whitespace
   :defer t
   :config
