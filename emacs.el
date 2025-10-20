@@ -89,7 +89,7 @@
 (setopt next-screen-context-lines 0)
 
 ;; Always use "y" for "yes"
-(fset 'yes-or-no-p 'y-or-n-p)
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; Enabling and disabling some modes
 ;; Less is more - see https://bzg.fr/en/emacs-strip-tease/
@@ -505,6 +505,8 @@
   :config
   (gnus-delay-initialize)
   (setopt gnus-delay-default-delay "2d")
+  (setopt gnus-check-new-newsgroups nil)
+  (setopt gnus-save-newsrc-file nil)
   (setopt gnus-refer-thread-limit t)
   (setopt gnus-use-atomic-windows nil)
   (setopt nndraft-directory "~/News/drafts/")
@@ -728,6 +730,7 @@
   (setopt message-alternative-emails gnus-ignored-from-addresses))
 
 (use-package bbdb
+  :defer t
   :config
   (require 'bbdb-com)
   (require 'bbdb-anniv)
@@ -771,6 +774,7 @@
 	appt-message-warning-time 120)
 
 (use-package calendar
+  :defer t
   :config
   (setopt french-holiday
 	  '((holiday-fixed 1 1 "Jour de l'an")
@@ -851,6 +855,7 @@
 	      (kbd "C-c C-c") #'bzg-notmuch-goto-message-in-gnus))
 
 (use-package dired-x
+  :defer t
   :config
   ;; (define-key dired-mode-map "\C-cd" 'dired-clean-tex)
   (setopt dired-guess-shell-alist-user
@@ -934,6 +939,7 @@
   (define-key paredit-mode-map (kbd "C-M-w") 'sp-copy-sexp))
 
 (use-package slime
+  :defer t
   :config
   (setopt inferior-lisp-program "sbcl"))
 
@@ -942,6 +948,7 @@
 
 ;; Use LSP
 (use-package lsp-mode
+  :defer t
   :commands lsp
   :hook ((clojure-ts-mode . lsp)
 	 (slime-mode . lsp)
@@ -951,6 +958,7 @@
   (setopt lsp-prefer-flymake nil))
 
 (use-package clojure-ts-mode
+  :defer t
   :config
   (require 'flycheck-clj-kondo)
   (setopt clojure-align-forms-automatically t)
@@ -969,6 +977,7 @@
 ;;   (define-key clj-refactor-map "\C-cU" #'clojure-unwind-all))
 
 (use-package cider
+  :defer t
   :config
   (add-hook 'cider-repl-mode-hook 'company-mode)
   (setopt cider-use-fringe-indicators nil)
@@ -1071,21 +1080,27 @@
 (add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
 (add-hook 'org-mode-hook (lambda () (electric-indent-mode 0)))
 
+(add-hook 'kill-emacs-hook 'elfeed-db-save)
+
 (use-package whitespace
+  :defer t
   :config
   (add-to-list 'whitespace-style 'lines-tail))
 
 (use-package ibuffer
+  :defer t
   :bind ("C-x C-b" . ibuffer))
 
 ;; M-x package-install RET register-list RET
 (use-package register-list
+  :defer t
   :bind ("C-x r L" . register-list))
 
 ;; Displays a helper about the current available keybindings
 (which-key-mode)
 
 (use-package eww
+  :defer t
   :config
   (add-hook 'eww-mode-hook 'visual-line-mode)
   (setopt eww-header-line-format ""
@@ -1101,6 +1116,7 @@
 (setopt ediff-window-setup-function 'ediff-setup-windows-plain)
 
 (use-package dired-subtree
+  :defer t
   :config
   (setopt dired-subtree-use-backgrounds nil)
   (define-key dired-mode-map (kbd "I") 'dired-subtree-toggle)
