@@ -346,11 +346,11 @@
 	'((":" "Rendez-vous" entry (file+headline "~/org/bzg.org" "Rendez-vous")
 	   "* %:fromname %?\n  SCHEDULED: %^T\n\n- %a" :prepend t)
 	  ;; (!) To indicate the captured item is immediately stored
-	  ("s" "A trier (!)" entry (file "~/org/bzg.org") ; "s" for "sort"
+	  ("d" "A trier (!)" entry (file "~/org/bzg.org") ; "d" for diverse
 	   "* TODO %a" :prepend t :immediate-finish t)
 	  ("r" "Divers à lire (!)" entry (file+headline "~/org/bzg.org" "Divers") ; "r" for read
 	   "* TODO %a :Read:" :prepend t :immediate-finish t)
-	  ("w" "SWH" entry (file+headline "~/org/bzg.org" "SWH") ; "w" for work
+	  ("m" "Mission" entry (file+headline "~/org/bzg.org" "Mission") ; "m" for mission
 	   "* TODO %?\n\n- %a\n\n%i" :prepend t)))
 
 (org-babel-do-load-languages
@@ -659,23 +659,8 @@
 	      (lambda () (interactive) (bzg-gnus-toggle-group-line-format) (gnus)))
 
   ;; Scoring
-  (setopt gnus-use-adaptive-scoring '(word line)
-	  gnus-adaptive-pretty-print t
-          gnus-adaptive-word-length-limit 5
-	  gnus-score-exact-adapt-limit nil
-	  gnus-default-adaptive-word-score-alist
-	  '((42 . 3) ;cached
-            (65 . 2) ;replied
-            (70 . 1) ;forwarded
-            (82 . 1) ;read
-            (67 . -1) ;catchup
-            (69 . 0) ;expired
-            (75 . -3) ;killed
-            (114 . -3))
-	  ;; gnus-score-decay-constant 1
-	  ;; gnus-decay-scores t
-	  ;; gnus-decay-score 1000
-	  )
+  (setopt gnus-use-adaptive-scoring nil
+	  gnus-adaptive-pretty-print nil)
 
   (setopt gnus-summary-line-format
 	  (concat "%*%0{%U%R%z%}"
@@ -730,7 +715,6 @@
   (setopt message-alternative-emails gnus-ignored-from-addresses))
 
 (use-package bbdb
-  :defer t
   :config
   (require 'bbdb-com)
   (require 'bbdb-anniv)
@@ -740,6 +724,7 @@
   (bbdb-mua-auto-update-init 'message 'gnus)
 
   (setopt bbdb-mua-pop-up nil)
+  (setq bbdb-mua-interactive-action '(query . create))
   (setopt bbdb-allow-duplicates t)
   (setopt bbdb-pop-up-window-size 5)
   (setopt bbdb-ignore-redundant-mails t)
