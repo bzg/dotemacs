@@ -346,9 +346,9 @@
 	'((":" "Rendez-vous" entry (file+headline "~/org/bzg.org" "Rendez-vous")
 	   "* %:fromname %?\n  SCHEDULED: %^T\n\n- %a" :prepend t)
 	  ;; (!) To indicate the captured item is immediately stored
-	  ("d" "A trier (!)" entry (file "~/org/bzg.org") ; "d" for diverse
+	  ("d" "Divers (!)" entry (file "~/org/bzg.org") ; "d" for diverse
 	   "* TODO %a" :prepend t :immediate-finish t)
-	  ("r" "Divers à lire (!)" entry (file+headline "~/org/bzg.org" "Divers") ; "r" for read
+	  ("r" "À lire (!)" entry (file+headline "~/org/bzg.org" "Divers") ; "r" for read
 	   "* TODO %a :Read:" :prepend t :immediate-finish t)
 	  ("m" "Mission" entry (file+headline "~/org/bzg.org" "Mission") ; "m" for mission
 	   "* TODO %?\n\n- %a\n\n%i" :prepend t)))
