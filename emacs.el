@@ -125,13 +125,10 @@
 (set-face-attribute 'default nil :family "Roboto Mono" :height 120)
 (set-face-attribute 'italic nil :family "Roboto Mono" :weight 'semi-light :slant 'normal)
 (set-face-attribute 'bold-italic nil :slant 'normal)
-;; (set-face-attribute 'default nil :family "Roboto Mono" :weight 'semi-light :height 120)
-;; (set-face-attribute 'default nil :family "Roboto Mono" :weight 'regular :height 120)
-;; (set-face-attribute 'bold nil :family "Roboto Mono" :weight 'regular)
 
 ;; Define options and functions I will later bind
 (setopt bzg-min-font-size 120)
-(setopt bzg-default-font-size 220)
+(setopt bzg-default-font-size 180)
 (custom-set-faces `(default ((t (:height ,bzg-default-font-size)))))
 
 (defun bzg-toggle-default-font-size ()
@@ -523,6 +520,7 @@
 			"bzg@bzg.fr"
 			"bzg@gnu.org"
 			"bzg@softwareheritage.org"
+			"bastien.guerry@softwareheritage.org"
 			"bastien.guerry@inria.fr"
 			)))
 
