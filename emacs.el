@@ -128,7 +128,7 @@
 
 ;; Define options and functions I will later bind
 (setopt bzg-min-font-size 120)
-(setopt bzg-default-font-size 180)
+(setopt bzg-default-font-size 192)
 (custom-set-faces `(default ((t (:height ,bzg-default-font-size)))))
 
 (defun bzg-toggle-default-font-size ()
