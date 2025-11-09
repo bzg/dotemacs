@@ -383,11 +383,7 @@
 (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
 (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
 
-(require 'ox-md)
-(require 'ox-beamer)
 (require 'ox-latex)
-(require 'ox-odt)
-(require 'ox-koma-letter)
 (setopt org-koma-letter-use-email t)
 (setopt org-koma-letter-use-foldmarks nil)
 
@@ -401,23 +397,21 @@
 
 (setopt org-export-with-broken-links t)
 (setopt org-export-default-language "fr")
-(setopt org-export-backends '(latex odt icalendar html ascii koma-letter))
 (setopt org-export-with-archived-trees nil)
 (setopt org-export-with-drawers '("HIDE"))
 (setopt org-export-with-section-numbers nil)
 (setopt org-export-with-sub-superscripts nil)
 (setopt org-export-with-tags 'not-in-toc)
 (setopt org-export-with-timestamps t)
-(setopt org-html-head "")
-(setopt org-html-head-include-default-style nil)
 (setopt org-export-with-toc nil)
 (setopt org-export-with-priority t)
 (setopt org-export-dispatch-use-expert-ui t)
 (setopt org-export-use-babel t)
-(setopt org-latex-pdf-process
-	'("pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f" "pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f" "pdflatex -interaction nonstopmode -shell-escape -output-directory %o %f"))
 (setopt org-export-allow-bind-keywords t)
 (setopt org-publish-list-skipped-files nil)
+(setopt org-html-head "")
+(setopt org-html-head-include-default-style nil)
+(setopt org-html-head-include-default-style nil)
 (setopt org-html-table-row-tags
 	(cons '(cond (top-row-p "<tr class=\"tr-top\">")
 		     (bottom-row-p "<tr class=\"tr-bottom\">")
@@ -425,10 +419,6 @@
 			    "<tr class=\"tr-odd\">"
 			  "<tr class=\"tr-even\">")))
 	      "</tr>"))
-
-(setopt org-html-head-include-default-style nil)
-
-(add-to-list 'org-latex-packages-alist '("AUTO" "babel" t ("pdflatex")))
 
 (org-agenda-to-appt)
 
