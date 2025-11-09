@@ -157,22 +157,22 @@ Comments and suggestions are welcome.
 
   #+begin_src emacs-lisp
   ;; Define options and functions I will later bind
-  (setopt bzg-min-font-size 120)
-  (setopt bzg-default-font-size 192)
-  (custom-set-faces `(default ((t (:height ,bzg-default-font-size)))))
+  (setopt bzg/min-font-size 120)
+  (setopt bzg/default-font-size 192)
+  (custom-set-faces `(default ((t (:height ,bzg/default-font-size)))))
 
-  (defun bzg-toggle-default-font-size ()
+  (defun bzg/toggle-default-font-size ()
     (interactive)
     (if (< (abs (- (face-attribute 'default :height)
-  		 bzg-default-font-size))
+  		 bzg/default-font-size))
   	 10)
         (custom-set-faces
-         `(default ((t (:height ,bzg-min-font-size)))))
+         `(default ((t (:height ,bzg/min-font-size)))))
       (custom-set-faces
-         `(default ((t (:height ,bzg-default-font-size)))))))
+         `(default ((t (:height ,bzg/default-font-size)))))))
 
   ;; Easily jump to my main org file
-  (defun bzg-find-bzg nil
+  (defun bzg/find-bzg nil
     "Find the bzg.org file."
     (interactive)
     (find-file "~/org/bzg.org")
@@ -219,22 +219,22 @@ Comments and suggestions are welcome.
   (global-set-key (kbd "<home>") 'beginning-of-buffer)
   (global-set-key (kbd "<end>") 'end-of-buffer)
   (global-set-key (kbd "C-&") 'gnus)
-  (global-set-key (kbd "C-è") 'bzg-toggle-browser)
+  (global-set-key (kbd "C-è") 'bzg/toggle-browser)
   (global-set-key (kbd "C-_") 'global-hl-line-mode)
   (global-set-key (kbd "C-ç") 'calc)
   (global-set-key (kbd "C-à") (lambda () (interactive) (if (eq major-mode 'calendar-mode) (calendar-exit) (calendar))))
   (global-set-key (kbd "C-+") 'text-scale-increase)
   (global-set-key (kbd "C--") 'text-scale-decrease)
-  (global-set-key (kbd "C-=") 'bzg-toggle-default-font-size)
-  (global-set-key (kbd "C-M-=") 'bzg-toggle-fringe-width)
+  (global-set-key (kbd "C-=") 'bzg/toggle-default-font-size)
+  (global-set-key (kbd "C-M-=") 'bzg/toggle-fringe-width)
   (global-set-key (kbd "C-c F") 'auto-fill-mode)
   (global-set-key (kbd "C-c f") 'find-name-dired)
   (global-set-key (kbd "C-c g") 'deadgrep)
   (global-set-key (kbd "C-c m") 'magit-status)
-  (global-set-key (kbd "C-x <C-backspace>") 'bzg-find-bzg)
+  (global-set-key (kbd "C-x <C-backspace>") 'bzg/find-bzg)
   (global-set-key (kbd "C-x C-<left>") 'tab-previous)
   (global-set-key (kbd "C-x C-<right>") 'tab-next)
-  (global-set-key (kbd "C-é") 'bzg-cycle-view)
+  (global-set-key (kbd "C-é") 'bzg/cycle-view)
   (global-set-key (kbd "C-M-]") 'origami-toggle-all-nodes)
   (global-set-key (kbd "M-]") 'origami-toggle-node)
   (global-set-key (kbd "C-,") 'find-variable-or-function-at-point)
@@ -550,6 +550,18 @@ Comments and suggestions are welcome.
    	    (org-agenda-entry-types '(:deadline))))))
    #+end_src
 
+** Org custom
+
+#+begin_src emacs-lisp
+(defun bzg/org-sort-todo-then-priority ()
+  "Sort entries by TODO state, then by priority within each state."
+  (interactive)
+  (org-sort-entries nil ?p)  ; Sort by priority first
+  (org-sort-entries nil ?o)) ; Then by TODO state
+
+(define-key org-mode-map (kbd "C-c 9") #'bzg/org-sort-todo-then-priority)
+#+end_src
+
 * Gnus
 
   #+begin_src emacs-lisp
@@ -706,7 +718,7 @@ Comments and suggestions are welcome.
     (setopt gnus-group-line-format "%M%S%p%P %(%-40,40G%)\n")
     (setopt gnus-group-line-default-format "%M%S%p%P %(%-40,40G%) %-3y %-3T %-3I\n")
 
-    (defun bzg-gnus-toggle-group-line-format ()
+    (defun bzg/gnus-toggle-group-line-format ()
       (interactive)
       (if (equal gnus-group-line-format
   	       gnus-group-line-default-format)
@@ -717,7 +729,7 @@ Comments and suggestions are welcome.
 
     ;; Toggle the group line format
     (define-key gnus-group-mode-map "("
-  	      (lambda () (interactive) (bzg-gnus-toggle-group-line-format) (gnus)))
+  	      (lambda () (interactive) (bzg/gnus-toggle-group-line-format) (gnus)))
 
     ;; Scoring
     (setopt gnus-use-adaptive-scoring nil
@@ -878,12 +890,12 @@ Comments and suggestions are welcome.
   (use-package notmuch
     :config
     (setopt notmuch-fcc-dirs nil)
-    (add-hook 'gnus-group-mode-hook 'bzg-notmuch-shortcut)
+    (add-hook 'gnus-group-mode-hook 'bzg/notmuch-shortcut)
 
-    (defun bzg-notmuch-shortcut ()
+    (defun bzg/notmuch-shortcut ()
       (define-key gnus-group-mode-map "GG" 'notmuch-search))
 
-    (defun bzg-notmuch-file-to-group (file)
+    (defun bzg/notmuch-file-to-group (file)
       "Calculate the Gnus group name from the given file name."
       (cond ((string-match "/home/bzg/Mail/nnml/\\([^/]+\\)/" file)
   	   (format "nnml:mail.%s" (match-string 1 file)))
@@ -899,10 +911,10 @@ Comments and suggestions are welcome.
   		       (match-string 2 file)))))
   	  (t (user-error "Unknown group"))))
 
-    (defun bzg-notmuch-goto-message-in-gnus ()
+    (defun bzg/notmuch-goto-message-in-gnus ()
       "Open a summary buffer containing the current notmuch article."
       (interactive)
-      (let ((group (bzg-notmuch-file-to-group (notmuch-show-get-filename)))
+      (let ((group (bzg/notmuch-file-to-group (notmuch-show-get-filename)))
   	  (message-id (replace-regexp-in-string
   		       "^id:\\|\"" "" (notmuch-show-get-message-id))))
         (if (and group message-id)
@@ -910,7 +922,7 @@ Comments and suggestions are welcome.
   	(message "Couldn't get relevant infos for switching to Gnus."))))
 
     (define-key notmuch-show-mode-map
-  	      (kbd "C-c C-c") #'bzg-notmuch-goto-message-in-gnus))
+  	      (kbd "C-c C-c") #'bzg/notmuch-goto-message-in-gnus))
   #+end_src
 
 * Dired
@@ -990,7 +1002,7 @@ Comments and suggestions are welcome.
     (setopt browse-url-generic-program "firefox")
     (setopt browse-url-firefox-new-window-is-tab t)
 
-    (defun bzg-toggle-browser ()
+    (defun bzg/toggle-browser ()
       (interactive)
       (if (eq browse-url-browser-function 'browse-url-generic)
           (progn (setopt browse-url-browser-function 'eww-browse-url)
@@ -1065,70 +1077,70 @@ Comments and suggestions are welcome.
 *** Cycling through one/two windows display
 
     #+begin_src emacs-lisp
-    (setopt bzg-cycle-view-current nil)
+    (setopt bzg/cycle-view-current nil)
 
-    (defun bzg-cycle-view ()
+    (defun bzg/cycle-view ()
       "Cycle through my favorite views."
       (interactive)
       (let ((splitted-frame
     	 (or (< (window-height) (1- (frame-height)))
     	     (< (window-width) (frame-width)))))
-        (cond ((not (eq last-command 'bzg-cycle-view))
+        (cond ((not (eq last-command 'bzg/cycle-view))
     	   (delete-other-windows)
-    	   (bzg-big-fringe-mode)
-    	   (setopt bzg-cycle-view-current 'one-window-with-fringe))
-    	  ((and (not bzg-cycle-view-current) splitted-frame)
+    	   (bzg/big-fringe-mode)
+    	   (setopt bzg/cycle-view-current 'one-window-with-fringe))
+    	  ((and (not bzg/cycle-view-current) splitted-frame)
     	   (delete-other-windows))
-    	  ((not bzg-cycle-view-current)
+    	  ((not bzg/cycle-view-current)
     	   (delete-other-windows)
-    	   (if bzg-big-fringe-mode
-    	       (progn (bzg-big-fringe-mode)
-    		      (setopt bzg-cycle-view-current 'one-window-no-fringe))
-    	     (bzg-big-fringe-mode)
-    	     (setopt bzg-cycle-view-current 'one-window-with-fringe)))
-    	  ((eq bzg-cycle-view-current 'one-window-with-fringe)
+    	   (if bzg/big-fringe-mode
+    	       (progn (bzg/big-fringe-mode)
+    		      (setopt bzg/cycle-view-current 'one-window-no-fringe))
+    	     (bzg/big-fringe-mode)
+    	     (setopt bzg/cycle-view-current 'one-window-with-fringe)))
+    	  ((eq bzg/cycle-view-current 'one-window-with-fringe)
     	   (delete-other-windows)
-    	   (bzg-big-fringe-mode -1)
-    	   (setopt bzg-cycle-view-current 'one-window-no-fringe))
-    	  ((eq bzg-cycle-view-current 'one-window-no-fringe)
+    	   (bzg/big-fringe-mode -1)
+    	   (setopt bzg/cycle-view-current 'one-window-no-fringe))
+    	  ((eq bzg/cycle-view-current 'one-window-no-fringe)
     	   (delete-other-windows)
     	   (split-window-right)
-    	   (bzg-big-fringe-mode -1)
+    	   (bzg/big-fringe-mode -1)
     	   (other-window 1)
     	   (balance-windows)
-    	   (setopt bzg-cycle-view-current 'two-windows-balanced))
-    	  ((eq bzg-cycle-view-current 'two-windows-balanced)
+    	   (setopt bzg/cycle-view-current 'two-windows-balanced))
+    	  ((eq bzg/cycle-view-current 'two-windows-balanced)
     	   (delete-other-windows)
-    	   (bzg-big-fringe-mode 1)
-    	   (setopt bzg-cycle-view-current 'one-window-with-fringe)))))
+    	   (bzg/big-fringe-mode 1)
+    	   (setopt bzg/cycle-view-current 'one-window-with-fringe)))))
 
-    (advice-add 'split-window-horizontally :before (lambda () (interactive) (bzg-big-fringe-mode 0)))
-    (advice-add 'split-window-right :before (lambda () (interactive) (bzg-big-fringe-mode 0)))
+    (advice-add 'split-window-horizontally :before (lambda () (interactive) (bzg/big-fringe-mode 0)))
+    (advice-add 'split-window-right :before (lambda () (interactive) (bzg/big-fringe-mode 0)))
     #+end_src
 
 *** hidden-mode and fringes
 
     #+begin_src emacs-lisp
-    (setopt bzg-big-fringe 300)
-    (defun bzg-toggle-fringe-width ()
+    (setopt bzg/big-fringe 300)
+    (defun bzg/toggle-fringe-width ()
       (interactive)
-      (if (equal bzg-big-fringe 300)
-          (progn (setopt bzg-big-fringe 700)
+      (if (equal bzg/big-fringe 300)
+          (progn (setopt bzg/big-fringe 700)
     	     (message "Fringe set to 700"))
-        (setopt bzg-big-fringe 300)
+        (setopt bzg/big-fringe 300)
         (message "Fringe set to 300")))
 
-    (define-minor-mode bzg-big-fringe-mode
+    (define-minor-mode bzg/big-fringe-mode
       "Minor mode to hide the mode-line in the current buffer."
       :init-value nil
       :global t
-      :variable bzg-big-fringe-mode
+      :variable bzg/big-fringe-mode
       :group 'editing-basics
-      (if (not bzg-big-fringe-mode)
+      (if (not bzg/big-fringe-mode)
           (fringe-mode 10)
-        (fringe-mode bzg-big-fringe)))
+        (fringe-mode bzg/big-fringe)))
 
-    ;; (bzg-big-fringe-mode 1)
+    ;; (bzg/big-fringe-mode 1)
 
     ;; See https://bzg.fr/emacs-hide-mode-line.html
     (defvar-local hidden-mode-line-mode nil)
@@ -1226,16 +1238,16 @@ Comments and suggestions are welcome.
     (add-hook 'dired-mode-hook #'dired-hide-details-mode)
 
     ;; Fontifying todo items outside of org-mode
-    (defface bzg-todo-comment-face
+    (defface bzg/todo-comment-face
       '((t (:weight bold :bold t)))
       "Face for TODO in code buffers."
       :group 'org-faces)
 
-    (defvar bzg-todo-comment-face 'bzg-todo-comment-face)
+    (defvar bzg/todo-comment-face 'bzg/todo-comment-face)
 
     (pdf-tools-install)
 
-    (defun bzg-gnus-toggle-nntp ()
+    (defun bzg/gnus-toggle-nntp ()
       (interactive)
       (if (= (length gnus-secondary-select-methods) 1)
           (progn (add-to-list
@@ -1248,7 +1260,7 @@ Comments and suggestions are welcome.
     		      gnus-secondary-select-methods))
           (message "nntp server OFF"))))
 
-    (define-key gnus-group-mode-map (kbd "%") #'bzg-gnus-toggle-nntp)
+    (define-key gnus-group-mode-map (kbd "%") #'bzg/gnus-toggle-nntp)
 
     (load-file "~/.emacs.d/gptel.el")
     #+end_src
