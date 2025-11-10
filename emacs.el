@@ -127,7 +127,7 @@
 (set-face-attribute 'bold-italic nil :slant 'normal)
 
 ;; Define options and functions I will later bind
-(setopt bzg/min-font-size 120)
+(setopt bzg/min-font-size 132)
 (setopt bzg/default-font-size 192)
 (custom-set-faces `(default ((t (:height ,bzg/default-font-size)))))
 

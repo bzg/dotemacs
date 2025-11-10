@@ -157,7 +157,7 @@ Comments and suggestions are welcome.
 
   #+begin_src emacs-lisp
   ;; Define options and functions I will later bind
-  (setopt bzg/min-font-size 120)
+  (setopt bzg/min-font-size 124)
   (setopt bzg/default-font-size 192)
   (custom-set-faces `(default ((t (:height ,bzg/default-font-size)))))
 
