@@ -490,7 +490,7 @@
     (org-sort-entries nil ?o)  ; Then by TODO state
     (when folded (org-fold-hide-subtree))))
 
-(define-key org-mode-map (kbd "C-c 9") #'bzg/org-sort-todo-then-priority)
+(define-key org-mode-map (kbd "C-c ç") #'bzg/org-sort-todo-then-priority)
 
 (use-package epa
   :config
