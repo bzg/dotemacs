@@ -127,7 +127,7 @@
 (set-face-attribute 'bold-italic nil :slant 'normal)
 
 ;; Define options and functions I will later bind
-(setopt bzg/min-font-size 132)
+(setopt bzg/min-font-size 124)
 (setopt bzg/default-font-size 192)
 (custom-set-faces `(default ((t (:height ,bzg/default-font-size)))))
 
@@ -483,8 +483,12 @@
 (defun bzg/org-sort-todo-then-priority ()
   "Sort entries by TODO state, then by priority within each state."
   (interactive)
-  (org-sort-entries nil ?p)  ; Sort by priority first
-  (org-sort-entries nil ?o)) ; Then by TODO state
+  (let ((folded (save-excursion
+		  (end-of-line)
+		  (org-fold-core-get-folding-spec))))
+    (org-sort-entries nil ?p)  ; Sort by priority first
+    (org-sort-entries nil ?o)  ; Then by TODO state
+    (when folded (org-fold-hide-subtree))))
 
 (define-key org-mode-map (kbd "C-c 9") #'bzg/org-sort-todo-then-priority)
 
