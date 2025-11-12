@@ -122,12 +122,12 @@
 (load-theme 'doric-light)
 
 ;; Reset some font stuff
-(set-face-attribute 'default nil :family "Roboto Mono" :height 120)
+(set-face-attribute 'default nil :family "Roboto Mono" :height 140)
 (set-face-attribute 'italic nil :family "Roboto Mono" :weight 'semi-light :slant 'normal)
 (set-face-attribute 'bold-italic nil :slant 'normal)
 
 ;; Define options and functions I will later bind
-(setopt bzg/min-font-size 124)
+(setopt bzg/min-font-size 140)
 (setopt bzg/default-font-size 192)
 (custom-set-faces `(default ((t (:height ,bzg/default-font-size)))))
 
@@ -1014,14 +1014,14 @@
 (advice-add 'split-window-horizontally :before (lambda () (interactive) (bzg/big-fringe-mode 0)))
 (advice-add 'split-window-right :before (lambda () (interactive) (bzg/big-fringe-mode 0)))
 
-(setopt bzg/big-fringe 300)
+(setopt bzg/big-fringe 320)
 (defun bzg/toggle-fringe-width ()
   (interactive)
-  (if (equal bzg/big-fringe 300)
-      (progn (setopt bzg/big-fringe 700)
+  (if (equal bzg/big-fringe 320)
+      (progn (setq bzg/big-fringe 700)
 	     (message "Fringe set to 700"))
-    (setopt bzg/big-fringe 300)
-    (message "Fringe set to 300")))
+    (setq bzg/big-fringe 320)
+    (message "Fringe set to 320")))
 
 (define-minor-mode bzg/big-fringe-mode
   "Minor mode to hide the mode-line in the current buffer."
