@@ -390,7 +390,7 @@ Comments and suggestions are welcome.
    	'((":" "Rendez-vous" entry (file+headline "~/org/bzg.org" "Rendez-vous")
    	   "* %:fromname %?\n  SCHEDULED: %^T\n\n- %a" :prepend t)
    	  ;; (!) To indicate the captured item is immediately stored
-   	  ("d" "Divers (!)" entry (file "~/org/bzg.org") ; "d" for diverse
+   	  ("c" "Courant (!)" entry (file "~/org/bzg.org") ; "c" for "affaires (c)ourantes
    	   "* TODO %a" :prepend t :immediate-finish t)
    	  ("r" "À lire (!)" entry (file+headline "~/org/bzg.org" "Divers") ; "r" for read
    	   "* TODO %a :Read:" :prepend t :immediate-finish t)
@@ -1077,7 +1077,7 @@ Comments and suggestions are welcome.
       "Cycle through my favorite views."
       (interactive)
       (let ((splitted-frame
-    	 (or (<= (window-height) (1- (frame-height)))
+    	 (or (< (window-height) (1- (frame-height)))
     	     (< (window-width) (frame-width)))))
         (cond ((not (eq last-command 'bzg/cycle-view))
     	   (delete-other-windows)
