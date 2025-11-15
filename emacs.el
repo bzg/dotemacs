@@ -445,12 +445,9 @@
 (setopt org-agenda-window-frame-fractions '(0.0 . 0.5))
 
 ;; icalendar stuff
-(setopt org-icalendar-include-todo 'all)
-(setopt org-icalendar-combined-name "Bastien Guerry ORG")
-(setopt org-icalendar-use-scheduled '(todo-start event-if-todo event-if-not-todo))
-(setopt org-icalendar-use-deadline '(todo-due event-if-todo event-if-not-todo))
+(setopt org-icalendar-use-scheduled '(event-if-not-todo))
+(setopt org-icalendar-combined-name "Bastien Guerry Calendar")
 (setopt org-icalendar-timezone "Europe/Paris")
-(setopt org-icalendar-store-UID t)
 
 (setopt org-agenda-custom-commands
 	'(;; Archive tasks
