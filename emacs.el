@@ -119,7 +119,7 @@
 ;; Hide fringe background and fringe indicators
 (set-face-attribute 'fringe nil :background nil)
 (mapc (lambda (fb) (set-fringe-bitmap-face fb 'org-hide)) fringe-bitmaps)
-(load-theme 'doric-light)
+(load-theme 'doric-marble)
 
 ;; Reset some font stuff
 (set-face-attribute 'default nil :family "Roboto Mono" :height 140)
@@ -1148,4 +1148,8 @@
 
 (define-key gnus-group-mode-map (kbd "%") #'bzg/gnus-toggle-nntp)
 
+;; Gptel configuration
 (load-file "~/.emacs.d/gptel.el")
+
+;; Other custom experimental functions
+(load-file "~/.emacs.d/bzg.el")
