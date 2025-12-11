@@ -1015,8 +1015,8 @@
 (defun bzg/toggle-fringe-width ()
   (interactive)
   (if (equal bzg/big-fringe 320)
-      (progn (setq bzg/big-fringe 700)
-	     (message "Fringe set to 700"))
+      (progn (setq bzg/big-fringe 820)
+	     (message "Fringe set to 820"))
     (setq bzg/big-fringe 320)
     (message "Fringe set to 320")))
 
