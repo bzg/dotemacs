@@ -299,7 +299,7 @@ Comments and suggestions are welcome.
    	'((:startgroup)
    	  ("!Handson" . ?o)
    	  (:grouptags)
-   	  ("Write" . ?w) ("Code" . ?c)
+   	  ("Write" . ?w) ("Mail" . ?@) ("Code" . ?c)
    	  (:endgroup)
    	  (:startgroup)
    	  ("_Handsoff" . ?f)
@@ -389,13 +389,15 @@ Comments and suggestions are welcome.
    (setopt org-capture-templates
    	'((":" "Rendez-vous" entry (file+headline "~/org/bzg.org" "Rendez-vous")
    	   "* %:fromname %?\n  SCHEDULED: %^T\n\n- %a" :prepend t)
+   	  ("m" "Mission" entry (file+headline "~/org/bzg.org" "Mission") ; "m" for "mission"
+   	   "* TODO %?\n\n- %a\n\n%i" :prepend t)
    	  ;; (!) To indicate the captured item is immediately stored
    	  ("c" "Courant (!)" entry (file "~/org/bzg.org") ; "c" for "affaires (c)ourantes
    	   "* TODO %a" :prepend t :immediate-finish t)
-   	  ("r" "À lire (!)" entry (file+headline "~/org/bzg.org" "Divers") ; "r" for read
+   	  ("r" "Read (!)" entry (file+headline "~/org/bzg.org" "Divers") ; "r" for "read"
    	   "* TODO %a :Read:" :prepend t :immediate-finish t)
-   	  ("m" "Mission" entry (file+headline "~/org/bzg.org" "Mission") ; "m" for mission
-   	   "* TODO %?\n\n- %a\n\n%i" :prepend t)))
+   	  ("@" "Mail (!)" entry (file+headline "~/org/bzg.org" "Divers") ; "@" for "mail"
+   	   "* TODO %a :Mail:" :prepend t :immediate-finish t)))
    #+end_src
 
 ** Org babel
