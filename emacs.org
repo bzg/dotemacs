@@ -143,7 +143,7 @@ Comments and suggestions are welcome.
 
   #+begin_src emacs-lisp
   ;; Hide fringe background and fringe indicators
-  (set-face-attribute 'fringe nil :background nil)
+  (set-face-attribute 'fringe nil :background 'unspecified)
   (mapc (lambda (fb) (set-fringe-bitmap-face fb 'org-hide)) fringe-bitmaps)
   (load-theme 'doric-marble)
 
@@ -391,13 +391,13 @@ Comments and suggestions are welcome.
    	   "* %:fromname %?\n  SCHEDULED: %^T\n\n- %a" :prepend t)
    	  ("m" "Mission" entry (file+headline "~/org/bzg.org" "Mission") ; "m" for "mission"
    	   "* TODO %?\n\n- %a\n\n%i" :prepend t)
+   	  ("@" "Mail" entry (file+headline "~/org/bzg.org" "Divers") ; "@" for "mail"
+   	   "* TODO %a :Mail:" :prepend t)
+   	  ("r" "Read" entry (file+headline "~/org/bzg.org" "Divers") ; "r" for "read"
+   	   "* TODO %a :Read:" :prepend t)
    	  ;; (!) To indicate the captured item is immediately stored
    	  ("c" "Courant (!)" entry (file "~/org/bzg.org") ; "c" for "affaires (c)ourantes
-   	   "* TODO %a" :prepend t :immediate-finish t)
-   	  ("r" "Read (!)" entry (file+headline "~/org/bzg.org" "Divers") ; "r" for "read"
-   	   "* TODO %a :Read:" :prepend t :immediate-finish t)
-   	  ("@" "Mail (!)" entry (file+headline "~/org/bzg.org" "Divers") ; "@" for "mail"
-   	   "* TODO %a :Mail:" :prepend t :immediate-finish t)))
+   	   "* TODO %a" :prepend t :immediate-finish t)))
    #+end_src
 
 ** Org babel
@@ -553,6 +553,40 @@ Comments and suggestions are welcome.
     (when folded (org-fold-hide-subtree))))
 
 (define-key org-mode-map (kbd "C-c ç") #'bzg/org-sort-todo-then-priority)
+
+(defun bzg/org-cleanup-drawers ()
+  "Clean up drawers.
+Remove all drawers except those containing :ARCHIVE:, :CATEGORY:, :ID:
+or :NOBLOCKING:. If a drawer is kept, remove the :LAST_REPEAT: property
+line from it. Ensure a blank line remains between the headline/planning
+and the content."
+  (interactive)
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward org-drawer-regexp nil t)
+      (let ((element (org-element-at-point)))
+        (when (memq (org-element-type element) '(property-drawer drawer))
+          (let* ((begin (org-element-property :begin element))
+                 (end (org-element-property :end element))
+                 (contents-begin (org-element-property :contents-begin element))
+                 (contents-end (org-element-property :contents-end element))
+                 (contents (and contents-begin
+				contents-end
+                                (buffer-substring-no-properties
+				 contents-begin contents-end)))
+                 (keep (and contents
+                            (or (string-match-p ":ID:" contents)
+                                (string-match-p ":ARCHIVE:" contents)
+                                (string-match-p ":CATEGORY:" contents)
+                                (string-match-p ":NOBLOCKING:" contents)))))
+            (or keep
+		(delete-region begin end)
+		(when (and (not (looking-at-p "^[ \t]*$"))
+                           (save-excursion
+                             (forward-line -1)
+                             (or (org-at-heading-p)
+				 (org-at-planning-p))))
+                  (insert "\n")))))))))
 #+end_src
 
 * Gnus
@@ -695,6 +729,7 @@ Comments and suggestions are welcome.
 
     ;; Dispkay a button for MIME parts
     (setopt gnus-buttonized-mime-types '("multipart/alternative"))
+    (setopt mm-discouraged-alternatives '("text/html" "text/richtext"))
 
     (setopt gnus-user-date-format-alist
   	  '(((gnus-seconds-today) . "     %k:%M")
@@ -1256,8 +1291,6 @@ Comments and suggestions are welcome.
     (define-key gnus-group-mode-map (kbd "%") #'bzg/gnus-toggle-nntp)
 
     ;; Gptel configuration
+    (setq gptel-default-mode 'org-mode)
     (load-file "~/.emacs.d/gptel.el")
-
-    ;; Other custom experimental functions
-    (load-file "~/.emacs.d/bzg.el")
     #+end_src
