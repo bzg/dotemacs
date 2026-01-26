@@ -566,8 +566,7 @@ and the content."
   (setopt mail-sources nil
 	  gnus-select-method '(nnnil "")
 	  gnus-secondary-select-methods
-	  '(;; (nnmaildir "nnml" (directory "~/Mail/nnml"))
-	    (nnimap "localhost"
+	  '((nnimap "localhost"
 		    (nnimap-server-port "imaps")
 		    (nnimap-authinfo-file "~/.authinfo")
 		    (nnimap-stream ssl)
@@ -846,9 +845,7 @@ and the content."
 
   (defun bzg/notmuch-file-to-group (file)
     "Calculate the Gnus group name from the given file name."
-    (cond ((string-match "/home/bzg/Mail/nnml/\\([^/]+\\)/" file)
-	   (format "nnml:mail.%s" (match-string 1 file)))
-	  ((string-match "/home/bzg/Mail/Maildir/\\([^/]+\\)/\\([^/]+\\)\\(?:/\\([^/]+\\)\\)?" file)
+    (cond ((string-match "/home/bzg/Mail/Maildir/\\([^/]+\\)/\\([^/]+\\)\\(?:/\\([^/]+\\)\\)?" file)
 	   (when-let* ((3rd-match (match-string 3 file)))
 	     (if (not (string= "cur" 3rd-match))
 		 (format "nnimap+localhost:%s/%s/%s"
