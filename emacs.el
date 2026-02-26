@@ -413,7 +413,6 @@
 (setopt org-publish-list-skipped-files nil)
 (setopt org-html-head "")
 (setopt org-html-head-include-default-style nil)
-(setopt org-html-head-include-default-style nil)
 (setopt org-html-table-row-tags
 	(cons '(cond (top-row-p "<tr class=\"tr-top\">")
 		     (bottom-row-p "<tr class=\"tr-bottom\">")
@@ -661,7 +660,6 @@ and the content."
 
   ;; Dispkay a button for MIME parts
   (setopt gnus-buttonized-mime-types '("multipart/alternative"))
-  (setopt mm-discouraged-alternatives '("text/html" "text/richtext"))
 
   (setopt gnus-user-date-format-alist
 	  '(((gnus-seconds-today) . "     %k:%M")
@@ -704,8 +702,7 @@ and the content."
 
 (use-package gnus-alias
   :config
-  ;; FIXME: the default default (sic) is "" but triggers an error:
-  (setopt gnus-alias-default-identity nil)
+  (setopt gnus-alias-default-identity "bzg")
   (gnus-alias-init)
   (define-key message-mode-map (kbd "C-c C-x C-i")
 	      'gnus-alias-select-identity))
@@ -723,7 +720,6 @@ and the content."
   ;; NOTE: both the capture file and the headline(s) inside must already exist
   (setopt gnus-icalendar-org-capture-file "~/org/bzg.org")
   (setopt gnus-icalendar-org-capture-headline '("Rendez-vous"))
-  (setopt gnus-icalendar-org-template-key "I")
   (gnus-icalendar-org-setup))
 
 (use-package gnus-dired
@@ -1184,4 +1180,4 @@ and the content."
 
 ;; Gptel configuration
 (setq gptel-default-mode 'org-mode)
-(load-file "~/.emacs.d/gptel.el")
+;; (load-file "~/.emacs.d/gptel.el")
