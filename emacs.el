@@ -955,6 +955,7 @@ and the content."
   (setopt inferior-lisp-program "sbcl"))
 
 ;; Clojure initialization
+(add-to-list 'auto-mode-alist '("\\.clj\\'" . clojure-ts-mode))
 (setopt inf-clojure-generic-cmd "clojure")
 
 ;; Use LSP
@@ -1041,24 +1042,20 @@ and the content."
 (advice-add 'split-window-horizontally :before (lambda () (interactive) (bzg/big-fringe-mode 0)))
 (advice-add 'split-window-right :before (lambda () (interactive) (bzg/big-fringe-mode 0)))
 
-(setopt bzg/big-fringe 320)
+(defvar bzg/big-fringe 320)
 (defun bzg/toggle-fringe-width ()
+  "Toggle fringe width between 320 and 820."
   (interactive)
-  (if (equal bzg/big-fringe 320)
-      (progn (setq bzg/big-fringe 820)
-	     (message "Fringe set to 820"))
-    (setq bzg/big-fringe 320)
-    (message "Fringe set to 320")))
+  (setq bzg/big-fringe (if (= bzg/big-fringe 320) 820 320))
+  (when bzg/big-fringe-mode
+    (set-fringe-mode bzg/big-fringe))
+  (message "Fringe set to %d" bzg/big-fringe))
 
 (define-minor-mode bzg/big-fringe-mode
-  "Minor mode to hide the mode-line in the current buffer."
+  "Minor mode for wide fringes."
   :init-value nil
   :global t
-  :variable bzg/big-fringe-mode
-  :group 'editing-basics
-  (if (not bzg/big-fringe-mode)
-      (fringe-mode 10)
-    (fringe-mode bzg/big-fringe)))
+  (set-fringe-mode (if bzg/big-fringe-mode bzg/big-fringe 10)))
 
 ;; (bzg/big-fringe-mode 1)
 
@@ -1074,19 +1071,19 @@ and the content."
   :group 'editing-basics
   (if hidden-mode-line-mode
       (setq hide-mode-line mode-line-format
-	    mode-line-format nil)
+    	    mode-line-format nil)
     (setq mode-line-format hide-mode-line
-	  hide-mode-line nil))
+    	  hide-mode-line nil))
   (force-mode-line-update)
   ;; Apparently force-mode-line-update is not always enough to
   ;; redisplay the mode-line
   (redraw-display)
   (when (and (called-interactively-p 'interactive)
-	     hidden-mode-line-mode)
+    	     hidden-mode-line-mode)
     (run-with-idle-timer
      0 nil 'message
      (concat "Hidden Mode Line Mode enabled.  "
-	     "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
+    	     "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
 
 (add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
 (add-hook 'org-mode-hook (lambda () (electric-indent-mode 0)))
@@ -1181,3 +1178,4 @@ and the content."
 ;; Gptel configuration
 (setq gptel-default-mode 'org-mode)
 ;; (load-file "~/.emacs.d/gptel.el")
+(load-file "~/.emacs.d/gnus-icalendar.el")
