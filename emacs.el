@@ -1002,42 +1002,28 @@ and the content."
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 (add-hook 'emacs-lisp-mode-hook 'origami-mode)
 
-(setopt bzg/cycle-view-current nil)
+(defvar bzg/cycle-view-states
+  '(one-window-with-fringe one-window-no-fringe two-windows-balanced))
+
+(defvar bzg/cycle-view-current nil)
 
 (defun bzg/cycle-view ()
   "Cycle through my favorite views."
   (interactive)
-  (let ((splitted-frame
-	 (or (< (window-height) (1- (frame-height)))
-	     (< (window-width) (frame-width)))))
-    (cond ((not (eq last-command 'bzg/cycle-view))
-	   (delete-other-windows)
-	   (bzg/big-fringe-mode)
-	   (setq bzg/cycle-view-current 'one-window-with-fringe))
-	  ((and (not bzg/cycle-view-current) splitted-frame)
-	   (delete-other-windows))
-	  ((not bzg/cycle-view-current)
-	   (delete-other-windows)
-	   (if bzg/big-fringe-mode
-	       (progn (bzg/big-fringe-mode)
-		      (setq bzg/cycle-view-current 'one-window-no-fringe))
-	     (bzg/big-fringe-mode)
-	     (setq bzg/cycle-view-current 'one-window-with-fringe)))
-	  ((eq bzg/cycle-view-current 'one-window-with-fringe)
-	   (delete-other-windows)
-	   (bzg/big-fringe-mode -1)
-	   (setq bzg/cycle-view-current 'one-window-no-fringe))
-	  ((eq bzg/cycle-view-current 'one-window-no-fringe)
-	   (delete-other-windows)
-	   (split-window-right)
-	   (bzg/big-fringe-mode -1)
-	   (other-window 1)
-	   (balance-windows)
-	   (setq bzg/cycle-view-current 'two-windows-balanced))
-	  ((eq bzg/cycle-view-current 'two-windows-balanced)
-	   (delete-other-windows)
-	   (bzg/big-fringe-mode 1)
-	   (setq bzg/cycle-view-current 'one-window-with-fringe)))))
+  (setq bzg/cycle-view-current
+        (or (cadr (memq bzg/cycle-view-current bzg/cycle-view-states))
+            (car bzg/cycle-view-states)))
+  (delete-other-windows)
+  (pcase bzg/cycle-view-current
+    ('one-window-with-fringe
+     (bzg/big-fringe-mode 1))
+    ('one-window-no-fringe
+     (bzg/big-fringe-mode -1))
+    ('two-windows-balanced
+     (bzg/big-fringe-mode -1)
+     (split-window-right)
+     (other-window 1)
+     (balance-windows))))
 
 (advice-add 'split-window-horizontally :before (lambda () (interactive) (bzg/big-fringe-mode 0)))
 (advice-add 'split-window-right :before (lambda () (interactive) (bzg/big-fringe-mode 0)))
