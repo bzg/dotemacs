@@ -212,7 +212,9 @@
 (global-set-key (kbd "C-x T")   'txl-translate-region-or-paragraph)
 
 ;; Elfeed
-(global-set-key (kbd "C-x w") 'elfeed)
+(use-package elfeed
+  :config
+  (global-set-key (kbd "C-x w") 'elfeed))
 
 (require 'org-tempo)
 (require 'org-bullets)
@@ -220,6 +222,7 @@
 (setopt org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
+(add-hook 'org-agenda-mode-hook #'delete-other-windows)
 (add-hook 'message-mode-hook (lambda () (abbrev-mode 0)))
 
 ;; org-mode global keybindings
@@ -424,8 +427,6 @@
 (org-agenda-to-appt)
 
 ;; Hook to display the agenda in a single window
-(add-hook 'org-agenda-finalize-hook 'delete-other-windows)
-
 (setopt org-deadline-warning-days 3)
 (setopt org-agenda-inhibit-startup t)
 (setopt org-agenda-diary-file "/home/bzg/org/bzg.org")
@@ -702,7 +703,7 @@ and the content."
 
 (use-package gnus-alias
   :config
-  (setopt gnus-alias-default-identity "bzg")
+  (setopt gnus-alias-default-identity nil)
   (gnus-alias-init)
   (define-key message-mode-map (kbd "C-c C-x C-i")
 	      'gnus-alias-select-identity))
@@ -1010,20 +1011,30 @@ and the content."
 (defun bzg/cycle-view ()
   "Cycle through my favorite views."
   (interactive)
-  (setq bzg/cycle-view-current
-        (or (cadr (memq bzg/cycle-view-current bzg/cycle-view-states))
-            (car bzg/cycle-view-states)))
-  (delete-other-windows)
-  (pcase bzg/cycle-view-current
-    ('one-window-with-fringe
-     (bzg/big-fringe-mode 1))
-    ('one-window-no-fringe
-     (bzg/big-fringe-mode -1))
-    ('two-windows-balanced
-     (bzg/big-fringe-mode -1)
-     (split-window-right)
-     (other-window 1)
-     (balance-windows))))
+  (cond
+   ;; More than one window and previous command was NOT this one: just delete other windows
+   ((and (> (count-windows) 1)
+         (not (eq last-command 'bzg/cycle-view)))
+    (delete-other-windows))
+   ;; More than one window and previous command WAS this one: delete + reset fringe
+   ((> (count-windows) 1)
+    (delete-other-windows)
+    (bzg/big-fringe-mode -1))
+   ;; One window: cycle as before
+   (t
+    (setq bzg/cycle-view-current
+          (or (cadr (memq bzg/cycle-view-current bzg/cycle-view-states))
+              (car bzg/cycle-view-states)))
+    (pcase bzg/cycle-view-current
+      ('one-window-with-fringe
+       (bzg/big-fringe-mode 1))
+      ('one-window-no-fringe
+       (bzg/big-fringe-mode -1))
+      ('two-windows-balanced
+       (bzg/big-fringe-mode -1)
+       (split-window-right)
+       (other-window 1)
+       (balance-windows))))))
 
 (advice-add 'split-window-horizontally :before (lambda () (interactive) (bzg/big-fringe-mode 0)))
 (advice-add 'split-window-right :before (lambda () (interactive) (bzg/big-fringe-mode 0)))
