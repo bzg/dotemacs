@@ -36,8 +36,8 @@
 (add-to-list 'exec-path "~/bin/")
 
 ;; Include org-mode and emacs local paths into Info
-(add-to-list 'Info-directory-list "~/install/git/org/org-mode/doc/")
-(add-to-list 'Info-directory-list "~/install/git/emacs/info/")
+;; (add-to-list 'Info-directory-list "~/install/git/org/org-mode/doc/")
+;; (add-to-list 'Info-directory-list "~/install/git/emacs/info/")
 
 ;; Don't ask for confirmation for "dangerous" commands
 (put 'erase-buffer 'disabled nil)
@@ -961,7 +961,6 @@ and the content."
 
 ;; Use LSP
 (use-package lsp-mode
-  :defer t
   :commands lsp
   :hook ((clojure-ts-mode . lsp)
 	 (slime-mode . lsp)
@@ -971,7 +970,6 @@ and the content."
   (setopt lsp-prefer-flymake nil))
 
 (use-package clojure-ts-mode
-  :defer t
   :config
   (require 'flycheck-clj-kondo)
   (setopt clojure-align-forms-automatically t)
