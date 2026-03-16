@@ -261,7 +261,11 @@ Comments and suggestions are welcome.
    (setopt org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
    (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
-   (add-hook 'org-agenda-mode-hook #'delete-other-windows)
+   (add-hook 'org-agenda-mode-hook
+   	  (lambda ()
+   	    (let ((fringe-was-on (eq bzg/cycle-view-current 'one-window-with-fringe)))
+   	      (delete-other-windows)
+   	      (when fringe-was-on (bzg/big-fringe-mode 1)))))
    (add-hook 'message-mode-hook (lambda () (abbrev-mode 0)))
 
    ;; org-mode global keybindings
@@ -1111,10 +1115,11 @@ and the content."
        ((and (> (count-windows) 1)
              (not (eq last-command 'bzg/cycle-view)))
         (delete-other-windows))
-       ;; More than one window and previous command WAS this one: delete + reset fringe
+       ;; More than one window and previous command WAS this one: back to Center
        ((> (count-windows) 1)
         (delete-other-windows)
-        (bzg/big-fringe-mode -1))
+        (bzg/big-fringe-mode -1)
+        (setq bzg/cycle-view-current 'one-window-with-fringe))
        ;; One window: cycle as before
        (t
         (setq bzg/cycle-view-current
