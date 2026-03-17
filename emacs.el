@@ -1017,11 +1017,13 @@ and the content."
    ;; More than one window and previous command was NOT this one: just delete other windows
    ((and (> (count-windows) 1)
          (not (eq last-command 'bzg/cycle-view)))
-    (delete-other-windows))
+    (delete-other-windows)
+    (bzg/big-fringe-mode -1)
+    (setq bzg/cycle-view-current 'one-window-no-fringe))
    ;; More than one window and previous command WAS this one: back to Center
    ((> (count-windows) 1)
     (delete-other-windows)
-    (bzg/big-fringe-mode -1)
+    (bzg/big-fringe-mode 1)
     (setq bzg/cycle-view-current 'one-window-with-fringe))
    ;; One window: cycle as before
    (t
@@ -1039,8 +1041,8 @@ and the content."
        (other-window 1)
        (balance-windows))))))
 
-(advice-add 'split-window-horizontally :before (lambda () (interactive) (bzg/big-fringe-mode 0)))
-(advice-add 'split-window-right :before (lambda () (interactive) (bzg/big-fringe-mode 0)))
+(advice-add 'split-window-horizontally :before (lambda () (interactive) (bzg/big-fringe-mode -1)))
+(advice-add 'split-window-right :before (lambda () (interactive) (bzg/big-fringe-mode -1)))
 
 (defvar bzg/big-fringe 320)
 (defun bzg/toggle-fringe-width ()
