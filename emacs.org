@@ -1111,6 +1111,10 @@ and the content."
       "Cycle through my favorite views."
       (interactive)
       (cond
+       ;; Two windows stacked top/bottom: always delete other windows first
+       ((and (= (count-windows) 2)
+             (window-combined-p nil nil))
+        (delete-other-windows))
        ;; More than one window and previous command was NOT this one: just delete other windows
        ((and (> (count-windows) 1)
              (not (eq last-command 'bzg/cycle-view)))
