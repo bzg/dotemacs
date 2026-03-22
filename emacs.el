@@ -211,6 +211,11 @@
 (global-set-key (kbd "C-x R")   'txl-rephrase-region-or-paragraph)
 (global-set-key (kbd "C-x T")   'txl-translate-region-or-paragraph)
 
+;; magit-delta
+(use-package magit-delta
+  :hook (magit-mode . magit-delta-mode))
+
+
 ;; Elfeed
 (use-package elfeed
   :config
@@ -980,6 +985,7 @@ and the content."
   (add-hook 'clojure-ts-mode-hook 'company-mode)
   (add-hook 'clojure-ts-mode-hook 'origami-mode)
   (add-hook 'clojure-ts-mode-hook 'paredit-mode)
+  (add-hook 'edn-mode-hook 'paredit-mode)
   ;; (add-hook 'clojure-mode-hook 'clj-refactor-mode)
   (add-hook 'clojure-ts-mode-hook 'aggressive-indent-mode))
 
