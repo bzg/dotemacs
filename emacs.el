@@ -242,8 +242,9 @@
 
 ;; Hook to update all blocks before saving
 (add-hook 'org-mode-hook
-	  (lambda() (add-hook 'before-save-hook
-			      'org-update-all-dblocks t t)))
+	  (lambda()
+	    (add-hook 'before-save-hook #'bzg/org-cleanup-drawers nil t)
+	    (add-hook 'before-save-hook 'org-update-all-dblocks t t)))
 
 ;; Hook to display dormant article in Gnus
 (add-hook 'org-follow-link-hook
@@ -446,6 +447,7 @@
 (setopt org-agenda-skip-deadline-if-done t)
 (setopt org-agenda-skip-scheduled-if-done t)
 (setopt org-agenda-skip-timestamp-if-done t)
+(setopt org-agenda-skip-scheduled-if-deadline-is-shown t)
 (setopt org-agenda-sorting-strategy
 	'((agenda time-up deadline-up scheduled-up todo-state-up priority-down)
 	  (todo todo-state-up priority-down deadline-up)
@@ -503,9 +505,9 @@
 (defun bzg/org-cleanup-drawers ()
   "Clean up drawers.
 Remove all drawers except those containing :ARCHIVE:, :CATEGORY:, :ID:
-or :NOBLOCKING:. If a drawer is kept, remove the :LAST_REPEAT: property
-line from it. Ensure a blank line remains between the headline/planning
-and the content."
+or :NOBLOCKING:, or an unfinished CLOCK line. If a drawer is kept,
+remove the :LAST_REPEAT: property line from it. Ensure a blank line
+remains between the headline/planning and the content."
   (interactive)
   (save-excursion
     (goto-char (point-min))
@@ -517,21 +519,22 @@ and the content."
                  (contents-begin (org-element-property :contents-begin element))
                  (contents-end (org-element-property :contents-end element))
                  (contents (and contents-begin
-				contents-end
+                                contents-end
                                 (buffer-substring-no-properties
-				 contents-begin contents-end)))
+                                 contents-begin contents-end)))
                  (keep (and contents
                             (or (string-match-p ":ID:" contents)
                                 (string-match-p ":ARCHIVE:" contents)
                                 (string-match-p ":CATEGORY:" contents)
-                                (string-match-p ":NOBLOCKING:" contents)))))
+                                (string-match-p ":NOBLOCKING:" contents)
+                                (string-match-p "CLOCK: \\[.*\\]\\s-*$" contents)))))
             (or keep
-		(delete-region begin end)
-		(when (and (not (looking-at-p "^[ \t]*$"))
+                (delete-region begin end)
+                (when (and (not (looking-at-p "^[ \t]*$"))
                            (save-excursion
                              (forward-line -1)
                              (or (org-at-heading-p)
-				 (org-at-planning-p))))
+                                 (org-at-planning-p))))
                   (insert "\n")))))))))
 
 (use-package epa
