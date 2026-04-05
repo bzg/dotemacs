@@ -173,6 +173,7 @@
 (global-set-key (kbd "C-:") (lambda () (interactive) (org-agenda nil ":"))) ; WAITing
 
 ;; Other useful global keybindings
+(define-key global-map "\M-Q" 'unfill-paragraph)
 (global-set-key "\M- " 'hippie-expand)
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
