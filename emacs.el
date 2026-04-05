@@ -149,13 +149,6 @@
   (hidden-mode-line-mode 1)
   (delete-other-windows))
 
-;; Easily unfill paragraphs
-(defun unfill-paragraph ()
-  "Make a multi-line paragraph into a single line of text."
-  (interactive)
-  (let ((fill-column (point-max)))
-    (fill-paragraph nil)))
-
 (defun find-variable-or-function-at-point ()
   (interactive)
   (or (find-variable-at-point)
@@ -180,7 +173,6 @@
 (global-set-key (kbd "C-:") (lambda () (interactive) (org-agenda nil ":"))) ; WAITing
 
 ;; Other useful global keybindings
-(define-key global-map "\M-Q" 'unfill-paragraph)
 (global-set-key "\M- " 'hippie-expand)
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
@@ -222,7 +214,7 @@
   (global-set-key (kbd "C-x w") 'elfeed))
 
 (require 'org-tempo)
-(require 'org-bullets)
+(use-package org-bullets)
 (require 'ol-gnus)
 (setopt org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
@@ -1063,16 +1055,30 @@ remains between the headline/planning and the content."
   (interactive)
   (setq bzg/big-fringe (if (= bzg/big-fringe 320) 820 320))
   (when bzg/big-fringe-mode
-    (set-fringe-mode bzg/big-fringe))
+    (set-frame-parameter nil 'left-fringe bzg/big-fringe)
+    (set-frame-parameter nil 'right-fringe bzg/big-fringe))
   (message "Fringe set to %d" bzg/big-fringe))
 
 (define-minor-mode bzg/big-fringe-mode
   "Minor mode for wide fringes."
   :init-value nil
   :global t
-  (set-fringe-mode (if bzg/big-fringe-mode bzg/big-fringe 10)))
+  (let ((width (if bzg/big-fringe-mode bzg/big-fringe 10)))
+    (set-frame-parameter nil 'left-fringe width)
+    (set-frame-parameter nil 'right-fringe width)))
 
-;; (bzg/big-fringe-mode 1)
+;; Persist fringe state per tab
+(advice-add 'tab-bar--current-tab-make :filter-return
+	    (lambda (tab)
+	      (nconc tab (list (cons 'bzg-big-fringe bzg/big-fringe-mode)))))
+
+(add-hook 'tab-bar-tab-post-select-functions
+	  (lambda (tab _prev)
+	    (bzg/big-fringe-mode (if (alist-get 'bzg-big-fringe (cdr tab)) 1 -1))))
+
+(add-hook 'tab-bar-tab-post-open-functions
+	  (lambda (_tab) (bzg/big-fringe-mode -1)))
+
 
 ;; See https://bzg.fr/emacs-hide-mode-line.html
 (defvar-local hidden-mode-line-mode nil)
