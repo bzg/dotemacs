@@ -211,14 +211,14 @@
 
 ;; Elfeed
 (use-package elfeed
-  :config
-  (global-set-key (kbd "C-x w") 'elfeed))
+  :bind ("C-x w" . elfeed))
 
 (require 'org-tempo)
-(use-package org-bullets)
+(use-package org-bullets
+  :hook (org-mode . org-bullets-mode)
+  :config
+  (setopt org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇")))
 (require 'ol-gnus)
-(setopt org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇"))
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
 (add-hook 'org-agenda-mode-hook
 	  (lambda ()
@@ -707,11 +707,10 @@ remains between the headline/planning and the content."
 		  "\n")))
 
 (use-package gnus-alias
+  :hook (message-setup . gnus-alias-determine-identity)
+  :bind (:map message-mode-map ("C-c C-x C-i" . gnus-alias-select-identity))
   :config
-  (setopt gnus-alias-default-identity nil)
-  (gnus-alias-init)
-  (define-key message-mode-map (kbd "C-c C-x C-i")
-	      'gnus-alias-select-identity))
+  (setopt gnus-alias-default-identity nil))
 
 (use-package gnus-art
   :config
@@ -750,6 +749,9 @@ remains between the headline/planning and the content."
   (setopt message-alternative-emails gnus-ignored-from-addresses))
 
 (use-package bbdb
+  :hook ((gnus-startup . bbdb-insinuate-gnus)
+         (message-setup . bbdb-mail-aliases))
+  :commands (bbdb bbdb-search)
   :config
   (require 'bbdb-com)
   (require 'bbdb-anniv)
@@ -765,7 +767,6 @@ remains between the headline/planning and the content."
   (setopt bbdb-ignore-redundant-mails t)
 
   (add-hook 'mail-setup-hook 'bbdb-mail-aliases)
-  (add-hook 'message-setup-hook 'bbdb-mail-aliases)
   (add-hook 'bbdb-notice-mail-hook 'bbdb-auto-notes)
   ;; (add-hook 'list-diary-entries-hook 'bbdb-include-anniversaries)
 
@@ -838,6 +839,7 @@ remains between the headline/planning and the content."
 
 ;; notmuch configuration
 (use-package notmuch
+  :commands (notmuch-search notmuch-show)
   :config
   (setopt notmuch-fcc-dirs nil)
   (add-hook 'gnus-group-mode-hook 'bzg/notmuch-shortcut)
@@ -952,8 +954,7 @@ remains between the headline/planning and the content."
 
 ;; Paredit initialization
 (use-package paredit
-  :config
-  (define-key paredit-mode-map (kbd "C-M-w") 'sp-copy-sexp))
+  :bind (:map paredit-mode-map ("C-M-w" . sp-copy-sexp)))
 
 (use-package slime
   :defer t
@@ -1073,9 +1074,11 @@ remains between the headline/planning and the content."
 	    (lambda (tab)
 	      (nconc tab (list (cons 'bzg-big-fringe bzg/big-fringe-mode)))))
 
-(add-hook 'tab-bar-tab-post-select-functions
-	  (lambda (tab _prev)
-	    (bzg/big-fringe-mode (if (alist-get 'bzg-big-fringe (cdr tab)) 1 -1))))
+(advice-add 'tab-bar-select-tab :after
+	    (lambda (&rest _)
+	      (when-let* ((tabs (funcall tab-bar-tabs-function))
+			 (current (seq-find (lambda (tab) (eq (car tab) 'current-tab)) tabs)))
+		(bzg/big-fringe-mode (if (alist-get 'bzg-big-fringe (cdr current)) 1 -1)))))
 
 (add-hook 'tab-bar-tab-post-open-functions
 	  (lambda (_tab) (bzg/big-fringe-mode -1)))
@@ -1144,11 +1147,11 @@ remains between the headline/planning and the content."
 (setopt ediff-window-setup-function 'ediff-setup-windows-plain)
 
 (use-package dired-subtree
-  :defer t
+  :bind (:map dired-mode-map
+              ("I" . dired-subtree-toggle)
+              ("TAB" . dired-subtree-cycle))
   :config
-  (setopt dired-subtree-use-backgrounds nil)
-  (define-key dired-mode-map (kbd "I") 'dired-subtree-toggle)
-  (define-key dired-mode-map (kbd "TAB") 'dired-subtree-cycle))
+  (setopt dired-subtree-use-backgrounds nil))
 
 ;; Use ugrep
 (setopt xref-search-program 'ugrep)
