@@ -38,6 +38,17 @@ Comments and suggestions are welcome.
   ;; Reset after init
   (add-hook 'emacs-startup-hook (lambda () (setopt gc-cons-threshold 800000)))
 
+  (setq-default bidi-display-reordering t)
+  (setq-default bidi-paragraph-direction 'left-to-right)
+  (setopt bidi-inhibit-bpa t)
+  (setopt redisplay-skip-fontification-on-input t)
+  (setopt read-process-output-max (* 4 1024 1024))
+  (setq-default cursor-in-non-selected-windows nil)
+  (setopt highlight-nonselected-windows nil)
+  (setopt save-interprogram-paste-before-kill t)
+  (setopt kill-do-not-save-duplicates t)
+  (setopt set-mark-command-repeat-pop t)
+
   ;; Unset C-z which is bound to `suspend-frame' by default
   (global-unset-key (kbd "C-z"))
 
