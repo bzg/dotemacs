@@ -748,6 +748,8 @@ remains between the headline/planning and the content."
   (setopt message-dont-reply-to-names gnus-ignored-from-addresses)
   (setopt message-alternative-emails gnus-ignored-from-addresses))
 
+(define-key gnus-group-mode-map "GG" 'notmuch-search)
+
 (use-package bbdb
   :hook ((gnus-startup . bbdb-insinuate-gnus)
          (message-setup . bbdb-mail-aliases))
@@ -837,40 +839,35 @@ remains between the headline/planning and the content."
 	  calendar-mark-holidays-flag t
 	  calendar-week-start-day 1))
 
+(defun bzg/notmuch-file-to-group (file)
+  "Calculate the Gnus group name from the given file name."
+  (cond ((string-match "/home/bzg/Mail/Maildir/\\([^/]+\\)/\\([^/]+\\)\\(?:/\\([^/]+\\)\\)?" file)
+	 (when-let* ((3rd-match (match-string 3 file)))
+	   (if (not (string= "cur" 3rd-match))
+	       (format "nnimap+localhost:%s/%s/%s"
+		       (match-string 1 file)
+		       (match-string 2 file)
+		       3rd-match)
+	     (format "nnimap+localhost:%s/%s"
+		     (match-string 1 file)
+		     (match-string 2 file)))))
+	(t (user-error "Unknown group"))))
+
+(defun bzg/notmuch-goto-message-in-gnus ()
+  "Open a summary buffer containing the current notmuch article."
+  (interactive)
+  (let ((group (bzg/notmuch-file-to-group (notmuch-show-get-filename)))
+	(message-id (replace-regexp-in-string
+		     "^id:\\|\"" "" (notmuch-show-get-message-id))))
+    (if (and group message-id)
+	(progn (org-gnus-follow-link group message-id))
+      (message "Couldn't get relevant infos for switching to Gnus."))))
+
 ;; notmuch configuration
 (use-package notmuch
   :commands (notmuch-search notmuch-show)
   :config
   (setopt notmuch-fcc-dirs nil)
-  (add-hook 'gnus-group-mode-hook 'bzg/notmuch-shortcut)
-
-  (defun bzg/notmuch-shortcut ()
-    (define-key gnus-group-mode-map "GG" 'notmuch-search))
-
-  (defun bzg/notmuch-file-to-group (file)
-    "Calculate the Gnus group name from the given file name."
-    (cond ((string-match "/home/bzg/Mail/Maildir/\\([^/]+\\)/\\([^/]+\\)\\(?:/\\([^/]+\\)\\)?" file)
-	   (when-let* ((3rd-match (match-string 3 file)))
-	     (if (not (string= "cur" 3rd-match))
-		 (format "nnimap+localhost:%s/%s/%s"
-			 (match-string 1 file)
-			 (match-string 2 file)
-			 3rd-match)
-	       (format "nnimap+localhost:%s/%s"
-		       (match-string 1 file)
-		       (match-string 2 file)))))
-	  (t (user-error "Unknown group"))))
-
-  (defun bzg/notmuch-goto-message-in-gnus ()
-    "Open a summary buffer containing the current notmuch article."
-    (interactive)
-    (let ((group (bzg/notmuch-file-to-group (notmuch-show-get-filename)))
-	  (message-id (replace-regexp-in-string
-		       "^id:\\|\"" "" (notmuch-show-get-message-id))))
-      (if (and group message-id)
-	  (progn (org-gnus-follow-link group message-id))
-	(message "Couldn't get relevant infos for switching to Gnus."))))
-
   (define-key notmuch-show-mode-map
 	      (kbd "C-c C-c") #'bzg/notmuch-goto-message-in-gnus))
 
