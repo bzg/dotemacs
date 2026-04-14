@@ -508,10 +508,10 @@
 
 (defun bzg/org-cleanup-drawers ()
   "Clean up drawers.
-Remove all drawers except those containing :ARCHIVE:, :CATEGORY:, :ID:
-or :NOBLOCKING:, or an unfinished CLOCK line. If a drawer is kept,
-remove the :LAST_REPEAT: property line from it. Ensure a blank line
-remains between the headline/planning and the content."
+Remove all drawers except those containing :ARCHIVE:, :CATEGORY:, :ID:,
+:ICAL_EVENT:, or :NOBLOCKING:, or an unfinished CLOCK line. If a drawer
+is kept, remove the :LAST_REPEAT: property line from it. Ensure a blank
+line remains between the headline/planning and the content."
   (interactive)
   (save-excursion
     (goto-char (point-min))
@@ -530,6 +530,7 @@ remains between the headline/planning and the content."
                             (or (string-match-p ":ID:" contents)
                                 (string-match-p ":ARCHIVE:" contents)
                                 (string-match-p ":CATEGORY:" contents)
+                                (string-match-p ":ICAL_EVENT:" contents)
                                 (string-match-p ":NOBLOCKING:" contents)
                                 (string-match-p "CLOCK: \\[.*\\]\\s-*$" contents)))))
             (or keep
