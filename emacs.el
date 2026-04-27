@@ -284,7 +284,7 @@
 	  (:grouptags)
 	  ("Read" . ?r) ("Watch" . ?W) ("Listen" . ?l)
 	  (:endgroup)))
-(setopt org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "STRT(s)" "WAIT(w)" "|" "DONE(d)" "CANX(c)")))
+(setopt org-todo-keywords '((sequence "STRT(s)" "NEXT(n)" "TODO(t)" "WAIT(w)" "|" "DONE(d)" "CANX(c)")))
 (setopt org-todo-repeat-to-state t)
 (setopt org-use-property-inheritance t)
 (setopt org-use-sub-superscripts '{})
