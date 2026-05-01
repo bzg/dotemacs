@@ -144,13 +144,10 @@
 
 (defun bzg/toggle-default-font-size ()
   (interactive)
-  (if (< (abs (- (face-attribute 'default :height)
-		 bzg/default-font-size))
-	 10)
-      (custom-set-faces
-       `(default ((t (:height ,bzg/min-font-size)))))
-    (custom-set-faces
-       `(default ((t (:height ,bzg/default-font-size)))))))
+  (let* ((current (face-attribute 'default :height))
+         (at-default (< (abs (- current bzg/default-font-size)) 10))
+         (target (if at-default bzg/min-font-size bzg/default-font-size)))
+    (custom-set-faces `(default ((t (:height ,target)))))))
 
 ;; Easily jump to my main org file
 (defun bzg/find-bzg nil
@@ -332,29 +329,23 @@
 (add-hook 'org-clock-in-hook (lambda() (org-todo "STRT")))
 
 ;; Set headlines to STRT and clock-in when running a countdown
+
+(defun bzg/org-timer-clock-out ()
+  (when org-clock-current-task
+    (call-interactively
+     (if (eq major-mode 'org-agenda-mode)
+         'org-agenda-clock-out
+       'org-clock-out))))
 (add-hook 'org-timer-set-hook
-	  (lambda ()
-	    (if (eq major-mode 'org-agenda-mode)
-		(call-interactively 'org-agenda-clock-in)
-	      (call-interactively 'org-clock-in))))
-(add-hook 'org-timer-done-hook
-	  (lambda ()
-	    (if (and (eq major-mode 'org-agenda-mode)
-		     org-clock-current-task)
-		(call-interactively 'org-agenda-clock-out)
-	      (call-interactively 'org-clock-out))))
-(add-hook 'org-timer-pause-hook
-	  (lambda ()
-	    (if org-clock-current-task
-		(if (eq major-mode 'org-agenda-mode)
-		    (call-interactively 'org-agenda-clock-out)
-		  (call-interactively 'org-clock-out)))))
-(add-hook 'org-timer-stop-hook
-	  (lambda ()
-	    (if org-clock-current-task
-		(if (eq major-mode 'org-agenda-mode)
-		    (call-interactively 'org-agenda-clock-out)
-		  (call-interactively 'org-clock-out)))))
+ 	  (lambda ()
+	    (call-interactively
+	     (if (eq major-mode 'org-agenda-mode)
+		 'org-agenda-clock-in
+	       'org-clock-in))))
+
+(add-hook 'org-timer-done-hook  #'bzg/org-timer-clock-out)
+(add-hook 'org-timer-pause-hook #'bzg/org-timer-clock-out)
+(add-hook 'org-timer-stop-hook  #'bzg/org-timer-clock-out)
 
 (setopt org-capture-templates
 	'((":" "Rendez-vous" entry (file+headline "~/org/bzg.org" "Rendez-vous")
@@ -375,7 +366,6 @@
    (shell . t)
    (dot . t)
    (clojure . t)
-   (org . t)
    (ditaa . t)
    (org . t)
    (ledger . t)
@@ -526,21 +516,19 @@ line remains between the headline/planning and the content."
                                 contents-end
                                 (buffer-substring-no-properties
                                  contents-begin contents-end)))
-                 (keep (and contents
-                            (or (string-match-p ":ID:" contents)
-                                (string-match-p ":ARCHIVE:" contents)
-                                (string-match-p ":CATEGORY:" contents)
-                                (string-match-p ":ICAL_EVENT:" contents)
-                                (string-match-p ":NOBLOCKING:" contents)
-                                (string-match-p "CLOCK: \\[.*\\]\\s-*$" contents)))))
-            (or keep
-                (delete-region begin end)
-                (when (and (not (looking-at-p "^[ \t]*$"))
-                           (save-excursion
-                             (forward-line -1)
-                             (or (org-at-heading-p)
-                                 (org-at-planning-p))))
-                  (insert "\n")))))))))
+                 (keep-regexp (concat
+                               (regexp-opt '(":ID:" ":ARCHIVE:" ":CATEGORY:"
+                                             ":ICAL_EVENT:" ":NOBLOCKING:"))
+                               "\\|CLOCK: \\[.*\\]\\s-*$"))
+                 (keep (and contents (string-match-p keep-regexp contents))))
+          (or keep
+              (delete-region begin end)
+              (when (and (not (looking-at-p "^[ \t]*$"))
+                         (save-excursion
+                           (forward-line -1)
+                           (or (org-at-heading-p)
+                               (org-at-planning-p))))
+                (insert "\n")))))))))
 
 (use-package epa
   :config
@@ -887,54 +875,29 @@ line remains between the headline/planning and the content."
   :config
   ;; (define-key dired-mode-map "\C-cd" 'dired-clean-tex)
   (setopt dired-guess-shell-alist-user
-	  (list
-	   (list "\\.pdf$" "evince &")
-	   (list "\\.docx?$" "libreoffice &")
-	   (list "\\.aup?$" "audacity")
-	   (list "\\.pptx?$" "libreoffice &")
-	   (list "\\.odf$" "libreoffice &")
-	   (list "\\.odt$" "libreoffice &")
-	   (list "\\.odt$" "libreoffice &")
-	   (list "\\.kdenlive$" "kdenlive")
-	   (list "\\.svg$" "gimp")
-	   (list "\\.csv$" "libreoffice &")
-	   (list "\\.sla$" "scribus")
-	   (list "\\.od[sgpt]$" "libreoffice &")
-	   (list "\\.xls$" "libreoffice &")
-	   (list "\\.xlsx$" "libreoffice &")
-	   (list "\\.txt$" "gedit")
-	   (list "\\.sql$" "gedit")
-	   (list "\\.css$" "gedit")
-	   (list "\\.jpe?g$" "geeqie")
-	   (list "\\.png$" "geeqie")
-	   (list "\\.gif$" "geeqie")
-	   (list "\\.psd$" "gimp")
-	   (list "\\.xcf" "gimp")
-	   (list "\\.xo$" "unzip")
-	   (list "\\.3gp$" "vlc")
-	   (list "\\.mp3$" "vlc")
-	   (list "\\.flac$" "vlc")
-	   (list "\\.avi$" "vlc")
-	   ;; (list "\\.og[av]$" "vlc")
-	   (list "\\.wm[va]$" "vlc")
-	   (list "\\.flv$" "vlc")
-	   (list "\\.mov$" "vlc")
-	   (list "\\.divx$" "vlc")
-	   (list "\\.mp4$" "vlc")
-	   (list "\\.webm$" "vlc")
-	   (list "\\.mkv$" "vlc")
-	   (list "\\.mpe?g$" "vlc")
-	   (list "\\.m4[av]$" "vlc")
-	   (list "\\.mp2$" "vlc")
-	   (list "\\.pp[st]$" "libreoffice &")
-	   (list "\\.ogg$" "vlc")
-	   (list "\\.ogv$" "vlc")
-	   (list "\\.rtf$" "libreoffice &")
-	   (list "\\.ps$" "gv")
-	   (list "\\.mp3$" "play")
-	   (list "\\.wav$" "vlc")
-	   (list "\\.rar$" "unrar x")
-	   ))
+          (let ((by-app
+                 '(("evince &"       "pdf")
+                   ("libreoffice &"  "docx?" "pptx?" "odf" "odt" "csv"
+                    "od[sgpt]" "xlsx?" "xls" "pp[st]" "rtf")
+                   ("audacity"       "aup?")
+                   ("kdenlive"       "kdenlive")
+                   ("gimp"           "svg" "psd" "xcf")
+                   ("gedit"          "txt" "sql" "css")
+                   ("geeqie"         "jpe?g" "png" "gif")
+                   ("scribus"        "sla")
+                   ("unzip"          "xo")
+                   ("vlc"            "3gp" "mp3" "flac" "avi" "wm[va]" "flv"
+                    "mov" "divx" "mp4" "webm" "mkv" "mpe?g"
+                    "m4[av]" "mp2" "ogg" "ogv" "wav")
+                   ("gv"             "ps")
+                   ("unrar x"        "rar"))))
+            (mapcan (lambda (entry)
+                      (let ((cmd (car entry)))
+                        (mapcar (lambda (ext)
+                                  (list (concat "\\." ext "$") cmd))
+                                (cdr entry))))
+                    by-app)))
+
   (setopt dired-tex-unclean-extensions
 	  '(".toc" ".log" ".aux" ".dvi" ".out" ".nav" ".snm")))
 
