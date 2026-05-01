@@ -220,7 +220,6 @@ Comments and suggestions are welcome.
   (global-set-key (kbd "<home>") 'beginning-of-buffer)
   (global-set-key (kbd "<end>") 'end-of-buffer)
   (global-set-key (kbd "C-&") 'gnus)
-  (global-set-key (kbd "C-è") 'bzg/toggle-browser)
   (global-set-key (kbd "C-_") 'global-hl-line-mode)
   (global-set-key (kbd "C-ç") 'calc)
   (global-set-key (kbd "C-à") (lambda () (interactive) (if (eq major-mode 'calendar-mode) (calendar-exit) (calendar))))
@@ -260,288 +259,302 @@ Comments and suggestions are welcome.
 ** Org basics
 
    #+begin_src emacs-lisp
-   (require 'org-tempo)
+   (use-package org
+     :bind (("C-c l" . org-store-link)
+            ("C-c a" . org-agenda)
+            ("C-c c" . org-capture)
+            ("C-c L" . org-occur-link-in-agenda-files)
+            :map org-mode-map
+            ("C-c ç" . bzg/org-sort-todo-then-priority))
+     :hook ((org-mode . (lambda () (electric-indent-local-mode -1)))
+            (org-mode . (lambda ()
+                          (add-hook 'before-save-hook #'bzg/org-cleanup-drawers nil t)
+                          (add-hook 'before-save-hook 'org-update-all-dblocks t t)))
+            (org-follow-link . (lambda ()
+                                 (when (eq major-mode 'gnus-summary-mode)
+                                   (gnus-summary-insert-dormant-articles)))))
+     :custom
+     (org-adapt-indentation 'headline-data)
+     (org-priority-start-cycle-with-default nil)
+     (org-pretty-entities t)
+     (org-fast-tag-selection-single-key 'expert)
+     (org-footnote-auto-label 'confirm)
+     (org-footnote-auto-adjust t)
+     (org-hide-emphasis-markers t)
+     (org-hide-macro-markers t)
+     (org-log-into-drawer t)
+     (org-refile-allow-creating-parent-nodes t)
+     ;; (org-refile-use-cache t)
+     (org-refile-targets '((org-agenda-files :maxlevel . 2)))
+     (org-return-follows-link t)
+     (org-reverse-note-order t)
+     (org-scheduled-past-days 100)
+     (org-special-ctrl-a/e 'reversed)
+     (org-special-ctrl-k t)
+     (org-tag-alist
+      '((:startgroup)
+        ("!Handson" . ?o)
+        (:grouptags)
+        ("Write" . ?w) ("Mail" . ?@) ("Code" . ?c)
+        (:endgroup)
+        (:startgroup)
+        ("_Handsoff" . ?f)
+        (:grouptags)
+        ("Read" . ?r) ("Watch" . ?W) ("Listen" . ?l)
+        (:endgroup)))
+     (org-todo-keywords '((sequence "STRT(s)" "NEXT(n)" "TODO(t)" "WAIT(w)" "|" "DONE(d)" "CANX(c)")))
+     (org-todo-repeat-to-state t)
+     (org-use-property-inheritance t)
+     (org-use-sub-superscripts '{})
+     (org-insert-heading-respect-content t)
+     (org-id-uuid-program "uuidgen")
+     (org-use-speed-commands
+      (lambda nil
+        (and (looking-at org-outline-regexp-bol)
+             (not (org-in-src-block-p t)))))
+     (org-todo-keyword-faces
+      '(("STRT" . (:inverse-video t))
+        ("NEXT" . (:weight bold :background "#eeeeee"))
+        ("WAIT" . (:box t))
+        ("CANX" . (:strike-through t))))
+     (org-footnote-section "Notes")
+     (org-attach-id-dir "~/org/data/")
+     (org-allow-promoting-top-level-subtree t)
+     (org-blank-before-new-entry '((heading . t) (plain-list-item . auto)))
+     (org-enforce-todo-dependencies t)
+     (org-fontify-whole-heading-line t)
+     (org-file-apps
+      '((auto-mode . emacs)
+        (directory . emacs)
+        ("\\.mm\\'" . default)
+        ("\\.x?html?\\'" . default)
+        ("\\.pdf\\'" . "evince %s")))
+     (org-hide-leading-stars t)
+     (org-cycle-include-plain-lists nil)
+     (org-link-email-description-format "%c: %.50s")
+     (org-support-shift-select t)
+     (org-ellipsis "…")
+     (org-archive-location "~/org/archives/%s::")
+     :config
+     (require 'org-tempo)
+     (require 'ol-gnus))
+
    (use-package org-bullets
      :hook (org-mode . org-bullets-mode)
-     :config
-     (setopt org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇")))
-   (require 'ol-gnus)
-   (add-hook 'org-mode-hook (lambda () (electric-indent-local-mode -1)))
-   (add-hook 'org-agenda-mode-hook
-   	  (lambda ()
-   	    (let ((fringe-was-on (eq bzg/cycle-view-current 'one-window-with-fringe)))
-   	      (delete-other-windows)
-   	      (when fringe-was-on (bzg/big-fringe-mode 1)))))
-   (add-hook 'message-mode-hook (lambda () (abbrev-mode 0)))
-
-   ;; org-mode global keybindings
-   (define-key global-map "\C-cl" 'org-store-link)
-   (define-key global-map "\C-ca" 'org-agenda)
-   (define-key global-map "\C-cc" 'org-capture)
-   (define-key global-map "\C-cL" 'org-occur-link-in-agenda-files)
-
-   ;; Hook to update all blocks before saving
-   (add-hook 'org-mode-hook
-   	  (lambda()
-   	    (add-hook 'before-save-hook #'bzg/org-cleanup-drawers nil t)
-   	    (add-hook 'before-save-hook 'org-update-all-dblocks t t)))
-
-   ;; Hook to display dormant article in Gnus
-   (add-hook 'org-follow-link-hook
-   	  (lambda ()
-   	    (if (eq major-mode 'gnus-summary-mode)
-   		(gnus-summary-insert-dormant-articles))))
-
-   (setopt org-adapt-indentation 'headline-data)
-   (setopt org-priority-start-cycle-with-default nil)
-   (setopt org-pretty-entities t)
-   (setopt org-fast-tag-selection-single-key 'expert)
-   (setopt org-footnote-auto-label 'confirm)
-   (setopt org-footnote-auto-adjust t)
-   (setopt org-hide-emphasis-markers t)
-   (setopt org-hide-macro-markers t)
-   (setopt org-log-into-drawer t)
-   (setopt org-refile-allow-creating-parent-nodes t)
-   ;; (setopt org-refile-use-cache t)
-   (setopt org-refile-targets '((org-agenda-files :maxlevel . 2)))
-   (setopt org-return-follows-link t)
-   (setopt org-reverse-note-order t)
-   (setopt org-scheduled-past-days 100)
-   (setopt org-special-ctrl-a/e 'reversed)
-   (setopt org-special-ctrl-k t)
-   (setopt org-tag-alist
-   	'((:startgroup)
-   	  ("!Handson" . ?o)
-   	  (:grouptags)
-   	  ("Write" . ?w) ("Mail" . ?@) ("Code" . ?c)
-   	  (:endgroup)
-   	  (:startgroup)
-   	  ("_Handsoff" . ?f)
-   	  (:grouptags)
-   	  ("Read" . ?r) ("Watch" . ?W) ("Listen" . ?l)
-   	  (:endgroup)))
-   (setopt org-todo-keywords '((sequence "STRT(s)" "NEXT(n)" "TODO(t)" "WAIT(w)" "|" "DONE(d)" "CANX(c)")))
-   (setopt org-todo-repeat-to-state t)
-   (setopt org-use-property-inheritance t)
-   (setopt org-use-sub-superscripts '{})
-   (setopt org-insert-heading-respect-content t)
-   (setopt org-confirm-babel-evaluate nil)
-   (setopt org-id-uuid-program "uuidgen")
-   (setopt org-use-speed-commands
-   	(lambda nil
-   	  (and (looking-at org-outline-regexp-bol)
-   	       (not (org-in-src-block-p t)))))
-   (setopt org-todo-keyword-faces
-   	'(("STRT" . (:inverse-video t))
-   	  ("NEXT" . (:weight bold :background "#eeeeee"))
-   	  ("WAIT" . (:box t))
-   	  ("CANX" . (:strike-through t))))
-   (setopt org-footnote-section "Notes")
-   (setopt org-attach-id-dir "~/org/data/")
-   (setopt org-allow-promoting-top-level-subtree t)
-   (setopt org-blank-before-new-entry '((heading . t) (plain-list-item . auto)))
-   (setopt org-enforce-todo-dependencies t)
-   (setopt org-fontify-whole-heading-line t)
-   (setopt org-file-apps
-   	'((auto-mode . emacs)
-   	  (directory . emacs)
-   	  ("\\.mm\\'" . default)
-   	  ("\\.x?html?\\'" . default)
-   	  ("\\.pdf\\'" . "evince %s")))
-   (setopt org-hide-leading-stars t)
-   (setopt org-cycle-include-plain-lists nil)
-   (setopt org-link-email-description-format "%c: %.50s")
-   (setopt org-support-shift-select t)
-   (setopt org-ellipsis "…")
-   (setopt org-archive-location "~/org/archives/%s::")
+     :custom
+     (org-bullets-bullet-list '("►" "▸" "•" "★" "◇" "◇" "◇" "◇")))
    #+end_src
 
 ** Org clock
 
    #+begin_src emacs-lisp
-   (org-clock-persistence-insinuate)
+   (use-package org-clock
+     :after org
+     :custom
+     (org-clock-display-default-range 'thisweek)
+     (org-clock-persist t)
+     (org-clock-idle-time 60)
+     (org-clock-in-resume t)
+     (org-clock-out-remove-zero-time-clocks t)
+     (org-clock-sound "~/Music/clock.wav")
+     :hook (org-clock-in . (lambda () (org-todo "STRT")))
+     :config
+     (org-clock-persistence-insinuate)
 
-   (setopt org-clock-display-default-range 'thisweek)
-   (setopt org-clock-persist t)
-   (setopt org-clock-idle-time 60)
-   (setopt org-clock-in-resume t)
-   (setopt org-clock-out-remove-zero-time-clocks t)
-   (setopt org-clock-sound "~/Music/clock.wav")
-
-   ;; Set headlines to STRT when clocking in
-   (add-hook 'org-clock-in-hook (lambda() (org-todo "STRT")))
-
-   ;; Set headlines to STRT and clock-in when running a countdown
-
-   (defun bzg/org-timer-clock-out ()
-     (when org-clock-current-task
-       (call-interactively
-        (if (eq major-mode 'org-agenda-mode)
-            'org-agenda-clock-out
-          'org-clock-out))))
-   (add-hook 'org-timer-set-hook
-    	  (lambda ()
-   	    (call-interactively
-   	     (if (eq major-mode 'org-agenda-mode)
-   		 'org-agenda-clock-in
-   	       'org-clock-in))))
-
-   (add-hook 'org-timer-done-hook  #'bzg/org-timer-clock-out)
-   (add-hook 'org-timer-pause-hook #'bzg/org-timer-clock-out)
-   (add-hook 'org-timer-stop-hook  #'bzg/org-timer-clock-out)
+     ;; Set headlines to STRT and clock-in when running a countdown
+     (defun bzg/org-timer-clock-out ()
+       (when org-clock-current-task
+         (call-interactively
+          (if (eq major-mode 'org-agenda-mode)
+              'org-agenda-clock-out
+            'org-clock-out))))
+     (add-hook 'org-timer-set-hook
+               (lambda ()
+                 (call-interactively
+                  (if (eq major-mode 'org-agenda-mode)
+                      'org-agenda-clock-in
+                    'org-clock-in))))
+     (add-hook 'org-timer-done-hook  #'bzg/org-timer-clock-out)
+     (add-hook 'org-timer-pause-hook #'bzg/org-timer-clock-out)
+     (add-hook 'org-timer-stop-hook  #'bzg/org-timer-clock-out))
    #+end_src
 
 ** Org capture
 
    #+begin_src emacs-lisp
-   (setopt org-capture-templates
-   	'((":" "Rendez-vous" entry (file+headline "~/org/bzg.org" "Rendez-vous")
-   	   "* %:fromname %?\n  SCHEDULED: %^T\n\n- %a" :prepend t)
-   	  ("m" "Mission" entry (file+headline "~/org/bzg.org" "Mission") ; "m" for "mission"
-   	   "* TODO %?\n\n- %a\n\n%i" :prepend t)
-   	  ("@" "Mail" entry (file+headline "~/org/bzg.org" "Divers") ; "@" for "mail"
-   	   "* TODO %a :Mail:" :prepend t)
-   	  ("r" "Read" entry (file+headline "~/org/bzg.org" "Divers") ; "r" for "read"
-   	   "* TODO %a :Read:" :prepend t)
-   	  ;; (!) To indicate the captured item is immediately stored
-   	  ("c" "Courant (!)" entry (file "~/org/bzg.org") ; "c" for "affaires (c)ourantes
-   	   "* TODO %a" :prepend t :immediate-finish t)))
+   (use-package org-capture
+     :after org
+     :custom
+     (org-capture-templates
+      '((":" "Rendez-vous" entry (file+headline "~/org/bzg.org" "Rendez-vous")
+         "* %:fromname %?\n  SCHEDULED: %^T\n\n- %a" :prepend t)
+        ("m" "Mission" entry (file+headline "~/org/bzg.org" "Mission") ; "m" for "mission"
+         "* TODO %?\n\n- %a\n\n%i" :prepend t)
+        ("@" "Mail" entry (file+headline "~/org/bzg.org" "Divers") ; "@" for "mail"
+         "* TODO %a :Mail:" :prepend t)
+        ("r" "Read" entry (file+headline "~/org/bzg.org" "Divers") ; "r" for "read"
+         "* TODO %a :Read:" :prepend t)
+        ;; (!) To indicate the captured item is immediately stored
+        ("c" "Courant (!)" entry (file "~/org/bzg.org") ; "c" for "affaires (c)ourantes
+         "* TODO %a" :prepend t :immediate-finish t))))
    #+end_src
 
 ** Org babel
 
    #+begin_src emacs-lisp
-   (org-babel-do-load-languages
-    'org-babel-load-languages
-    '((emacs-lisp . t)
-      (shell . t)
-      (dot . t)
-      (clojure . t)
-      (ditaa . t)
-      (org . t)
-      (ledger . t)
-      (scheme . t)
-      (plantuml . t)
-      (R . t)
-      (gnuplot . t)))
-
-   (setopt org-babel-default-header-args
-   	'((:session . "none")
-   	  (:results . "replace")
-   	  (:exports . "code")
-   	  (:cache . "no")
-   	  (:noweb . "yes")
-   	  (:hlines . "no")
-   	  (:tangle . "no")
-   	  (:padnewline . "yes")))
-
-   (setopt org-edit-src-content-indentation 0)
-   (setopt org-babel-clojure-backend 'babashka)
-   (setopt org-link-elisp-confirm-function nil)
-   (setopt org-link-shell-confirm-function nil)
-   (setopt org-plantuml-jar-path "/home/bzg/bin/plantuml.jar")
-   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
-   (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
+   (use-package ob
+     :after org
+     :custom
+     (org-confirm-babel-evaluate nil)
+     (org-babel-default-header-args
+      '((:session . "none")
+        (:results . "replace")
+        (:exports . "code")
+        (:cache . "no")
+        (:noweb . "yes")
+        (:hlines . "no")
+        (:tangle . "no")
+        (:padnewline . "yes")))
+     (org-edit-src-content-indentation 0)
+     (org-babel-clojure-backend 'babashka)
+     (org-link-elisp-confirm-function nil)
+     (org-link-shell-confirm-function nil)
+     (org-plantuml-jar-path "/home/bzg/bin/plantuml.jar")
+     :config
+     (org-babel-do-load-languages
+      'org-babel-load-languages
+      '((emacs-lisp . t)
+        (shell . t)
+        (dot . t)
+        (clojure . t)
+        (ditaa . t)
+        (org . t)
+        (ledger . t)
+        (scheme . t)
+        (plantuml . t)
+        (R . t)
+        (gnuplot . t)))
+     (add-to-list 'org-src-lang-modes '("plantuml" . plantuml)))
    #+end_src
 
 ** Org export
 
    #+begin_src emacs-lisp
-   (require 'ox-latex)
-   (setopt org-koma-letter-use-email t)
-   (setopt org-koma-letter-use-foldmarks nil)
+   (use-package ox
+     :after org
+     :custom
+     (org-export-with-broken-links t)
+     (org-export-default-language "fr")
+     (org-export-with-archived-trees nil)
+     (org-export-with-drawers '("HIDE"))
+     (org-export-with-section-numbers nil)
+     (org-export-with-sub-superscripts nil)
+     (org-export-with-tags 'not-in-toc)
+     (org-export-with-timestamps t)
+     (org-export-with-toc nil)
+     (org-export-with-priority t)
+     (org-export-dispatch-use-expert-ui t)
+     (org-export-use-babel t)
+     (org-export-allow-bind-keywords t))
 
-   (add-to-list 'org-latex-classes
-   	     '("my-letter"
-   	       "\\documentclass\{scrlttr2\}
+   (use-package ox-publish
+     :after ox
+     :custom
+     (org-publish-list-skipped-files nil))
+
+   (use-package ox-latex
+     :after ox
+     :custom
+     (org-koma-letter-use-email t)
+     (org-koma-letter-use-foldmarks nil)
+     :config
+     (add-to-list 'org-latex-classes
+                  '("my-letter"
+                    "\\documentclass\{scrlttr2\}
    	    \\usepackage[english,frenchb]{babel}
    	    \[NO-DEFAULT-PACKAGES]
    	    \[NO-PACKAGES]
-   	    \[EXTRA]"))
+   	    \[EXTRA]")))
 
-   (setopt org-export-with-broken-links t)
-   (setopt org-export-default-language "fr")
-   (setopt org-export-with-archived-trees nil)
-   (setopt org-export-with-drawers '("HIDE"))
-   (setopt org-export-with-section-numbers nil)
-   (setopt org-export-with-sub-superscripts nil)
-   (setopt org-export-with-tags 'not-in-toc)
-   (setopt org-export-with-timestamps t)
-   (setopt org-export-with-toc nil)
-   (setopt org-export-with-priority t)
-   (setopt org-export-dispatch-use-expert-ui t)
-   (setopt org-export-use-babel t)
-   (setopt org-export-allow-bind-keywords t)
-   (setopt org-publish-list-skipped-files nil)
-   (setopt org-html-head "")
-   (setopt org-html-head-include-default-style nil)
-   (setopt org-html-table-row-tags
-   	(cons '(cond (top-row-p "<tr class=\"tr-top\">")
-   		     (bottom-row-p "<tr class=\"tr-bottom\">")
-   		     (t (if (= (mod row-number 2) 1)
-   			    "<tr class=\"tr-odd\">"
-   			  "<tr class=\"tr-even\">")))
-   	      "</tr>"))
+   (use-package ox-html
+     :after ox
+     :custom
+     (org-html-head "")
+     (org-html-head-include-default-style nil)
+     (org-html-table-row-tags
+      (cons '(cond (top-row-p "<tr class=\"tr-top\">")
+                   (bottom-row-p "<tr class=\"tr-bottom\">")
+                   (t (if (= (mod row-number 2) 1)
+                          "<tr class=\"tr-odd\">"
+                        "<tr class=\"tr-even\">")))
+            "</tr>")))
    #+end_src
 
 ** Org agenda
 
    #+begin_src emacs-lisp
-   (org-agenda-to-appt)
+   (use-package org-agenda
+     :after org
+     :hook (org-agenda-mode . (lambda ()
+                                (let ((fringe-was-on (eq bzg/cycle-view-current 'one-window-with-fringe)))
+                                  (delete-other-windows)
+                                  (when fringe-was-on (bzg/big-fringe-mode 1)))))
+     :custom
+     (org-deadline-warning-days 3)
+     (org-agenda-inhibit-startup t)
+     (org-agenda-diary-file "/home/bzg/org/bzg.org")
+     (org-agenda-files '("~/org/bzg.org"))
+     (org-agenda-remove-tags t)
+     (org-agenda-restore-windows-after-quit t)
+     (org-agenda-show-inherited-tags nil)
+     (org-agenda-skip-deadline-if-done t)
+     (org-agenda-skip-scheduled-if-done t)
+     (org-agenda-skip-timestamp-if-done t)
+     (org-agenda-skip-scheduled-if-deadline-is-shown t)
+     (org-agenda-sorting-strategy
+      '((agenda time-up deadline-up scheduled-up todo-state-up priority-down)
+        (todo todo-state-up priority-down deadline-up)
+        (tags todo-state-up priority-down deadline-up)
+        (search todo-state-up priority-down deadline-up)))
+     (org-agenda-tags-todo-honor-ignore-options t)
+     (org-agenda-use-tag-inheritance nil)
+     (org-agenda-window-frame-fractions '(0.0 . 0.5))
+     (org-agenda-custom-commands
+      '(;; Archive tasks
+        ("#" "To archive" todo "DONE|CANX")
 
-   ;; Hook to display the agenda in a single window
-   (setopt org-deadline-warning-days 3)
-   (setopt org-agenda-inhibit-startup t)
-   (setopt org-agenda-diary-file "/home/bzg/org/bzg.org")
-   (setopt org-agenda-files '("~/org/bzg.org"))
-   (setopt org-agenda-remove-tags t)
-   (setopt org-agenda-restore-windows-after-quit t)
-   (setopt org-agenda-show-inherited-tags nil)
-   (setopt org-agenda-skip-deadline-if-done t)
-   (setopt org-agenda-skip-scheduled-if-done t)
-   (setopt org-agenda-skip-timestamp-if-done t)
-   (setopt org-agenda-skip-scheduled-if-deadline-is-shown t)
-   (setopt org-agenda-sorting-strategy
-   	'((agenda time-up deadline-up scheduled-up todo-state-up priority-down)
-   	  (todo todo-state-up priority-down deadline-up)
-   	  (tags todo-state-up priority-down deadline-up)
-   	  (search todo-state-up priority-down deadline-up)))
-   (setopt org-agenda-tags-todo-honor-ignore-options t)
-   (setopt org-agenda-use-tag-inheritance nil)
-   (setopt org-agenda-window-frame-fractions '(0.0 . 0.5))
+        ;; Review weekly appointements
+        ("$" "Weekly appointments" agenda* "Weekly appointments")
 
-   ;; icalendar stuff
-   (setopt org-icalendar-use-scheduled '(event-if-not-todo))
-   (setopt org-icalendar-combined-name "Bastien Guerry Calendar")
-   (setopt org-icalendar-timezone "Europe/Paris")
+        ;; Review weekly tasks
+        ("ù" "Week tasks" agenda "Scheduled tasks for this week"
+         ((org-agenda-category-filter-preset '("-RDV")) ; RDV for Rendez-vous
+          (org-deadline-warning-days 0)
+          (org-agenda-use-time-grid nil)))
 
-   (setopt org-agenda-custom-commands
-   	'(;; Archive tasks
-   	  ("#" "To archive" todo "DONE|CANX")
+        ;; Review started and next tasks
+        ("µ" "STRT/NEXT" tags-todo "TODO={STRT\\|NEXT}")
 
-   	  ;; Review weekly appointements
-   	  ("$" "Weekly appointments" agenda* "Weekly appointments")
+        ;; Review other non-scheduled/deadlined to-do tasks
+        (";" "TODO" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\"")
 
-   	  ;; Review weekly tasks
-   	  ("ù" "Week tasks" agenda "Scheduled tasks for this week"
-   	   ((org-agenda-category-filter-preset '("-RDV")) ; RDV for Rendez-vous
-   	    (org-deadline-warning-days 0)
-   	    (org-agenda-use-time-grid nil)))
+        ;; Review other non-scheduled/deadlined pending tasks
+        (":" "WAIT" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\"")
 
-   	  ;; Review started and next tasks
-   	  ("µ" "STRT/NEXT" tags-todo "TODO={STRT\\|NEXT}")
+        ;; Review upcoming deadlines for the next 60 days
+        ("!" "Deadlines all" agenda "Past/upcoming deadlines"
+         ((org-agenda-span 1)
+          (org-deadline-warning-days 60)
+          (org-agenda-entry-types '(:deadline))))))
+     :config
+     (org-agenda-to-appt))
 
-   	  ;; Review other non-scheduled/deadlined to-do tasks
-   	  (";" "TODO" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\"")
-
-   	  ;; Review other non-scheduled/deadlined pending tasks
-   	  (":" "WAIT" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\"")
-
-   	  ;; Review upcoming deadlines for the next 60 days
-   	  ("!" "Deadlines all" agenda "Past/upcoming deadlines"
-   	   ((org-agenda-span 1)
-   	    (org-deadline-warning-days 60)
-   	    (org-agenda-entry-types '(:deadline))))))
+   (use-package ox-icalendar
+     :after org
+     :custom
+     (org-icalendar-use-scheduled '(event-if-not-todo))
+     (org-icalendar-combined-name "Bastien Guerry Calendar")
+     (org-icalendar-timezone "Europe/Paris"))
    #+end_src
 
 ** Org custom
@@ -556,8 +569,6 @@ Comments and suggestions are welcome.
     (org-sort-entries nil ?p)  ; Sort by priority first
     (org-sort-entries nil ?o)  ; Then by TODO state
     (when folded (org-fold-hide-subtree))))
-
-(define-key org-mode-map (kbd "C-c ç") #'bzg/org-sort-todo-then-priority)
 
 (defun bzg/org-cleanup-drawers ()
   "Clean up drawers.
@@ -598,186 +609,156 @@ line remains between the headline/planning and the content."
 
   #+begin_src emacs-lisp
   (use-package epa
-    :config
-    (setopt epa-popup-info-window nil))
+    :custom (epa-popup-info-window nil))
 
   (use-package epg
-    :config
-    (setopt epg-pinentry-mode 'loopback))
+    :custom (epg-pinentry-mode 'loopback))
 
   (use-package gnus
+    :custom
+    (gnus-delay-default-delay "2d")
+    (gnus-check-new-newsgroups nil)
+    (gnus-save-newsrc-file nil)
+    (gnus-refer-thread-limit t)
+    (gnus-use-atomic-windows nil)
+    (nndraft-directory "~/News/drafts/")
+    (nnfolder-directory "~/Mail/archive")
+    (gnus-summary-ignore-duplicates t)
+    (gnus-suppress-duplicates t)
+    (gnus-auto-select-first nil)
+    (gnus-ignored-from-addresses
+     (regexp-opt '("bastien.guerry@free.fr"
+                   "bastien.guerry@data.gouv.fr"
+                   "bastien.guerry@code.gouv.fr"
+                   "bastien.guerry@mail.numerique.gouv.fr"
+                   "bastien.guerry@numerique.gouv.fr"
+                   "bzg@bzg.fr"
+                   "bzg@gnu.org"
+                   "bzg@softwareheritage.org"
+                   "bastien.guerry@softwareheritage.org"
+                   "bastien.guerry@inria.fr")))
+    (mail-sources nil)
+    (gnus-select-method '(nnnil ""))
+    (gnus-secondary-select-methods
+     '((nnimap "localhost"
+               (nnimap-server-port "imaps")
+               (nnimap-authinfo-file "~/.authinfo")
+               (nnimap-stream ssl)
+               (nnimap-expunge t))))
+    (read-mail-command 'gnus)
+    (gnus-directory "~/News/")
+    (gnus-gcc-mark-as-read t)
+    (gnus-inhibit-startup-message t)
+    (gnus-interactive-catchup nil)
+    (gnus-interactive-exit nil)
+    (gnus-no-groups-message "")
+    (gnus-novice-user nil)
+    (gnus-nov-is-evil t)
+    (gnus-use-cross-reference nil)
+    (gnus-verbose 6)
+    (mail-specify-envelope-from t)
+    (mail-envelope-from 'header)
+    (mail-user-agent 'gnus-user-agent)
+    (message-kill-buffer-on-exit t)
+    (message-forward-as-mime t)
+    (gnus-subscribe-newsgroup-method 'gnus-subscribe-interactively)
+    (nnir-notmuch-remove-prefix "/home/bzg/Mail")
+    (gnus-message-archive-group 'my-gnus-message-archive-group)
+    (gnus-group-sort-function
+     '(gnus-group-sort-by-unread
+       gnus-group-sort-by-rank
+       ;; gnus-group-sort-by-score
+       ;; gnus-group-sort-by-level
+       ;; gnus-group-sort-by-alphabet
+       ))
+    (gnus-visible-headers
+     "^From:\\|^Subject:\\|^Date:\\|^To:\\|^Cc:\\|^Newsgroups:\\|^Comments:\\|^User-Agent:")
+    (message-draft-headers '(References From In-Reply-To))
+    ;; message-generate-headers-first t ;; FIXME: Not needed Emacs>=29?
+    (message-hidden-headers
+     '("^References:" "^Face:" "^X-Face:" "^X-Draft-From:" "^In-Reply-To:" "^Message-ID:"))
+    (nnmail-split-abbrev-alist
+     '((any . "From\\|To\\|Cc\\|Sender\\|Apparently-To\\|Delivered-To\\|X-Apparently-To\\|Resent-From\\|Resent-To\\|Resent-Cc")
+       (mail . "Mailer-Daemon\\|Postmaster\\|Uucp")
+       (to . "To\\|Cc\\|Apparently-To\\|Resent-To\\|Resent-Cc\\|Delivered-To\\|X-Apparently-To")
+       (from . "From\\|Sender\\|Resent-From")
+       (nato . "To\\|Cc\\|Resent-To\\|Resent-Cc\\|Delivered-To\\|X-Apparently-To")
+       (naany . "From\\|To\\|Cc\\|Sender\\|Resent-From\\|Resent-To\\|Delivered-To\\|X-Apparently-To\\|Resent-Cc")))
+    (gnus-simplify-subject-functions
+     '(gnus-simplify-subject-re gnus-simplify-whitespace))
+    ;; Thread by Xref, not by subject
+    (gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references)
+    (gnus-thread-sort-functions '(gnus-thread-sort-by-number
+                                  gnus-thread-sort-by-total-score
+                                  gnus-thread-sort-by-date))
+    (gnus-sum-thread-tree-false-root "")
+    (gnus-sum-thread-tree-indent " ")
+    (gnus-sum-thread-tree-leaf-with-other "├► ")
+    (gnus-sum-thread-tree-root "")
+    (gnus-sum-thread-tree-single-leaf "╰► ")
+    (gnus-sum-thread-tree-vertical "│")
+    ;; Display a button for MIME parts
+    (gnus-buttonized-mime-types '("multipart/alternative"))
+    (gnus-user-date-format-alist
+     '(((gnus-seconds-today) . "     %k:%M")
+       ((+ 86400 (gnus-seconds-today)) . "hier %k:%M")
+       ((+ 604800 (gnus-seconds-today)) . "%a  %k:%M")
+       ((gnus-seconds-month) . "%a  %d")
+       ((gnus-seconds-year) . "%b %d")
+       (t . "%b %d '%y")))
+    (gnus-group-line-format "%M%S%p%P %(%-40,40G%)\n")
+    (gnus-group-line-default-format "%M%S%p%P %(%-40,40G%) %-3y %-3T %-3I\n")
+    (gnus-use-adaptive-scoring nil)
+    (gnus-adaptive-pretty-print nil)
+    (gnus-summary-line-format
+     (concat "%*%0{%U%R%z%}"
+             "%0{ %}(%2t)"
+             "%2{ %}%-23,23n"
+             "%1{ %}%1{%B%}%2{%-102,102s%}%-140="
+             "\n"))
+    :hook ((gnus-summary-exit . gnus-summary-bubble-group)
+           (gnus-summary-exit . gnus-group-sort-groups-by-rank)
+           (gnus-suspend-gnus . gnus-group-sort-groups-by-rank)
+           (gnus-exit-gnus . gnus-group-sort-groups-by-rank)
+           (gnus-select-group . gnus-group-set-timestamp))
     :config
     (gnus-delay-initialize)
-    (setopt gnus-delay-default-delay "2d")
-    (setopt gnus-check-new-newsgroups nil)
-    (setopt gnus-save-newsrc-file nil)
-    (setopt gnus-refer-thread-limit t)
-    (setopt gnus-use-atomic-windows nil)
-    (setopt nndraft-directory "~/News/drafts/")
-    (setopt nnfolder-directory "~/Mail/archive")
-    (setopt gnus-summary-ignore-duplicates t)
-    (setopt gnus-suppress-duplicates t)
-    (setopt gnus-auto-select-first nil)
-    (setopt gnus-ignored-from-addresses
-  	  (regexp-opt '("bastien.guerry@free.fr"
-  			"bastien.guerry@data.gouv.fr"
-  			"bastien.guerry@code.gouv.fr"
-  			"bastien.guerry@mail.numerique.gouv.fr"
-  			"bastien.guerry@numerique.gouv.fr"
-  			"bzg@bzg.fr"
-  			"bzg@gnu.org"
-  			"bzg@softwareheritage.org"
-  			"bastien.guerry@softwareheritage.org"
-  			"bastien.guerry@inria.fr"
-  			)))
-
     ;; (setopt send-mail-function 'sendmail-send-it)
     ;; (setopt mail-use-rfc822 t)
-
-    ;; Sources and methods
-    (setopt mail-sources nil
-  	  gnus-select-method '(nnnil "")
-  	  gnus-secondary-select-methods
-  	  '((nnimap "localhost"
-  		    (nnimap-server-port "imaps")
-  		    (nnimap-authinfo-file "~/.authinfo")
-  		    (nnimap-stream ssl)
-  		    (nnimap-expunge t))))
-
     (add-hook 'gnus-exit-gnus-hook
-  	    (lambda ()
-  	      (if (get-buffer "bbdb")
-  		  (with-current-buffer "bbdb" (save-buffer)))))
-
-    (setopt read-mail-command 'gnus
-  	  gnus-directory "~/News/"
-  	  gnus-gcc-mark-as-read t
-  	  gnus-inhibit-startup-message t
-  	  gnus-interactive-catchup nil
-  	  gnus-interactive-exit nil
-  	  gnus-no-groups-message ""
-  	  gnus-novice-user nil
-  	  gnus-nov-is-evil t
-  	  gnus-use-cross-reference nil
-  	  gnus-verbose 6
-  	  mail-specify-envelope-from t
-  	  mail-envelope-from 'header
-  	  mail-user-agent 'gnus-user-agent
-  	  message-kill-buffer-on-exit t
-  	  message-forward-as-mime t)
-
-    (setopt gnus-subscribe-newsgroup-method 'gnus-subscribe-interactively)
-
-    (setopt nnir-notmuch-remove-prefix "/home/bzg/Mail")
+              (lambda ()
+                (if (get-buffer "bbdb")
+                    (with-current-buffer "bbdb" (save-buffer)))))
 
     (defun my-gnus-message-archive-group (group-current)
       "Return prefered archive group."
       (cond
        ((and (stringp group-current)
-  	   (or (message-news-p)
-  	       (string-match "nntp\\+news" group-current 0)))
+             (or (message-news-p)
+                 (string-match "nntp\\+news" group-current 0)))
         (concat "nnfolder+archive:" (format-time-string "%Y-%m")
-  	      "-divers-news"))
+                "-divers-news"))
        ((and (stringp group-current) (< 0 (length group-current)))
         (concat (replace-regexp-in-string "[^/]+$" "" group-current) "Sent"))
        (t "nnimap+localhost:bzg.fr/bzg/Sent")))
 
-    (setopt gnus-message-archive-group 'my-gnus-message-archive-group)
-
-    ;; Group sorting
-    (setopt gnus-group-sort-function
-  	  '(gnus-group-sort-by-unread
-  	    gnus-group-sort-by-rank
-  	    ;; gnus-group-sort-by-score
-  	    ;; gnus-group-sort-by-level
-  	    ;; gnus-group-sort-by-alphabet
-  	    ))
-
-    (add-hook 'gnus-summary-exit-hook 'gnus-summary-bubble-group)
-    (add-hook 'gnus-summary-exit-hook 'gnus-group-sort-groups-by-rank)
-    (add-hook 'gnus-suspend-gnus-hook 'gnus-group-sort-groups-by-rank)
-    (add-hook 'gnus-exit-gnus-hook 'gnus-group-sort-groups-by-rank)
-
-    ;; Headers we wanna see:
-    (setopt gnus-visible-headers
-  	  "^From:\\|^Subject:\\|^Date:\\|^To:\\|^Cc:\\|^Newsgroups:\\|^Comments:\\|^User-Agent:"
-  	  message-draft-headers '(References From In-Reply-To)
-  	  ;; message-generate-headers-first t ;; FIXME: Not needed Emacs>=29?
-  	  message-hidden-headers
-  	  '("^References:" "^Face:" "^X-Face:" "^X-Draft-From:" "^In-Reply-To:" "^Message-ID:"))
-
-    ;; Sort mails
-    (setopt nnmail-split-abbrev-alist
-  	  '((any . "From\\|To\\|Cc\\|Sender\\|Apparently-To\\|Delivered-To\\|X-Apparently-To\\|Resent-From\\|Resent-To\\|Resent-Cc")
-  	    (mail . "Mailer-Daemon\\|Postmaster\\|Uucp")
-  	    (to . "To\\|Cc\\|Apparently-To\\|Resent-To\\|Resent-Cc\\|Delivered-To\\|X-Apparently-To")
-  	    (from . "From\\|Sender\\|Resent-From")
-  	    (nato . "To\\|Cc\\|Resent-To\\|Resent-Cc\\|Delivered-To\\|X-Apparently-To")
-  	    (naany . "From\\|To\\|Cc\\|Sender\\|Resent-From\\|Resent-To\\|Delivered-To\\|X-Apparently-To\\|Resent-Cc")))
-
-    ;; Simplify the subject lines
-    (setopt gnus-simplify-subject-functions
-  	  '(gnus-simplify-subject-re gnus-simplify-whitespace))
-
-    ;; Thread by Xref, not by subject
-    (setopt gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references
-  	  gnus-thread-sort-functions '(gnus-thread-sort-by-number
-  				       gnus-thread-sort-by-total-score
-  				       gnus-thread-sort-by-date)
-  	  gnus-sum-thread-tree-false-root ""
-  	  gnus-sum-thread-tree-indent " "
-  	  gnus-sum-thread-tree-leaf-with-other "├► "
-  	  gnus-sum-thread-tree-root ""
-  	  gnus-sum-thread-tree-single-leaf "╰► "
-  	  gnus-sum-thread-tree-vertical "│")
-
-    ;; Dispkay a button for MIME parts
-    (setopt gnus-buttonized-mime-types '("multipart/alternative"))
-
-    (setopt gnus-user-date-format-alist
-  	  '(((gnus-seconds-today) . "     %k:%M")
-  	    ((+ 86400 (gnus-seconds-today)) . "hier %k:%M")
-  	    ((+ 604800 (gnus-seconds-today)) . "%a  %k:%M")
-  	    ((gnus-seconds-month) . "%a  %d")
-  	    ((gnus-seconds-year) . "%b %d")
-  	    (t . "%b %d '%y")))
-
-    ;; Add a time-stamp to a group when it is selected
-    (add-hook 'gnus-select-group-hook 'gnus-group-set-timestamp)
-
-    ;; Format group line
-    (setopt gnus-group-line-format "%M%S%p%P %(%-40,40G%)\n")
-    (setopt gnus-group-line-default-format "%M%S%p%P %(%-40,40G%) %-3y %-3T %-3I\n")
-
     (defun bzg/gnus-toggle-group-line-format ()
       (interactive)
       (if (equal gnus-group-line-format
-  	       gnus-group-line-default-format)
-  	(setopt gnus-group-line-format
-  		"%M%S%p%P %(%-40,40G%)\n")
+                 gnus-group-line-default-format)
+          (setopt gnus-group-line-format
+                  "%M%S%p%P %(%-40,40G%)\n")
         (setopt gnus-group-line-format
-  	      gnus-group-line-default-format)))
+                gnus-group-line-default-format)))
 
     ;; Toggle the group line format
     (define-key gnus-group-mode-map "("
-  	      (lambda () (interactive) (bzg/gnus-toggle-group-line-format) (gnus)))
-
-    ;; Scoring
-    (setopt gnus-use-adaptive-scoring nil
-  	  gnus-adaptive-pretty-print nil)
-
-    (setopt gnus-summary-line-format
-  	  (concat "%*%0{%U%R%z%}"
-  		  "%0{ %}(%2t)"
-  		  "%2{ %}%-23,23n"
-  		  "%1{ %}%1{%B%}%2{%-102,102s%}%-140="
-  		  "\n")))
+                (lambda () (interactive) (bzg/gnus-toggle-group-line-format) (gnus))))
 
   (use-package gnus-alias
     :hook (message-setup . gnus-alias-determine-identity)
     :bind (:map message-mode-map ("C-c C-x C-i" . gnus-alias-select-identity))
-    :config
-    (setopt gnus-alias-default-identity nil))
+    :custom (gnus-alias-default-identity nil))
 
   (use-package gnus-art
     :config
@@ -786,12 +767,13 @@ line remains between the headline/planning and the content."
   	       '("Bastien\\|bzg" 0 0 gnus-emphasis-highlight-words)))
 
   (use-package gnus-icalendar
-    :config
-    (gnus-icalendar-setup)
+    :custom
     ;; To enable optional iCalendar->Org sync functionality
     ;; NOTE: both the capture file and the headline(s) inside must already exist
-    (setopt gnus-icalendar-org-capture-file "~/org/bzg.org")
-    (setopt gnus-icalendar-org-capture-headline '("Rendez-vous"))
+    (gnus-icalendar-org-capture-file "~/org/bzg.org")
+    (gnus-icalendar-org-capture-headline '("Rendez-vous"))
+    :config
+    (gnus-icalendar-setup)
     (gnus-icalendar-org-setup))
 
   (use-package gnus-dired
@@ -810,10 +792,11 @@ line remains between the headline/planning and the content."
         (nreverse buffers))))
 
   (use-package message
-    :config
-    (setopt message-send-mail-function 'message-send-mail-with-sendmail)
-    (setopt message-dont-reply-to-names gnus-ignored-from-addresses)
-    (setopt message-alternative-emails gnus-ignored-from-addresses))
+    :hook (message-mode . (lambda () (abbrev-mode 0)))
+    :custom
+    (message-send-mail-function 'message-send-mail-with-sendmail)
+    (message-dont-reply-to-names gnus-ignored-from-addresses)
+    (message-alternative-emails gnus-ignored-from-addresses))
 
   (define-key gnus-group-mode-map "GG" 'notmuch-search)
   #+end_src
@@ -823,56 +806,62 @@ line remains between the headline/planning and the content."
   #+begin_src emacs-lisp
   (use-package bbdb
     :hook ((gnus-startup . bbdb-insinuate-gnus)
-           (message-setup . bbdb-mail-aliases))
+           (message-setup . bbdb-mail-aliases)
+           (mail-setup . bbdb-mail-aliases)
+           (bbdb-notice-mail . bbdb-auto-notes))
     :commands (bbdb bbdb-search)
+    :custom
+    (bbdb-file "~/Documents/config/bbdb")
+    (bbdb-mua-pop-up nil)
+    (bbdb-mua-interactive-action '(query . create))
+    (bbdb-allow-duplicates t)
+    (bbdb-pop-up-window-size 5)
+    (bbdb-ignore-redundant-mails t)
+    (bbdb-add-aka nil)
+    (bbdb-add-name nil)
+    (bbdb-add-mails t)
+    (bbdb-ignore-message-alist '(("Newsgroup" . ".*")))
+    (bbdb-auto-notes-alist
+     '(("Newsgroups" ("[^,]+" newsgroups 0))
+       ("Subject" (".*" last-subj 0 t))
+       ("User-Agent" (".*" mailer 0))
+       ("X-Mailer" (".*" mailer 0))
+       ("Organization" (".*" organization 0))
+       ("X-Newsreader" (".*" mailer 0))
+       ("X-Face" (".+" face 0 'replace))
+       ("Face" (".+" face 0 'replace))))
     :config
     (require 'bbdb-com)
     (require 'bbdb-anniv)
     (require 'bbdb-gnus)
-    (setopt bbdb-file "~/Documents/config/bbdb")
     (bbdb-initialize 'message 'gnus)
     (bbdb-mua-auto-update-init 'message 'gnus)
-
-    (setopt bbdb-mua-pop-up nil)
-    (setq bbdb-mua-interactive-action '(query . create))
-    (setopt bbdb-allow-duplicates t)
-    (setopt bbdb-pop-up-window-size 5)
-    (setopt bbdb-ignore-redundant-mails t)
-
-    (add-hook 'mail-setup-hook 'bbdb-mail-aliases)
-    (add-hook 'bbdb-notice-mail-hook 'bbdb-auto-notes)
     ;; (add-hook 'list-diary-entries-hook 'bbdb-include-anniversaries)
-
-    (setopt bbdb-add-aka nil
-  	  bbdb-add-name nil
-  	  bbdb-add-mails t
-  	  bbdb-ignore-message-alist '(("Newsgroup" . ".*")))
-
-    (defalias 'bbdb-y-or-n-p #'(lambda (prompt) t))
-
-    (setopt bbdb-auto-notes-alist
-  	  '(("Newsgroups" ("[^,]+" newsgroups 0))
-  	    ("Subject" (".*" last-subj 0 t))
-  	    ("User-Agent" (".*" mailer 0))
-  	    ("X-Mailer" (".*" mailer 0))
-  	    ("Organization" (".*" organization 0))
-  	    ("X-Newsreader" (".*" mailer 0))
-  	    ("X-Face" (".+" face 0 'replace))
-  	    ("Face" (".+" face 0 'replace)))))
+    (defalias 'bbdb-y-or-n-p #'(lambda (prompt) t)))
   #+end_src
 
 * Calendar
 
   #+begin_src emacs-lisp
-  (appt-activate t)
-  (setopt display-time-24hr-format t
-  	display-time-day-and-date t
-  	appt-audible nil
-  	appt-display-interval 10
-  	appt-message-warning-time 120)
+  (use-package time
+    :custom
+    (display-time-24hr-format t)
+    (display-time-day-and-date t))
+
+  (use-package appt
+    :custom
+    (appt-audible nil)
+    (appt-display-interval 10)
+    (appt-message-warning-time 120)
+    :config
+    (appt-activate t))
 
   (use-package calendar
     :defer t
+    :custom
+    (calendar-date-style 'european)
+    (calendar-mark-holidays-flag t)
+    (calendar-week-start-day 1)
     :config
     (setopt french-holiday
   	  '((holiday-fixed 1 1 "Jour de l'an")
@@ -908,11 +897,7 @@ line remains between the headline/planning and the content."
   		  (car (car (holiday-float 6 0 1 nil)))
   		;; -> Dernier dimanche de mai sinon
   		(car (car (holiday-float 5 0 -1 nil))))
-  	     "Fête des mères")))
-
-    (setopt calendar-date-style 'european
-  	  calendar-mark-holidays-flag t
-  	  calendar-week-start-day 1))
+  	     "Fête des mères"))))
   #+end_src
 
 * notmuch
@@ -954,7 +939,20 @@ line remains between the headline/planning and the content."
 * Dired
 
   #+begin_src emacs-lisp
+  (use-package dired
+    :hook ((dired-mode . turn-on-gnus-dired-mode)
+           (dired-mode . dired-hide-details-mode))
+    :custom
+    (list-directory-verbose-switches "-al")
+    (dired-listing-switches "-l")
+    (dired-dwim-target t)
+    (dired-maybe-use-globstar t)
+    (dired-recursive-copies 'always)
+    (dired-recursive-deletes 'always)
+    (delete-old-versions t))
+
   (use-package dired-x
+    :after dired
     :config
     ;; (define-key dired-mode-map "\C-cd" 'dired-clean-tex)
     (setopt dired-guess-shell-alist-user
@@ -983,14 +981,6 @@ line remains between the headline/planning and the content."
 
     (setopt dired-tex-unclean-extensions
   	  '(".toc" ".log" ".aux" ".dvi" ".out" ".nav" ".snm")))
-
-  (setopt list-directory-verbose-switches "-al")
-  (setopt dired-listing-switches "-l")
-  (setopt dired-dwim-target t)
-  (setopt dired-maybe-use-globstar t)
-  (setopt dired-recursive-copies 'always)
-  (setopt dired-recursive-deletes 'always)
-  (setopt delete-old-versions t)
   #+end_src
 
 * Misc
@@ -998,20 +988,23 @@ line remains between the headline/planning and the content."
 *** Browser settings
 
     #+begin_src emacs-lisp
-    (setopt browse-url-browser-function 'browse-url-generic)
-    (setopt browse-url-secondary-browser-function 'eww-browse-url)
-    (setopt browse-url-generic-program "firefox")
-    (setopt browse-url-firefox-new-window-is-tab t)
-
-    (defun bzg/toggle-browser ()
-      (interactive)
-      (if (eq browse-url-browser-function 'browse-url-generic)
-          (progn (setopt browse-url-browser-function 'eww-browse-url)
-    	     (setopt browse-url-secondary-browser-function 'browse-url-generic)
-    	     (message "Browser set to eww"))
-        (setopt browse-url-browser-function 'browse-url-generic)
-        (setopt browse-url-secondary-browser-function 'eww-browse-url)
-        (message "Browser set to generic")))
+    (use-package browse-url
+      :bind ("C-è" . bzg/toggle-browser)
+      :custom
+      (browse-url-browser-function 'browse-url-generic)
+      (browse-url-secondary-browser-function 'eww-browse-url)
+      (browse-url-generic-program "firefox")
+      (browse-url-firefox-new-window-is-tab t)
+      :config
+      (defun bzg/toggle-browser ()
+        (interactive)
+        (if (eq browse-url-browser-function 'browse-url-generic)
+            (progn (setopt browse-url-browser-function 'eww-browse-url)
+    	       (setopt browse-url-secondary-browser-function 'browse-url-generic)
+    	       (message "Browser set to eww"))
+          (setopt browse-url-browser-function 'browse-url-generic)
+          (setopt browse-url-secondary-browser-function 'eww-browse-url)
+          (message "Browser set to generic"))))
     #+end_src
 
 *** ELisp, Clojure, Slime initialization
@@ -1026,30 +1019,28 @@ line remains between the headline/planning and the content."
       :config
       (setopt inferior-lisp-program "sbcl"))
 
-    ;; Clojure initialization
-    (add-to-list 'auto-mode-alist '("\\.clj\\'" . clojure-ts-mode))
-    (setopt inf-clojure-generic-cmd "clojure")
-
     ;; Use LSP
     (use-package lsp-mode
       :commands lsp
       :hook ((clojure-ts-mode . lsp)
     	 (slime-mode . lsp)
              (emacs-lisp-mode . lsp))
-      :config
-      (setopt lsp-warn-no-matched-clients nil)
-      (setopt lsp-prefer-flymake nil))
+      :custom
+      (lsp-warn-no-matched-clients nil)
+      (lsp-prefer-flymake nil))
 
     (use-package clojure-ts-mode
+      :mode "\\.clj\\'"
+      :hook ((clojure-ts-mode . company-mode)
+             (clojure-ts-mode . origami-mode)
+             (clojure-ts-mode . paredit-mode)
+             (clojure-ts-mode . aggressive-indent-mode)
+             (edn-mode . paredit-mode))
+      :custom
+      (clojure-align-forms-automatically t)
+      (inf-clojure-generic-cmd "clojure")
       :config
-      (require 'flycheck-clj-kondo)
-      (setopt clojure-align-forms-automatically t)
-      (add-hook 'clojure-ts-mode-hook 'company-mode)
-      (add-hook 'clojure-ts-mode-hook 'origami-mode)
-      (add-hook 'clojure-ts-mode-hook 'paredit-mode)
-      (add-hook 'edn-mode-hook 'paredit-mode)
-      ;; (add-hook 'clojure-mode-hook 'clj-refactor-mode)
-      (add-hook 'clojure-ts-mode-hook 'aggressive-indent-mode))
+      (require 'flycheck-clj-kondo))
 
     ;; (use-package clj-refactor
     ;;   :config
@@ -1061,17 +1052,17 @@ line remains between the headline/planning and the content."
 
     (use-package cider
       :defer t
-      :config
-      (add-hook 'cider-repl-mode-hook 'company-mode)
-      (setopt cider-use-fringe-indicators nil)
-      (setopt cider-repl-pop-to-buffer-on-connect nil)
-      (setopt nrepl-hide-special-buffers t))
+      :hook (cider-repl-mode . company-mode)
+      :custom
+      (cider-use-fringe-indicators nil)
+      (cider-repl-pop-to-buffer-on-connect nil)
+      (nrepl-hide-special-buffers t))
 
-    ;; Emacs Lisp initialization
-    (add-hook 'emacs-lisp-mode-hook 'company-mode)
-    (add-hook 'emacs-lisp-mode-hook 'electric-indent-mode 'append)
-    (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
-    (add-hook 'emacs-lisp-mode-hook 'origami-mode)
+    (use-package elisp-mode
+      :hook ((emacs-lisp-mode . company-mode)
+             (emacs-lisp-mode . electric-indent-mode)
+             (emacs-lisp-mode . paredit-mode)
+             (emacs-lisp-mode . origami-mode)))
     #+end_src
 
 *** Cycling through one/two windows display
@@ -1143,18 +1134,20 @@ line remains between the headline/planning and the content."
         (set-frame-parameter nil 'right-fringe width)))
 
     ;; Persist fringe state per tab
-    (advice-add 'tab-bar--current-tab-make :filter-return
-    	    (lambda (tab)
-    	      (nconc tab (list (cons 'bzg-big-fringe bzg/big-fringe-mode)))))
+    (use-package tab-bar
+      :config
+      (advice-add 'tab-bar--current-tab-make :filter-return
+                  (lambda (tab)
+                    (nconc tab (list (cons 'bzg-big-fringe bzg/big-fringe-mode)))))
 
-    (advice-add 'tab-bar-select-tab :after
-    	    (lambda (&rest _)
-    	      (when-let* ((tabs (funcall tab-bar-tabs-function))
-    			 (current (seq-find (lambda (tab) (eq (car tab) 'current-tab)) tabs)))
-    		(bzg/big-fringe-mode (if (alist-get 'bzg-big-fringe (cdr current)) 1 -1)))))
+      (advice-add 'tab-bar-select-tab :after
+                  (lambda (&rest _)
+                    (when-let* ((tabs (funcall tab-bar-tabs-function))
+                                (current (seq-find (lambda (tab) (eq (car tab) 'current-tab)) tabs)))
+                      (bzg/big-fringe-mode (if (alist-get 'bzg-big-fringe (cdr current)) 1 -1)))))
 
-    (add-hook 'tab-bar-tab-post-open-functions
-    	  (lambda (_tab) (bzg/big-fringe-mode -1)))
+      (add-hook 'tab-bar-tab-post-open-functions
+                (lambda (_tab) (bzg/big-fringe-mode -1))))
 
 
     ;; See https://bzg.fr/emacs-hide-mode-line.html
@@ -1205,23 +1198,26 @@ line remains between the headline/planning and the content."
       :bind ("C-x r L" . register-list))
 
     ;; Displays a helper about the current available keybindings
-    (which-key-mode)
+    (use-package which-key
+      :config (which-key-mode))
 
     (use-package eww
       :defer t
-      :config
-      (add-hook 'eww-mode-hook 'visual-line-mode)
-      (setopt eww-header-line-format ""
-    	  shr-width 80
-    	  shr-inhibit-images t
-    	  shr-use-colors nil
-    	  shr-use-fonts nil))
+      :hook (eww-mode . visual-line-mode)
+      :custom
+      (eww-header-line-format "")
+      (shr-width 80)
+      (shr-inhibit-images t)
+      (shr-use-colors nil)
+      (shr-use-fonts nil))
 
-    (envrc-global-mode)
+    (use-package envrc
+      :config (envrc-global-mode))
 
     (use-package vterm :bind ("C-)" . vterm))
 
-    (setopt ediff-window-setup-function 'ediff-setup-windows-plain)
+    (use-package ediff
+      :custom (ediff-window-setup-function 'ediff-setup-windows-plain))
 
     (use-package dired-subtree
       :bind (:map dired-mode-map
@@ -1249,9 +1245,6 @@ line remains between the headline/planning and the content."
     (when (fboundp 'imagemagick-register-types)
       (imagemagick-register-types))
 
-    (add-hook 'dired-mode-hook #'turn-on-gnus-dired-mode)
-    (add-hook 'dired-mode-hook #'dired-hide-details-mode)
-
     ;; Fontifying todo items outside of org-mode
     (defface bzg/todo-comment-face
       '((t (:weight bold :bold t)))
@@ -1260,7 +1253,8 @@ line remains between the headline/planning and the content."
 
     (defvar bzg/todo-comment-face 'bzg/todo-comment-face)
 
-    (pdf-tools-install)
+    (use-package pdf-tools
+      :config (pdf-tools-install))
 
     (defun bzg/gnus-toggle-nntp ()
       (interactive)
