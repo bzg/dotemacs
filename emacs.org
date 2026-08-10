@@ -215,30 +215,31 @@ Comments and suggestions are welcome.
   (global-set-key (kbd "C-:") (lambda () (interactive) (org-agenda nil ":"))) ; WAITing
 
   ;; Other useful global keybindings
-  (define-key global-map "\M-Q" 'unfill-paragraph)
-  (global-set-key "\M- " 'hippie-expand)
-  (global-set-key (kbd "<home>") 'beginning-of-buffer)
-  (global-set-key (kbd "<end>") 'end-of-buffer)
-  (global-set-key (kbd "C-&") 'gnus)
-  (global-set-key (kbd "C-_") 'global-hl-line-mode)
-  (global-set-key (kbd "C-ç") 'calc)
+  (define-key global-map "\M-Q" #'unfill-paragraph)
+  (global-set-key "\M- " #'hippie-expand)
+  (global-set-key (kbd "<home>") #'beginning-of-buffer)
+  (global-set-key (kbd "<end>") #'end-of-buffer)
+  (global-set-key (kbd "C-&") #'gnus)
+  (global-set-key (kbd "C-_") #'global-hl-line-mode)
+  (global-set-key (kbd "C-ç") #'calc)
   (global-set-key (kbd "C-à") (lambda () (interactive) (if (eq major-mode 'calendar-mode) (calendar-exit) (calendar))))
-  (global-set-key (kbd "C-+") 'text-scale-increase)
-  (global-set-key (kbd "C--") 'text-scale-decrease)
-  (global-set-key (kbd "C-=") 'bzg/toggle-default-font-size)
-  (global-set-key (kbd "C-M-=") 'bzg/toggle-fringe-width)
-  (global-set-key (kbd "C-c F") 'auto-fill-mode)
-  (global-set-key (kbd "C-c f") 'find-name-dired)
-  (global-set-key (kbd "C-c g") 'deadgrep)
-  (global-set-key (kbd "C-c m") 'magit-status)
-  (global-set-key (kbd "C-x <C-backspace>") 'bzg/find-bzg)
-  (global-set-key (kbd "C-x C-<left>") 'tab-previous)
-  (global-set-key (kbd "C-x C-<right>") 'tab-next)
-  (global-set-key (kbd "C-é") 'bzg/cycle-view)
-  (global-set-key (kbd "C-M-]") 'origami-toggle-all-nodes)
-  (global-set-key (kbd "M-]") 'origami-toggle-node)
-  (global-set-key (kbd "C-,") 'find-variable-or-function-at-point)
-  (global-set-key (kbd "C-M-<backspace>") 'backward-kill-word-noring)
+  (global-set-key (kbd "C-+") #'text-scale-increase)
+  (global-set-key (kbd "C--") #'text-scale-decrease)
+  (global-set-key (kbd "C-=") #'bzg/toggle-default-font-size)
+  (global-set-key (kbd "C-M-=") #'bzg/toggle-fringe-width)
+  (global-set-key (kbd "C-(") #'bzg/toggle-focus)
+  (global-set-key (kbd "C-c F") #'auto-fill-mode)
+  (global-set-key (kbd "C-c f") #'find-name-dired)
+  (global-set-key (kbd "C-c g") #'deadgrep)
+  (global-set-key (kbd "C-c m") #'magit-status)
+  (global-set-key (kbd "C-x <C-backspace>") #'bzg/find-bzg)
+  (global-set-key (kbd "C-x C-<left>") #'tab-previous)
+  (global-set-key (kbd "C-x C-<right>") #'tab-next)
+  (global-set-key (kbd "C-é") #'bzg/cycle-view)
+  (global-set-key (kbd "C-M-]") #'origami-toggle-all-nodes)
+  (global-set-key (kbd "M-]") #'origami-toggle-node)
+  (global-set-key (kbd "C-,") #'find-variable-or-function-at-point)
+  (global-set-key (kbd "C-M-<backspace>") #'backward-kill-word-noring)
 
   ;; Translation
   (load-file "~/install/git/txl.el/txl.el")
@@ -249,16 +250,29 @@ Comments and suggestions are welcome.
   (use-package magit-delta
     :hook (magit-mode . magit-delta-mode))
 
-
   ;; Elfeed
   (use-package elfeed
-    :bind ("C-x w" . elfeed))
+    :bind ("C-x w" . elfeed)
+    :custom
+    (elfeed-search-remain-on-entry t)
+    ;; (elfeed-show-truncate-long-urls t)
+    )
   #+end_src
 
 * Org Mode
 ** Org basics
 
    #+begin_src emacs-lisp
+   (defun bzg/org-sort-todo-then-priority ()
+     "Sort entries by TODO state, then by priority within each state."
+     (interactive)
+     (let ((folded (save-excursion
+                     (end-of-line)
+                     (org-fold-core-get-folding-spec))))
+       (org-sort-entries nil ?p)  ; Sort by priority first
+       (org-sort-entries nil ?o)  ; Then by TODO state
+       (when folded (org-fold-hide-subtree))))
+
    (use-package org
      :bind (("C-c l" . org-store-link)
             ("C-c a" . org-agenda)
@@ -266,10 +280,10 @@ Comments and suggestions are welcome.
             ("C-c L" . org-occur-link-in-agenda-files)
             :map org-mode-map
             ("C-c ç" . bzg/org-sort-todo-then-priority))
-     :hook ((org-mode . (lambda () (electric-indent-local-mode -1)))
-            (org-mode . (lambda ()
+     :hook ((org-mode . (lambda ()
+                          (electric-indent-local-mode -1)
                           (add-hook 'before-save-hook #'bzg/org-cleanup-drawers nil t)
-                          (add-hook 'before-save-hook 'org-update-all-dblocks t t)))
+                          (add-hook 'before-save-hook #'org-update-all-dblocks t t)))
             (org-follow-link . (lambda ()
                                  (when (eq major-mode 'gnus-summary-mode)
                                    (gnus-summary-insert-dormant-articles)))))
@@ -366,14 +380,14 @@ Comments and suggestions are welcome.
        (when org-clock-current-task
          (call-interactively
           (if (eq major-mode 'org-agenda-mode)
-              'org-agenda-clock-out
-            'org-clock-out))))
+              #'org-agenda-clock-out
+            #'org-clock-out))))
      (add-hook 'org-timer-set-hook
                (lambda ()
                  (call-interactively
                   (if (eq major-mode 'org-agenda-mode)
-                      'org-agenda-clock-in
-                    'org-clock-in))))
+                      #'org-agenda-clock-in
+                    #'org-clock-in))))
      (add-hook 'org-timer-done-hook  #'bzg/org-timer-clock-out)
      (add-hook 'org-timer-pause-hook #'bzg/org-timer-clock-out)
      (add-hook 'org-timer-stop-hook  #'bzg/org-timer-clock-out))
@@ -396,7 +410,12 @@ Comments and suggestions are welcome.
          "* TODO %a :Read:" :prepend t)
         ;; (!) To indicate the captured item is immediately stored
         ("c" "Courant (!)" entry (file "~/org/bzg.org") ; "c" for "affaires (c)ourantes
-         "* TODO %a" :prepend t :immediate-finish t))))
+         "* TODO %a" :prepend t :immediate-finish t)
+        ("C" "Courant" entry (file "~/org/bzg.org")
+         "* TODO %a" :prepend t)
+        ("#" "used by gnus-icalendar-org" entry
+         (file+olp "~/org/bzg.org" "Rendez-vous")
+         "%i" :immediate-finish t))))
    #+end_src
 
 ** Org babel
@@ -521,26 +540,22 @@ Comments and suggestions are welcome.
      (org-agenda-window-frame-fractions '(0.0 . 0.5))
      (org-agenda-custom-commands
       '(;; Archive tasks
-        ("#" "To archive" todo "DONE|CANX")
-
+        ("#" "To archive" todo "DONE|CANX"
+         ((org-agenda-focus-inhibit t)))
         ;; Review weekly appointements
         ("$" "Weekly appointments" agenda* "Weekly appointments")
-
         ;; Review weekly tasks
         ("ù" "Week tasks" agenda "Scheduled tasks for this week"
          ((org-agenda-category-filter-preset '("-RDV")) ; RDV for Rendez-vous
+          ;; (org-agenda-files '("~/org/bzg.org")
           (org-deadline-warning-days 0)
           (org-agenda-use-time-grid nil)))
-
         ;; Review started and next tasks
         ("µ" "STRT/NEXT" tags-todo "TODO={STRT\\|NEXT}")
-
         ;; Review other non-scheduled/deadlined to-do tasks
         (";" "TODO" tags-todo "TODO={TODO}+DEADLINE=\"\"+SCHEDULED=\"\"")
-
         ;; Review other non-scheduled/deadlined pending tasks
         (":" "WAIT" tags-todo "TODO={WAIT}+DEADLINE=\"\"+SCHEDULED=\"\"")
-
         ;; Review upcoming deadlines for the next 60 days
         ("!" "Deadlines all" agenda "Past/upcoming deadlines"
          ((org-agenda-span 1)
@@ -552,30 +567,31 @@ Comments and suggestions are welcome.
    (use-package ox-icalendar
      :after org
      :custom
-     (org-icalendar-use-scheduled '(event-if-not-todo))
+     (org-icalendar-use-scheduled '(event-if-not-todo event-if-todo))
      (org-icalendar-combined-name "Bastien Guerry Calendar")
-     (org-icalendar-timezone "Europe/Paris"))
+     (org-icalendar-timezone "Europe/Paris")
+     (org-icalendar-date-time-format ";TZID=%Z:%Y%m%dT%H%M%S"))
+
+   ;; (use-package org-caldav
+   ;;   ;; :after org
+   ;;   :custom
+   ;;   (org-caldav-files '("~/org/bzg.org"))
+   ;;   (org-caldav-skip-conditions '(nottimestamp))
+   ;;   (org-caldav-inbox '(file+headline "~/org/rdv.org" "Rendez-vous"))
+   ;;   (org-caldav-sync-direction 'org->cal)
+   ;;   (org-caldav-calendar-id "Calendar")
+   ;;   (org-caldav-url "https://zimbra.inria.fr/dav/bastien.guerry%40inria.fr"))
    #+end_src
 
 ** Org custom
 
 #+begin_src emacs-lisp
-(defun bzg/org-sort-todo-then-priority ()
-  "Sort entries by TODO state, then by priority within each state."
-  (interactive)
-  (let ((folded (save-excursion
-		  (end-of-line)
-		  (org-fold-core-get-folding-spec))))
-    (org-sort-entries nil ?p)  ; Sort by priority first
-    (org-sort-entries nil ?o)  ; Then by TODO state
-    (when folded (org-fold-hide-subtree))))
-
 (defun bzg/org-cleanup-drawers ()
   "Clean up drawers.
 Remove all drawers except those containing :ARCHIVE:, :CATEGORY:, :ID:,
-:ICAL_EVENT:, or :NOBLOCKING:, or an unfinished CLOCK line. If a drawer
-is kept, remove the :LAST_REPEAT: property line from it. Ensure a blank
-line remains between the headline/planning and the content."
+:ICAL_EVENT:, :LOCATION:, or :NOBLOCKING:, or an unfinished CLOCK line.
+If a drawer is kept, remove the :LAST_REPEAT: property line from it.
+Ensure a blank line remains between the headline/planning and the content."
   (interactive)
   (save-excursion
     (goto-char (point-min))
@@ -592,7 +608,8 @@ line remains between the headline/planning and the content."
                                  contents-begin contents-end)))
                  (keep-regexp (concat
                                (regexp-opt '(":ID:" ":ARCHIVE:" ":CATEGORY:"
-                                             ":ICAL_EVENT:" ":NOBLOCKING:"))
+                                             ":ICAL_EVENT:" ":LOCATION:"
+                                             ":NOBLOCKING:"))
                                "\\|CLOCK: \\[.*\\]\\s-*$"))
                  (keep (and contents (string-match-p keep-regexp contents))))
           (or keep
@@ -616,6 +633,7 @@ line remains between the headline/planning and the content."
 
   (use-package gnus
     :custom
+    (gnus-large-newsgroup 1000)
     (gnus-delay-default-delay "2d")
     (gnus-check-new-newsgroups nil)
     (gnus-save-newsrc-file nil)
@@ -699,6 +717,9 @@ line remains between the headline/planning and the content."
     (gnus-sum-thread-tree-vertical "│")
     ;; Display a button for MIME parts
     (gnus-buttonized-mime-types '("multipart/alternative"))
+    ;; Auto-decrypt/verify PGP parts without prompting
+    (mm-decrypt-option 'always)
+    (mm-verify-option 'always)
     (gnus-user-date-format-alist
      '(((gnus-seconds-today) . "     %k:%M")
        ((+ 86400 (gnus-seconds-today)) . "hier %k:%M")
@@ -707,7 +728,6 @@ line remains between the headline/planning and the content."
        ((gnus-seconds-year) . "%b %d")
        (t . "%b %d '%y")))
     (gnus-group-line-format "%M%S%p%P %(%-40,40G%)\n")
-    (gnus-group-line-default-format "%M%S%p%P %(%-40,40G%) %-3y %-3T %-3I\n")
     (gnus-use-adaptive-scoring nil)
     (gnus-adaptive-pretty-print nil)
     (gnus-summary-line-format
@@ -742,14 +762,18 @@ line remains between the headline/planning and the content."
         (concat (replace-regexp-in-string "[^/]+$" "" group-current) "Sent"))
        (t "nnimap+localhost:bzg.fr/bzg/Sent")))
 
+    (defvar bzg/gnus-group-line-format-detailed
+      "%M%S%p%P %(%-40,40G%) %-3y %-3T %-3I\n")
+    (defvar bzg/gnus-group-line-format-compact
+      "%M%S%p%P %(%-40,40G%)\n")
+
     (defun bzg/gnus-toggle-group-line-format ()
       (interactive)
-      (if (equal gnus-group-line-format
-                 gnus-group-line-default-format)
-          (setopt gnus-group-line-format
-                  "%M%S%p%P %(%-40,40G%)\n")
-        (setopt gnus-group-line-format
-                gnus-group-line-default-format)))
+      (setopt gnus-group-line-format
+              (if (equal gnus-group-line-format
+                         bzg/gnus-group-line-format-detailed)
+                  bzg/gnus-group-line-format-compact
+                bzg/gnus-group-line-format-detailed)))
 
     ;; Toggle the group line format
     (define-key gnus-group-mode-map "("
@@ -798,7 +822,7 @@ line remains between the headline/planning and the content."
     (message-dont-reply-to-names gnus-ignored-from-addresses)
     (message-alternative-emails gnus-ignored-from-addresses))
 
-  (define-key gnus-group-mode-map "GG" 'notmuch-search)
+  (define-key gnus-group-mode-map "GG" #'notmuch-search)
   #+end_src
 
 * BBDB
@@ -814,13 +838,15 @@ line remains between the headline/planning and the content."
     (bbdb-file "~/Documents/config/bbdb")
     (bbdb-mua-pop-up nil)
     (bbdb-mua-interactive-action '(query . create))
+    (bbdb-mua-auto-action 'create)
     (bbdb-allow-duplicates t)
     (bbdb-pop-up-window-size 5)
     (bbdb-ignore-redundant-mails t)
     (bbdb-add-aka nil)
     (bbdb-add-name nil)
     (bbdb-add-mails t)
-    (bbdb-ignore-message-alist '(("Newsgroup" . ".*")))
+    (bbdb-new-mails-primary t)
+    (bbdb-ignore-message-alist '(("Newsgroups" . ".*")))
     (bbdb-auto-notes-alist
      '(("Newsgroups" ("[^,]+" newsgroups 0))
        ("Subject" (".*" last-subj 0 t))
@@ -836,8 +862,8 @@ line remains between the headline/planning and the content."
     (require 'bbdb-gnus)
     (bbdb-initialize 'message 'gnus)
     (bbdb-mua-auto-update-init 'message 'gnus)
-    ;; (add-hook 'list-diary-entries-hook 'bbdb-include-anniversaries)
-    (defalias 'bbdb-y-or-n-p #'(lambda (prompt) t)))
+    ;; (add-hook 'list-diary-entries-hook #'bbdb-include-anniversaries)
+    (defalias 'bbdb-y-or-n-p (lambda (_prompt) t)))
   #+end_src
 
 * Calendar
@@ -916,6 +942,9 @@ line remains between the headline/planning and the content."
   		     (match-string 1 file)
   		     (match-string 2 file)))))
   	(t (user-error "Unknown group"))))
+
+  (declare-function notmuch-show-get-filename "notmuch-show")
+  (declare-function notmuch-show-get-message-id "notmuch-show")
 
   (defun bzg/notmuch-goto-message-in-gnus ()
     "Open a summary buffer containing the current notmuch article."
@@ -1006,6 +1035,7 @@ line remains between the headline/planning and the content."
           (setopt browse-url-secondary-browser-function 'eww-browse-url)
           (message "Browser set to generic"))))
     #+end_src
+
 
 *** ELisp, Clojure, Slime initialization
 
@@ -1108,8 +1138,8 @@ line remains between the headline/planning and the content."
            (other-window 1)
            (balance-windows))))))
 
-    (advice-add 'split-window-horizontally :before (lambda () (interactive) (bzg/big-fringe-mode -1)))
-    (advice-add 'split-window-right :before (lambda () (interactive) (bzg/big-fringe-mode -1)))
+    (advice-add #'split-window-horizontally :before (lambda () (interactive) (bzg/big-fringe-mode -1)))
+    (advice-add #'split-window-right :before (lambda () (interactive) (bzg/big-fringe-mode -1)))
     #+end_src
 
 *** hidden-mode and fringes
@@ -1129,6 +1159,7 @@ line remains between the headline/planning and the content."
       "Minor mode for wide fringes."
       :init-value nil
       :global t
+      :group 'fringe
       (let ((width (if bzg/big-fringe-mode bzg/big-fringe 10)))
         (set-frame-parameter nil 'left-fringe width)
         (set-frame-parameter nil 'right-fringe width)))
@@ -1136,11 +1167,11 @@ line remains between the headline/planning and the content."
     ;; Persist fringe state per tab
     (use-package tab-bar
       :config
-      (advice-add 'tab-bar--current-tab-make :filter-return
+      (advice-add #'tab-bar--current-tab-make :filter-return
                   (lambda (tab)
                     (nconc tab (list (cons 'bzg-big-fringe bzg/big-fringe-mode)))))
 
-      (advice-add 'tab-bar-select-tab :after
+      (advice-add #'tab-bar-select-tab :after
                   (lambda (&rest _)
                     (when-let* ((tabs (funcall tab-bar-tabs-function))
                                 (current (seq-find (lambda (tab) (eq (car tab) 'current-tab)) tabs)))
@@ -1172,12 +1203,11 @@ line remains between the headline/planning and the content."
       (when (and (called-interactively-p 'interactive)
         	     hidden-mode-line-mode)
         (run-with-idle-timer
-         0 nil 'message
+         0 nil #'message
          (concat "Hidden Mode Line Mode enabled.  "
         	     "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
 
-    (add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
-    (add-hook 'org-mode-hook (lambda () (electric-indent-mode 0)))
+    (add-hook 'after-change-major-mode-hook #'hidden-mode-line-mode)
     #+end_src
 
 *** Various
@@ -1230,7 +1260,9 @@ line remains between the headline/planning and the content."
     (setopt xref-search-program 'ugrep)
 
     ;; Always follow symbolic links when editing
-    (setopt vc-follow-symlinks t)
+    (setopt vc-follow-symlinks t
+      	vc-auto-revert-mode t
+      	vc-allow-rewriting-published-history t)
 
     ;; elp.el is the Emacs Lisp profiler, sort by average time
     (setopt elp-sort-by-function 'elp-sort-by-average-time)
@@ -1260,13 +1292,13 @@ line remains between the headline/planning and the content."
       (interactive)
       (if (= (length gnus-secondary-select-methods) 1)
           (progn (add-to-list
-    	      'gnus-secondary-select-methods
-    	      '(nntp "news" (nntp-address "news.gmane.io")))
-    	     (message "nntp server ON"))
+         	      'gnus-secondary-select-methods
+         	      '(nntp "news" (nntp-address "news.gmane.io")))
+         	     (message "nntp server ON"))
         (progn
           (setopt gnus-secondary-select-methods
-    	      (remove '(nntp "news" (nntp-address "news.gmane.io"))
-    		      gnus-secondary-select-methods))
+         	      (remove '(nntp "news" (nntp-address "news.gmane.io"))
+         		      gnus-secondary-select-methods))
           (message "nntp server OFF"))))
 
     (define-key gnus-group-mode-map (kbd "%") #'bzg/gnus-toggle-nntp)
@@ -1275,4 +1307,105 @@ line remains between the headline/planning and the content."
     (setq gptel-default-mode 'org-mode)
     ;; (load-file "~/.emacs.d/gptel.el")
     (load-file "~/.emacs.d/gnus-icalendar.el")
+    (defvar bzg/focus-vacation nil
+      "When non-nil, don't wire up the Gnus/Org focus (vacations).")
+
+    (load-file "~/install/git/gnus-focus/gnus-focus.el")
+    (load-file "~/install/git/org/org-agenda-focus/org-agenda-focus.el")
+    (unless bzg/focus-vacation
+      (gnus-focus-insinuate)
+      (setq org-agenda-skip-function-global #'org-agenda-focus-skip))
+
+    (defcustom bzg/focus-source 'auto
+      "Which filters `bzg/toggle-focus' reads the current focus from.
+    The value `gnus' means read it from `gnus-focus-filters', `org'
+    means read it from `org-agenda-focus-filters', and `auto' means
+    read both: when they agree, toggle to the other state, and when
+    they disagree, ask which state to switch both to."
+      :type '(choice (const :tag "Gnus filters" gnus)
+                     (const :tag "Org agenda filters" org)
+                     (const :tag "Both, ask when they disagree" auto))
+      :group 'convenience)
+
+    (defun bzg/focus--next (name)
+      "The next focus after NAME.
+         Cycle through \"work\", \"leisure\", then no focus."
+      (cond ((equal name "work") "leisure")
+            ((equal name "leisure") nil)
+            (t "work")))
+
+    (defun bzg/focus--display-name (name)
+      "Return the display name for focus NAME."
+      (or name "none"))
+
+    (defun bzg/focus--read-name (name)
+      "Return the focus name represented by NAME."
+      (unless (equal name "none") name))
+
+    (defun bzg/focus--apply (name)
+      "Switch both the Gnus and the Org agenda focus to NAME."
+      (if name
+          (progn
+            (gnus-focus-choose name)
+            (org-agenda-focus-choose name))
+        (gnus-focus-clear)
+        (org-agenda-focus-clear))
+      (message "Focus: %s" (bzg/focus--display-name name)))
+
+    (defun bzg/toggle-focus ()
+      "Toggle the Gnus and Org agenda focus between \"work\", \"leisure\" and none.
+    The current focus is read from the filters designated by
+    `bzg/focus-source' (see there), then both filters are switched to
+    the next state.  With `bzg/focus-source' set to `auto', when the
+    two filters already disagree on the current focus, ask which
+    state to switch both to."
+      (interactive)
+      (let ((gnus-now (gnus-focus--current-name))
+            (org-now  (org-agenda-focus--current-name)))
+        (pcase bzg/focus-source
+          ('gnus (bzg/focus--apply (bzg/focus--next gnus-now)))
+          ('org  (bzg/focus--apply (bzg/focus--next org-now)))
+          (_ (if (equal gnus-now org-now)
+                 (bzg/focus--apply (bzg/focus--next gnus-now))
+               (bzg/focus--apply
+                (bzg/focus--read-name
+                 (completing-read
+                  (format-prompt
+                   (format "Focus divergent (Gnus: %s, Org: %s) -- basculer les deux sur"
+                           (bzg/focus--display-name gnus-now)
+                           (bzg/focus--display-name org-now))
+                   (bzg/focus--display-name (bzg/focus--next gnus-now)))
+                  '("work" "leisure" "none") nil t nil nil
+                  (bzg/focus--display-name (bzg/focus--next gnus-now))))))))))
+
+    (use-package gnaw
+      :init
+      (unless (package-installed-p 'gnaw)
+        (package-vc-install
+         '(gnaw :url "https://codeberg.org/bzg/gnaw.el"
+                :doc "doc/gnaw.org"))))
+
+    ;; Archive web links of an Org file for offline reading (see ~/bin/org-archive-links)
+    (add-to-list 'load-path "~/install/git/org-archive-links")
+    (setq org-archive-links-dir "~/org/.archive")
+    (require 'org-archive-links)
+    (add-to-list 'load-path "~/install/git/gnus-insert-icalendar-invite")
+    (require 'bzg-icalendar-invite)
     #+end_src
+
+** Experimental
+
+   #+begin_src emacs-lisp
+      ;; Experimental
+   (setopt treesit-auto-install-grammar 'always)
+   (setopt treesit-enabled-modes t)
+   (setopt eldoc-help-at-pt t)
+   (setopt completion-eager-update t)
+   (setopt minibuffer-visible-completions 'up-down)
+   (setopt delete-pair-push-mark t)
+   (setopt ibuffer-human-readable-size t)
+   (setopt kill-region-dwim 'emacs-word)
+   (setopt view-lossage-auto-refresh t)
+   (setopt dired-hide-details-hide-absolute-location t)
+   (setopt world-clock-sort-order "%FT%T")
+   #+end_src
