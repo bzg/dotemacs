@@ -10,9 +10,9 @@
 (setopt package-native-compile t)
 
 (setopt package-archives
-	'(("gnu" . "http://elpa.gnu.org/packages/")
-	  ("nongnu" . "http://elpa.nongnu.org/nongnu/")
-	  ("melpa" . "http://melpa.org/packages/")))
+	'(("gnu" . "https://elpa.gnu.org/packages/")
+	  ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+	  ("melpa" . "https://melpa.org/packages/")))
 
 ;; Increase GC threshold during startup
 (setopt gc-cons-threshold 100000000)
@@ -193,7 +193,7 @@
 (global-set-key (kbd "C--") #'text-scale-decrease)
 (global-set-key (kbd "C-=") #'bzg/toggle-default-font-size)
 (global-set-key (kbd "C-M-=") #'bzg/toggle-fringe-width)
-(global-set-key (kbd "C-(") #'bzg/toggle-focus)
+(global-set-key (kbd "C-(") #'overlook-cycle)
 (global-set-key (kbd "C-c F") #'auto-fill-mode)
 (global-set-key (kbd "C-c f") #'find-name-dired)
 (global-set-key (kbd "C-c g") #'deadgrep)
@@ -359,8 +359,8 @@
       "* TODO %?\n\n- %a\n\n%i" :prepend t)
      ("@" "Mail" entry (file+headline "~/org/bzg.org" "Divers") ; "@" for "mail"
       "* TODO %a :Mail:" :prepend t)
-     ("r" "Read" entry (file+headline "~/org/bzg.org" "Divers") ; "r" for "read"
-      "* TODO %a :Read:" :prepend t)
+     ("r" "Read" item (file+olp "~/org/bzg.org" "Jardin" "Divers" "A lire, à voir") ; "r" for "read"
+      "- [ ] %a" :prepend t)
      ;; (!) To indicate the captured item is immediately stored
      ("c" "Courant (!)" entry (file "~/org/bzg.org") ; "c" for "affaires (c)ourantes
       "* TODO %a" :prepend t :immediate-finish t)
@@ -482,7 +482,7 @@
   (org-agenda-custom-commands
    '(;; Archive tasks
      ("#" "To archive" todo "DONE|CANX"
-      ((org-agenda-focus-inhibit t)))
+      ((overlook-org-agenda-inhibit t)))
      ;; Review weekly appointements
      ("$" "Weekly appointments" agenda* "Weekly appointments")
      ;; Review weekly tasks
@@ -503,6 +503,11 @@
        (org-deadline-warning-days 60)
        (org-agenda-entry-types '(:deadline))))))
   :config
+  ;; Display "*Org Note*" below the selected window: without this,
+  ;; Org falls back on `split-window-sensibly', which may call
+  ;; `split-window-right' and thus disable `bzg/big-fringe-mode'.
+  (add-to-list 'display-buffer-alist
+               '("\\*Org Note\\*" display-buffer-below-selected))
   (org-agenda-to-appt))
 
 (use-package ox-icalendar
@@ -1201,76 +1206,10 @@ Ensure a blank line remains between the headline/planning and the content."
 (setq gptel-default-mode 'org-mode)
 ;; (load-file "~/.emacs.d/gptel.el")
 (load-file "~/.emacs.d/gnus-icalendar.el")
-(defvar bzg/focus-vacation nil
-  "When non-nil, don't wire up the Gnus/Org focus (vacations).")
 
-(load-file "~/install/git/gnus-focus/gnus-focus.el")
-(load-file "~/install/git/org/org-agenda-focus/org-agenda-focus.el")
-(unless bzg/focus-vacation
-  (gnus-focus-insinuate)
-  (setq org-agenda-skip-function-global #'org-agenda-focus-skip))
-
-(defcustom bzg/focus-source 'auto
-  "Which filters `bzg/toggle-focus' reads the current focus from.
-The value `gnus' means read it from `gnus-focus-filters', `org'
-means read it from `org-agenda-focus-filters', and `auto' means
-read both: when they agree, toggle to the other state, and when
-they disagree, ask which state to switch both to."
-  :type '(choice (const :tag "Gnus filters" gnus)
-                 (const :tag "Org agenda filters" org)
-                 (const :tag "Both, ask when they disagree" auto))
-  :group 'convenience)
-
-(defun bzg/focus--next (name)
-  "The next focus after NAME.
-     Cycle through \"work\", \"leisure\", then no focus."
-  (cond ((equal name "work") "leisure")
-        ((equal name "leisure") nil)
-        (t "work")))
-
-(defun bzg/focus--display-name (name)
-  "Return the display name for focus NAME."
-  (or name "none"))
-
-(defun bzg/focus--read-name (name)
-  "Return the focus name represented by NAME."
-  (unless (equal name "none") name))
-
-(defun bzg/focus--apply (name)
-  "Switch both the Gnus and the Org agenda focus to NAME."
-  (if name
-      (progn
-        (gnus-focus-choose name)
-        (org-agenda-focus-choose name))
-    (gnus-focus-clear)
-    (org-agenda-focus-clear))
-  (message "Focus: %s" (bzg/focus--display-name name)))
-
-(defun bzg/toggle-focus ()
-  "Toggle the Gnus and Org agenda focus between \"work\", \"leisure\" and none.
-The current focus is read from the filters designated by
-`bzg/focus-source' (see there), then both filters are switched to
-the next state.  With `bzg/focus-source' set to `auto', when the
-two filters already disagree on the current focus, ask which
-state to switch both to."
-  (interactive)
-  (let ((gnus-now (gnus-focus--current-name))
-        (org-now  (org-agenda-focus--current-name)))
-    (pcase bzg/focus-source
-      ('gnus (bzg/focus--apply (bzg/focus--next gnus-now)))
-      ('org  (bzg/focus--apply (bzg/focus--next org-now)))
-      (_ (if (equal gnus-now org-now)
-             (bzg/focus--apply (bzg/focus--next gnus-now))
-           (bzg/focus--apply
-            (bzg/focus--read-name
-             (completing-read
-              (format-prompt
-               (format "Focus divergent (Gnus: %s, Org: %s) -- basculer les deux sur"
-                       (bzg/focus--display-name gnus-now)
-                       (bzg/focus--display-name org-now))
-               (bzg/focus--display-name (bzg/focus--next gnus-now)))
-              '("work" "leisure" "none") nil t nil nil
-              (bzg/focus--display-name (bzg/focus--next gnus-now))))))))))
+(load-file "~/install/git/overlook/overlook.el")
+(unless nil ;; When I'm on vacation
+  (overlook-setup))
 
 (use-package gnaw
   :init
@@ -1286,7 +1225,7 @@ state to switch both to."
 (add-to-list 'load-path "~/install/git/gnus-insert-icalendar-invite")
 (require 'bzg-icalendar-invite)
 
-   ;; Experimental
+;; Experimental
 (setopt treesit-auto-install-grammar 'always)
 (setopt treesit-enabled-modes t)
 (setopt eldoc-help-at-pt t)
@@ -1298,3 +1237,14 @@ state to switch both to."
 (setopt view-lossage-auto-refresh t)
 (setopt dired-hide-details-hide-absolute-location t)
 (setopt world-clock-sort-order "%FT%T")
+
+(use-package shr-tag-pre-highlight
+  :ensure t
+  :after shr
+  :config
+  (add-to-list 'shr-external-rendering-functions
+               '(pre . shr-tag-pre-highlight))
+  (when (version< emacs-version "26")
+    (with-eval-after-load 'eww
+      (advice-add 'eww-display-html :around
+                  'eww-display-html--override-shr-external-rendering-functions))))
