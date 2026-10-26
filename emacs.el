@@ -1225,6 +1225,20 @@ Ensure a blank line remains between the headline/planning and the content."
 (add-to-list 'load-path "~/install/git/gnus-insert-icalendar-invite")
 (require 'bzg-icalendar-invite)
 
+(use-package whisper
+  :load-path "~/install/git/whisper.el"
+  :bind ("C-c v" . whisper-run)
+  :custom
+  (whisper-install-whispercpp nil)
+  (whisper-server-mode 'openai)
+  (whisper-openai-api-baseurl "http://127.0.0.1:8000/")
+  (whisper-openai-api-key "local")
+  (whisper-openai-model "orukeet")
+  (whisper-language "auto")
+  (whisper-translate nil)
+  (whisper-return-cursor 'start)
+  (whisper-display-transcription-buffer nil))
+
 ;; Experimental
 (setopt treesit-auto-install-grammar 'always)
 (setopt treesit-enabled-modes t)

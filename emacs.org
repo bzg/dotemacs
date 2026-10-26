@@ -1332,6 +1332,30 @@ Ensure a blank line remains between the headline/planning and the content."
     (require 'bzg-icalendar-invite)
     #+end_src
 
+** Voice transcription (whisper.el + orukeet)
+
+   whisper.el (~/install/git/whisper.el) records with ffmpeg and sends
+   the audio to a local orukeet server (systemd user unit
+   =orukeet.service=, files in ~/.local/share/orukeet) that speaks the
+   OpenAI transcription API. Orukeet detects the language itself, so
+   =whisper-language= must be "auto".
+
+   #+begin_src emacs-lisp
+   (use-package whisper
+     :load-path "~/install/git/whisper.el"
+     :bind ("C-c v" . whisper-run)
+     :custom
+     (whisper-install-whispercpp nil)
+     (whisper-server-mode 'openai)
+     (whisper-openai-api-baseurl "http://127.0.0.1:8000/")
+     (whisper-openai-api-key "local")
+     (whisper-openai-model "orukeet")
+     (whisper-language "auto")
+     (whisper-translate nil)
+     (whisper-return-cursor 'start)
+     (whisper-display-transcription-buffer nil))
+   #+end_src
+
 ** Experimental
 
    #+begin_src emacs-lisp
