@@ -154,7 +154,6 @@
   "Find the bzg.org file."
   (interactive)
   (find-file "~/org/bzg.org")
-  (hidden-mode-line-mode 1)
   (delete-other-windows))
 
 (defun find-variable-or-function-at-point ()
@@ -1085,32 +1084,37 @@ Ensure a blank line remains between the headline/planning and the content."
 
 
 ;; See https://bzg.fr/emacs-hide-mode-line.html
-(defvar-local hidden-mode-line-mode nil)
 (defvar-local hide-mode-line nil)
 
 (define-minor-mode hidden-mode-line-mode
   "Minor mode to hide the mode-line in the current buffer."
-  :init-value nil
-  :global nil
-  :variable hidden-mode-line-mode
   :group 'editing-basics
   (if hidden-mode-line-mode
-      (setq hide-mode-line mode-line-format
-    	    mode-line-format nil)
-    (setq mode-line-format hide-mode-line
-    	  hide-mode-line nil))
+      (when mode-line-format
+        (setq hide-mode-line mode-line-format
+              mode-line-format nil))
+    (when hide-mode-line
+      (setq mode-line-format hide-mode-line
+            hide-mode-line nil)))
   (force-mode-line-update)
-  ;; Apparently force-mode-line-update is not always enough to
-  ;; redisplay the mode-line
-  (redraw-display)
-  (when (and (called-interactively-p 'interactive)
-    	     hidden-mode-line-mode)
-    (run-with-idle-timer
-     0 nil #'message
-     (concat "Hidden Mode Line Mode enabled.  "
-    	     "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
+  (when (called-interactively-p 'interactive)
+    ;; Apparently force-mode-line-update is not always enough to
+    ;; redisplay the mode-line
+    (redraw-display)
+    (when hidden-mode-line-mode
+      (run-with-idle-timer
+       0 nil #'message
+       (concat "Hidden Mode Line Mode enabled.  "
+               "Use M-x hidden-mode-line-mode to make the mode-line appear.")))))
 
-(add-hook 'after-change-major-mode-hook #'hidden-mode-line-mode)
+(define-globalized-minor-mode global-hidden-mode-line-mode
+  hidden-mode-line-mode
+  (lambda () (hidden-mode-line-mode 1))
+  :group 'editing-basics
+  (when (called-interactively-p 'interactive)
+    (redraw-display)))
+
+(global-hidden-mode-line-mode 1)
 
 (use-package whitespace
   :defer t
