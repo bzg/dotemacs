@@ -1016,6 +1016,18 @@ Ensure a blank line remains between the headline/planning and the content."
   	  '(".toc" ".log" ".aux" ".dvi" ".out" ".nav" ".snm")))
   #+end_src
 
+* Agent shell
+
+  #+begin_src emacs-lisp
+  ;; Only use Claude Code: no agent picker, start it directly.
+  (use-package agent-shell
+    :commands agent-shell
+    :custom
+    (agent-shell-agent-configs
+     (list #'agent-shell-anthropic-make-claude-code-config))
+    (agent-shell-preferred-agent-config 'claude-code))
+  #+end_src
+
 * Misc
 
 *** Browser settings

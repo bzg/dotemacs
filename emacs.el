@@ -932,6 +932,14 @@ Ensure a blank line remains between the headline/planning and the content."
   (setopt dired-tex-unclean-extensions
 	  '(".toc" ".log" ".aux" ".dvi" ".out" ".nav" ".snm")))
 
+;; Only use Claude Code: no agent picker, start it directly.
+(use-package agent-shell
+  :commands agent-shell
+  :custom
+  (agent-shell-agent-configs
+   (list #'agent-shell-anthropic-make-claude-code-config))
+  (agent-shell-preferred-agent-config 'claude-code))
+
 (use-package browse-url
   :bind ("C-è" . bzg/toggle-browser)
   :custom
