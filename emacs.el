@@ -1266,3 +1266,9 @@ Ensure a blank line remains between the headline/planning and the content."
     (with-eval-after-load 'eww
       (advice-add 'eww-display-html :around
                   'eww-display-html--override-shr-external-rendering-functions))))
+
+(server-start)
+(use-package swh
+  :vc (:url "https://github.com/bzg/swh.el")
+  :config
+  (global-swh-mode))
