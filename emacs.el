@@ -1077,9 +1077,12 @@ Ensure a blank line remains between the headline/planning and the content."
 ;; Persist fringe state per tab
 (use-package tab-bar
   :config
-  (advice-add #'tab-bar--current-tab-make :filter-return
+  ;; `tab-bar--tab' saves the tab we leave: record its fringe state.
+  (advice-add #'tab-bar--tab :filter-return
               (lambda (tab)
-                (nconc tab (list (cons 'bzg-big-fringe bzg/big-fringe-mode)))))
+                `(,(car tab)
+                  (bzg-big-fringe . ,bzg/big-fringe-mode)
+                  ,@(assq-delete-all 'bzg-big-fringe (cdr tab)))))
 
   (advice-add #'tab-bar-select-tab :after
               (lambda (&rest _)
@@ -1087,8 +1090,10 @@ Ensure a blank line remains between the headline/planning and the content."
                             (current (seq-find (lambda (tab) (eq (car tab) 'current-tab)) tabs)))
                   (bzg/big-fringe-mode (if (alist-get 'bzg-big-fringe (cdr current)) 1 -1)))))
 
-  (add-hook 'tab-bar-tab-post-open-functions
-            (lambda (_tab) (bzg/big-fringe-mode -1))))
+  ;; Not `tab-bar-tab-post-open-functions': it also runs when the
+  ;; initial tab is implicitly created, resetting fringes too early.
+  (advice-add #'tab-bar-new-tab-to :after
+              (lambda (&rest _) (bzg/big-fringe-mode -1))))
 
 
 ;; See https://bzg.fr/emacs-hide-mode-line.html
