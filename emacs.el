@@ -1237,6 +1237,20 @@ Ensure a blank line remains between the headline/planning and the content."
 (add-to-list 'load-path "~/install/git/gnus-insert-icalendar-invite")
 (require 'bzg-icalendar-invite)
 
+(defun bzg/dictionary-search-in (dict)
+  "Search a word in the dictd database DICT."
+  (let ((dictionary-default-dictionary dict))
+    (call-interactively #'dictionary-search)))
+
+(use-package dictionary
+  :custom
+  (dictionary-server "localhost")
+  (dictionary-use-single-buffer t)
+  :bind (("C-c d d" . dictionary-search)
+         ("C-c d ." . dictionary-lookup-definition)
+         ("C-c d e" . (lambda () (interactive) (bzg/dictionary-search-in "gcide")))
+         ("C-c d f" . (lambda () (interactive) (bzg/dictionary-search-in "wiktionnaire")))))
+
 (use-package whisper
   :load-path "~/install/git/whisper.el"
   :bind ("C-c v" . whisper-run)
